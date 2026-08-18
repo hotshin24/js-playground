@@ -1,0 +1,33 @@
+/* primitive → semantic 2단 토큰. 컴포넌트는 semantic만 참조한다. */
+:root {
+  /* primitive */
+  --c-gray-0: #ffffff;
+  --c-gray-50: #f6f6f7;
+  --c-gray-100: #ecedef;
+  --c-gray-200: #dcdde1;
+  --c-gray-500: #6b6b75;
+  --c-gray-900: #17171b;
+  --c-red-700: #b42318;
+  --c-amber-800: #8a5300;
+  --c-blue-700: #1d4ed8;
+
+  /* semantic */
+  --c-bg: var(--c-gray-0);
+  --c-surface: var(--c-gray-50);
+  --c-surface-alt: var(--c-gray-100);
+  --c-border: var(--c-gray-200);
+  --c-text-strong: var(--c-gray-900);
+  --c-text-muted: var(--c-gray-500);
+  --c-text-error: var(--c-red-700);
+  --c-text-warn: var(--c-amber-800);
+  --c-accent: var(--c-blue-700);
+  --c-on-accent: var(--c-gray-0);
+  --c-focus: var(--c-blue-700);
+
+  /* spacing */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+}

@@ -1,0 +1,88 @@
+/* M0 스파이크 최소 스타일. 레이아웃 분할 없음 — 단일 컬럼. */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: var(--sp-6);
+  max-width: 800px;
+  background: var(--c-bg);
+  color: var(--c-text-strong);
+  font: 15px/1.6 system-ui, sans-serif;
+}
+
+:is(h1, h2) { font-size: 1.1rem; margin: var(--sp-6) 0 var(--sp-2); }
+h1 { margin-top: 0; }
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+.skip-link:focus {
+  position: static;
+  display: inline-block;
+  margin-bottom: var(--sp-2);
+  color: var(--c-accent);
+}
+
+:is(a, button, textarea):focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+.label { display: block; font-weight: 600; margin-bottom: var(--sp-1); }
+
+.code-input {
+  display: block;
+  width: 100%;
+  padding: var(--sp-3);
+  border: 1px solid var(--c-border);
+  border-radius: 4px;
+  background: var(--c-surface);
+  color: var(--c-text-strong);
+  font: 13px/1.5 ui-monospace, monospace;
+  resize: vertical;
+}
+
+.hint { color: var(--c-text-muted); font-size: 0.85rem; margin: var(--sp-2) 0; }
+
+.run-button {
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid var(--c-accent);
+  border-radius: 4px;
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  font: inherit;
+  cursor: pointer;
+}
+
+.status { min-height: 1.6em; margin: 0 0 var(--sp-2); color: var(--c-text-muted); font-size: 0.9rem; }
+
+.log {
+  margin: 0;
+  padding: var(--sp-2);
+  border: 1px solid var(--c-border);
+  border-radius: 4px;
+  background: var(--c-surface);
+  list-style: none;
+  font: 13px/1.5 ui-monospace, monospace;
+  min-height: 120px;
+  max-height: 320px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.log-line { padding: 2px var(--sp-1); border-bottom: 1px solid var(--c-border); }
+.log-line:last-child { border-bottom: 0; }
+.log-line--error { color: var(--c-text-error); }
+.log-line--warn { color: var(--c-text-warn); }
+.log-line--system { color: var(--c-text-muted); background: var(--c-surface-alt); }
+
+/* 실행 iframe은 화면에 필요 없지만 display:none이면 접근성 트리 처리가 애매해 오프스크린으로 둔다 */
+.sandbox-host {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.sandbox-host iframe { border: 0; }
