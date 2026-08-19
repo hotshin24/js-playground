@@ -56,10 +56,10 @@ M0의 4개 목표와 하트비트 워치독까지 전부 실측 통과했다.
 
 | 입력 | 결과 |
 |---|---|
-| `t1-01.json` 의 `starterCode` | **0 / 3 통과** (실제값 `undefined` 3건) |
-| `t1-01.json` 의 `solutionCode` | **3 / 3 통과** |
+| `t1-03.json` 의 `starterCode` | **0 / 3 통과** (실제값 `undefined` 3건) |
+| `t1-03.json` 의 `solutionCode` | **3 / 3 통과** |
 
-두 결과가 갈렸다. 레슨은 깨지지 않았다.
+두 결과가 갈렸다. 레슨은 깨지지 않았다. 레슨 파일을 `t1-03` 으로 옮긴 뒤 재측정했고 결과는 동일하다.
 
 ### assert 경로별 실측 (개발 환경, `document.hidden === true`)
 
