@@ -32,6 +32,7 @@ export function createRunner({ mount, onEvent }) {
   let startedAt = 0;
   let lastPingAt = 0;
   let doneSeen = false;
+  let pingSeen = false;
 
   const teardown = () => {
     if (checkId) {
@@ -50,7 +51,9 @@ export function createRunner({ mount, onEvent }) {
     if (document.hidden) return;
     if (performance.now() - lastPingAt < WATCHDOG_TIMEOUT_MS) return;
 
-    const phase = doneSeen ? 'async' : 'sync';
+    // ping 이 한 번도 안 왔다면 사용자 코드가 아니라 프레임 자체가 못 뜬 것이다.
+    // 이걸 무한 루프로 안내하면 학습자가 자기 코드를 의심하게 된다.
+    const phase = !pingSeen ? 'startup' : doneSeen ? 'async' : 'sync';
     teardown();
     onEvent({ type: 'timeout', phase, ms: WATCHDOG_TIMEOUT_MS });
   };
@@ -69,6 +72,7 @@ export function createRunner({ mount, onEvent }) {
     if (!msg || msg.v !== PROTOCOL_VERSION) return;
 
     if (msg.type === 'ping') {
+      pingSeen = true;
       lastPingAt = performance.now();
       return;
     }
@@ -97,6 +101,7 @@ export function createRunner({ mount, onEvent }) {
     teardown(); // 실행마다 프레임 재생성 → 상태 초기화
 
     doneSeen = false;
+    pingSeen = false;
     // 프레임이 아예 뜨지 않는 경우(프렐류드 미실행)도 이 시드 덕분에 같은 경로로 잡힌다
     lastPingAt = performance.now();
 

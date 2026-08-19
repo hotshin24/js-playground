@@ -2,9 +2,14 @@ import { createRunner, WATCHDOG_TIMEOUT_MS } from './runner.js';
 import { createConsolePanel, formatEvent } from './console.js';
 
 const SECONDS = WATCHDOG_TIMEOUT_MS / 1000;
+// 블로킹 중에는 postMessage 가 플러시되지 않아 직전 로그가 도착하지 못한다(F-006).
+// 도구 버그로 오해하지 않도록 한 줄 덧붙인다.
+const LOG_NOTE = ' 이 시점까지 도착한 로그만 표시됩니다.';
 const TIMEOUT_TEXT = {
-  sync: SECONDS + '초 안에 끝나지 않아 실행을 강제 종료했습니다. 무한 루프를 확인하세요.',
-  async: '비동기 콜백이 ' + SECONDS + '초 넘게 응답하지 않아 실행을 강제 종료했습니다.',
+  startup:
+    '실행 프레임이 ' + SECONDS + '초 안에 시작하지 못했습니다. 코드 문제가 아닐 수 있으니 다시 실행해 보세요.',
+  sync: SECONDS + '초 안에 끝나지 않아 실행을 강제 종료했습니다. 무한 루프를 확인하세요.' + LOG_NOTE,
+  async: '비동기 콜백이 ' + SECONDS + '초 넘게 응답하지 않아 실행을 강제 종료했습니다.' + LOG_NOTE,
 };
 
 const codeEl = document.querySelector('#code');
