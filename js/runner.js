@@ -39,6 +39,13 @@ export function createRunner({ mount, onEvent }) {
   let lastPingAt = 0;
   let doneSeen = false;
   let pingSeen = false;
+  let loadSeen = false;
+
+  // load 는 부모가 직접 받는 신호라 자식 스레드가 막혀도 도착한다.
+  // 자식이 보내는 ping 과 달리 블로킹에 갇히지 않는 유일한 관측점이다.
+  const handleLoad = () => {
+    loadSeen = true;
+  };
 
   const teardown = () => {
     if (checkId) {
@@ -46,6 +53,7 @@ export function createRunner({ mount, onEvent }) {
       checkId = 0;
     }
     if (frame) {
+      frame.removeEventListener('load', handleLoad);
       frame.remove();
       frame = null;
     }
@@ -57,9 +65,10 @@ export function createRunner({ mount, onEvent }) {
     if (document.hidden) return;
     if (performance.now() - lastPingAt < WATCHDOG_TIMEOUT_MS) return;
 
-    // ping 이 한 번도 안 왔다면 사용자 코드가 아니라 프레임 자체가 못 뜬 것이다.
-    // 이걸 무한 루프로 안내하면 학습자가 자기 코드를 의심하게 된다.
-    const phase = !pingSeen ? 'startup' : doneSeen ? 'async' : 'sync';
+    // ping 단독으로는 판정할 수 없다. 블로킹 중에는 전달이 플러시되지 않아
+    // '무한 루프'와 '프레임 시작 실패' 둘 다 ping 0건으로 보인다(공통 원인 → FINDINGS).
+    // load 를 함께 봐야 갈린다: 블로킹은 load 도 함께 밀리고, 시작 실패는 load 만 즉시 온다.
+    const phase = doneSeen ? 'async' : loadSeen && !pingSeen ? 'startup' : 'sync';
     teardown();
     onEvent({ type: 'timeout', phase, ms: WATCHDOG_TIMEOUT_MS });
   };
@@ -121,16 +130,20 @@ export function createRunner({ mount, onEvent }) {
 
     doneSeen = false;
     pingSeen = false;
+    loadSeen = false;
     // 프레임이 아예 뜨지 않는 경우(프렐류드 미실행)도 이 시드 덕분에 같은 경로로 잡힌다
     lastPingAt = performance.now();
 
     frame = document.createElement('iframe');
     frame.title = '코드 실행 샌드박스';
+    frame.addEventListener('load', handleLoad);
     // allow-same-origin 을 절대 넣지 않는다. 넣는 순간 부모 DOM/스토리지가 열린다.
     frame.setAttribute('sandbox', 'allow-scripts');
     frame.srcdoc = DOC_HEAD + escapeScriptEnd(code) + buildTail(assertScript);
 
     startedAt = performance.now();
+    // srcdoc 를 먼저 넣고 붙인다. 순서를 바꾸면 초기 about:blank 로드가
+    // load 를 먼저 때려 판정이 무너진다.
     mount.appendChild(frame);
 
     // 프레임 수명 내내 돈다. done 이후에도 멈추지 않는다.
