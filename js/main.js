@@ -1,120 +1,136 @@
-import { createRunner, WATCHDOG_TIMEOUT_MS } from './runner.js';
-import { createConsolePanel, formatEvent } from './console.js';
+import { createSession } from './session.js';
+import { createEditor } from './editor.js';
+import { createLayout } from './layout.js';
 import { loadLesson } from './lessons.js';
-import { buildAssertScript, formatAssert } from './validator.js';
+import { buildAssertScript } from './validator.js';
+import { hashText, readLesson, saveLesson, clearLesson } from './storage.js';
 
-// M1a 는 레슨 1개 고정. 목록·네비게이션은 이후 단계.
+// M1b 도 레슨 1개 고정. 목록·네비게이션은 M1c.
 const LESSON_ID = 't1-03';
+const SAVE_DELAY_MS = 600;
 
-const SECONDS = WATCHDOG_TIMEOUT_MS / 1000;
-// 블로킹 중에는 postMessage 가 플러시되지 않아 직전 로그가 도착하지 못한다(F-006).
-// 도구 버그로 오해하지 않도록 한 줄 덧붙인다.
-const LOG_NOTE = ' 이 시점까지 도착한 로그만 표시됩니다.';
-const TIMEOUT_TEXT = {
-  startup:
-    '실행 프레임이 ' + SECONDS + '초 안에 시작하지 못했습니다. 코드 문제가 아닐 수 있으니 다시 실행해 보세요.',
-  sync: SECONDS + '초 안에 끝나지 않아 실행을 강제 종료했습니다. 무한 루프를 확인하세요.' + LOG_NOTE,
-  async: '비동기 콜백이 ' + SECONDS + '초 넘게 응답하지 않아 실행을 강제 종료했습니다.' + LOG_NOTE,
+const NOTICE = {
+  fallback: '편집기를 불러오지 못해 기본 입력창으로 대체했습니다. 구문 강조가 없지만 실행과 검사는 그대로 동작합니다.',
+  saveFailed: '진행 상황을 저장하지 못했습니다. 학습은 그대로 계속할 수 있습니다.',
+  readonly: '화면이 좁아 읽기 전용입니다. 768px 이상에서 편집하고 실행할 수 있습니다.',
+  starterChanged: '이 레슨의 초기 코드가 바뀌었습니다. 되돌리기를 누르면 새 초기 코드로 시작합니다.',
 };
 
-const titleEl = document.querySelector('#lesson-title');
-const briefEl = document.querySelector('#lesson-brief');
-const codeEl = document.querySelector('#code');
-const runButton = document.querySelector('#run');
-const resetButton = document.querySelector('#reset');
-const assertListEl = document.querySelector('#asserts');
-const assertSummaryEl = document.querySelector('#assert-summary');
-
-const panel = createConsolePanel({
-  logEl: document.querySelector('#log'),
-  statusEl: document.querySelector('#status'),
-});
+const el = (id) => document.querySelector('#' + id);
+const hostEl = el('editor-host');
+const readonlyEl = el('readonly-code');
+const runButton = el('run');
+const resetButton = el('reset');
 
 let lesson = null;
 let assertScript = '';
 let assertTotal = 0;
+let starterHash = '';
+let currentCode = '';
+let editor = null;
+let saveTimer = 0;
 
-// 실행 1회분 상태
-let results = [];
-let errorSeen = false;
-let settled = false;
-
-const setSummary = (text, kind) => {
-  assertSummaryEl.textContent = text;
-  assertSummaryEl.className = 'status' + (kind ? ' status--' + kind : '');
+const shown = new Set();
+const notify = (message) => {
+  if (shown.has(message)) return; // 같은 안내를 반복해 띄우지 않는다
+  shown.add(message);
+  el('notice').textContent = message;
 };
 
-const appendResult = (line) => {
-  const li = document.createElement('li');
-  li.className = 'assert--' + line.status;
-  li.textContent = line.text;
-  assertListEl.appendChild(li);
-};
-
-// done 을 마감 신호로 쓴다. 그 전까지 도착한 것만 이번 실행의 판정 재료다.
-const settle = () => {
-  if (settled) return;
-  settled = true;
-  if (!assertTotal) return;
-
-  // 구문 에러가 나면 사용자 코드 스크립트만 죽고 assert 스크립트는 그대로 돈다.
-  // 그 결과 '함수를 찾을 수 없습니다'가 뜨는데 진짜 원인은 문법이다.
-  // error 는 assert 보다 먼저 도착하므로 여기서 구분해 낼 수 있다.
-  if (errorSeen) {
-    setSummary('코드에 에러가 있어 검사하지 못했습니다.', 'error');
-    return;
-  }
-
-  results.sort((a, b) => a.index - b.index).forEach((event) => appendResult(formatAssert(event)));
-  const passed = results.filter((event) => event.status === 'pass').length;
-  setSummary(passed + ' / ' + assertTotal + ' 통과', passed === assertTotal ? 'pass' : 'fail');
-};
-
-const runner = createRunner({
-  mount: document.querySelector('#sandbox-host'),
-  onEvent: (event) => {
-    if (event.type === 'assert') {
-      results.push(event);
-      return;
-    }
-    if (event.type === 'done') {
-      // done 은 동기 실행이 끝났다는 뜻일 뿐, 프레임은 계속 감시 대상이다
-      panel.setStatus('동기 실행 완료 (' + event.ms + 'ms) · 감시 중');
-      settle();
-      return;
-    }
-    if (event.type === 'timeout') {
-      panel.append('system', TIMEOUT_TEXT[event.phase]);
-      panel.setStatus('강제 종료됨');
-      if (!settled && assertTotal) {
-        settled = true;
-        setSummary('실행이 중단되어 검사하지 못했습니다.', 'error');
-      }
-      return;
-    }
-    if (event.type === 'error') errorSeen = true;
-
-    const line = formatEvent(event);
-    if (line) panel.append(line.level, line.text);
-  },
+const session = createSession({
+  mount: el('sandbox-host'),
+  logEl: el('log'),
+  statusEl: el('status'),
+  listEl: el('asserts'),
+  summaryEl: el('assert-summary'),
+  onAllPassed: () => saveLesson(LESSON_ID, { completedAt: new Date().toISOString() }),
 });
 
+const flushSave = () => {
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = 0;
+  if (!lesson) return;
+  if (!saveLesson(LESSON_ID, { code: currentCode, starterHash })) notify(NOTICE.saveFailed);
+};
+
+const handleCodeChange = (code) => {
+  currentCode = code;
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = window.setTimeout(flushSave, SAVE_DELAY_MS);
+};
+
 const run = () => {
-  panel.clear();
-  panel.setStatus('실행 중…');
-  assertListEl.replaceChildren();
-  setSummary(assertTotal ? '검사 중…' : '');
-  results = [];
-  errorSeen = false;
-  settled = false;
-  runner.run(codeEl.value, { assertScript });
+  if (editor) currentCode = editor.getValue();
+  session.run(currentCode, { assertScript, total: assertTotal });
 };
 
 const reset = () => {
   if (!lesson) return;
-  codeEl.value = lesson.starterCode;
-  codeEl.focus();
-  panel.setStatus('초기 코드로 되돌렸습니다');
+  clearLesson(LESSON_ID); // 저장분까지 초기화한다
+  currentCode = lesson.starterCode;
+  if (editor) {
+    editor.setValue(currentCode);
+    editor.focus();
+  } else {
+    readonlyEl.textContent = currentCode;
+  }
+  session.setStatus('초기 코드로 되돌렸습니다');
+};
+
+const setControls = (enabled) => {
+  runButton.disabled = !enabled;
+  resetButton.disabled = !enabled;
+};
+
+const mountEditor = async () => {
+  if (editor) return;
+  readonlyEl.hidden = true;
+  hostEl.hidden = false;
+  editor = await createEditor({ parent: hostEl, doc: currentCode, onChange: handleCodeChange });
+  if (editor.mode === 'textarea') notify(NOTICE.fallback);
+  setControls(true);
+};
+
+// <768 은 에디터를 아예 만들지 않는다. 띄워놓고 편집만 막지 않는다.
+const unmountEditor = () => {
+  if (editor) {
+    currentCode = editor.getValue();
+    flushSave();
+    editor.destroy();
+    editor = null;
+  }
+  hostEl.hidden = true;
+  hostEl.replaceChildren();
+  readonlyEl.textContent = currentCode;
+  readonlyEl.hidden = false;
+  setControls(false);
+  notify(NOTICE.readonly);
+};
+
+const layout = createLayout({
+  root: el('main'),
+  toggleButton: el('brief-toggle'),
+  onEditableChange: (editable) => (editable ? mountEditor() : unmountEditor()),
+});
+
+/** 이어하기 우선순위: 저장분 > 초기 코드. 단 손대지 않은 저장분은 조용히 갱신한다. */
+const resolveCode = (data, saved) => {
+  if (!saved || typeof saved.code !== 'string') return data.starterCode;
+  if (saved.starterHash === starterHash) return saved.code;
+  if (hashText(saved.code) === saved.starterHash) return data.starterCode;
+  notify(NOTICE.starterChanged);
+  return saved.code;
+};
+
+const renderLesson = (data) => {
+  el('lesson-title').textContent = data.title;
+  el('lesson-brief').replaceChildren(
+    ...data.brief.map((text) => {
+      const p = document.createElement('p');
+      p.textContent = text;
+      return p;
+    })
+  );
 };
 
 const handleKeydown = (e) => {
@@ -124,30 +140,18 @@ const handleKeydown = (e) => {
   }
 };
 
-const renderLesson = (data) => {
-  titleEl.textContent = data.title;
-  briefEl.replaceChildren(
-    ...data.brief.map((text) => {
-      const p = document.createElement('p');
-      p.textContent = text;
-      return p;
-    })
-  );
-  codeEl.value = data.starterCode;
-  runButton.disabled = false;
-  resetButton.disabled = false;
-};
-
 runButton.addEventListener('click', run);
 resetButton.addEventListener('click', reset);
-codeEl.addEventListener('keydown', handleKeydown);
+document.addEventListener('keydown', handleKeydown);
 
-// 해제 경로. 지금은 페이지 언로드가 유일한 소멸 시점이다.
 const dispose = () => {
+  flushSave();
   runButton.removeEventListener('click', run);
   resetButton.removeEventListener('click', reset);
-  codeEl.removeEventListener('keydown', handleKeydown);
-  runner.dispose();
+  document.removeEventListener('keydown', handleKeydown);
+  if (editor) editor.destroy();
+  layout.dispose();
+  session.dispose();
 };
 window.addEventListener('pagehide', dispose, { once: true });
 
@@ -156,9 +160,12 @@ loadLesson(LESSON_ID)
     lesson = data;
     assertScript = buildAssertScript(data);
     assertTotal = (data.asserts || []).filter((spec) => spec.type === 'value').length;
+    starterHash = hashText(data.starterCode);
+    currentCode = resolveCode(data, readLesson(LESSON_ID));
     renderLesson(data);
+    return layout.isEditable() ? mountEditor() : unmountEditor();
   })
   .catch((err) => {
-    titleEl.textContent = '레슨을 불러오지 못했습니다';
-    panel.setStatus(err.message);
+    el('lesson-title').textContent = '레슨을 불러오지 못했습니다';
+    session.setStatus(err.message);
   });
