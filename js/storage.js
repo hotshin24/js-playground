@@ -44,6 +44,22 @@ export function readLesson(id) {
   return readState().lessons[id] || null;
 }
 
+/** 목록 렌더용. 레슨 수만큼 readState() 를 반복하지 않기 위해 한 번에 준다. */
+export function readLessons() {
+  return readState().lessons;
+}
+
+/** 이어하기용 마지막 위치. 레슨 항목을 만들지 않고 위치만 남긴다. */
+export function setLastLesson(id) {
+  const state = readState();
+  state.lastLessonId = id;
+  return writeState(state);
+}
+
+export function readLastLesson() {
+  return readState().lastLessonId;
+}
+
 /** @returns {boolean} 저장 성공 여부 */
 export function saveLesson(id, patch) {
   const state = readState();

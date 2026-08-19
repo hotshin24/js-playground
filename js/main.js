@@ -1,12 +1,13 @@
 import { createSession } from './session.js';
-import { createEditor } from './editor.js';
+import { createWorkspace } from './workspace.js';
 import { createLayout } from './layout.js';
-import { loadLesson } from './lessons.js';
+import { createNav } from './nav.js';
+import { loadIndex, loadLesson } from './lessons.js';
 import { buildAssertScript } from './validator.js';
-import { hashText, readLesson, saveLesson, clearLesson } from './storage.js';
+import {
+  hashText, readLesson, readLessons, saveLesson, clearLesson, setLastLesson, readLastLesson,
+} from './storage.js';
 
-// M1b 도 레슨 1개 고정. 목록·네비게이션은 M1c.
-const LESSON_ID = 't1-03';
 const SAVE_DELAY_MS = 600;
 
 const NOTICE = {
@@ -17,17 +18,14 @@ const NOTICE = {
 };
 
 const el = (id) => document.querySelector('#' + id);
-const hostEl = el('editor-host');
-const readonlyEl = el('readonly-code');
 const runButton = el('run');
 const resetButton = el('reset');
 
+let index = [];
 let lesson = null;
 let assertScript = '';
 let assertTotal = 0;
 let starterHash = '';
-let currentCode = '';
-let editor = null;
 let saveTimer = 0;
 
 const shown = new Set();
@@ -43,75 +41,61 @@ const session = createSession({
   statusEl: el('status'),
   listEl: el('asserts'),
   summaryEl: el('assert-summary'),
-  onAllPassed: () => saveLesson(LESSON_ID, { completedAt: new Date().toISOString() }),
+  onAllPassed: () => {
+    saveLesson(lesson.id, { completedAt: new Date().toISOString() });
+    refreshNav();
+  },
 });
 
 const flushSave = () => {
   if (saveTimer) clearTimeout(saveTimer);
   saveTimer = 0;
   if (!lesson) return;
-  if (!saveLesson(LESSON_ID, { code: currentCode, starterHash })) notify(NOTICE.saveFailed);
+  if (!saveLesson(lesson.id, { code: workspace.getCode(), starterHash })) notify(NOTICE.saveFailed);
 };
 
-const handleCodeChange = (code) => {
-  currentCode = code;
-  if (saveTimer) clearTimeout(saveTimer);
-  saveTimer = window.setTimeout(flushSave, SAVE_DELAY_MS);
+const workspace = createWorkspace({
+  hostEl: el('editor-host'),
+  readonlyEl: el('readonly-code'),
+  onChange: () => {
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = window.setTimeout(flushSave, SAVE_DELAY_MS);
+  },
+  onFallback: () => notify(NOTICE.fallback),
+  onReadonly: () => notify(NOTICE.readonly),
+  onEditableChange: (editable) => {
+    runButton.disabled = !editable;
+    resetButton.disabled = !editable;
+    if (!editable) flushSave();
+  },
+});
+
+const nav = createNav({
+  listEl: el('lesson-list'),
+  onSelect: (id) => {
+    if (!lesson || id !== lesson.id) openLesson(id);
+  },
+});
+
+const refreshNav = () => {
+  const saved = readLessons();
+  nav.render(index, {
+    currentId: lesson ? lesson.id : null,
+    isCompleted: (id) => Boolean(saved[id] && saved[id].completedAt),
+  });
 };
 
-const run = () => {
-  if (editor) currentCode = editor.getValue();
-  session.run(currentCode, { assertScript, total: assertTotal });
-};
+const run = () => session.run(workspace.getCode(), { assertScript, total: assertTotal });
 
 const reset = () => {
   if (!lesson) return;
-  clearLesson(LESSON_ID); // 저장분까지 초기화한다
-  currentCode = lesson.starterCode;
-  if (editor) {
-    editor.setValue(currentCode);
-    editor.focus();
-  } else {
-    readonlyEl.textContent = currentCode;
-  }
+  clearLesson(lesson.id); // 저장분까지 초기화한다
+  setLastLesson(lesson.id);
+  workspace.setCode(lesson.starterCode);
+  workspace.focus();
   session.setStatus('초기 코드로 되돌렸습니다');
+  refreshNav();
 };
-
-const setControls = (enabled) => {
-  runButton.disabled = !enabled;
-  resetButton.disabled = !enabled;
-};
-
-const mountEditor = async () => {
-  if (editor) return;
-  readonlyEl.hidden = true;
-  hostEl.hidden = false;
-  editor = await createEditor({ parent: hostEl, doc: currentCode, onChange: handleCodeChange });
-  if (editor.mode === 'textarea') notify(NOTICE.fallback);
-  setControls(true);
-};
-
-// <768 은 에디터를 아예 만들지 않는다. 띄워놓고 편집만 막지 않는다.
-const unmountEditor = () => {
-  if (editor) {
-    currentCode = editor.getValue();
-    flushSave();
-    editor.destroy();
-    editor = null;
-  }
-  hostEl.hidden = true;
-  hostEl.replaceChildren();
-  readonlyEl.textContent = currentCode;
-  readonlyEl.hidden = false;
-  setControls(false);
-  notify(NOTICE.readonly);
-};
-
-const layout = createLayout({
-  root: el('main'),
-  toggleButton: el('brief-toggle'),
-  onEditableChange: (editable) => (editable ? mountEditor() : unmountEditor()),
-});
 
 /** 이어하기 우선순위: 저장분 > 초기 코드. 단 손대지 않은 저장분은 조용히 갱신한다. */
 const resolveCode = (data, saved) => {
@@ -133,12 +117,34 @@ const renderLesson = (data) => {
   );
 };
 
+const openLesson = async (id) => {
+  flushSave(); // 옮기기 전에 이전 레슨을 저장한다
+  const data = await loadLesson(id);
+
+  lesson = data;
+  assertScript = buildAssertScript(data);
+  assertTotal = (data.asserts || []).filter((spec) => spec.type === 'value').length;
+  starterHash = hashText(data.starterCode);
+
+  session.clear();
+  renderLesson(data);
+  workspace.setCode(resolveCode(data, readLesson(id)));
+  setLastLesson(id);
+  refreshNav();
+};
+
 const handleKeydown = (e) => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
     e.preventDefault();
     run();
   }
 };
+
+const layout = createLayout({
+  root: el('main'),
+  toggleButton: el('brief-toggle'),
+  onEditableChange: (editable) => (editable ? workspace.mount() : workspace.unmount()),
+});
 
 runButton.addEventListener('click', run);
 resetButton.addEventListener('click', reset);
@@ -149,21 +155,20 @@ const dispose = () => {
   runButton.removeEventListener('click', run);
   resetButton.removeEventListener('click', reset);
   document.removeEventListener('keydown', handleKeydown);
-  if (editor) editor.destroy();
+  workspace.destroy();
   layout.dispose();
+  nav.dispose();
   session.dispose();
 };
 window.addEventListener('pagehide', dispose, { once: true });
 
-loadLesson(LESSON_ID)
-  .then((data) => {
-    lesson = data;
-    assertScript = buildAssertScript(data);
-    assertTotal = (data.asserts || []).filter((spec) => spec.type === 'value').length;
-    starterHash = hashText(data.starterCode);
-    currentCode = resolveCode(data, readLesson(LESSON_ID));
-    renderLesson(data);
-    return layout.isEditable() ? mountEditor() : unmountEditor();
+loadIndex()
+  .then(async (entries) => {
+    index = entries;
+    const last = readLastLesson();
+    const start = entries.some((entry) => entry.id === last) ? last : entries[0].id;
+    await openLesson(start);
+    return layout.isEditable() ? workspace.mount() : workspace.unmount();
   })
   .catch((err) => {
     el('lesson-title').textContent = '레슨을 불러오지 못했습니다';

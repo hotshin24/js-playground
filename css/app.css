@@ -63,6 +63,40 @@ h1 { font-size: 1.2rem; }
 /* ---------- 레슨 ---------- */
 .lesson-brief p { margin: 0 0 var(--sp-3); }
 
+.lesson-nav { margin-bottom: var(--sp-4); }
+.nav-heading { font-size: 0.8rem; color: var(--c-text-muted); text-transform: uppercase; }
+
+.lesson-list { margin: 0; padding: 0; list-style: none; }
+.lesson-list li { margin-bottom: var(--sp-1); }
+
+.lesson-link {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  width: 100%;
+  padding: var(--sp-1) var(--sp-2);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: none;
+  color: var(--c-text-strong);
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+}
+.lesson-link:hover { background: var(--c-surface); }
+.lesson-link--current {
+  border-color: var(--c-accent);
+  background: var(--c-surface);
+  font-weight: 600;
+}
+.lesson-done {
+  margin-left: auto;
+  color: var(--c-text-ok);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
 /* ---------- 에디터 ---------- */
 .editor-host {
   border: 1px solid var(--c-border);

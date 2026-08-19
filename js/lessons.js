@@ -56,6 +56,19 @@ export function validateLesson(lesson, expectedId) {
 }
 
 /**
+ * 레슨 목록. 레슨 추가 비용은 JSON 파일 1건 + 이 목록 1줄이며 앱 코드는 건드리지 않는다.
+ * @returns {Promise<Array<{id: string, order: number, title: string}>>}
+ */
+export async function loadIndex() {
+  const res = await fetch('lessons/index.json');
+  if (!res.ok) throw new Error('레슨 목록을 불러오지 못했습니다 (' + res.status + ')');
+  const data = await res.json();
+  if (data.schemaVersion !== 1) throw new Error('지원하지 않는 목록 schemaVersion: ' + data.schemaVersion);
+  if (!Array.isArray(data.lessons) || !data.lessons.length) throw new Error('레슨 목록이 비어 있습니다');
+  return [...data.lessons].sort((a, b) => a.order - b.order);
+}
+
+/**
  * @param {string} id 레슨 파일명(확장자 제외)
  * @returns {Promise<object>}
  */

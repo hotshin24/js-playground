@@ -77,5 +77,13 @@ export function createSession({ mount, logEl, statusEl, listEl, summaryEl, onAll
     runner.run(code, { assertScript });
   };
 
-  return { run, setStatus: panel.setStatus, dispose: runner.dispose };
+  // 레슨을 옮길 때 이전 레슨의 출력이 남아 있으면 안 된다
+  const clear = () => {
+    panel.clear();
+    panel.setStatus('');
+    results.clear();
+    results.setSummary('');
+  };
+
+  return { run, clear, setStatus: panel.setStatus, dispose: runner.dispose };
 }
