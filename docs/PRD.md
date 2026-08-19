@@ -2,8 +2,9 @@
 
 | 항목 | 내용 |
 |---|---|
-| 문서 버전 | v0.1 (초안) |
+| 문서 버전 | v0.2 |
 | 작성일 | 2026-08-18 |
+| 최종 갱신 | 2026-08-19 (M0·M1a 구현 결과 반영) |
 | 작성자 | 신호진 |
 | 프로젝트 코드명 | (미정 — 가칭 `Bridge`) |
 | 배포 형태 | 정적 사이트 / GitHub Pages |
@@ -242,37 +243,68 @@ URL 압축 인코딩 공유 · 다중 파일 · TypeScript · 커스텀 레슨 �
 
 **잠정 결정: Sucrase.** 최신 브라우저만 지원하면 되므로 다운레벨이 불필요하고, T3 진입 시 로딩 대기가 학습 흐름을 끊지 않는 것이 우선. 단, 구문 에러 메시지 품질을 M2에서 실측하고 미흡하면 Babel로 교체한다. — *이 판단은 M2 스파이크 결과로 확정.*
 
-### 6.4 레슨 데이터 스키마 (초안)
+### 6.4 레슨 데이터 스키마
+
+M1a에서 구현·검증된 `schemaVersion: 1`. 아래는 실제 동작하는 형태다(`lessons/t1-01.json`).
 
 ```json
 {
-  "id": "t3-03",
-  "track": "T3",
-  "order": 3,
-  "title": "props로 하드코딩 값 뽑아내기",
-  "estimatedMin": 20,
-  "brief": "마크업 설명 (마크다운)",
-  "reference": {
-    "label": "JW Anderson 상품 카드",
-    "html": "<article class=\"pcard\">…</article>",
-    "css": ".pcard{…}"
-  },
-  "starterCode": "function ProductCard() {\n  return null;\n}",
-  "solutionCode": "…",
-  "hints": ["…", "…"],
-  "runtime": "react",
+  "schemaVersion": 1,
+  "id": "t1-01",
+  "track": "T1",
+  "title": "map으로 배열 변환하기",
+  "brief": [
+    "첫 번째 문단",
+    "두 번째 문단"
+  ],
+  "entry": "doubleAll",
+  "starterCode": "function doubleAll(numbers) {\n  // 여기를 채우세요\n}\n",
+  "solutionCode": "function doubleAll(numbers) {\n  return numbers.map((n) => n * 2);\n}\n",
   "asserts": [
     {
-      "label": "제목이 props로 전달된다",
-      "type": "dom",
-      "selector": ".pcard__title",
-      "expectText": "…"
+      "type": "value",
+      "label": "[1, 2, 3] → [2, 4, 6]",
+      "args": [[1, 2, 3]],
+      "expected": [2, 4, 6]
     }
   ]
 }
 ```
 
-**assert 타입:** `value`(반환값) · `console`(출력) · `dom`(선택자+텍스트/속성) · `html`(정규화 비교) · `manual`(참고 답안 비교만)
+**필드**
+
+| 필드 | 필수 | 구현 | 비고 |
+|---|---|---|---|
+| `schemaVersion` | ✔ | M1a | `1` 이외는 로드 거부 |
+| `id` · `track` · `title` | ✔ | M1a | |
+| `brief` | ✔ | M1a | **문자열 배열(문단 단위).** 초안의 마크다운 단일 문자열에서 변경 |
+| `entry` | 조건부 | M1a | `value` assert가 하나라도 있으면 필수. 유효한 식별자여야 한다 |
+| `starterCode` · `solutionCode` | ✔ | M1a | |
+| `asserts` | — | M1a | 없으면 실행만 하고 판정하지 않는다 |
+| `order` · `estimatedMin` · `hints` | — | 미구현 | |
+| `reference` · `runtime` | — | 미구현 | T3 진입 시 필요 |
+
+**`brief`를 마크다운에서 문단 배열로 바꾼 이유:** 마크다운을 쓰려면 파서를 붙이거나 `innerHTML`을 써야 한다. 파서는 의존성 추가고, `innerHTML`은 레슨 데이터를 신뢰 입력으로 만든다. 문단 배열이면 `textContent`로 안전하게 그린다. 서식이 실제로 필요해지는 시점에 다시 판단한다.
+
+**`entry`를 무조건 필수로 두지 않는 이유:** T2(DOM·이벤트)는 진입 함수가 없는 레슨이 나온다. `value` assert가 있을 때만 요구한다.
+
+**assert 타입 로드맵:** `value`(반환값, **M1a 구현**) · `console`(출력) · `dom`(선택자+텍스트/속성) · `html`(정규화 비교) · `manual`(참고 답안 비교만)
+
+**`value` assert 계약**
+
+- 읽는 대상은 **`entry`로 지정한 함수의 반환값**이다. 마지막 표현식이 아니다 — 학습자가 디버깅용 `console.log`를 끝에 붙이면 완료값이 바뀌어 레슨이 깨지고, 완료값을 얻으려면 `eval`이 필요해 §6.2에서 확보한 줄 번호 정확도가 무너진다.
+- `args`를 펼쳐 호출하고 `expected`와 깊은 비교한다. 비교와 표시 문자열 생성은 **iframe 내부**에서 한다(구조화 복제로 함수·순환 참조가 부모로 넘어오지 못한다).
+- 결과는 **3상태**다.
+
+| 상태 | 의미 | 표시 |
+|---|---|---|
+| `pass` | 반환값이 `expected`와 일치 | `통과 — {label}` |
+| `fail` | 반환값이 다름 | `실패 — {label}` + 기대값/실제값 |
+| `error` | 함수를 못 찾았거나 호출이 예외로 끝남 | `오류 — {label} · {message}` |
+
+  `fail`과 `error`를 나누는 이유: 학습자가 봐야 할 다음 지점이 다르다. 전자는 로직, 후자는 함수 이름이나 문법이다.
+- **에러 선행 규칙:** 사용자 코드에 에러가 있으면 assert 목록 대신 `코드에 에러가 있어 검사하지 못했습니다.`를 표시한다. 구문 에러가 나면 사용자 코드 스크립트만 죽고 assert 스크립트는 그대로 돌아 `함수를 찾을 수 없습니다`가 뜨는데, 진짜 원인은 문법이기 때문이다. `error` 메시지가 `assert`보다 먼저 도착하는 점을 이용해 구분한다.
+- **실행 순서:** 사용자 코드 → assert 전부 → `done`. `done`이 "이번 실행의 판정이 전부 도착했다"는 마감 신호가 된다. 이 계약은 동기 반환값에만 성립한다(비동기는 FINDINGS F-005).
 
 ### 6.5 비기능 요구사항
 
@@ -303,12 +335,15 @@ URL 압축 인코딩 공유 · 다중 파일 · TypeScript · 커스텀 레슨 �
 
 ### 7.2 도구 지표
 
-| 지표 | 목표 |
-|---|---|
-| Lighthouse Accessibility / Best Practices / SEO | 각 100 |
-| 신규 레슨 추가 비용 | JSON 1건 추가, 앱 코드 수정 0줄 |
-| 실행 실패(도구 버그로 인한) 발생 | 32레슨 통과 과정 중 0건 |
-| 문서화 | PRD · 기능정의서 · README 3종 완비 |
+| 지표 | 목표 | M1a 시점 실측 |
+|---|---|---|
+| Lighthouse Accessibility / Best Practices / SEO | 각 100 | **미측정** |
+| 신규 레슨 추가 비용 | JSON 1건 추가, 앱 코드 수정 0줄 | **미측정** — 레슨이 1건뿐이라 2건째를 추가해야 검증된다 |
+| 실행 지연 (T1/T2) | 300ms 이내 | **77~213ms** (`t1-01`, localhost 및 GitHub Pages) |
+| 실행 실패(도구 버그로 인한) 발생 | 32레슨 통과 과정 중 0건 | 도구 결함 6건 기록(F-001~F-006), **3건 처리 완료**(F-003·F-004·F-006), 3건 미해결 |
+| 문서화 | PRD · 기능정의서 · README 3종 완비 | PRD·FINDINGS 2종. 기능정의서·README **미작성** |
+
+실측 근거는 `docs/FINDINGS.md`. 측정하지 않은 항목은 "미측정"으로 둔다.
 
 ---
 
@@ -316,11 +351,17 @@ URL 압축 인코딩 공유 · 다중 파일 · TypeScript · 커스텀 레슨 �
 
 | 단계 | 산출물 | 완료 조건 |
 |---|---|---|
-| **M0. 스파이크** | 실행 엔진 프로토타입 | textarea 코드 → iframe 실행 → `console.log`가 부모 패널에 뜬다. 무한루프가 3초에 끊긴다 |
-| **M1. T1/T2 가동** | 에디터 + 검증 + 레슨 로더 | T1·T2 16레슨이 데이터만으로 동작 |
+| **M0. 스파이크** ✅ | 실행 엔진 프로토타입 | ~~textarea 코드 → iframe 실행 → `console.log`가 부모 패널에 뜬다. 무한루프가 3초에 끊긴다~~ **완료** |
+| **M1a. 레슨 파이프라인** ✅ | 레슨 로더 + `value` assert | ~~레슨 JSON 1건이 화면을 만들고, starter는 실패·solution은 통과한다~~ **완료** |
+| **M1b. 에디터 교체** | CodeMirror 6 도입 | textarea → CodeMirror. Esc → Tab 탈출 경로 동작 |
+| **M1c. T1/T2 가동** | 레슨 목록·진행 저장·레이아웃 | T1·T2 16레슨이 데이터만으로 동작 |
 | **M2. 트랜스파일** | JSX 파이프라인 | 트랜스파일러 확정, React 렌더 성공, DOM assert 동작 |
 | **M3. T3/T4** | 전체 32레슨 | 진행률 저장·이어하기·정답 보기 완비 |
 | **M4. 마감** | 접근성·반응형·문서 | Lighthouse 목표 달성, 문서 3종, GitHub Pages 배포 |
+
+**M1 분할 근거:** M1을 "에디터 + 검증 + 레슨 로더" 한 덩어리로 두면 실패 시 원인이 갈리지 않는다. 에디터 교체(M1b)를 단독으로 떼어 두면, 문제가 생겼을 때 원인이 에디터인지 로더인지 즉시 판단된다.
+
+**M1a 완료 시점 실제 산출물:** `lessons/t1-01.json` · `js/lessons.js` · `js/validator.js` · `js/runner.js` · `js/console.js` · `js/sandbox-prelude.js` · `js/main.js`. 검증 로그는 `docs/FINDINGS.md`.
 
 **M0가 이 프로젝트의 성패를 가른다.** M0가 안 되면 나머지는 전부 UI 작업일 뿐이고, M0가 되면 나머지는 시간 문제다. M0에 막히면 스코프를 줄이지 말고 **트랙을 줄여라** (T1·T2만으로 v1 출시).
 
