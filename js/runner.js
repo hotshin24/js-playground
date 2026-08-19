@@ -1,12 +1,14 @@
 import { PRELUDE } from './sandbox-prelude.js';
 
-export const TIMEOUT_MS = 3000;
+// 마지막 ping 이후 이 시간이 지나면 프레임이 멈춘 것으로 본다
+export const WATCHDOG_TIMEOUT_MS = 3000;
+const WATCHDOG_CHECK_MS = 500;
 const PROTOCOL_VERSION = 1;
 
 /**
  * srcdoc 구성: [프렐류드] → [사용자 코드] → [완료 신호].
  * script 태그를 분리해 두면 사용자 코드가 구문 에러로 죽어도 마지막 태그는 실행되어
- * done 이 발신된다. 무한 루프일 때만 done 이 오지 않는다.
+ * done 이 발신된다. done 은 '동기 실행 완료'일 뿐 실행 종료가 아니다.
  */
 const DOC_HEAD =
   '<!doctype html>\n<html>\n<head>\n<meta charset="utf-8">\n</head>\n<body>\n' +
@@ -26,18 +28,36 @@ const escapeScriptEnd = (code) => code.replace(/<\/(script)/gi, '<\\/$1');
  */
 export function createRunner({ mount, onEvent }) {
   let frame = null;
-  let timerId = 0;
+  let checkId = 0;
   let startedAt = 0;
+  let lastPingAt = 0;
+  let doneSeen = false;
 
   const teardown = () => {
-    if (timerId) {
-      clearTimeout(timerId);
-      timerId = 0;
+    if (checkId) {
+      clearInterval(checkId);
+      checkId = 0;
     }
     if (frame) {
       frame.remove();
       frame = null;
     }
+  };
+
+  const check = () => {
+    // 탭이 숨겨지면 자식의 ping 타이머가 스로틀돼 멀쩡한 프레임을 죽이게 된다.
+    // 프레임 단위 스로틀까지는 못 막는다 — 알려진 이슈.
+    if (document.hidden) return;
+    if (performance.now() - lastPingAt < WATCHDOG_TIMEOUT_MS) return;
+
+    const phase = doneSeen ? 'async' : 'sync';
+    teardown();
+    onEvent({ type: 'timeout', phase, ms: WATCHDOG_TIMEOUT_MS });
+  };
+
+  // 다시 보이는 순간 묵은 lastPing 으로 즉사시키지 않도록 리시드한다
+  const handleVisibility = () => {
+    if (!document.hidden) lastPingAt = performance.now();
   };
 
   const handleMessage = (event) => {
@@ -48,11 +68,13 @@ export function createRunner({ mount, onEvent }) {
     const msg = event.data;
     if (!msg || msg.v !== PROTOCOL_VERSION) return;
 
+    if (msg.type === 'ping') {
+      lastPingAt = performance.now();
+      return;
+    }
+
     if (msg.type === 'done') {
-      if (timerId) {
-        clearTimeout(timerId);
-        timerId = 0;
-      }
+      doneSeen = true;
       onEvent({ type: 'done', ms: Math.round(performance.now() - startedAt) });
       return;
     }
@@ -69,9 +91,14 @@ export function createRunner({ mount, onEvent }) {
   };
 
   window.addEventListener('message', handleMessage);
+  document.addEventListener('visibilitychange', handleVisibility);
 
   const run = (code) => {
     teardown(); // 실행마다 프레임 재생성 → 상태 초기화
+
+    doneSeen = false;
+    // 프레임이 아예 뜨지 않는 경우(프렐류드 미실행)도 이 시드 덕분에 같은 경로로 잡힌다
+    lastPingAt = performance.now();
 
     frame = document.createElement('iframe');
     frame.title = '코드 실행 샌드박스';
@@ -82,15 +109,13 @@ export function createRunner({ mount, onEvent }) {
     startedAt = performance.now();
     mount.appendChild(frame);
 
-    timerId = window.setTimeout(() => {
-      timerId = 0;
-      teardown(); // 프레임 제거가 곧 강제 종료다
-      onEvent({ type: 'timeout', ms: TIMEOUT_MS });
-    }, TIMEOUT_MS);
+    // 프레임 수명 내내 돈다. done 이후에도 멈추지 않는다.
+    checkId = window.setInterval(check, WATCHDOG_CHECK_MS);
   };
 
   const dispose = () => {
     window.removeEventListener('message', handleMessage);
+    document.removeEventListener('visibilitychange', handleVisibility);
     teardown();
   };
 

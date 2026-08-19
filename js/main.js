@@ -1,5 +1,11 @@
-import { createRunner, TIMEOUT_MS } from './runner.js';
+import { createRunner, WATCHDOG_TIMEOUT_MS } from './runner.js';
 import { createConsolePanel, formatEvent } from './console.js';
+
+const SECONDS = WATCHDOG_TIMEOUT_MS / 1000;
+const TIMEOUT_TEXT = {
+  sync: SECONDS + '초 안에 끝나지 않아 실행을 강제 종료했습니다. 무한 루프를 확인하세요.',
+  async: '비동기 콜백이 ' + SECONDS + '초 넘게 응답하지 않아 실행을 강제 종료했습니다.',
+};
 
 const codeEl = document.querySelector('#code');
 const runButton = document.querySelector('#run');
@@ -12,11 +18,12 @@ const runner = createRunner({
   mount: document.querySelector('#sandbox-host'),
   onEvent: (event) => {
     if (event.type === 'done') {
-      panel.setStatus('완료 (' + event.ms + 'ms)');
+      // done 은 동기 실행이 끝났다는 뜻일 뿐, 프레임은 계속 감시 대상이다
+      panel.setStatus('동기 실행 완료 (' + event.ms + 'ms) · 감시 중');
       return;
     }
     if (event.type === 'timeout') {
-      panel.append('system', TIMEOUT_MS / 1000 + '초 안에 끝나지 않아 실행을 강제 종료했습니다. 무한 루프를 확인하세요.');
+      panel.append('system', TIMEOUT_TEXT[event.phase]);
       panel.setStatus('강제 종료됨');
       return;
     }

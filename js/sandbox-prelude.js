@@ -79,7 +79,26 @@ export const PRELUDE = `
     post({ type: 'error', message: 'Uncaught (in promise) ' + text, line: 0, col: 0 });
   });
 
-  // 사용자 코드 다음 script 태그에서 호출된다. 무한 루프면 여기까지 오지 못한다.
+  // done 은 '동기 실행 완료'만 뜻한다. 실행 종료가 아니다 — 이후 비동기 코드는 워치독이 본다.
   window.__done = () => post({ type: 'done' });
+
+  // --- 하트비트 워치독 ---
+  // 이 프레임의 이벤트 루프가 아직 도는지를 부모에게 알리는 유일한 신호.
+  // 동기든 비동기든 루프가 막히면 이 타이머부터 멈추므로 부모가 그것으로 감지한다.
+  const nativeClearInterval = window.clearInterval;
+  const nativeClearTimeout = window.clearTimeout;
+
+  post({ type: 'ping' });
+  const watchdogId = setInterval(() => post({ type: 'ping' }), 500);
+
+  // 타이머 id 는 작은 정수라 사용자 코드가 clearInterval(1..n) 으로 긁으면 워치독이 죽는다.
+  // id 를 클로저에 가두는 것만으로는 부족해 해제 함수 자체를 막는다.
+  // setTimeout/setInterval 은 id 네임스페이스를 공유하므로 둘 다 막아야 한다.
+  window.clearInterval = function (id) {
+    if (id !== watchdogId) nativeClearInterval.call(window, id);
+  };
+  window.clearTimeout = function (id) {
+    if (id !== watchdogId) nativeClearTimeout.call(window, id);
+  };
 })();
 `;
