@@ -43,10 +43,12 @@ JS/React 학습 플레이그라운드. 상세 요구사항은 `docs/PRD.md` 참�
 │  ├─ storage.js      # localStorage
 │  └─ lessons.js      # 레슨 로더
 └─ lessons/
-   └─ t1-01.json
+   └─ t1-03.json
 ```
 
 모듈 1개는 200줄을 넘기지 않는다. 넘으면 분리하고 이유를 보고한다.
+
+레슨 파일은 파일명·`id`·`order`가 PRD §4의 트랙·순서와 항상 일치해야 한다. 그 순서는 난이도가 아니라 의존 관계다.
 
 ## 코드 규약
 

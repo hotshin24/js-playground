@@ -4,7 +4,7 @@ import { loadLesson } from './lessons.js';
 import { buildAssertScript, formatAssert } from './validator.js';
 
 // M1a 는 레슨 1개 고정. 목록·네비게이션은 이후 단계.
-const LESSON_ID = 't1-01';
+const LESSON_ID = 't1-03';
 
 const SECONDS = WATCHDOG_TIMEOUT_MS / 1000;
 // 블로킹 중에는 postMessage 가 플러시되지 않아 직전 로그가 도착하지 못한다(F-006).
