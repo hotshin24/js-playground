@@ -200,12 +200,18 @@ URL 압축 인코딩 공유 · 다중 파일 · TypeScript · 커스텀 레슨 �
 | 영역 | 선택 | 비고 |
 |---|---|---|
 | 앱 | Vanilla JS (ES Modules) | 빌드 없음. 학습 대상을 학습 도구에 쓰지 않는다 |
-| 에디터 | CodeMirror 6 | ESM CDN 임포트 |
+| 에디터 | CodeMirror 6 (패키지 5개) | `@codemirror/state` · `view` · `commands` · `language` · `lang-javascript`. esm.sh ESM 임포트 |
 | 트랜스파일 | Sucrase 또는 @babel/standalone | §6.3 참조 |
 | React | React 18 + ReactDOM UMD | iframe 내부에서만 로드 |
 | 스타일 | CSS 커스텀 프로퍼티 2단 토큰 (primitive → semantic) | 기존 프로젝트 규약 승계 |
 | 저장 | `localStorage` | 서버 없음 |
 | 배포 | GitHub Pages | `hotshin24` 계정 |
+
+**`codemirror` 메타 패키지를 쓰지 않는 이유:** 그 패키지의 `basicSetup` 은 autocomplete·lint·search·fold 를 통째로 끌고 온다. 필요한 확장만 직접 조립한다 — 실제로 쓰는 것은 `lineNumbers` · `history` · `bracketMatching` · `indentOnInput` · `syntaxHighlighting` · `javascript` 와 커스텀 Tab 키맵이다.
+
+**`@codemirror/state` 사본은 반드시 1개여야 한다.** CDN 에서 패키지를 따로 가져오면 사본이 둘 생기고 CM6 가 확장을 거부한다. `?deps=@codemirror/state@6` 로 한 버전에 고정한다.
+
+**CDN 실패 시 `textarea` 로 폴백한다.** 학습이 CDN 가용성에 인질로 잡히면 안 된다. 폴백되면 학습자에게 알린다 — 구문 강조가 없는 화면을 보고 도구가 고장났다고 판단하게 두지 않는다.
 
 ### 6.2 실행 파이프라인
 
@@ -341,12 +347,13 @@ M1a에서 구현·검증된 `schemaVersion: 1`. 아래는 실제 동작하는 �
 
 ### 7.2 도구 지표
 
-| 지표 | 목표 | M1a 시점 실측 |
+| 지표 | 목표 | 최근 실측 |
 |---|---|---|
 | Lighthouse Accessibility / Best Practices / SEO | 각 100 | **미측정** |
 | 신규 레슨 추가 비용 | JSON 1건 추가, 앱 코드 수정 0줄 | **미측정** — 레슨이 1건뿐이라 2건째를 추가해야 검증된다 |
 | 실행 지연 (T1/T2) | 300ms 이내 | **77~213ms** (`t1-03`, localhost 및 GitHub Pages) |
-| 실행 실패(도구 버그로 인한) 발생 | 32레슨 통과 과정 중 0건 | 도구 결함 6건 기록(F-001~F-006), **3건 처리 완료**(F-003·F-004·F-006), 3건 미해결 |
+| 에디터 초기 로드 | 기준 없음 | **콜드 1799ms / 웜 181ms**, 요청 42건·압축 해제 525KB (F-007). 전송 바이트는 측정 불가 |
+| 실행 실패(도구 버그로 인한) 발생 | 32레슨 통과 과정 중 0건 | 도구 결함 7건 기록(F-001~F-007), **3건 처리 완료**(F-003·F-004·F-006), 4건 미해결 |
 | 문서화 | PRD · 기능정의서 · README 3종 완비 | PRD·FINDINGS 2종. 기능정의서·README **미작성** |
 
 실측 근거는 `docs/FINDINGS.md`. 측정하지 않은 항목은 "미측정"으로 둔다.
@@ -359,8 +366,8 @@ M1a에서 구현·검증된 `schemaVersion: 1`. 아래는 실제 동작하는 �
 |---|---|---|
 | **M0. 스파이크** ✅ | 실행 엔진 프로토타입 | ~~textarea 코드 → iframe 실행 → `console.log`가 부모 패널에 뜬다. 무한루프가 3초에 끊긴다~~ **완료** |
 | **M1a. 레슨 파이프라인** ✅ | 레슨 로더 + `value` assert | ~~레슨 JSON 1건이 화면을 만들고, starter는 실패·solution은 통과한다~~ **완료** |
-| **M1b. 에디터 교체** | CodeMirror 6 도입 | textarea → CodeMirror. Esc → Tab 탈출 경로 동작 |
-| **M1c. T1/T2 가동** | 레슨 목록·진행 저장·레이아웃 | T1·T2 16레슨이 데이터만으로 동작 |
+| **M1b. 에디터 교체** ✅ | CodeMirror 6 + 반응형 + 진행 저장 | ~~textarea → CodeMirror. Esc → Tab 탈출 경로 동작~~ **완료**. 3분할 반응형과 `localStorage` 이어하기까지 포함 |
+| **M1c. T1/T2 가동** | 레슨 목록·네비게이션·레슨 데이터 | T1·T2 16레슨이 데이터만으로 동작 |
 | **M2. 트랜스파일** | JSX 파이프라인 | 트랜스파일러 확정, React 렌더 성공, DOM assert 동작 |
 | **M3. T3/T4** | 전체 32레슨 | 진행률 저장·이어하기·정답 보기 완비 |
 | **M4. 마감** | 접근성·반응형·문서 | Lighthouse 목표 달성, 문서 3종, GitHub Pages 배포 |
