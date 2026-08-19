@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>M0 스파이크 — 실행 엔진 프로토타입</title>
+  <title>JS 학습 플레이그라운드</title>
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/app.css">
 </head>
@@ -11,15 +11,17 @@
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
 
   <main id="main">
-    <h1>M0 스파이크 — 실행 엔진 프로토타입</h1>
+    <h1 id="lesson-title">레슨을 불러오는 중…</h1>
+    <div id="lesson-brief" class="lesson-brief"></div>
 
-    <label class="label" for="code">JS 코드</label>
-    <textarea id="code" class="code-input" rows="12" spellcheck="false" autocomplete="off">const user = { name: '호진', tags: ['js', 'react'] };
-console.log('안녕', user);
-console.warn('경고 한 줄');
-</textarea>
-    <p class="hint">실행: 아래 버튼 또는 <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Enter</kbd></p>
-    <button id="run" class="run-button" type="button">실행</button>
+    <label class="label" for="code">코드</label>
+    <textarea id="code" class="code-input" rows="12" spellcheck="false" autocomplete="off"></textarea>
+    <p class="hint">실행: 실행 버튼 또는 <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Enter</kbd></p>
+
+    <div class="button-row">
+      <button id="run" class="button button--primary" type="button" disabled>실행</button>
+      <button id="reset" class="button" type="button" disabled>초기 코드로 되돌리기</button>
+    </div>
 
     <h2>콘솔</h2>
     <p id="status" class="status" role="status" aria-live="polite"></p>

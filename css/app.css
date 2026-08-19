@@ -45,15 +45,27 @@ h1 { margin-top: 0; }
 
 .hint { color: var(--c-text-muted); font-size: 0.85rem; margin: var(--sp-2) 0; }
 
-.run-button {
+.lesson-brief p { margin: 0 0 var(--sp-3); }
+
+.button-row { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+
+.button {
   padding: var(--sp-2) var(--sp-4);
-  border: 1px solid var(--c-accent);
+  border: 1px solid var(--c-border);
   border-radius: 4px;
-  background: var(--c-accent);
-  color: var(--c-on-accent);
+  background: var(--c-surface);
+  color: var(--c-text-strong);
   font: inherit;
   cursor: pointer;
 }
+.button:disabled { color: var(--c-text-muted); cursor: not-allowed; }
+
+.button--primary {
+  border-color: var(--c-accent);
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+}
+.button--primary:disabled { border-color: var(--c-border); background: var(--c-surface); }
 
 .status { min-height: 1.6em; margin: 0 0 var(--sp-2); color: var(--c-text-muted); font-size: 0.9rem; }
 
