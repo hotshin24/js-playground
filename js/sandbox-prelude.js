@@ -79,6 +79,10 @@ export const PRELUDE = `
     post({ type: 'error', message: 'Uncaught (in promise) ' + text, line: 0, col: 0 });
   });
 
+  // assert 런타임이 쓸 수 있게 최소한만 노출한다. 사용자 코드보다 먼저 참조를 잡아가므로
+  // 이후 사용자 코드가 이 전역을 덮어써도 assert 런타임은 영향받지 않는다.
+  window.__pgRuntime = { post: post, fmt: (value) => fmt(value, 0, new Set()) };
+
   // done 은 '동기 실행 완료'만 뜻한다. 실행 종료가 아니다 — 이후 비동기 코드는 워치독이 본다.
   window.__done = () => post({ type: 'done' });
 

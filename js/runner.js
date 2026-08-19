@@ -1,4 +1,5 @@
 import { PRELUDE } from './sandbox-prelude.js';
+import { ASSERT_RUNTIME } from './validator.js';
 
 // 마지막 ping 이후 이 시간이 지나면 프레임이 멈춘 것으로 본다
 export const WATCHDOG_TIMEOUT_MS = 3000;
@@ -6,15 +7,20 @@ const WATCHDOG_CHECK_MS = 500;
 const PROTOCOL_VERSION = 1;
 
 /**
- * srcdoc 구성: [프렐류드] → [사용자 코드] → [완료 신호].
- * script 태그를 분리해 두면 사용자 코드가 구문 에러로 죽어도 마지막 태그는 실행되어
- * done 이 발신된다. done 은 '동기 실행 완료'일 뿐 실행 종료가 아니다.
+ * srcdoc 구성: [프렐류드+assert 런타임] → [사용자 코드] → [assert 실행] → [완료 신호].
+ * script 태그를 분리해 두면 사용자 코드가 구문 에러로 죽어도 뒤 태그는 실행되어
+ * assert 결과와 done 이 발신된다. done 은 '동기 실행 완료'일 뿐 실행 종료가 아니다.
+ * assert 를 done 앞에 두는 이유: done 이 '이번 실행의 판정이 전부 도착했다'는 마감 신호가 된다.
  */
 const DOC_HEAD =
   '<!doctype html>\n<html>\n<head>\n<meta charset="utf-8">\n</head>\n<body>\n' +
-  '<script>' + PRELUDE + '<\/script>\n' +
+  '<script>' + PRELUDE + ASSERT_RUNTIME + '<\/script>\n' +
   '<script>\n';
-const DOC_TAIL = '\n<\/script>\n<script>window.__done();<\/script>\n</body>\n</html>';
+
+const buildTail = (assertScript) =>
+  '\n<\/script>\n' +
+  (assertScript ? '<script>' + assertScript + '<\/script>\n' : '') +
+  '<script>window.__done();<\/script>\n</body>\n</html>';
 
 // window.onerror 의 lineno 는 srcdoc 문서 기준이다. 사용자 코드 1행 앞의 줄 수를 세어 빼준다.
 const LINE_OFFSET = DOC_HEAD.split('\n').length - 1;
@@ -91,13 +97,26 @@ export function createRunner({ mount, onEvent }) {
 
     if (msg.type === 'console') {
       onEvent({ type: 'console', level: msg.level, args: msg.args });
+      return;
+    }
+
+    if (msg.type === 'assert') {
+      onEvent({
+        type: 'assert',
+        index: msg.index,
+        status: msg.status,
+        label: msg.label,
+        expected: msg.expected,
+        actual: msg.actual,
+        message: msg.message,
+      });
     }
   };
 
   window.addEventListener('message', handleMessage);
   document.addEventListener('visibilitychange', handleVisibility);
 
-  const run = (code) => {
+  const run = (code, { assertScript = '' } = {}) => {
     teardown(); // 실행마다 프레임 재생성 → 상태 초기화
 
     doneSeen = false;
@@ -109,7 +128,7 @@ export function createRunner({ mount, onEvent }) {
     frame.title = '코드 실행 샌드박스';
     // allow-same-origin 을 절대 넣지 않는다. 넣는 순간 부모 DOM/스토리지가 열린다.
     frame.setAttribute('sandbox', 'allow-scripts');
-    frame.srcdoc = DOC_HEAD + escapeScriptEnd(code) + DOC_TAIL;
+    frame.srcdoc = DOC_HEAD + escapeScriptEnd(code) + buildTail(assertScript);
 
     startedAt = performance.now();
     mount.appendChild(frame);

@@ -1,6 +1,7 @@
 import { createRunner, WATCHDOG_TIMEOUT_MS } from './runner.js';
 import { createConsolePanel, formatEvent } from './console.js';
 import { loadLesson } from './lessons.js';
+import { buildAssertScript, formatAssert } from './validator.js';
 
 // M1a 는 레슨 1개 고정. 목록·네비게이션은 이후 단계.
 const LESSON_ID = 't1-01';
@@ -21,6 +22,8 @@ const briefEl = document.querySelector('#lesson-brief');
 const codeEl = document.querySelector('#code');
 const runButton = document.querySelector('#run');
 const resetButton = document.querySelector('#reset');
+const assertListEl = document.querySelector('#asserts');
+const assertSummaryEl = document.querySelector('#assert-summary');
 
 const panel = createConsolePanel({
   logEl: document.querySelector('#log'),
@@ -28,20 +31,69 @@ const panel = createConsolePanel({
 });
 
 let lesson = null;
+let assertScript = '';
+let assertTotal = 0;
+
+// 실행 1회분 상태
+let results = [];
+let errorSeen = false;
+let settled = false;
+
+const setSummary = (text, kind) => {
+  assertSummaryEl.textContent = text;
+  assertSummaryEl.className = 'status' + (kind ? ' status--' + kind : '');
+};
+
+const appendResult = (line) => {
+  const li = document.createElement('li');
+  li.className = 'assert--' + line.status;
+  li.textContent = line.text;
+  assertListEl.appendChild(li);
+};
+
+// done 을 마감 신호로 쓴다. 그 전까지 도착한 것만 이번 실행의 판정 재료다.
+const settle = () => {
+  if (settled) return;
+  settled = true;
+  if (!assertTotal) return;
+
+  // 구문 에러가 나면 사용자 코드 스크립트만 죽고 assert 스크립트는 그대로 돈다.
+  // 그 결과 '함수를 찾을 수 없습니다'가 뜨는데 진짜 원인은 문법이다.
+  // error 는 assert 보다 먼저 도착하므로 여기서 구분해 낼 수 있다.
+  if (errorSeen) {
+    setSummary('코드에 에러가 있어 검사하지 못했습니다.', 'error');
+    return;
+  }
+
+  results.sort((a, b) => a.index - b.index).forEach((event) => appendResult(formatAssert(event)));
+  const passed = results.filter((event) => event.status === 'pass').length;
+  setSummary(passed + ' / ' + assertTotal + ' 통과', passed === assertTotal ? 'pass' : 'fail');
+};
 
 const runner = createRunner({
   mount: document.querySelector('#sandbox-host'),
   onEvent: (event) => {
+    if (event.type === 'assert') {
+      results.push(event);
+      return;
+    }
     if (event.type === 'done') {
       // done 은 동기 실행이 끝났다는 뜻일 뿐, 프레임은 계속 감시 대상이다
       panel.setStatus('동기 실행 완료 (' + event.ms + 'ms) · 감시 중');
+      settle();
       return;
     }
     if (event.type === 'timeout') {
       panel.append('system', TIMEOUT_TEXT[event.phase]);
       panel.setStatus('강제 종료됨');
+      if (!settled && assertTotal) {
+        settled = true;
+        setSummary('실행이 중단되어 검사하지 못했습니다.', 'error');
+      }
       return;
     }
+    if (event.type === 'error') errorSeen = true;
+
     const line = formatEvent(event);
     if (line) panel.append(line.level, line.text);
   },
@@ -50,7 +102,12 @@ const runner = createRunner({
 const run = () => {
   panel.clear();
   panel.setStatus('실행 중…');
-  runner.run(codeEl.value);
+  assertListEl.replaceChildren();
+  setSummary(assertTotal ? '검사 중…' : '');
+  results = [];
+  errorSeen = false;
+  settled = false;
+  runner.run(codeEl.value, { assertScript });
 };
 
 const reset = () => {
@@ -97,6 +154,8 @@ window.addEventListener('pagehide', dispose, { once: true });
 loadLesson(LESSON_ID)
   .then((data) => {
     lesson = data;
+    assertScript = buildAssertScript(data);
+    assertTotal = (data.asserts || []).filter((spec) => spec.type === 'value').length;
     renderLesson(data);
   })
   .catch((err) => {

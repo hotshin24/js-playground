@@ -8,6 +8,7 @@
   --c-gray-500: #6b6b75;
   --c-gray-900: #17171b;
   --c-red-700: #b42318;
+  --c-green-700: #15803d;
   --c-amber-800: #8a5300;
   --c-blue-700: #1d4ed8;
 
@@ -19,6 +20,7 @@
   --c-text-strong: var(--c-gray-900);
   --c-text-muted: var(--c-gray-500);
   --c-text-error: var(--c-red-700);
+  --c-text-ok: var(--c-green-700);
   --c-text-warn: var(--c-amber-800);
   --c-accent: var(--c-blue-700);
   --c-on-accent: var(--c-gray-0);
