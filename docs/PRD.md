@@ -245,13 +245,14 @@ URL 압축 인코딩 공유 · 다중 파일 · TypeScript · 커스텀 레슨 �
 
 ### 6.4 레슨 데이터 스키마
 
-M1a에서 구현·검증된 `schemaVersion: 1`. 아래는 실제 동작하는 형태다(`lessons/t1-01.json`).
+M1a에서 구현·검증된 `schemaVersion: 1`. 아래는 실제 동작하는 형태다(`lessons/t1-03.json`).
 
 ```json
 {
   "schemaVersion": 1,
-  "id": "t1-01",
+  "id": "t1-03",
   "track": "T1",
+  "order": 3,
   "title": "map으로 배열 변환하기",
   "brief": [
     "첫 번째 문단",
@@ -273,16 +274,21 @@ M1a에서 구현·검증된 `schemaVersion: 1`. 아래는 실제 동작하는 �
 
 **필드**
 
-| 필드 | 필수 | 구현 | 비고 |
+"앱 사용 여부"는 현재 앱 코드가 그 필드를 읽는지를 뜻한다. 데이터에 들어 있는 것과 앱이 쓰는 것은 다르다.
+
+| 필드 | 필수 | 앱 사용 여부 | 비고 |
 |---|---|---|---|
-| `schemaVersion` | ✔ | M1a | `1` 이외는 로드 거부 |
-| `id` · `track` · `title` | ✔ | M1a | |
-| `brief` | ✔ | M1a | **문자열 배열(문단 단위).** 초안의 마크다운 단일 문자열에서 변경 |
-| `entry` | 조건부 | M1a | `value` assert가 하나라도 있으면 필수. 유효한 식별자여야 한다 |
-| `starterCode` · `solutionCode` | ✔ | M1a | |
-| `asserts` | — | M1a | 없으면 실행만 하고 판정하지 않는다 |
-| `order` · `estimatedMin` · `hints` | — | 미구현 | |
-| `reference` · `runtime` | — | 미구현 | T3 진입 시 필요 |
+| `schemaVersion` | ✔ | 사용 | `1` 이외는 로드 거부 |
+| `id` | ✔ | 사용 | 파일 경로를 만든다. 파일명과 일치해야 한다 |
+| `track` | ✔ | 데이터에만 존재 | |
+| `title` · `brief` | ✔ | 사용 | `brief`는 **문자열 배열(문단 단위)**. 초안의 마크다운 단일 문자열에서 변경 |
+| `entry` | 조건부 | 사용 | `value` assert가 하나라도 있으면 필수. 유효한 식별자여야 한다 |
+| `starterCode` | ✔ | 사용 | 최초 로드와 리셋에 쓴다 |
+| `solutionCode` | ✔ | 데이터에만 존재 | 정답 보기(F-11) 미구현. 현재는 검증용으로만 쓴다 |
+| `asserts` | — | 사용 | 없으면 실행만 하고 판정하지 않는다 |
+| `order` | — | 데이터에만 존재 | 파일명·`id`의 순번과 일치해야 한다 |
+| `estimatedMin` · `hints` | — | 미도입 | 데이터에도 없다 |
+| `reference` · `runtime` | — | 미도입 | T3 진입 시 필요 |
 
 **`brief`를 마크다운에서 문단 배열로 바꾼 이유:** 마크다운을 쓰려면 파서를 붙이거나 `innerHTML`을 써야 한다. 파서는 의존성 추가고, `innerHTML`은 레슨 데이터를 신뢰 입력으로 만든다. 문단 배열이면 `textContent`로 안전하게 그린다. 서식이 실제로 필요해지는 시점에 다시 판단한다.
 
@@ -339,7 +345,7 @@ M1a에서 구현·검증된 `schemaVersion: 1`. 아래는 실제 동작하는 �
 |---|---|---|
 | Lighthouse Accessibility / Best Practices / SEO | 각 100 | **미측정** |
 | 신규 레슨 추가 비용 | JSON 1건 추가, 앱 코드 수정 0줄 | **미측정** — 레슨이 1건뿐이라 2건째를 추가해야 검증된다 |
-| 실행 지연 (T1/T2) | 300ms 이내 | **77~213ms** (`t1-01`, localhost 및 GitHub Pages) |
+| 실행 지연 (T1/T2) | 300ms 이내 | **77~213ms** (`t1-03`, localhost 및 GitHub Pages) |
 | 실행 실패(도구 버그로 인한) 발생 | 32레슨 통과 과정 중 0건 | 도구 결함 6건 기록(F-001~F-006), **3건 처리 완료**(F-003·F-004·F-006), 3건 미해결 |
 | 문서화 | PRD · 기능정의서 · README 3종 완비 | PRD·FINDINGS 2종. 기능정의서·README **미작성** |
 
@@ -361,7 +367,7 @@ M1a에서 구현·검증된 `schemaVersion: 1`. 아래는 실제 동작하는 �
 
 **M1 분할 근거:** M1을 "에디터 + 검증 + 레슨 로더" 한 덩어리로 두면 실패 시 원인이 갈리지 않는다. 에디터 교체(M1b)를 단독으로 떼어 두면, 문제가 생겼을 때 원인이 에디터인지 로더인지 즉시 판단된다.
 
-**M1a 완료 시점 실제 산출물:** `lessons/t1-01.json` · `js/lessons.js` · `js/validator.js` · `js/runner.js` · `js/console.js` · `js/sandbox-prelude.js` · `js/main.js`. 검증 로그는 `docs/FINDINGS.md`.
+**M1a 완료 시점 실제 산출물:** `lessons/t1-03.json` · `js/lessons.js` · `js/validator.js` · `js/runner.js` · `js/console.js` · `js/sandbox-prelude.js` · `js/main.js`. 검증 로그는 `docs/FINDINGS.md`.
 
 **M0가 이 프로젝트의 성패를 가른다.** M0가 안 되면 나머지는 전부 UI 작업일 뿐이고, M0가 되면 나머지는 시간 문제다. M0에 막히면 스코프를 줄이지 말고 **트랙을 줄여라** (T1·T2만으로 v1 출시).
 
