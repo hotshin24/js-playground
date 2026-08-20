@@ -3,6 +3,9 @@
 const CDN = 'https://esm.sh/';
 const DEPS = '?deps=@codemirror/state@6';
 
+// @lezer/highlight 는 lang-javascript 가 이미 끌어오는 패키지다.
+// 같은 범위로 요청해 같은 사본을 받는다 — 사본이 둘이면 태그 동일성이 깨져
+// 구문 강조가 조용히 사라진다.
 const loadModules = () =>
   Promise.all([
     import(CDN + '@codemirror/state@6'),
@@ -10,13 +13,29 @@ const loadModules = () =>
     import(CDN + '@codemirror/commands@6' + DEPS),
     import(CDN + '@codemirror/language@6' + DEPS),
     import(CDN + '@codemirror/lang-javascript@6' + DEPS),
+    import(CDN + '@lezer/highlight@1'),
   ]);
 
-function buildCodeMirror([stateMod, viewMod, cmdMod, langMod, jsMod], { parent, doc, onChange }) {
+/**
+ * 구문 강조를 우리 토큰으로 정의한다.
+ * 색을 값이 아니라 CSS 변수로 넣어 두면 테마 전환이 CSS 만으로 끝난다 —
+ * 에디터를 다시 만들 필요가 없어 입력 중이던 코드가 그대로 남는다.
+ * 라이브러리 기본값은 밝은 배경 전용이라 다크에서 대비 1.77~2.63 으로 읽히지 않았다.
+ */
+const buildHighlight = (HighlightStyle, t) =>
+  HighlightStyle.define([
+    { tag: [t.keyword, t.modifier, t.controlKeyword, t.operatorKeyword], color: 'var(--c-syntax-keyword)' },
+    { tag: [t.function(t.variableName), t.definition(t.variableName), t.propertyName, t.className], color: 'var(--c-syntax-name)' },
+    { tag: [t.string, t.special(t.string), t.regexp], color: 'var(--c-syntax-string)' },
+    { tag: [t.number, t.bool, t.null, t.atom], color: 'var(--c-syntax-number)' },
+    { tag: [t.comment, t.lineComment, t.blockComment], color: 'var(--c-syntax-comment)' },
+  ]);
+
+function buildCodeMirror([stateMod, viewMod, cmdMod, langMod, jsMod, hlMod], { parent, doc, onChange }) {
   const { EditorState } = stateMod;
   const { EditorView, keymap, lineNumbers } = viewMod;
   const { defaultKeymap, history, historyKeymap, indentMore, indentLess } = cmdMod;
-  const { indentOnInput, bracketMatching, syntaxHighlighting, defaultHighlightStyle } = langMod;
+  const { indentOnInput, bracketMatching, syntaxHighlighting, HighlightStyle } = langMod;
   const { javascript } = jsMod;
 
   // CodeMirror 는 Tab 을 들여쓰기로 먹어 포커스 트랩을 만든다.
@@ -58,7 +77,7 @@ function buildCodeMirror([stateMod, viewMod, cmdMod, langMod, jsMod], { parent, 
         history(),
         bracketMatching(),
         indentOnInput(),
-        syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
+        syntaxHighlighting(buildHighlight(HighlightStyle, hlMod.tags), { fallback: true }),
         javascript(),
         keymap.of([...defaultKeymap, ...historyKeymap]),
         EditorView.lineWrapping,

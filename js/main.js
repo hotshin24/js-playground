@@ -2,6 +2,7 @@ import { createSession } from './session.js';
 import { createWorkspace } from './workspace.js';
 import { createLayout } from './layout.js';
 import { createBrowse } from './browse.js';
+import { createTheme } from './theme.js';
 import { createProgress, NOTICE } from './progress.js';
 import { loadIndex, loadLesson } from './lessons.js';
 import { buildAssertScript } from './validator.js';
@@ -9,6 +10,8 @@ import { policyOf, labelOf, isChecked } from './steps.js';
 import { setLastLesson, readLastPosition, setLessonMeta, readLessons, firstUnfinishedStep } from './storage.js';
 
 const el = (id) => document.querySelector('#' + id);
+
+const theme = createTheme({ button: el('theme-toggle'), labelEl: el('theme-toggle-label') });
 const runButton = el('run');
 const resetButton = el('reset');
 const nextButton = el('next-step');
@@ -168,6 +171,7 @@ const dispose = () => {
   workspace.destroy();
   layout.dispose();
   browse.dispose();
+  theme.dispose();
   session.dispose();
 };
 window.addEventListener('pagehide', dispose, { once: true });

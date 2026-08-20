@@ -2,7 +2,7 @@
 const KEY = 'js-playground:v1';
 const SCHEMA_VERSION = 1;
 
-const empty = () => ({ schemaVersion: SCHEMA_VERSION, lastLessonId: null, lessons: {} });
+const empty = () => ({ schemaVersion: SCHEMA_VERSION, lastLessonId: null, lessons: {}, settings: {} });
 
 /**
  * FNV-1a 32비트. starterCode 원문을 저장에 끌고 들어가지 않기 위한 용도다.
@@ -37,7 +37,7 @@ export function readState() {
     Object.entries(parsed.lessons || {}).forEach(([id, entry]) => {
       lessons[id] = migrateLesson(entry);
     });
-    return { ...empty(), ...parsed, lessons };
+    return { ...empty(), ...parsed, lessons, settings: parsed.settings || {} };
   } catch (err) {
     return empty();
   }
@@ -51,6 +51,18 @@ export function writeState(state) {
   } catch (err) {
     return false;
   }
+}
+
+/** 화면 설정. 새 키를 만들지 않고 같은 저장소 안에 둔다. */
+export function readSettings() {
+  return readState().settings;
+}
+
+/** @returns {boolean} 저장 성공 여부 */
+export function saveSetting(key, value) {
+  const state = readState();
+  state.settings = { ...state.settings, [key]: value };
+  return writeState(state);
 }
 
 export function readLesson(id) {

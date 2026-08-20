@@ -64,6 +64,21 @@ body {
 .lesson-menu:hover { background: var(--c-surface-alt); }
 .lesson-menu__hint { color: var(--c-text-muted); font-size: 0.8rem; font-weight: 400; }
 
+.theme-toggle {
+  margin-left: auto;
+  padding: var(--sp-2) var(--sp-3);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--c-text-muted);
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+.theme-toggle:hover { background: var(--c-surface); }
+
 .chips { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin: 0; padding: 0; list-style: none; }
 
 /* 세 상태를 색에만 기대지 않고 나눈다.
