@@ -130,7 +130,8 @@ const showStep = (next) => {
 const openLesson = async (id, from) => {
   lesson = await loadLesson(id);
   el('lesson-title').textContent = lesson.title;
-  setLessonMeta(id, lesson.steps.length);
+  // 단계 구성이 바뀌면 그 레슨 저장분만 조용히 버려진다
+  setLessonMeta(id, lesson.steps.length, lesson.steps.map((s) => s.kind).join('-'));
   // 레슨을 고르면 첫 미완료 단계로 보낸다. 새 저장 필드 없이 완료 기록으로 계산된다.
   const start = from === undefined ? firstUnfinishedStep(readLessons()[id], lesson.steps.length) : from;
   showStep(Math.min(start, lesson.steps.length - 1));

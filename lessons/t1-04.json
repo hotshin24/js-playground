@@ -3,67 +3,50 @@
   "id": "t1-04",
   "track": "T1",
   "order": 4,
-  "title": "객체에서 필요한 것만 꺼내 새 객체 만들기",
+  "title": "값의 타입과 형변환 들여다보기",
   "brief": [
-    "서버가 주는 객체에는 화면에 필요 없는 필드가 섞여 있습니다. 필요한 것만 꺼내고, 없는 값은 기본값으로 채우고, 바깥에서 덮어쓸 값이 있으면 그것을 우선하는 일이 반복해서 나옵니다.",
-    "toCard 함수를 완성해 보세요. product에서 id, name, price 세 개만 꺼내 새 객체로 반환합니다. 나머지 필드는 버립니다. name이 없으면 '이름 없음'을 씁니다.",
-    "두 번째 인자 overrides에 값이 들어 있으면 그 값이 최종값이 됩니다. 원본 product는 절대 바꾸지 마세요."
+    "자바스크립트는 값의 타입을 바꿔 쓸 수 있습니다. 문제는 그 변환이 항상 성공하지는 않는다는 것입니다. 숫자로 못 바꾸는 값을 Number()에 넣으면 NaN이 나오는데, NaN은 자기 자신과도 같지 않아서 === 로는 찾아낼 수 없습니다.",
+    "describeValue 함수를 완성해 보세요. 값 하나를 받아 정확히 세 개의 필드를 가진 객체를 반환해야 합니다. type은 그 값의 typeof 결과, text는 String()으로 바꾼 결과, asNumber는 Number()로 바꾼 결과입니다.",
+    "단 asNumber는 변환에 실패했을 때 NaN을 그대로 두지 말고 null로 바꿔서 담아 주세요. 실패를 알아내는 방법을 직접 찾아야 합니다."
   ],
-  "entry": "toCard",
-  "starterCode": "function toCard(product, overrides) {\n  // 여기를 채우세요\n}\n",
-  "solutionCode": "function toCard(product, overrides) {\n  const { id, name = '이름 없음', price } = product;\n\n  return { id, name, price, ...overrides };\n}\n",
+  "entry": "describeValue",
+  "starterCode": "function describeValue(value) {\n  // 여기를 채우세요\n}\n",
+  "solutionCode": "function describeValue(value) {\n  const converted = Number(value);\n\n  return {\n    type: typeof value,\n    text: String(value),\n    asNumber: Number.isNaN(converted) ? null : converted,\n  };\n}\n",
   "asserts": [
     {
       "type": "value",
-      "label": "필요한 필드만 남깁니다 — memo는 버려져야 합니다",
+      "label": "숫자 42 — 타입은 number, 변환도 그대로",
       "args": [
-        {
-          "id": 1,
-          "name": "셔츠",
-          "price": 39000,
-          "memo": "내부용"
-        },
-        {}
+        42
       ],
       "expected": {
-        "id": 1,
-        "name": "셔츠",
-        "price": 39000
+        "type": "number",
+        "text": "42",
+        "asNumber": 42
       }
     },
     {
       "type": "value",
-      "label": "overrides가 이깁니다 — price가 덮어써져야 합니다",
+      "label": "숫자처럼 생긴 문자열 '9800' — 타입은 string이지만 변환은 성공합니다",
       "args": [
-        {
-          "id": 2,
-          "name": "모자",
-          "price": 19000
-        },
-        {
-          "price": 9900
-        }
+        "9800"
       ],
       "expected": {
-        "id": 2,
-        "name": "모자",
-        "price": 9900
+        "type": "string",
+        "text": "9800",
+        "asNumber": 9800
       }
     },
     {
       "type": "value",
-      "label": "name이 없으면 기본값이 들어갑니다",
+      "label": "변환할 수 없는 문자열 'abc' — NaN을 null로 바꿔야 합니다",
       "args": [
-        {
-          "id": 3,
-          "price": 5000
-        },
-        {}
+        "abc"
       ],
       "expected": {
-        "id": 3,
-        "name": "이름 없음",
-        "price": 5000
+        "type": "string",
+        "text": "abc",
+        "asNumber": null
       }
     }
   ]

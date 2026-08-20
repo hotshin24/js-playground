@@ -1,61 +1,69 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "t1-02",
   "track": "T1",
   "order": 2,
-  "title": "각자 기억하는 카운터 두 개",
-  "brief": [
-    "함수는 값처럼 다룰 수 있습니다. 함수가 함수를 만들어 돌려줄 수도 있고, 그렇게 만들어진 함수는 자기가 태어난 자리의 변수를 계속 기억합니다.",
-    "alternate 함수를 완성해 보세요. 서로 독립된 카운터 두 개를 만들고, A · B · A · B · A 순서로 다섯 번 호출한 결과를 배열로 반환합니다. 각 카운터는 호출될 때마다 1씩 커진 값을 돌려주며, 첫 호출은 시작값보다 1 큰 값입니다.",
-    "카운터를 만드는 함수를 따로 만들어 두 번 호출하는 방식으로 풀어 주세요. 두 카운터는 서로의 숫자에 영향을 주지 않아야 하고, alternate를 다시 호출하면 언제나 처음부터 다시 세어야 합니다."
-  ],
-  "entry": "alternate",
-  "starterCode": "function alternate(startA, startB) {\n  // 여기를 채우세요\n}\n",
-  "solutionCode": "function alternate(startA, startB) {\n  const makeCounter = (start) => {\n    let current = start;\n\n    return () => {\n      current += 1;\n      return current;\n    };\n  };\n\n  const a = makeCounter(startA);\n  const b = makeCounter(startB);\n\n  return [a(), b(), a(), b(), a()];\n}\n",
-  "asserts": [
+  "title": "조건에 따라 갈라지기",
+  "steps": [
     {
-      "type": "value",
-      "label": "시작값이 다른 두 카운터가 섞이지 않습니다",
-      "args": [
-        0,
-        100
-      ],
-      "expected": [
-        1,
-        101,
-        2,
-        102,
-        3
+      "kind": "read",
+      "title": "if는 갈림길입니다",
+      "brief": [
+        "앞 레슨에서 비교가 참이나 거짓을 만든다는 것을 봤습니다. 그 참·거짓으로 길을 가르는 것이 if입니다.",
+        "if (조건) { ... } 은 조건이 참일 때만 중괄호 안을 실행합니다. 뒤에 else { ... }를 붙이면 거짓일 때 갈 길을 하나 더 줄 수 있습니다. 갈래가 셋 이상이면 else if를 사이에 넣습니다.",
+        "중요한 것은 갈래 하나만 실행된다는 점입니다. 위에서부터 조건을 확인하다가 처음 참인 곳으로 들어가고, 나머지는 건너뜁니다."
       ]
     },
     {
-      "type": "value",
-      "label": "시작값이 같아도 각자 셉니다 — 하나를 공유하면 여기서 어긋납니다",
-      "args": [
-        10,
-        10
+      "kind": "run",
+      "title": "갈림길 실행해 보기",
+      "brief": [
+        "아래 함수는 재고 수량을 받아 상태를 글자로 돌려줍니다. 갈래는 셋입니다.",
+        "실행 버튼을 눌러 보세요. 세 번 부른 결과가 각각 다르게 나옵니다.",
+        "같은 함수인데 결과가 다른 이유는 넣은 값이 어느 갈래에 걸리는지가 다르기 때문입니다."
       ],
-      "expected": [
-        11,
-        11,
-        12,
-        12,
-        13
+      "code": "function stockLabel(stock) {\n  if (stock === 0) {\n    return '품절';\n  } else if (stock < 10) {\n    return '재고 부족';\n  } else {\n    return '충분';\n  }\n}\n\nconsole.log(stockLabel(0));\nconsole.log(stockLabel(3));\nconsole.log(stockLabel(50));\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "경계를 옮겨 보기",
+      "brief": [
+        "stock < 10 의 10을 5로 바꾸고 실행해 보세요. 3은 그대로 '재고 부족'이지만, 7을 넣어 보면 결과가 달라집니다.",
+        "console.log(stockLabel(7)); 을 한 줄 더 추가해 확인해 보세요.",
+        "숫자 하나를 바꿨을 뿐인데 어떤 값이 어느 갈래로 가는지가 통째로 달라집니다. 조건문에서 경계값을 조심해야 하는 이유입니다."
+      ],
+      "code": "function stockLabel(stock) {\n  if (stock === 0) {\n    return '품절';\n  } else if (stock < 10) {\n    return '재고 부족';\n  } else {\n    return '충분';\n  }\n}\n\nconsole.log(stockLabel(0));\nconsole.log(stockLabel(3));\nconsole.log(stockLabel(50));\n"
+    },
+    {
+      "kind": "fill",
+      "title": "짧게 쓰는 갈림길",
+      "brief": [
+        "갈래가 둘뿐이고 값 하나만 고르면 될 때는 삼항 연산자로 한 줄에 쓸 수 있습니다. 조건 ? 참일_때 : 거짓일_때 형태입니다.",
+        "null 자리에 삼항 연산자를 넣어 보세요. stock이 0보다 크면 '있음', 아니면 '없음'이 되어야 합니다.",
+        "if로 쓴 것과 결과는 같습니다. 값 하나를 고르는 자리에서만 짧게 쓰는 표현입니다."
+      ],
+      "code": "const stock = 3;\n\nconst label = null; // ← 여기를 채우세요\n\nfunction getLabel() {\n  return label;\n}\n",
+      "entry": "getLabel",
+      "solutionCode": "const stock = 3;\n\nconst label = stock > 0 ? '있음' : '없음';\n\nfunction getLabel() {\n  return label;\n}\n",
+      "asserts": [
+        { "type": "value", "label": "재고가 3이면 '있음'", "args": [], "expected": "있음" }
       ]
     },
     {
-      "type": "value",
-      "label": "다시 호출하면 처음부터 — 상태가 함수 밖으로 새면 안 됩니다",
-      "args": [
-        0,
-        100
+      "kind": "write",
+      "title": "재고 상태를 판정하는 함수",
+      "brief": [
+        "stockLabel 함수를 완성해 보세요. 재고 수량을 받아 상태를 글자로 반환합니다.",
+        "0이면 '품절', 1개 이상 9개 이하면 '재고 부족', 10개 이상이면 '충분'입니다.",
+        "갈래가 셋이므로 else if가 필요합니다. 위에서부터 조건이 확인된다는 점을 이용하면 조건을 짧게 쓸 수 있습니다."
       ],
-      "expected": [
-        1,
-        101,
-        2,
-        102,
-        3
+      "code": "function stockLabel(stock) {\n  // 여기를 채우세요\n}\n",
+      "entry": "stockLabel",
+      "solutionCode": "function stockLabel(stock) {\n  if (stock === 0) {\n    return '품절';\n  } else if (stock < 10) {\n    return '재고 부족';\n  } else {\n    return '충분';\n  }\n}\n",
+      "asserts": [
+        { "type": "value", "label": "0이면 품절", "args": [0], "expected": "품절" },
+        { "type": "value", "label": "9는 아직 부족 — 경계값", "args": [9], "expected": "재고 부족" },
+        { "type": "value", "label": "10부터 충분 — 경계값", "args": [10], "expected": "충분" }
       ]
     }
   ]

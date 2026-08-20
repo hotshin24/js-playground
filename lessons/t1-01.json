@@ -1,53 +1,70 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "t1-01",
   "track": "T1",
   "order": 1,
-  "title": "값의 타입과 형변환 들여다보기",
-  "brief": [
-    "자바스크립트는 값의 타입을 바꿔 쓸 수 있습니다. 문제는 그 변환이 항상 성공하지는 않는다는 것입니다. 숫자로 못 바꾸는 값을 Number()에 넣으면 NaN이 나오는데, NaN은 자기 자신과도 같지 않아서 === 로는 찾아낼 수 없습니다.",
-    "describeValue 함수를 완성해 보세요. 값 하나를 받아 정확히 세 개의 필드를 가진 객체를 반환해야 합니다. type은 그 값의 typeof 결과, text는 String()으로 바꾼 결과, asNumber는 Number()로 바꾼 결과입니다.",
-    "단 asNumber는 변환에 실패했을 때 NaN을 그대로 두지 말고 null로 바꿔서 담아 주세요. 실패를 알아내는 방법을 직접 찾아야 합니다."
-  ],
-  "entry": "describeValue",
-  "starterCode": "function describeValue(value) {\n  // 여기를 채우세요\n}\n",
-  "solutionCode": "function describeValue(value) {\n  const converted = Number(value);\n\n  return {\n    type: typeof value,\n    text: String(value),\n    asNumber: Number.isNaN(converted) ? null : converted,\n  };\n}\n",
-  "asserts": [
+  "title": "값의 종류 알아보기",
+  "steps": [
     {
-      "type": "value",
-      "label": "숫자 42 — 타입은 number, 변환도 그대로",
-      "args": [
-        42
-      ],
-      "expected": {
-        "type": "number",
-        "text": "42",
-        "asNumber": 42
-      }
+      "kind": "read",
+      "title": "값에도 종류가 있습니다",
+      "brief": [
+        "앞에서 변수로 값에 이름을 붙이고, console.log로 값을 들여다보고, 함수로 값을 주고받아 봤습니다. 세 번 다 '값'을 다뤘습니다. 이제 그 값이 어떤 종류인지 봅니다. 여기서부터가 문법을 하나씩 익히는 구간입니다.",
+        "자주 쓰는 종류는 셋입니다. 문자열(string — 따옴표로 감싼 글자), 숫자(number), 불리언(boolean — 참이나 거짓 둘 중 하나). 12000은 숫자, '셔츠'는 문자열, true는 불리언입니다.",
+        "값의 종류를 알고 싶을 때는 typeof를 앞에 붙입니다. typeof 12000은 'number'라는 문자열을 돌려줍니다. 종류를 물으면 종류의 이름이 글자로 나온다고 생각하면 됩니다."
+      ]
     },
     {
-      "type": "value",
-      "label": "숫자처럼 생긴 문자열 '9800' — 타입은 string이지만 변환은 성공합니다",
-      "args": [
-        "9800"
+      "kind": "run",
+      "title": "종류를 확인해 보기",
+      "brief": [
+        "아래에는 값 세 개가 있습니다. 각각에 typeof를 붙여 종류를 찍습니다.",
+        "실행 버튼을 눌러 보세요. number, string, boolean 세 줄이 나옵니다.",
+        "따옴표가 붙은 '12000'과 따옴표가 없는 12000은 다른 종류입니다. 눈에는 비슷해 보여도 자바스크립트에게는 다른 값입니다."
       ],
-      "expected": {
-        "type": "string",
-        "text": "9800",
-        "asNumber": 9800
-      }
+      "code": "console.log(typeof 12000);\nconsole.log(typeof '셔츠');\nconsole.log(typeof true);\n"
     },
     {
-      "type": "value",
-      "label": "변환할 수 없는 문자열 'abc' — NaN을 null로 바꿔야 합니다",
-      "args": [
-        "abc"
+      "kind": "tweak",
+      "title": "값을 바꿔 보기",
+      "brief": [
+        "첫 줄의 12000에 따옴표를 붙여 '12000'으로 바꾸고 실행해 보세요. 찍히는 종류가 달라집니다.",
+        "숫자처럼 보이는 글자도 따옴표 안에 있으면 문자열입니다. 따옴표가 종류를 정합니다.",
+        "다른 값도 넣어 보세요. 통과·실패는 없습니다."
       ],
-      "expected": {
-        "type": "string",
-        "text": "abc",
-        "asNumber": null
-      }
+      "code": "console.log(typeof 12000);\nconsole.log(typeof '셔츠');\nconsole.log(typeof true);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "참과 거짓 만들기",
+      "brief": [
+        "두 값을 비교하면 불리언이 나옵니다. 12000 > 5000은 true, 3 > 10은 false입니다. 크다는 >, 작다는 <, 같다는 ===를 씁니다.",
+        "null 자리에 price가 5000보다 큰지 묻는 비교를 넣어 보세요. price라는 이름을 그대로 쓰면 됩니다.",
+        "채우지 않고 실행하면 실제값이 null로 나옵니다. 기대값은 검사 결과에서 확인할 수 있습니다."
+      ],
+      "code": "const price = 12000;\n\nconst isExpensive = null; // ← 여기를 채우세요\n\nfunction getAnswer() {\n  return isExpensive;\n}\n",
+      "entry": "getAnswer",
+      "solutionCode": "const price = 12000;\n\nconst isExpensive = price > 5000;\n\nfunction getAnswer() {\n  return isExpensive;\n}\n",
+      "asserts": [
+        { "type": "value", "label": "12000은 5000보다 큽니다", "args": [], "expected": true }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "비싼지 판단하는 함수",
+      "brief": [
+        "isExpensive 함수를 완성해 보세요. 가격을 받아 5만 원보다 비싸면 true, 아니면 false를 반환합니다.",
+        "if 문은 아직 필요하지 않습니다. 비교 자체가 이미 불리언이라 그 결과를 그대로 반환하면 됩니다.",
+        "5만 원 딱 그 값은 '비싸다'에 넣지 않습니다. 어떤 비교 기호를 쓸지 여기서 갈립니다."
+      ],
+      "code": "function isExpensive(price) {\n  // 여기를 채우세요\n}\n",
+      "entry": "isExpensive",
+      "solutionCode": "function isExpensive(price) {\n  return price > 50000;\n}\n",
+      "asserts": [
+        { "type": "value", "label": "60000원은 비쌉니다", "args": [60000], "expected": true },
+        { "type": "value", "label": "딱 50000원은 비싸지 않습니다 — 경계값", "args": [50000], "expected": false },
+        { "type": "value", "label": "0원도 비싸지 않습니다", "args": [0], "expected": false }
+      ]
     }
   ]
 }

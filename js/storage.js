@@ -1,8 +1,17 @@
 // 단일 키에 전체 상태를 담는다. F-017(export/import)이 통째 직렬화를 요구하기 때문이다.
 const KEY = 'js-playground:v1';
 const SCHEMA_VERSION = 1;
+// 저장 개정 번호. 레슨이 다른 번호로 옮겨 가면 옛 저장분이 남의 레슨에 붙는다.
+// 2: T1 재분할로 t1-* 저장분을 한 번 비웠다.
+const REVISION = 2;
 
-const empty = () => ({ schemaVersion: SCHEMA_VERSION, lastLessonId: null, lessons: {}, settings: {} });
+const empty = () => ({
+  schemaVersion: SCHEMA_VERSION,
+  revision: REVISION,
+  lastLessonId: null,
+  lessons: {},
+  settings: {},
+});
 
 /**
  * FNV-1a 32비트. starterCode 원문을 저장에 끌고 들어가지 않기 위한 용도다.
@@ -26,6 +35,16 @@ const migrateLesson = (entry) => {
   return { ...rest, steps: { 0: { code, codeHash: starterHash, completedAt, updatedAt } } };
 };
 
+// 레슨이 옮겨 간 회차에는 그 트랙 저장분만 버린다. 다른 트랙 진행 상황은 남긴다.
+const applyRevision = (lessons, revision) => {
+  if ((revision || 1) >= REVISION) return lessons;
+  const kept = {};
+  Object.entries(lessons).forEach(([id, entry]) => {
+    if (!id.startsWith('t1-')) kept[id] = entry;
+  });
+  return kept;
+};
+
 // 손상된 JSON 도 프라이빗 모드 예외도 결말은 같다: 빈 상태로 학습을 계속한다.
 export function readState() {
   try {
@@ -37,7 +56,13 @@ export function readState() {
     Object.entries(parsed.lessons || {}).forEach(([id, entry]) => {
       lessons[id] = migrateLesson(entry);
     });
-    return { ...empty(), ...parsed, lessons, settings: parsed.settings || {} };
+    return {
+      ...empty(),
+      ...parsed,
+      lessons: applyRevision(lessons, parsed.revision),
+      settings: parsed.settings || {},
+      revision: REVISION,
+    };
   } catch (err) {
     return empty();
   }
@@ -113,11 +138,25 @@ export function clearStep(lessonId, stepIndex) {
   return writeState(state);
 }
 
-/** 레슨을 열 때 단계 수를 기록해 둔다. 목록에서 완료 여부를 계산하려면 총 수가 필요하다. */
-export function setLessonMeta(id, stepCount) {
+/**
+ * 레슨을 열 때 단계 구성을 기록해 둔다. 목록의 완료 여부 계산에 총 수가 필요하고,
+ * 서명은 다음에 열었을 때 구성이 바뀌었는지 판단하는 데 쓴다.
+ *
+ * 기록된 서명과 지금 구성이 다르면 그 레슨 저장분만 조용히 버린다.
+ * 레슨 구조는 앞으로도 바뀐다 — 학습자에게 오류를 보이는 대신 그 레슨만 처음부터 하게 한다.
+ * 서명이 없던 예전 항목은 버리지 않고 지금 서명을 받아들인다.
+ *
+ * @param {string} id
+ * @param {number} stepCount
+ * @param {string} signature 단계 종류를 순서대로 이은 문자열
+ */
+export function setLessonMeta(id, stepCount, signature) {
   const state = readState();
   const entry = state.lessons[id] || { steps: {} };
-  state.lessons[id] = { ...entry, stepCount };
+  const stale = entry.signature !== undefined && entry.signature !== signature;
+  state.lessons[id] = stale
+    ? { steps: {}, stepCount, signature }
+    : { ...entry, stepCount, signature };
   return writeState(state);
 }
 
