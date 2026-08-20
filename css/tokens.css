@@ -7,6 +7,7 @@
   --c-gray-200: #dcdde1;
   --c-gray-500: #6b6b75;
   --c-gray-900: #17171b;
+  --c-black-a40: rgba(23, 23, 27, 0.4);
   --c-red-700: #b42318;
   --c-green-700: #15803d;
   --c-amber-800: #8a5300;
@@ -25,6 +26,7 @@
   --c-accent: var(--c-blue-700);
   --c-on-accent: var(--c-gray-0);
   --c-focus: var(--c-blue-700);
+  --c-scrim: var(--c-black-a40);
 
   /* spacing */
   --sp-1: 4px;

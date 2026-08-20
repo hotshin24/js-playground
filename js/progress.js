@@ -1,7 +1,5 @@
 import { meetsCompletion } from './steps.js';
-import {
-  hashText, readLessons, readStep, saveStep, clearStep, isLessonComplete,
-} from './storage.js';
+import { hashText, readStep, saveStep, clearStep } from './storage.js';
 
 const SAVE_DELAY_MS = 600;
 
@@ -77,6 +75,5 @@ export function createProgress({ noticeEl, getCode, onChanged }) {
     reset,
     isCurrentCodeChanged: () => hashText(getCode()) !== ctx.codeHash,
     isStepDone: (index) => Boolean((readStep(ctx.lessonId, index) || {}).completedAt),
-    isLessonDone: (id, stepCount) => isLessonComplete(readLessons()[id], stepCount),
   };
 }

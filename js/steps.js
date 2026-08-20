@@ -10,12 +10,15 @@ const POLICY = {
   write: { editor: true, result: true, run: true, reset: true },
 };
 
+// read/run/tweak/fill/write 는 레슨 JSON 안에서만 쓰는 이름이다.
+// 화면에는 우리말만 보인다 — 아무것도 모르는 상태로 시작하는 학습자에게
+// 영어 단어 다섯 개가 먼저 보이면 그것부터 장벽이 된다.
 const LABEL = {
   read: '읽기',
-  run: '실행해 보기',
-  tweak: '바꿔 보기',
-  fill: '빈칸 채우기',
-  write: '직접 쓰기',
+  run: '실행',
+  tweak: '바꾸기',
+  fill: '채우기',
+  write: '쓰기',
 };
 
 export const policyOf = (kind) => POLICY[kind] || POLICY.write;

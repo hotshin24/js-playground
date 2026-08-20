@@ -2,21 +2,28 @@
 
 body {
   margin: 0;
-  padding: var(--sp-4);
+  padding: 0 var(--sp-4) var(--sp-6);
   max-width: 1600px;
   background: var(--c-bg);
   color: var(--c-text-strong);
   font: 15px/1.6 system-ui, sans-serif;
 }
 
-:is(h1, h2) { font-size: 1.05rem; margin: 0 0 var(--sp-2); }
-h1 { font-size: 1.2rem; }
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
 .skip-link { position: absolute; left: -9999px; }
 .skip-link:focus {
   position: static;
   display: inline-block;
-  margin-bottom: var(--sp-2);
+  margin: var(--sp-2) 0;
   color: var(--c-accent);
 }
 
@@ -25,117 +32,126 @@ h1 { font-size: 1.2rem; }
   outline-offset: 2px;
 }
 
-/* ---------- 레이아웃 ---------- */
-/* <768 읽기 전용 1열 → 768~1279 2분할+토글 → ≥1280 3분할 */
-.layout {
-  display: grid;
+/* ---------- 상단 진행 바 ---------- */
+/* 스크롤 고정하지 않는다. 긴 지문에서는 지문 끝의 '다음 단계' 버튼이 이동을 맡는다 */
+.topbar {
+  display: flex;
+  align-items: center;
   gap: var(--sp-4);
-  grid-template-columns: minmax(0, 1fr);
-  align-items: start;
+  flex-wrap: wrap;
+  padding: var(--sp-4) 0 var(--sp-3);
+  border-bottom: 1px solid var(--c-border);
+  margin-bottom: var(--sp-6);
 }
 
-.panel {
-  min-width: 0;
-  padding: var(--sp-3);
+.topbar__title { margin: 0; font-size: 1rem; }
+
+.lesson-menu {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
   border: 1px solid var(--c-border);
-  border-radius: 6px;
+  border-radius: 999px;
   background: var(--c-bg);
+  color: var(--c-text-strong);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
 }
+.lesson-menu:hover { background: var(--c-surface); }
+.lesson-menu__hint { color: var(--c-text-muted); font-size: 0.75rem; font-weight: 400; }
 
-.panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-2); }
+.chips { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin: 0; padding: 0; list-style: none; }
+
+.chip {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-3);
+  border: 1px solid var(--c-border);
+  border-radius: 999px;
+  background: var(--c-bg);
+  color: var(--c-text-muted);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.chip:hover { background: var(--c-surface); }
+.chip__num { color: var(--c-text-muted); font-variant-numeric: tabular-nums; }
+
+/* 상태는 색만으로 구분하지 않는다 — 테두리·굵기·완료 표식을 함께 쓴다 */
+.chip--done { color: var(--c-text-ok); border-color: var(--c-text-ok); }
+.chip--done .chip__num::after { content: '✓'; margin-left: 2px; }
+.chip--current {
+  border-color: var(--c-accent);
+  background: var(--c-surface);
+  color: var(--c-text-strong);
+  font-weight: 600;
+}
+.chip--current .chip__num { color: var(--c-accent); }
+
+/* ---------- 레이아웃 ---------- */
+.layout { display: grid; gap: var(--sp-6); align-items: start; }
+
+.pane { min-width: 0; }
+
+.pane__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-2); }
+.pane__title { font-size: 0.8rem; color: var(--c-text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* 코드 영역은 지문과 시각적 층위가 달라야 한다 — 상자가 아니라 배경으로 나눈다 */
+:is(.pane--editor, .pane--result) {
+  padding: var(--sp-4);
+  border-radius: 8px;
+  background: var(--c-surface);
+}
 
 .button--toggle { display: none; }
 
+/* 좁은 폭: 1열, 읽기 전용 */
+.layout { grid-template-columns: minmax(0, 1fr); }
+.layout--read :is(.pane--editor, .pane--result) { display: none; }
+:is(.layout--run, .layout--tweak) .result-block { display: none; }
+
 @media (min-width: 768px) {
   .layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .panel--brief { grid-column: 1 / -1; }
+  .pane--brief { grid-column: 1 / -1; }
+  .layout--read .pane--brief { grid-column: 1 / -1; }
   .button--toggle { display: inline-block; }
-  .layout--brief-collapsed .panel--brief { display: none; }
+  .layout--brief-collapsed .pane--brief { display: none; }
+  /* read 는 지문 하나뿐이라 2열 격자를 만들 이유가 없다 */
+  .layout--read { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (min-width: 1280px) {
-  .layout { grid-template-columns: minmax(0, 20rem) minmax(0, 1fr) minmax(0, 24rem); }
-  /* read 단계는 문제 패널 하나뿐이라 3열 격자에 남겨두면 폭이 20rem 으로 눌린다 */
-  .layout--read { grid-template-columns: minmax(0, 46rem); }
-  .panel--brief { grid-column: auto; }
+  .layout--read { grid-template-columns: minmax(0, 1fr); }
+  :is(.layout--run, .layout--tweak) {
+    grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+    grid-template-areas: 'brief editor' 'brief result';
+  }
+  :is(.layout--fill, .layout--write) {
+    grid-template-columns: minmax(0, 22rem) minmax(0, 1fr) minmax(0, 22rem);
+    grid-template-areas: 'brief editor result';
+  }
+  :is(.layout--run, .layout--tweak, .layout--fill, .layout--write) .pane--brief { grid-area: brief; grid-column: auto; }
+  :is(.layout--run, .layout--tweak, .layout--fill, .layout--write) .pane--editor { grid-area: editor; }
+  :is(.layout--run, .layout--tweak, .layout--fill, .layout--write) .pane--result { grid-area: result; }
   .button--toggle { display: none; }
-  .layout--brief-collapsed .panel--brief { display: block; }
+  .layout--brief-collapsed .pane--brief { display: block; }
 }
 
-/* ---------- 레슨 ---------- */
-.lesson-brief p { margin: 0 0 var(--sp-3); }
+/* ---------- 지문 ---------- */
+.step-title { font-size: 1.15rem; margin: 0 0 var(--sp-3); }
 
-.lesson-nav { margin-bottom: var(--sp-4); }
-.nav-heading { font-size: 0.8rem; color: var(--c-text-muted); text-transform: uppercase; }
+/* 읽는 글이다. 한 줄 한글 40자 언저리가 상한 */
+.prose { max-width: min(38rem, 100%); line-height: 1.8; }
+.prose p { margin: 0 0 1.2em; }
 
-.lesson-list { margin: 0; padding: 0; list-style: none; }
-.lesson-list li { margin-bottom: var(--sp-1); }
-
-.lesson-link {
-  display: flex;
-  align-items: baseline;
-  gap: var(--sp-2);
-  width: 100%;
-  padding: var(--sp-1) var(--sp-2);
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background: none;
-  color: var(--c-text-strong);
-  font: inherit;
-  font-size: 0.9rem;
-  text-align: left;
-  cursor: pointer;
-}
-.lesson-link:hover { background: var(--c-surface); }
-.lesson-link--current {
-  border-color: var(--c-accent);
-  background: var(--c-surface);
-  font-weight: 600;
-}
-.lesson-done {
-  margin-left: auto;
-  color: var(--c-text-ok);
-  font-size: 0.75rem;
-  white-space: nowrap;
-}
-
-/* 단계 종류가 패널 표시를 정한다. 열 배치는 반응형 규칙에 맡기고 여기서는 빼기만 한다. */
-.layout--read :is(.panel--editor, .panel--result) { display: none; }
-:is(.layout--run, .layout--tweak) .result-block { display: none; }
-
-.step-list { margin: 0 0 var(--sp-3); padding: 0; list-style: none; }
-.step-list li { margin-bottom: var(--sp-1); }
-
-.step-link {
-  display: flex;
-  align-items: baseline;
-  gap: var(--sp-2);
-  width: 100%;
-  padding: var(--sp-1) var(--sp-2);
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background: none;
-  color: var(--c-text-strong);
-  font: inherit;
-  font-size: 0.85rem;
-  text-align: left;
-  cursor: pointer;
-}
-.step-link:hover { background: var(--c-surface); }
-.step-link--current { border-color: var(--c-accent); background: var(--c-surface); font-weight: 600; }
-.step-link--done { color: var(--c-text-ok); }
-
-.step-kind { margin-left: auto; color: var(--c-text-muted); font-size: 0.75rem; white-space: nowrap; }
-.step-link--current .step-kind { color: var(--c-accent); }
-
-.step-title { margin-top: var(--sp-3); }
+/* read 단계는 본문 한 덩어리뿐이라 넓은 화면에서 가운데로 모은다 */
+.layout--read .pane--brief { max-width: min(38rem, 100%); margin: 0 auto; }
 
 /* ---------- 에디터 ---------- */
-.editor-host {
-  border: 1px solid var(--c-border);
-  border-radius: 4px;
-  overflow: hidden;
-}
+.editor-host { border-radius: 4px; overflow: hidden; background: var(--c-bg); }
 .editor-host .cm-editor { max-height: 60vh; }
 .editor-host .cm-scroller { font: 13px/1.5 ui-monospace, monospace; }
 
@@ -144,7 +160,7 @@ h1 { font-size: 1.2rem; }
   width: 100%;
   padding: var(--sp-3);
   border: 0;
-  background: var(--c-surface);
+  background: var(--c-bg);
   color: var(--c-text-strong);
   font: 13px/1.5 ui-monospace, monospace;
   resize: vertical;
@@ -153,9 +169,8 @@ h1 { font-size: 1.2rem; }
 .readonly-code {
   margin: 0;
   padding: var(--sp-3);
-  border: 1px solid var(--c-border);
   border-radius: 4px;
-  background: var(--c-surface);
+  background: var(--c-bg);
   font: 13px/1.5 ui-monospace, monospace;
   white-space: pre-wrap;
   overflow: auto;
@@ -169,30 +184,33 @@ h1 { font-size: 1.2rem; }
   padding: var(--sp-2);
   border-left: 3px solid var(--c-text-warn);
   background: var(--c-surface-alt);
-  color: var(--c-text-strong);
   font-size: 0.9rem;
 }
 
 /* ---------- 버튼 ---------- */
-.button-row { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+.button-row { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin-top: var(--sp-3); }
 
 .button {
   padding: var(--sp-2) var(--sp-4);
   border: 1px solid var(--c-border);
-  border-radius: 4px;
-  background: var(--c-surface);
+  border-radius: 6px;
+  background: var(--c-bg);
   color: var(--c-text-strong);
   font: inherit;
   cursor: pointer;
 }
 .button:disabled { color: var(--c-text-muted); cursor: not-allowed; }
+.button--quiet { border-color: transparent; color: var(--c-text-muted); }
+.button--quiet:hover { background: var(--c-surface-alt); }
 
 .button--primary {
   border-color: var(--c-accent);
   background: var(--c-accent);
   color: var(--c-on-accent);
 }
-.button--primary:disabled { border-color: var(--c-border); background: var(--c-surface); }
+.button--primary:disabled { border-color: var(--c-border); background: var(--c-bg); }
+
+#next-step { margin-top: var(--sp-4); }
 
 /* ---------- 결과 ---------- */
 .assert-list {
@@ -213,9 +231,8 @@ h1 { font-size: 1.2rem; }
 .log {
   margin: 0;
   padding: var(--sp-2);
-  border: 1px solid var(--c-border);
   border-radius: 4px;
-  background: var(--c-surface);
+  background: var(--c-bg);
   list-style: none;
   font: 13px/1.5 ui-monospace, monospace;
   min-height: 100px;
@@ -229,6 +246,84 @@ h1 { font-size: 1.2rem; }
 .log-line--error { color: var(--c-text-error); }
 .log-line--warn { color: var(--c-text-warn); }
 .log-line--system { color: var(--c-text-muted); background: var(--c-surface-alt); }
+
+/* ---------- 레슨 목록 오버레이 ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--sp-6) var(--sp-4);
+  background: var(--c-scrim);
+  z-index: 10;
+}
+.overlay[hidden] { display: none; }
+
+.overlay__panel {
+  width: min(34rem, 100%);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  background: var(--c-bg);
+}
+.overlay__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--c-border);
+}
+.overlay__head h2 { margin: 0; font-size: 1rem; }
+.overlay__body { padding: var(--sp-3) var(--sp-4) var(--sp-4); overflow: auto; }
+
+.overlay-group {
+  margin: var(--sp-4) 0 var(--sp-2);
+  font-size: 0.75rem;
+  color: var(--c-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.overlay-group:first-child { margin-top: 0; }
+
+.overlay-list { margin: 0; padding: 0; list-style: none; }
+.overlay-list li { margin-bottom: var(--sp-1); }
+
+.lesson-link {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  color: var(--c-text-strong);
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+}
+.lesson-link:hover { background: var(--c-surface); }
+.lesson-link--current { border-color: var(--c-accent); background: var(--c-surface); font-weight: 600; }
+
+.lesson-status { margin-left: auto; font-size: 0.75rem; white-space: nowrap; }
+.lesson-status--done { color: var(--c-text-ok); }
+.lesson-status--partial { color: var(--c-text-muted); }
+
+/* 좁은 폭에서는 칩의 글자를 접고 번호만 남긴다 */
+@media (max-width: 767px) {
+  .chip__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .lesson-menu__hint { display: none; }
+}
 
 /* 실행 iframe 은 화면에 필요 없지만 display:none 이면 접근성 트리 처리가 애매해 오프스크린으로 둔다 */
 .sandbox-host { position: absolute; width: 0; height: 0; overflow: hidden; }

@@ -1,19 +1,19 @@
 import { createSession } from './session.js';
 import { createWorkspace } from './workspace.js';
 import { createLayout } from './layout.js';
-import { createNav, createStepNav } from './nav.js';
+import { createBrowse } from './browse.js';
 import { createProgress, NOTICE } from './progress.js';
 import { loadIndex, loadLesson } from './lessons.js';
 import { buildAssertScript } from './validator.js';
 import { policyOf, labelOf, isChecked } from './steps.js';
-import { setLastLesson, readLastPosition } from './storage.js';
+import { setLastLesson, readLastPosition, setLessonMeta, readLessons, firstUnfinishedStep } from './storage.js';
 
 const el = (id) => document.querySelector('#' + id);
 const runButton = el('run');
 const resetButton = el('reset');
 const nextButton = el('next-step');
 
-let index = [];
+let index = { tracks: [], lessons: [] };
 let lesson = null;
 let stepIndex = 0;
 let step = null;
@@ -46,29 +46,23 @@ const workspace = createWorkspace({
   },
 });
 
-const nav = createNav({
+const browse = createBrowse({
   listEl: el('lesson-list'),
-  onSelect: (id) => {
-    if (!lesson || id !== lesson.id) openLesson(id, 0);
+  chipsEl: el('step-list'),
+  overlayRoot: el('lesson-overlay'),
+  trigger: el('lesson-menu'),
+  closeButton: el('overlay-close'),
+  labelOf,
+  onLesson: (id) => {
+    if (!lesson || id !== lesson.id) openLesson(id);
   },
-});
-
-const stepNav = createStepNav({
-  listEl: el('step-list'),
-  onSelect: (next) => {
+  onStep: (next) => {
     if (next !== stepIndex) showStep(next);
   },
 });
 
-const refreshNav = () => {
-  nav.render(index, {
-    currentId: lesson ? lesson.id : null,
-    isCompleted: (id) => progress.isLessonDone(id, lesson && lesson.id === id ? lesson.steps.length : 0),
-  });
-  if (lesson) {
-    stepNav.render(lesson.steps, { currentIndex: stepIndex, isCompleted: progress.isStepDone, labelOf });
-  }
-};
+const refreshNav = () =>
+  browse.refresh({ index, lesson, stepIndex, isStepDone: progress.isStepDone });
 
 const applyPolicy = (editable) => {
   const policy = policyOf(step ? step.kind : 'write');
@@ -113,9 +107,8 @@ const showStep = (next) => {
   progress.setContext(lesson.id, next, step);
 
   el('main').className = 'layout layout--' + step.kind;
-  // 제목이 단계 이름과 같으면 "실행해 보기 · 실행해 보기"가 된다
-  const kindLabel = labelOf(step.kind);
-  el('step-title').textContent = step.title && step.title !== kindLabel ? step.title + ' · ' + kindLabel : kindLabel;
+  // 단계 종류는 칩이 담당한다. 제목은 그 단계가 무엇을 하는지만 말한다.
+  el('step-title').textContent = step.title || labelOf(step.kind);
   renderBrief(step.brief);
   session.clear();
   nextButton.hidden = next >= lesson.steps.length - 1;
@@ -134,7 +127,10 @@ const showStep = (next) => {
 const openLesson = async (id, from) => {
   lesson = await loadLesson(id);
   el('lesson-title').textContent = lesson.title;
-  showStep(Math.min(from, lesson.steps.length - 1));
+  setLessonMeta(id, lesson.steps.length);
+  // 레슨을 고르면 첫 미완료 단계로 보낸다. 새 저장 필드 없이 완료 기록으로 계산된다.
+  const start = from === undefined ? firstUnfinishedStep(readLessons()[id], lesson.steps.length) : from;
+  showStep(Math.min(start, lesson.steps.length - 1));
 };
 
 const goNext = () => {
@@ -171,18 +167,17 @@ const dispose = () => {
   document.removeEventListener('keydown', handleKeydown);
   workspace.destroy();
   layout.dispose();
-  nav.dispose();
-  stepNav.dispose();
+  browse.dispose();
   session.dispose();
 };
 window.addEventListener('pagehide', dispose, { once: true });
 
 loadIndex()
-  .then((entries) => {
-    index = entries;
+  .then((data) => {
+    index = data;
     const last = readLastPosition();
-    const start = entries.some((entry) => entry.id === last.lessonId) ? last.lessonId : entries[0].id;
-    return openLesson(start, start === last.lessonId ? last.stepIndex : 0);
+    const known = data.lessons.some((entry) => entry.id === last.lessonId);
+    return known ? openLesson(last.lessonId, last.stepIndex) : openLesson(data.lessons[0].id, 0);
   })
   .catch((err) => {
     el('lesson-title').textContent = '레슨을 불러오지 못했습니다';

@@ -101,8 +101,9 @@ export function validateLesson(lesson, expectedId) {
 }
 
 /**
- * 레슨 목록. 레슨 추가 비용은 JSON 파일 1건 + 이 목록 1줄이며 앱 코드는 건드리지 않는다.
- * @returns {Promise<Array<{id: string, order: number, title: string}>>}
+ * 레슨 목록과 트랙 이름. 레슨 추가 비용은 JSON 파일 1건 + 이 목록 1줄이며
+ * 앱 코드는 건드리지 않는다. 트랙의 화면용 이름도 여기 데이터로 둔다.
+ * @returns {Promise<{tracks: Array<{id, title}>, lessons: Array<{id, track, order, title}>}>}
  */
 export async function loadIndex() {
   const res = await fetch('lessons/index.json');
@@ -110,7 +111,7 @@ export async function loadIndex() {
   const data = await res.json();
   if (data.schemaVersion !== 1) fail('지원하지 않는 목록 schemaVersion: ' + data.schemaVersion);
   if (!Array.isArray(data.lessons) || !data.lessons.length) fail('레슨 목록이 비어 있습니다');
-  return [...data.lessons];
+  return { tracks: data.tracks || [], lessons: [...data.lessons] };
 }
 
 /**

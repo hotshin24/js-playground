@@ -10,28 +10,30 @@
 <body>
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
 
-  <main id="main" class="layout">
-    <section class="panel panel--brief" id="brief-panel" aria-labelledby="lesson-title">
-      <nav class="lesson-nav" aria-label="레슨 목록">
-        <h2 class="nav-heading">레슨</h2>
-        <ol id="lesson-list" class="lesson-list"></ol>
-      </nav>
+  <header class="topbar">
+    <h1 class="topbar__title">
+      <button id="lesson-menu" class="lesson-menu" type="button"
+              aria-expanded="false" aria-haspopup="dialog" aria-controls="lesson-overlay">
+        <span id="lesson-title">레슨을 불러오는 중…</span>
+        <span class="lesson-menu__hint" aria-hidden="true">레슨 고르기</span>
+      </button>
+    </h1>
 
-      <h1 id="lesson-title">레슨을 불러오는 중…</h1>
+    <ol id="step-list" class="chips" aria-label="단계"></ol>
+  </header>
 
-      <ol id="step-list" class="step-list" aria-label="단계 목록"></ol>
-
+  <main id="main" class="layout layout--read">
+    <section class="pane pane--brief" aria-labelledby="step-title">
       <h2 id="step-title" class="step-title"></h2>
-      <div id="lesson-brief" class="lesson-brief"></div>
-
+      <div id="lesson-brief" class="prose"></div>
       <button id="next-step" class="button button--primary" type="button">다음 단계</button>
     </section>
 
-    <section class="panel panel--editor" aria-labelledby="editor-heading">
-      <div class="panel-head">
-        <h2 id="editor-heading">코드</h2>
-        <button id="brief-toggle" class="button button--toggle" type="button"
-                aria-expanded="true" aria-controls="brief-panel">문제 숨기기</button>
+    <section class="pane pane--editor" aria-labelledby="editor-heading">
+      <div class="pane__head">
+        <h2 id="editor-heading" class="pane__title">코드</h2>
+        <button id="brief-toggle" class="button button--quiet button--toggle" type="button"
+                aria-expanded="true" aria-controls="main">설명 숨기기</button>
       </div>
 
       <p id="notice" class="notice" role="status" aria-live="polite"></p>
@@ -49,18 +51,28 @@
       </div>
     </section>
 
-    <section class="panel panel--result">
+    <section class="pane pane--result">
       <div id="result-block" class="result-block">
-        <h2>검사 결과</h2>
+        <h2 class="pane__title">검사 결과</h2>
         <p id="assert-summary" class="status" role="status" aria-live="polite"></p>
         <ol id="asserts" class="assert-list"></ol>
       </div>
 
-      <h2>콘솔</h2>
+      <h2 class="pane__title">콘솔</h2>
       <p id="status" class="status" role="status" aria-live="polite"></p>
       <ol id="log" class="log" role="log" aria-label="콘솔 출력"></ol>
     </section>
   </main>
+
+  <div id="lesson-overlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="overlay-title" hidden>
+    <div class="overlay__panel">
+      <div class="overlay__head">
+        <h2 id="overlay-title">레슨 고르기</h2>
+        <button id="overlay-close" class="button button--quiet" type="button">닫기</button>
+      </div>
+      <div id="lesson-list" class="overlay__body"></div>
+    </div>
+  </div>
 
   <div id="sandbox-host" class="sandbox-host" aria-hidden="true"></div>
 

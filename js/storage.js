@@ -101,9 +101,28 @@ export function clearStep(lessonId, stepIndex) {
   return writeState(state);
 }
 
+/** 레슨을 열 때 단계 수를 기록해 둔다. 목록에서 완료 여부를 계산하려면 총 수가 필요하다. */
+export function setLessonMeta(id, stepCount) {
+  const state = readState();
+  const entry = state.lessons[id] || { steps: {} };
+  state.lessons[id] = { ...entry, stepCount };
+  return writeState(state);
+}
+
 /** 레슨의 모든 단계가 완료됐는지 */
-export function isLessonComplete(entry, stepCount) {
-  if (!entry || !entry.steps) return false;
+export function lessonStatus(entry) {
+  if (!entry || !entry.steps) return 'none';
   const done = Object.values(entry.steps).filter((step) => step && step.completedAt).length;
-  return stepCount > 0 && done >= stepCount;
+  if (!done) return 'none';
+  // 총 단계 수는 레슨을 한 번이라도 연 뒤에만 안다. 모르면 '진행 중'까지만 말한다.
+  return entry.stepCount && done >= entry.stepCount ? 'done' : 'partial';
+}
+
+/** 첫 미완료 단계. 다 끝냈으면 0 */
+export function firstUnfinishedStep(entry, stepCount) {
+  if (!entry || !entry.steps) return 0;
+  for (let i = 0; i < stepCount; i += 1) {
+    if (!(entry.steps[i] && entry.steps[i].completedAt)) return i;
+  }
+  return 0;
 }

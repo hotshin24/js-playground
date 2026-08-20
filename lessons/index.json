@@ -1,5 +1,15 @@
 {
   "schemaVersion": 1,
+  "tracks": [
+    {
+      "id": "T0",
+      "title": "시작하기"
+    },
+    {
+      "id": "T1",
+      "title": "기초 문법"
+    }
+  ],
   "lessons": [
     {
       "id": "t0-01",
