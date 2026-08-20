@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 2,
+  "id": "t1-07",
+  "track": "T1",
+  "order": 7,
+  "title": "함수를 값처럼 다루기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "함수도 값입니다",
+      "brief": [
+        "지금까지 함수는 function 이름(...) { ... } 형태로 만들었습니다. 그런데 함수는 숫자나 글자와 마찬가지로 값입니다. 값이라면 변수에 담을 수 있습니다.",
+        "const triple = function (n) { return n * 3; }; 이렇게 쓰면 이름 없는 함수를 만들어 triple이라는 변수에 담은 것입니다. 부를 때는 똑같이 triple(5)라고 씁니다.",
+        "함수가 값이라는 사실이 왜 중요한지는 뒤에서 드러납니다. 값이니까 다른 함수에 넘길 수도 있고, 함수가 함수를 만들어 돌려줄 수도 있습니다. 지금은 담을 수 있다는 것만 확인하면 됩니다."
+      ]
+    },
+    {
+      "kind": "fill",
+      "title": "담아 두고 불러 보기",
+      "brief": [
+        "triple은 3배로 만드는 함수를 담은 변수입니다. null 자리에 triple에 5를 넣어 부른 결과를 넣어 보세요.",
+        "변수에 담겼을 뿐 부르는 방법은 지금까지와 같습니다. 이름 뒤에 괄호를 붙이고 값을 넣습니다.",
+        "채우지 않고 실행하면 실제값이 null로 나옵니다."
+      ],
+      "code": "const triple = function (n) {\n  return n * 3;\n};\n\nconst result = null; // ← 여기를 채우세요\n\nfunction getResult() {\n  return result;\n}\n",
+      "entry": "getResult",
+      "solutionCode": "const triple = function (n) {\n  return n * 3;\n};\n\nconst result = triple(5);\n\nfunction getResult() {\n  return result;\n}\n",
+      "asserts": [
+        { "type": "value", "label": "5의 3배는 15입니다", "args": [], "expected": 15 }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "할인가를 계산하는 함수",
+      "brief": [
+        "finalPrice 함수를 완성해 보세요. 가격과 할인 금액을 받아 최종 가격을 반환합니다. 값을 두 개 받는 함수입니다.",
+        "할인이 0이면 계산할 것이 없으니 받은 가격을 그대로 돌려주세요. return을 만나면 함수는 그 자리에서 끝나므로, 이런 경우를 앞에서 먼저 처리하고 빠져나올 수 있습니다.",
+        "할인이 가격보다 크면 최종 가격은 0입니다. 음수가 나오면 안 됩니다."
+      ],
+      "code": "function finalPrice(price, discount) {\n  // 여기를 채우세요\n}\n",
+      "entry": "finalPrice",
+      "solutionCode": "function finalPrice(price, discount) {\n  if (discount === 0) {\n    return price;\n  }\n\n  if (discount > price) {\n    return 0;\n  }\n\n  return price - discount;\n}\n",
+      "asserts": [
+        { "type": "value", "label": "39000원에서 5000원을 빼면 34000원", "args": [39000, 5000], "expected": 34000 },
+        { "type": "value", "label": "할인이 0이면 가격 그대로", "args": [39000, 0], "expected": 39000 },
+        { "type": "value", "label": "할인이 가격보다 크면 0 — 음수가 되면 안 됩니다", "args": [5000, 8000], "expected": 0 }
+      ]
+    }
+  ]
+}

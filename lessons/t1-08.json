@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "t1-08",
+  "track": "T1",
+  "order": 8,
+  "title": "화살표로 함수 짧게 쓰기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "같은 함수를 더 짧게",
+      "brief": [
+        "앞에서 함수를 변수에 담아 봤습니다. 그 형태에는 더 짧은 표기가 있습니다. 화살표 함수(arrow function — => 기호로 쓰는 함수 표기)입니다.",
+        "const triple = function (n) { return n * 3; }; 를 const triple = (n) => { return n * 3; }; 로 쓸 수 있습니다. function이라는 단어가 사라지고 괄호 뒤에 =>가 붙었습니다.",
+        "돌려줄 값이 한 줄뿐이면 중괄호와 return까지 뺄 수 있습니다. const triple = (n) => n * 3; 이 되면 화살표 오른쪽 값이 곧 돌려주는 값입니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "세 가지 표기 비교하기",
+      "brief": [
+        "아래 세 함수는 하는 일이 완전히 같습니다. 표기만 다릅니다.",
+        "실행 버튼을 눌러 보세요. 세 줄 모두 같은 값이 나옵니다.",
+        "마지막 것이 가장 짧습니다. 뒤에서 함수를 다른 함수에 넘길 때 이 짧은 표기를 자주 쓰게 됩니다."
+      ],
+      "code": "function tripleA(n) {\n  return n * 3;\n}\n\nconst tripleB = (n) => {\n  return n * 3;\n};\n\nconst tripleC = (n) => n * 3;\n\nconsole.log(tripleA(5));\nconsole.log(tripleB(5));\nconsole.log(tripleC(5));\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "짧은 표기로 바꿔 보기",
+      "brief": [
+        "tripleB의 중괄호와 return을 지워 tripleC와 같은 모양으로 바꾸고 실행해 보세요. 결과가 그대로여야 합니다.",
+        "반대로 tripleC에 중괄호를 다시 씌워 보세요. 이때 return을 빠뜨리면 undefined가 나옵니다. 중괄호를 쓰면 돌려줄 값을 직접 적어 줘야 합니다.",
+        "중괄호가 있으면 return이 필요하고, 없으면 필요 없습니다. 이 규칙 하나만 기억하면 됩니다."
+      ],
+      "code": "function tripleA(n) {\n  return n * 3;\n}\n\nconst tripleB = (n) => {\n  return n * 3;\n};\n\nconst tripleC = (n) => n * 3;\n\nconsole.log(tripleA(5));\nconsole.log(tripleB(5));\nconsole.log(tripleC(5));\n"
+    },
+    {
+      "kind": "fill",
+      "title": "화살표 오른쪽 채우기",
+      "brief": [
+        "half는 받은 숫자의 절반을 돌려주는 함수입니다. 중괄호가 없으므로 화살표 오른쪽에 적은 것이 그대로 돌려주는 값이 됩니다.",
+        "null 자리에 n의 절반을 구하는 식을 넣어 보세요. 나누기는 / 기호를 씁니다.",
+        "채우지 않고 실행하면 실제값이 null로 나옵니다."
+      ],
+      "code": "const half = (n) => null; // ← 여기를 채우세요\n\nfunction getHalf() {\n  return half(10);\n}\n",
+      "entry": "getHalf",
+      "solutionCode": "const half = (n) => n / 2;\n\nfunction getHalf() {\n  return half(10);\n}\n",
+      "asserts": [
+        { "type": "value", "label": "10의 절반은 5입니다", "args": [], "expected": 5 }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "배송비를 더하는 화살표 함수",
+      "brief": [
+        "deliveryTotal을 화살표 함수로 완성해 보세요. 가격과 무게를 받아 배송비를 더한 금액을 반환합니다.",
+        "무게가 5를 넘으면 배송비는 5000원, 그렇지 않으면 2500원입니다. 값 하나를 고르는 자리이므로 삼항 연산자를 쓰면 한 줄로 끝납니다.",
+        "function 대신 화살표로 쓰세요. 이름은 deliveryTotal 그대로 두어야 검사가 찾을 수 있습니다."
+      ],
+      "code": "const deliveryTotal = (price, weight) => null; // ← 여기를 채우세요\n",
+      "entry": "deliveryTotal",
+      "solutionCode": "const deliveryTotal = (price, weight) => price + (weight > 5 ? 5000 : 2500);\n",
+      "asserts": [
+        { "type": "value", "label": "가벼우면 배송비 2500원", "args": [10000, 3], "expected": 12500 },
+        { "type": "value", "label": "5는 아직 가벼움 — 경계값", "args": [10000, 5], "expected": 12500 },
+        { "type": "value", "label": "5를 넘으면 배송비 5000원", "args": [10000, 6], "expected": 15000 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "t1-05",
+  "track": "T1",
+  "order": 5,
+  "title": "배열로 값 늘어놓기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "여러 값을 순서대로 담기",
+      "brief": [
+        "객체는 이름표를 붙여 값을 묶었습니다. 그런데 상품 이름 열 개처럼 같은 성격의 값이 여럿일 때는 이름표를 열 개 만들 수 없습니다. 필요한 것은 순서입니다.",
+        "배열(array — 값을 순서대로 늘어놓은 묶음)은 대괄호 안에 값을 쉼표로 나열합니다. const names = ['셔츠', '모자']; 처럼 씁니다.",
+        "꺼낼 때는 순서 번호를 대괄호에 적습니다. 번호는 1이 아니라 0부터 시작해서, names[0]이 첫 번째입니다. 몇 개인지는 names.length로 알 수 있습니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "꺼내고 세어 보기",
+      "brief": [
+        "아래에서 배열을 만들고 번호로 값을 꺼냅니다. length로 개수를 세고, join으로 값들을 하나의 글자로 이어 붙입니다.",
+        "실행 버튼을 눌러 보세요. join(', ')은 값 사이에 쉼표와 공백을 끼워 넣어 하나의 문자열로 만듭니다.",
+        "마지막 줄의 push는 배열 끝에 값을 하나 더 붙입니다. 그래서 개수가 하나 늘어납니다."
+      ],
+      "code": "const names = ['셔츠', '모자', '양말'];\n\nconsole.log(names[0]);\nconsole.log(names.length);\nconsole.log(names.join(', '));\n\nnames.push('바지');\nconsole.log(names.length);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "없는 번호를 꺼내 보기",
+      "brief": [
+        "names[0]을 names[3]으로 바꾸고 실행해 보세요. 값이 세 개뿐인데 네 번째를 찾았으니 undefined가 나옵니다.",
+        "번호가 0부터 시작하기 때문에 마지막 값의 번호는 length보다 하나 작습니다. 값이 셋이면 마지막은 names[2]입니다.",
+        "join(', ')의 구분자를 다른 글자로 바꿔 봐도 좋습니다. 통과·실패는 없습니다."
+      ],
+      "code": "const names = ['셔츠', '모자', '양말'];\n\nconsole.log(names[0]);\nconsole.log(names.length);\nconsole.log(names.join(', '));\n\nnames.push('바지');\nconsole.log(names.length);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "두 번째 값 꺼내기",
+      "brief": [
+        "null 자리에 names의 두 번째 값을 꺼내는 표현을 넣어 보세요.",
+        "번호가 0부터 시작한다는 점을 생각하면 두 번째의 번호가 무엇인지 정해집니다.",
+        "채우지 않고 실행하면 실제값이 null로 나옵니다."
+      ],
+      "code": "const names = ['셔츠', '모자', '양말'];\n\nconst second = null; // ← 여기를 채우세요\n\nfunction getSecond() {\n  return second;\n}\n",
+      "entry": "getSecond",
+      "solutionCode": "const names = ['셔츠', '모자', '양말'];\n\nconst second = names[1];\n\nfunction getSecond() {\n  return second;\n}\n",
+      "asserts": [
+        { "type": "value", "label": "두 번째 값은 '모자'입니다", "args": [], "expected": "모자" }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "목록을 요약하는 함수",
+      "brief": [
+        "summary 함수를 완성해 보세요. 이름 배열을 받아 개수와 이어 붙인 글자를 담은 객체를 반환합니다.",
+        "count에는 몇 개인지, joined에는 이름들을 쉼표와 공백으로 이어 붙인 글자를 담습니다. 예를 들어 ['셔츠', '모자']는 '셔츠, 모자'가 됩니다.",
+        "값이 하나뿐이거나 아예 없을 때 구분자가 어떻게 되는지 확인해 보세요."
+      ],
+      "code": "function summary(names) {\n  // 여기를 채우세요\n}\n",
+      "entry": "summary",
+      "solutionCode": "function summary(names) {\n  return {\n    count: names.length,\n    joined: names.join(', '),\n  };\n}\n",
+      "asserts": [
+        { "type": "value", "label": "둘이면 사이에 구분자가 들어갑니다", "args": [["셔츠", "모자"]], "expected": { "count": 2, "joined": "셔츠, 모자" } },
+        { "type": "value", "label": "하나뿐이면 구분자가 붙지 않습니다", "args": [["양말"]], "expected": { "count": 1, "joined": "양말" } },
+        { "type": "value", "label": "빈 목록이면 빈 글자가 됩니다", "args": [[]], "expected": { "count": 0, "joined": "" } }
+      ]
+    }
+  ]
+}
