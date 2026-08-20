@@ -1,70 +1,108 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "t1-14",
   "track": "T1",
   "order": 14,
   "title": "객체에서 필요한 것만 꺼내 새 객체 만들기",
-  "brief": [
-    "서버가 주는 객체에는 화면에 필요 없는 필드가 섞여 있습니다. 필요한 것만 꺼내고, 없는 값은 기본값으로 채우고, 바깥에서 덮어쓸 값이 있으면 그것을 우선하는 일이 반복해서 나옵니다.",
-    "toCard 함수를 완성해 보세요. product에서 id, name, price 세 개만 꺼내 새 객체로 반환합니다. 나머지 필드는 버립니다. name이 없으면 '이름 없음'을 씁니다.",
-    "두 번째 인자 overrides에 값이 들어 있으면 그 값이 최종값이 됩니다. 원본 product는 절대 바꾸지 마세요."
-  ],
-  "entry": "toCard",
-  "starterCode": "function toCard(product, overrides) {\n  // 여기를 채우세요\n}\n",
-  "solutionCode": "function toCard(product, overrides) {\n  const { id, name = '이름 없음', price } = product;\n\n  return { id, name, price, ...overrides };\n}\n",
-  "asserts": [
+  "steps": [
     {
-      "type": "value",
-      "label": "필요한 필드만 남깁니다 — memo는 버려져야 합니다",
-      "args": [
-        {
-          "id": 1,
-          "name": "셔츠",
-          "price": 39000,
-          "memo": "내부용"
-        },
-        {}
-      ],
-      "expected": {
-        "id": 1,
-        "name": "셔츠",
-        "price": 39000
-      }
+      "kind": "read",
+      "title": "묶음을 펼쳐 새 묶음 만들기",
+      "brief": [
+        "앞 레슨에서 객체를 분해해 값을 꺼냈습니다. 반대 방향도 있습니다. 있는 객체를 통째로 펼쳐 새 객체 안에 붓는 것입니다.",
+        "전개 연산자(spread — 점 세 개로 묶음을 펼치는 표기)는 { ...base } 처럼 씁니다. base 안의 이름표들이 그대로 새 객체에 들어갑니다. base 자체는 바뀌지 않고 새 객체가 하나 생깁니다.",
+        "펼친 뒤에 같은 이름표를 다시 적으면 뒤에 적은 것이 이깁니다. { ...base, price: 9900 } 은 base 를 그대로 가져오되 price 만 덮어씁니다. 순서가 곧 우선순위입니다."
+      ]
     },
     {
-      "type": "value",
-      "label": "overrides가 이깁니다 — price가 덮어써져야 합니다",
-      "args": [
+      "kind": "fill",
+      "title": "두 묶음 합치기",
+      "brief": [
+        "base 는 원래 값이고 patch 는 덮어쓸 값입니다. 둘을 합쳐 새 객체를 만들어야 합니다.",
+        "null 자리에 base 를 펼치고 그 뒤에 patch 를 펼친 객체를 넣어 보세요. 뒤에 오는 것이 이긴다는 점을 이용합니다.",
+        "채우지 않고 실행하면 실제값이 null 로 나옵니다."
+      ],
+      "code": "const base = { name: '셔츠', price: 39000 };\nconst patch = { price: 9900 };\n\nconst merged = null; // ← 여기를 채우세요\n\nfunction getMerged() {\n  return merged;\n}\n",
+      "entry": "getMerged",
+      "solutionCode": "const base = { name: '셔츠', price: 39000 };\nconst patch = { price: 9900 };\n\nconst merged = { ...base, ...patch };\n\nfunction getMerged() {\n  return merged;\n}\n",
+      "asserts": [
         {
-          "id": 2,
-          "name": "모자",
-          "price": 19000
-        },
-        {
-          "price": 9900
+          "type": "value",
+          "label": "patch 의 가격이 이깁니다",
+          "args": [],
+          "expected": {
+            "name": "셔츠",
+            "price": 9900
+          }
         }
-      ],
-      "expected": {
-        "id": 2,
-        "name": "모자",
-        "price": 9900
-      }
+      ]
     },
     {
-      "type": "value",
-      "label": "name이 없으면 기본값이 들어갑니다",
-      "args": [
-        {
-          "id": 3,
-          "price": 5000
-        },
-        {}
+      "kind": "write",
+      "title": "객체에서 필요한 것만 꺼내 새 객체 만들기",
+      "brief": [
+        "서버가 주는 객체에는 화면에 필요 없는 필드가 섞여 있습니다. 필요한 것만 꺼내고, 없는 값은 기본값으로 채우고, 바깥에서 덮어쓸 값이 있으면 그것을 우선하는 일이 반복해서 나옵니다.",
+        "toCard 함수를 완성해 보세요. product에서 id, name, price 세 개만 꺼내 새 객체로 반환합니다. 나머지 필드는 버립니다. name이 없으면 '이름 없음'을 씁니다.",
+        "두 번째 인자 overrides에 값이 들어 있으면 그 값이 최종값이 됩니다. 원본 product는 절대 바꾸지 마세요."
       ],
-      "expected": {
-        "id": 3,
-        "name": "이름 없음",
-        "price": 5000
-      }
+      "code": "function toCard(product, overrides) {\n  // 여기를 채우세요\n}\n",
+      "entry": "toCard",
+      "solutionCode": "function toCard(product, overrides) {\n  const { id, name = '이름 없음', price } = product;\n\n  return { id, name, price, ...overrides };\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "필요한 필드만 남깁니다 — memo는 버려져야 합니다",
+          "args": [
+            {
+              "id": 1,
+              "name": "셔츠",
+              "price": 39000,
+              "memo": "내부용"
+            },
+            {}
+          ],
+          "expected": {
+            "id": 1,
+            "name": "셔츠",
+            "price": 39000
+          }
+        },
+        {
+          "type": "value",
+          "label": "overrides가 이깁니다 — price가 덮어써져야 합니다",
+          "args": [
+            {
+              "id": 2,
+              "name": "모자",
+              "price": 19000
+            },
+            {
+              "price": 9900
+            }
+          ],
+          "expected": {
+            "id": 2,
+            "name": "모자",
+            "price": 9900
+          }
+        },
+        {
+          "type": "value",
+          "label": "name이 없으면 기본값이 들어갑니다",
+          "args": [
+            {
+              "id": 3,
+              "price": 5000
+            },
+            {}
+          ],
+          "expected": {
+            "id": 3,
+            "name": "이름 없음",
+            "price": 5000
+          }
+        }
+      ]
     }
   ]
 }

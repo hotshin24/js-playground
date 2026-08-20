@@ -1,58 +1,113 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "t1-15",
   "track": "T1",
   "order": 15,
   "title": "데이터에서 HTML 문자열 만들기",
-  "brief": [
-    "마크업을 손으로 쓰는 대신 데이터에서 만들어 내는 것이 이 도구가 가르치려는 전환점입니다. 배열을 문자열 조각으로 바꾸고 하나로 이어 붙이면 목록 마크업이 됩니다.",
-    "renderList 함수를 완성해 보세요. products 배열을 받아 아래 구조의 HTML 문자열 하나를 반환합니다. 줄바꿈이나 공백을 넣지 마세요. 정확히 이 형태여야 합니다.",
-    "<ul class=\"list\">, 각 항목은 <li class=\"item\">이름 - 가격원</li>, 닫는 </ul>. 단 soldOut이 true인 항목은 클래스가 \"item item--soldout\"이 됩니다."
-  ],
-  "entry": "renderList",
-  "starterCode": "function renderList(products) {\n  // 여기를 채우세요\n}\n",
-  "solutionCode": "function renderList(products) {\n  const items = products.map((product) => {\n    const className = product.soldOut ? 'item item--soldout' : 'item';\n\n    return `<li class=\"${className}\">${product.name} - ${product.price}원</li>`;\n  });\n\n  return `<ul class=\"list\">${items.join('')}</ul>`;\n}\n",
-  "asserts": [
+  "steps": [
     {
-      "type": "value",
-      "label": "항목 두 개가 순서대로 이어 붙습니다",
-      "args": [
-        [
-          {
-            "name": "셔츠",
-            "price": 39000,
-            "soldOut": false
-          },
-          {
-            "name": "모자",
-            "price": 19000,
-            "soldOut": false
-          }
-        ]
-      ],
-      "expected": "<ul class=\"list\"><li class=\"item\">셔츠 - 39000원</li><li class=\"item\">모자 - 19000원</li></ul>"
+      "kind": "read",
+      "title": "글자 안에 값 끼워 넣기",
+      "brief": [
+        "마크업을 데이터로 만들려면 글자와 값을 섞어야 합니다. 상품 이름과 가격을 받아 '셔츠 - 39000원' 같은 글자를 만드는 일입니다.",
+        "템플릿 리터럴(template literal — 백틱으로 감싸 값을 끼워 넣을 수 있는 문자열)은 따옴표 대신 백틱 ` 로 감쌉니다. 그 안에서 ${ } 를 쓰면 중괄호 안의 값이 그 자리에 들어갑니다.",
+        "${ } 안에는 이름뿐 아니라 계산식도 넣을 수 있습니다. 백틱이 아니라 따옴표로 감싸면 ${ } 가 글자 그대로 남습니다. 백틱이 이 기능을 켜는 스위치입니다."
+      ]
     },
     {
-      "type": "value",
-      "label": "품절 항목은 클래스가 달라집니다",
-      "args": [
-        [
-          {
-            "name": "양말",
-            "price": 5000,
-            "soldOut": true
-          }
-        ]
+      "kind": "run",
+      "title": "끼워 넣어 보기",
+      "brief": [
+        "아래는 세 가지를 보여줍니다. 이름과 가격을 끼운 글자, 계산식을 끼운 글자, 그리고 따옴표로 감싼 글자입니다.",
+        "실행 버튼을 눌러 보세요. 마지막 줄만 ${name} 이 그대로 찍힙니다.",
+        "백틱과 따옴표의 차이가 여기서 드러납니다."
       ],
-      "expected": "<ul class=\"list\"><li class=\"item item--soldout\">양말 - 5000원</li></ul>"
+      "code": "const name = '셔츠';\nconst price = 39000;\n\nconst line = `${name} - ${price}원`;\n\nconsole.log(line);\nconsole.log(`재고 ${3 + 2}개`);\nconsole.log('${name} 은 그대로');\n"
     },
     {
-      "type": "value",
-      "label": "빈 배열이면 껍데기만 남습니다",
-      "args": [
-        []
+      "kind": "tweak",
+      "title": "식을 넣어 보기",
+      "brief": [
+        "${price}원 을 ${price * 2}원 으로 바꾸고 실행해 보세요. 중괄호 안에서 계산이 일어난 뒤 그 결과가 들어갑니다.",
+        "마지막 줄의 따옴표를 백틱으로 바꿔 보세요. 이번에는 이름이 값으로 채워집니다.",
+        "${ } 안에 앞에서 배운 삼항 연산자를 넣어 봐도 좋습니다. 값 하나가 나오는 식이면 무엇이든 들어갑니다."
       ],
-      "expected": "<ul class=\"list\"></ul>"
+      "code": "const name = '셔츠';\nconst price = 39000;\n\nconst line = `${name} - ${price}원`;\n\nconsole.log(line);\nconsole.log(`재고 ${3 + 2}개`);\nconsole.log('${name} 은 그대로');\n"
+    },
+    {
+      "kind": "fill",
+      "title": "가격 자리 채우기",
+      "brief": [
+        "라벨의 가격 자리가 비어 있습니다. 백틱 안이므로 ${ } 안에 이름을 적으면 그 값이 들어갑니다.",
+        "null 자리에 price 를 넣어 보세요.",
+        "채우지 않고 실행하면 '셔츠 - null원' 이 나옵니다."
+      ],
+      "code": "const name = '셔츠';\nconst price = 39000;\n\nconst label = `${name} - ${null}원`; // ← null 자리를 채우세요\n\nfunction getLabel() {\n  return label;\n}\n",
+      "entry": "getLabel",
+      "solutionCode": "const name = '셔츠';\nconst price = 39000;\n\nconst label = `${name} - ${price}원`;\n\nfunction getLabel() {\n  return label;\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "'셔츠 - 39000원' 이 만들어집니다",
+          "args": [],
+          "expected": "셔츠 - 39000원"
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "데이터에서 HTML 문자열 만들기",
+      "brief": [
+        "마크업을 손으로 쓰는 대신 데이터에서 만들어 내는 것이 이 도구가 가르치려는 전환점입니다. 배열을 문자열 조각으로 바꾸고 하나로 이어 붙이면 목록 마크업이 됩니다.",
+        "renderList 함수를 완성해 보세요. products 배열을 받아 아래 구조의 HTML 문자열 하나를 반환합니다. 줄바꿈이나 공백을 넣지 마세요. 정확히 이 형태여야 합니다.",
+        "<ul class=\"list\">, 각 항목은 <li class=\"item\">이름 - 가격원</li>, 닫는 </ul>. 단 soldOut이 true인 항목은 클래스가 \"item item--soldout\"이 됩니다."
+      ],
+      "code": "function renderList(products) {\n  // 여기를 채우세요\n}\n",
+      "entry": "renderList",
+      "solutionCode": "function renderList(products) {\n  const items = products.map((product) => {\n    const className = product.soldOut ? 'item item--soldout' : 'item';\n\n    return `<li class=\"${className}\">${product.name} - ${product.price}원</li>`;\n  });\n\n  return `<ul class=\"list\">${items.join('')}</ul>`;\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "항목 두 개가 순서대로 이어 붙습니다",
+          "args": [
+            [
+              {
+                "name": "셔츠",
+                "price": 39000,
+                "soldOut": false
+              },
+              {
+                "name": "모자",
+                "price": 19000,
+                "soldOut": false
+              }
+            ]
+          ],
+          "expected": "<ul class=\"list\"><li class=\"item\">셔츠 - 39000원</li><li class=\"item\">모자 - 19000원</li></ul>"
+        },
+        {
+          "type": "value",
+          "label": "품절 항목은 클래스가 달라집니다",
+          "args": [
+            [
+              {
+                "name": "양말",
+                "price": 5000,
+                "soldOut": true
+              }
+            ]
+          ],
+          "expected": "<ul class=\"list\"><li class=\"item item--soldout\">양말 - 5000원</li></ul>"
+        },
+        {
+          "type": "value",
+          "label": "빈 배열이면 껍데기만 남습니다",
+          "args": [
+            []
+          ],
+          "expected": "<ul class=\"list\"></ul>"
+        }
+      ]
     }
   ]
 }
