@@ -18,9 +18,9 @@
       "kind": "run",
       "title": "등록과 실행을 갈라 보기",
       "brief": [
-        "아래는 담기 버튼에 함수를 맡기고, 맡긴 직후와 클릭한 뒤의 글자를 각각 찍습니다. button.click() 은 사람이 누른 것과 같은 클릭을 코드로 일으킵니다.",
-        "실행 버튼을 눌러 보세요. '등록 직후'에는 여전히 0개 담김 이고, '클릭 뒤'에야 1개 담김 으로 바뀝니다.",
-        "맡기는 것만으로는 아무 일도 일어나지 않습니다. 클릭이 있어야 맡긴 함수가 불립니다."
+        "아래는 담기 버튼에 함수를 맡기기만 합니다. 누르는 것은 코드가 하지 않습니다.",
+        "실행 버튼을 눌러 보세요. 콘솔에 '등록만 했습니다: 0개 담김' 한 줄만 찍히고 화면은 그대로입니다. 맡기는 것만으로는 아무 일도 일어나지 않습니다.",
+        "이제 미리보기에서 **셔츠 카드의 담기 버튼**을 눌러 보세요. 그제야 글자가 바뀌고 콘솔에 한 줄이 더 찍힙니다. 등록은 실행할 때, 실행은 누를 때 일어납니다."
       ],
       "scaffold": {
         "html": [
@@ -36,15 +36,15 @@
           ".card { padding: 4px 0; }"
         ]
       },
-      "code": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nbutton.addEventListener('click', () => {\n  picked.textContent = '1개 담김';\n});\n\nconsole.log('등록 직후:', picked.textContent);\n\nbutton.click();\n\nconsole.log('클릭 뒤:', picked.textContent);\n"
+      "code": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nconsole.log('등록만 했습니다:', picked.textContent);\n\nbutton.addEventListener('click', () => {\n  picked.textContent = '1개 담김';\n  console.log('맡긴 함수가 불렸습니다');\n});\n"
     },
     {
       "kind": "tweak",
-      "title": "맡기지 않고 눌러 보기",
+      "title": "눌러 보며 확인하기",
       "brief": [
-        "addEventListener 덩어리 세 줄을 통째로 지우고 실행해 보세요. 클릭은 그대로 일어나는데 글자는 바뀌지 않습니다. 맡겨 둔 것이 없으니 브라우저가 부를 것도 없습니다.",
-        "되돌린 뒤 이번에는 button.click(); 을 한 줄 더 추가해 보세요. 맡긴 함수가 두 번 불리지만 결과는 같습니다. 항상 같은 글자를 넣기 때문입니다.",
-        "맡긴 함수 안에서 console.log('불렸습니다'); 를 찍어 보세요. 클릭한 횟수만큼 찍힙니다. 등록은 한 번, 실행은 여러 번입니다."
+        "먼저 실행한 뒤 셔츠 카드의 담기 버튼을 여러 번 눌러 보세요. 콘솔에 누른 횟수만큼 찍힙니다. 등록은 한 번인데 실행은 여러 번입니다.",
+        "이번에는 모자 카드의 담기 버튼을 눌러 보세요. 아무 일도 일어나지 않습니다. querySelector 는 조건에 맞는 첫 하나만 붙잡으므로 나머지 두 버튼에는 맡겨 둔 것이 없습니다.",
+        "addEventListener 덩어리를 통째로 지우고 다시 실행한 뒤 눌러 보세요. 셔츠 버튼도 반응하지 않습니다. 맡긴 것이 없으면 브라우저가 부를 것도 없습니다."
       ],
       "scaffold": {
         "html": [
@@ -60,7 +60,7 @@
           ".card { padding: 4px 0; }"
         ]
       },
-      "code": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nbutton.addEventListener('click', () => {\n  picked.textContent = '1개 담김';\n});\n\nconsole.log('등록 직후:', picked.textContent);\n\nbutton.click();\n\nconsole.log('클릭 뒤:', picked.textContent);\n"
+      "code": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nconsole.log('등록만 했습니다:', picked.textContent);\n\nbutton.addEventListener('click', () => {\n  picked.textContent = '1개 담김';\n  console.log('맡긴 함수가 불렸습니다');\n});\n"
     },
     {
       "kind": "fill",
@@ -68,7 +68,7 @@
       "brief": [
         "버튼에 함수를 맡기는 것까지는 돼 있고, 그 안에서 넣을 글자가 비어 있습니다.",
         "null 자리에 '1개 담김' 을 넣어 보세요. 이 줄은 등록할 때가 아니라 클릭이 일어난 뒤에 실행됩니다.",
-        "채우지 않고 실행하면 클릭 뒤에 'null' 이라는 글자가 들어가 검사가 실패합니다."
+        "검사가 셔츠 카드의 담기 버튼을 대신 눌러 확인합니다. 미리보기에서 직접 눌러 봐도 됩니다."
       ],
       "scaffold": {
         "html": [
@@ -84,12 +84,18 @@
           ".card { padding: 4px 0; }"
         ]
       },
-      "code": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nbutton.addEventListener('click', () => {\n  picked.textContent = null; // ← 여기를 채우세요\n});\n\nbutton.click();\n",
-      "solutionCode": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nbutton.addEventListener('click', () => {\n  picked.textContent = '1개 담김';\n});\n\nbutton.click();\n",
+      "code": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nbutton.addEventListener('click', () => {\n  picked.textContent = null; // ← 여기를 채우세요\n});\n",
+      "solutionCode": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nbutton.addEventListener('click', () => {\n  picked.textContent = '1개 담김';\n});\n",
       "asserts": [
         {
           "type": "dom",
           "label": "클릭 뒤 담긴 개수가 표시됩니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".card__pick"
+            }
+          ],
           "select": "#picked",
           "text": [
             "1개 담김"
@@ -103,7 +109,7 @@
       "brief": [
         "카드마다 담기 버튼이 있습니다. 어느 버튼을 누르든 담긴 개수가 1 씩 늘어나고, 그 수가 위쪽 줄에 '2개 담김' 형태로 보이게 해 주세요.",
         "버튼이 셋이므로 셋 모두에 맡겨야 합니다. 개수는 클릭 사이에도 남아 있어야 하니 맡긴 함수 바깥에 두어야 합니다.",
-        "이 단계에서는 button.click() 을 쓰지 마세요. 검사가 대신 눌러 줍니다."
+        "코드로 클릭을 일으키지 마세요. 검사가 세 카드를 차례로 눌러 확인합니다. 미리보기에서 직접 눌러 봐도 됩니다."
       ],
       "scaffold": {
         "html": [
