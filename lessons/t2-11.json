@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 2,
+  "id": "t2-11",
+  "track": "T2",
+  "order": 11,
+  "title": "검색으로 걸러 그리기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "고른 것만 남겨 다시 그리기",
+      "brief": [
+        "검색은 두 가지 일이 이어진 것입니다. 먼저 조건에 맞는 것만 고르고, 그다음 고른 것으로 화면을 다시 그립니다. 두 가지 모두 이미 해 봤습니다. 배열에서 조건에 맞는 것만 고르는 것은 filter 이고, 배열로 화면을 그리는 것은 앞 두 레슨에서 만든 그리는 함수입니다.",
+        "고를 조건이 하나 필요합니다. 검색어가 제목 안에 들어 있는지를 보면 됩니다. 문자열에 어떤 글자가 들어 있는지는 includes 로 확인합니다. '리액트 시작하기'.includes('리액트') 는 true 이고, '리액트 시작하기'.includes('파이썬') 은 false 입니다. 검색어가 빈 문자열이면 모든 제목이 true 이므로 전체가 남습니다. 따로 처리하지 않아도 됩니다.",
+        "여기서 중요한 것은 다시 그린다는 말의 뜻입니다. innerHTML 로 다시 넣으면 그 안에 있던 요소는 전부 버려지고 새 요소가 들어옵니다. 겉보기에는 같은 카드지만 다른 물건입니다. 앞 레슨에서 카드 속 버튼마다 함수를 맡겨 두었다면, 다시 그리는 순간 맡긴 것이 통째로 사라집니다. 검색은 한 글자마다 다시 그리므로 이 문제가 첫 타이핑에서 바로 드러납니다.",
+        "이것이 이벤트 위임이 필요한 진짜 이유입니다. 목록을 담고 있는 바깥 요소는 다시 그려도 그대로 남습니다. 거기에 한 번만 맡겨 두면 안쪽이 몇 번을 새로 그려지든 계속 동작합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "치는 대로 걸러 보기",
+      "brief": [
+        "검색창에 input 을 맡기고, 검색어로 코스를 걸러 다시 그립니다.",
+        "실행한 뒤 미리보기의 검색창에 '리' 를 쳐 보세요. 카드가 한 장으로 줄고 콘솔에 몇 개가 남았는지 찍힙니다. 계속 쳐 보고 지워도 보세요.",
+        "지울 때마다 카드가 다시 늘어납니다. 매 글자마다 걸러서 다시 그리기 때문입니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<label class=\"field\" for=\"search\">코스 검색</label>",
+          "<input id=\"search\" class=\"field__input\" type=\"search\" placeholder=\"코스 이름\">",
+          "",
+          "<p id=\"picked\">담은 코스: 없음</p>",
+          "",
+          "<div class=\"grid\" id=\"grid\"></div>"
+        ],
+        "css": [
+          ".field { display: block; margin-bottom: 4px; }",
+          ".field__input { width: 200px; }",
+          ".grid { display: grid; gap: 8px; margin-top: 8px; }",
+          ".course { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
+          ".course__title { margin: 0 0 2px; font-size: 1rem; }",
+          ".course__meta { margin: 0 0 6px; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".empty { margin: 0; padding: 12px; border: 1px dashed var(--c-border); border-radius: 6px;",
+          "  color: var(--c-text-muted); text-align: center; }"
+        ]
+      },
+      "code": "const search = document.querySelector('#search');\nconst grid = document.querySelector('#grid');\n\nconst courses = [\n  { title: '자바스크립트 입문', level: '입문', hours: 12 },\n  { title: '리액트 시작하기', level: '보통', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', level: '보통', hours: 8 },\n];\n\nconst cardOf = (course) => `\n  <article class=\"course\" data-title=\"${course.title}\">\n    <h3 class=\"course__title\">${course.title}</h3>\n    <p class=\"course__meta\">${course.level} · ${course.hours}시간</p>\n    <button class=\"course__pick\" type=\"button\">담기</button>\n  </article>\n`;\n\nconst render = (list) => {\n  grid.innerHTML = list.map(cardOf).join('');\n};\n\nrender(courses);\n\nsearch.addEventListener('input', () => {\n  const keyword = search.value;\n  const matched = courses.filter((course) => course.title.includes(keyword));\n\n  console.log(`'${keyword}' → ${matched.length}개`);\n  render(matched);\n});\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "다시 그리면 맡긴 것이 사라집니다",
+      "brief": [
+        "카드마다 담기 버튼에 개별로 함수를 맡기는 부분이 아래에 추가돼 있습니다. 순서대로 해 보세요.",
+        "① 실행한 뒤 아무 카드의 담기 버튼을 눌러 보세요. 위쪽 문단에 담은 코스가 표시됩니다. 잘 동작합니다.",
+        "② 이제 검색창에 아무 글자나 한 자만 쳐 보세요. 목록이 다시 그려집니다. 그 상태에서 담기 버튼을 눌러 보세요. 아무 일도 일어나지 않습니다. 지워서 전체로 되돌려도 마찬가지입니다.",
+        "③ 맡기는 반복문 위에 console.log('버튼 수:', document.querySelectorAll('.course__pick').length); 를 넣고, 같은 줄을 검색 뒤에도 콘솔에서 확인해 보세요. 버튼은 여전히 있습니다. 사라진 것은 버튼이 아니라 맡긴 함수입니다. 맡겼던 그 버튼이 버려지고 똑같이 생긴 새 버튼이 들어온 것입니다.",
+        "④ 반복문을 통째로 지우고, 대신 grid 에 한 번만 맡기도록 바꿔 보세요. 안에서 event.target.closest('.course') 로 카드를 찾으면 됩니다. 이번에는 검색을 몇 번 하든 담기가 계속 동작합니다. grid 자체는 다시 그려도 버려지지 않기 때문입니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<label class=\"field\" for=\"search\">코스 검색</label>",
+          "<input id=\"search\" class=\"field__input\" type=\"search\" placeholder=\"코스 이름\">",
+          "",
+          "<p id=\"picked\">담은 코스: 없음</p>",
+          "",
+          "<div class=\"grid\" id=\"grid\"></div>"
+        ],
+        "css": [
+          ".field { display: block; margin-bottom: 4px; }",
+          ".field__input { width: 200px; }",
+          ".grid { display: grid; gap: 8px; margin-top: 8px; }",
+          ".course { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
+          ".course__title { margin: 0 0 2px; font-size: 1rem; }",
+          ".course__meta { margin: 0 0 6px; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".empty { margin: 0; padding: 12px; border: 1px dashed var(--c-border); border-radius: 6px;",
+          "  color: var(--c-text-muted); text-align: center; }"
+        ]
+      },
+      "code": "const search = document.querySelector('#search');\nconst grid = document.querySelector('#grid');\nconst picked = document.querySelector('#picked');\n\nconst courses = [\n  { title: '자바스크립트 입문', level: '입문', hours: 12 },\n  { title: '리액트 시작하기', level: '보통', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', level: '보통', hours: 8 },\n];\n\nconst cardOf = (course) => `\n  <article class=\"course\" data-title=\"${course.title}\">\n    <h3 class=\"course__title\">${course.title}</h3>\n    <p class=\"course__meta\">${course.level} · ${course.hours}시간</p>\n    <button class=\"course__pick\" type=\"button\">담기</button>\n  </article>\n`;\n\nconst render = (list) => {\n  grid.innerHTML = list.map(cardOf).join('');\n};\n\nrender(courses);\n\nsearch.addEventListener('input', () => {\n  const keyword = search.value;\n  const matched = courses.filter((course) => course.title.includes(keyword));\n\n  console.log(`'${keyword}' → ${matched.length}개`);\n  render(matched);\n});\n\n// 카드마다 개별로 맡깁니다\nfor (const button of document.querySelectorAll('.course__pick')) {\n  button.addEventListener('click', () => {\n    picked.textContent = `담은 코스: ${button.closest('.course').dataset.title}`;\n  });\n}\n"
+    },
+    {
+      "kind": "fill",
+      "title": "고르는 줄 채우기",
+      "brief": [
+        "검색창에 맡기고 다시 그리는 것까지 돼 있습니다. 무엇을 남길지 고르는 줄만 비어 있습니다.",
+        "null 자리를 채워, 제목에 검색어가 들어 있는 코스만 남게 해 주세요. 배열에서 고르는 것은 filter 이고, 문자열에 들어 있는지는 includes 입니다.",
+        "검사가 검색창에 '리액트' 를 대신 쳐 넣어 확인합니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<label class=\"field\" for=\"search\">코스 검색</label>",
+          "<input id=\"search\" class=\"field__input\" type=\"search\" placeholder=\"코스 이름\">",
+          "",
+          "<p id=\"picked\">담은 코스: 없음</p>",
+          "",
+          "<div class=\"grid\" id=\"grid\"></div>"
+        ],
+        "css": [
+          ".field { display: block; margin-bottom: 4px; }",
+          ".field__input { width: 200px; }",
+          ".grid { display: grid; gap: 8px; margin-top: 8px; }",
+          ".course { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
+          ".course__title { margin: 0 0 2px; font-size: 1rem; }",
+          ".course__meta { margin: 0 0 6px; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".empty { margin: 0; padding: 12px; border: 1px dashed var(--c-border); border-radius: 6px;",
+          "  color: var(--c-text-muted); text-align: center; }"
+        ]
+      },
+      "code": "const search = document.querySelector('#search');\nconst grid = document.querySelector('#grid');\n\nconst courses = [\n  { title: '자바스크립트 입문', level: '입문', hours: 12 },\n  { title: '리액트 시작하기', level: '보통', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', level: '보통', hours: 8 },\n];\n\nconst cardOf = (course) => `\n  <article class=\"course\" data-title=\"${course.title}\">\n    <h3 class=\"course__title\">${course.title}</h3>\n    <p class=\"course__meta\">${course.level} · ${course.hours}시간</p>\n    <button class=\"course__pick\" type=\"button\">담기</button>\n  </article>\n`;\n\nconst render = (list) => {\n  grid.innerHTML = list.map(cardOf).join('');\n};\n\nrender(courses);\n\nsearch.addEventListener('input', () => {\n  const keyword = search.value;\n  const matched = null; // ← 여기를 채우세요\n\n  render(matched);\n});\n",
+      "solutionCode": "const search = document.querySelector('#search');\nconst grid = document.querySelector('#grid');\n\nconst courses = [\n  { title: '자바스크립트 입문', level: '입문', hours: 12 },\n  { title: '리액트 시작하기', level: '보통', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', level: '보통', hours: 8 },\n];\n\nconst cardOf = (course) => `\n  <article class=\"course\" data-title=\"${course.title}\">\n    <h3 class=\"course__title\">${course.title}</h3>\n    <p class=\"course__meta\">${course.level} · ${course.hours}시간</p>\n    <button class=\"course__pick\" type=\"button\">담기</button>\n  </article>\n`;\n\nconst render = (list) => {\n  grid.innerHTML = list.map(cardOf).join('');\n};\n\nrender(courses);\n\nsearch.addEventListener('input', () => {\n  const keyword = search.value;\n  const matched = courses.filter((course) => course.title.includes(keyword));\n  render(matched);\n});\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "'리액트' 를 치면 한 장만 남습니다",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#search",
+              "value": "리액트"
+            }
+          ],
+          "select": ".course",
+          "count": 1
+        },
+        {
+          "type": "dom",
+          "label": "남은 것이 그 코스입니다",
+          "select": ".course__title",
+          "text": [
+            "리액트 시작하기"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "지우면 전체가 돌아옵니다",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#search",
+              "value": ""
+            }
+          ],
+          "select": ".course",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "검색되는 목록 만들기",
+      "brief": [
+        "검색창에 친 글자가 제목에 든 코스만 보이게 해 주세요. 카드에는 제목과 '난이도 · 12시간' 줄, 그리고 담기 버튼이 들어갑니다. 클래스 이름은 course · course__title · course__meta · course__pick 을 그대로 쓰고, 카드에 data-title 로 제목을 심어 두세요.",
+        "맞는 코스가 하나도 없으면 '조건에 맞는 코스가 없습니다.' 안내를 보여 주세요. 클래스 이름은 empty 입니다.",
+        "담기 버튼을 누르면 위쪽 문단이 '담은 코스: 리액트 시작하기' 형태로 바뀌어야 합니다. 검색을 몇 번 하든 담기는 계속 동작해야 합니다. 앞에서 본 대로 카드마다 맡기면 다시 그리는 순간 끊깁니다.",
+        "코드로 클릭이나 입력을 일으키지 마세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<label class=\"field\" for=\"search\">코스 검색</label>",
+          "<input id=\"search\" class=\"field__input\" type=\"search\" placeholder=\"코스 이름\">",
+          "",
+          "<p id=\"picked\">담은 코스: 없음</p>",
+          "",
+          "<div class=\"grid\" id=\"grid\"></div>"
+        ],
+        "css": [
+          ".field { display: block; margin-bottom: 4px; }",
+          ".field__input { width: 200px; }",
+          ".grid { display: grid; gap: 8px; margin-top: 8px; }",
+          ".course { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
+          ".course__title { margin: 0 0 2px; font-size: 1rem; }",
+          ".course__meta { margin: 0 0 6px; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".empty { margin: 0; padding: 12px; border: 1px dashed var(--c-border); border-radius: 6px;",
+          "  color: var(--c-text-muted); text-align: center; }"
+        ]
+      },
+      "code": "const courses = [\n  { title: '자바스크립트 입문', level: '입문', hours: 12 },\n  { title: '리액트 시작하기', level: '보통', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', level: '보통', hours: 8 },\n];\n\n// 여기를 채우세요\n",
+      "solutionCode": "const courses = [\n  { title: '자바스크립트 입문', level: '입문', hours: 12 },\n  { title: '리액트 시작하기', level: '보통', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', level: '보통', hours: 8 },\n];\n\nconst search = document.querySelector('#search');\nconst grid = document.querySelector('#grid');\nconst picked = document.querySelector('#picked');\n\nconst cardOf = (course) => `\n  <article class=\"course\" data-title=\"${course.title}\">\n    <h3 class=\"course__title\">${course.title}</h3>\n    <p class=\"course__meta\">${course.level} · ${course.hours}시간</p>\n    <button class=\"course__pick\" type=\"button\">담기</button>\n  </article>\n`;\n\nconst render = (list) => {\n  if (list.length === 0) {\n    grid.innerHTML = '<p class=\"empty\">조건에 맞는 코스가 없습니다.</p>';\n    return;\n  }\n\n  grid.innerHTML = list.map(cardOf).join('');\n};\n\nrender(courses);\n\nsearch.addEventListener('input', () => {\n  const keyword = search.value;\n  render(courses.filter((course) => course.title.includes(keyword)));\n});\n\ngrid.addEventListener('click', (event) => {\n  const button = event.target.closest('.course__pick');\n  if (button === null) return;\n\n  picked.textContent = `담은 코스: ${button.closest('.course').dataset.title}`;\n});\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 코스가 셋 다 보입니다",
+          "select": ".course",
+          "count": 3
+        },
+        {
+          "type": "dom",
+          "label": "'리액트' 를 치면 한 장만 남습니다",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#search",
+              "value": "리액트"
+            }
+          ],
+          "select": ".course__title",
+          "text": [
+            "리액트 시작하기"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "맞는 것이 없으면 안내가 보입니다",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#search",
+              "value": "파이썬"
+            }
+          ],
+          "select": ".empty",
+          "text": [
+            "조건에 맞는 코스가 없습니다."
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "지우면 전체가 돌아옵니다",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#search",
+              "value": ""
+            }
+          ],
+          "select": ".course",
+          "count": 3
+        },
+        {
+          "type": "dom",
+          "label": "여러 번 다시 그린 뒤에도 담기가 동작합니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".course:nth-child(2) .course__pick"
+            }
+          ],
+          "select": "#picked",
+          "text": [
+            "담은 코스: 리액트 시작하기"
+          ]
+        }
+      ]
+    }
+  ]
+}

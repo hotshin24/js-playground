@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 2,
+  "id": "t2-12",
+  "track": "T2",
+  "order": 12,
+  "title": "정렬해 다시 그리기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "둘을 비교해 순서를 정합니다",
+      "brief": [
+        "거르는 것은 해 봤습니다. 이번에는 순서를 바꿉니다. 배열을 정렬하는 것은 sort 입니다. 그런데 sort 는 지금까지 쓴 map · filter 와 두 가지가 다릅니다.",
+        "첫째, 넘기는 함수가 하는 일이 다릅니다. map 과 filter 는 값을 하나씩 받았지만, sort 가 넘기는 함수는 값을 두 개 받습니다. 그 둘 중 어느 것이 앞에 와야 하는지를 답해야 합니다. 답하는 방법이 처음 보는 규칙입니다. true 나 false 가 아니라 숫자를 돌려줍니다.",
+        "음수를 돌려주면 첫 번째 값이 앞에 옵니다. 양수를 돌려주면 두 번째 값이 앞에 옵니다. 0 을 돌려주면 둘의 순서를 바꾸지 않습니다. 그래서 숫자를 작은 순으로 놓고 싶으면 (a, b) => a - b 라고 쓰면 됩니다. a 가 작으면 뺀 값이 음수라 a 가 앞으로 가고, a 가 크면 양수라 b 가 앞으로 갑니다. 큰 순으로 놓고 싶으면 빼는 순서만 뒤집습니다.",
+        "함수를 넘기지 않고 sort() 만 부르면 값을 문자열로 바꿔 비교합니다. 숫자에는 잘 맞지 않습니다. 12 · 20 · 8 을 그렇게 정렬하면 8 이 마지막으로 갑니다. 글자로 보면 '8' 이 '1' 이나 '2' 보다 뒤이기 때문입니다.",
+        "둘째, sort 는 원본 배열을 바꿉니다. map 과 filter 는 새 배열을 만들어 돌려주고 원본은 그대로 둡니다. sort 는 그 자리에서 순서를 바꾸고 같은 배열을 돌려줍니다. 정렬한 뒤에 원래 순서로 돌아갈 수 없다는 뜻입니다. 원본을 지키고 싶으면 전개로 복사한 뒤 정렬하면 됩니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "정렬하고 원본을 확인하기",
+      "brief": [
+        "숫자 배열로 비교 함수의 유무를 먼저 비교하고, 그다음 코스를 시간이 짧은 순으로 정렬해 그립니다.",
+        "실행해 콘솔을 보세요. 비교 함수 없이 정렬한 결과는 12 · 20 · 8 이고, 함께 정렬한 결과는 8 · 12 · 20 입니다. 문자열로 비교하면 8 이 뒤로 갑니다.",
+        "그 아래 세 줄이 더 중요합니다. 정렬 전 첫 코스와 정렬 후 첫 코스가 다르고, 원본과 결과가 같은 배열인가에 true 가 찍힙니다. 새 배열을 받은 것이 아니라 원본이 그 자리에서 바뀐 것입니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div class=\"controls\">",
+          "  <button id=\"asc\" type=\"button\">짧은 순</button>",
+          "  <button id=\"desc\" type=\"button\">긴 순</button>",
+          "</div>",
+          "",
+          "<div class=\"grid\" id=\"grid\"></div>"
+        ],
+        "css": [
+          ".controls { display: flex; gap: 6px; margin-bottom: 8px; }",
+          ".grid { display: grid; gap: 8px; }",
+          ".course { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
+          ".course__title { margin: 0 0 2px; font-size: 1rem; }",
+          ".course__meta { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }"
+        ]
+      },
+      "code": "const grid = document.querySelector('#grid');\n\nconst courses = [\n  { title: '자바스크립트 입문', hours: 12 },\n  { title: '리액트 시작하기', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', hours: 8 },\n];\n\nconst cardOf = (course) => `\n  <article class=\"course\">\n    <h3 class=\"course__title\">${course.title}</h3>\n    <p class=\"course__meta\">${course.hours}시간</p>\n  </article>\n`;\n\nconst render = (list) => {\n  grid.innerHTML = list.map(cardOf).join('');\n};\n\nconsole.log('비교 함수 없이:', [12, 20, 8].sort());\nconsole.log('비교 함수와 함께:', [12, 20, 8].sort((a, b) => a - b));\n\nconsole.log('정렬 전 첫 코스:', courses[0].title);\n\nconst sorted = courses.sort((a, b) => a.hours - b.hours);\n\nconsole.log('정렬 후 첫 코스:', courses[0].title);\nconsole.log('원본과 결과가 같은 배열인가:', courses === sorted);\n\nrender(sorted);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "부호를 뒤집어 보기",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
+        "① (a, b) => a.hours - b.hours 를 (a, b) => b.hours - a.hours 로 바꿔 보세요. 순서가 통째로 뒤집힙니다. 빼는 순서만 바꿨을 뿐인데 돌려주는 값의 부호가 반대가 되기 때문입니다.",
+        "② (a, b) => 0 으로 바꿔 보세요. 순서가 그대로입니다. 0 은 둘의 순서를 바꾸지 않는다는 뜻입니다.",
+        "③ const sorted = courses.sort(...) 를 const sorted = courses.filter((course) => true) 로 바꿔 보세요. 원본과 결과가 같은 배열인가에 false 가 찍히고, 정렬 전 첫 코스와 정렬 후 첫 코스가 같습니다. filter 는 새 배열을 만들고 원본을 건드리지 않습니다. sort 와 다른 점입니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div class=\"controls\">",
+          "  <button id=\"asc\" type=\"button\">짧은 순</button>",
+          "  <button id=\"desc\" type=\"button\">긴 순</button>",
+          "</div>",
+          "",
+          "<div class=\"grid\" id=\"grid\"></div>"
+        ],
+        "css": [
+          ".controls { display: flex; gap: 6px; margin-bottom: 8px; }",
+          ".grid { display: grid; gap: 8px; }",
+          ".course { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
+          ".course__title { margin: 0 0 2px; font-size: 1rem; }",
+          ".course__meta { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }"
+        ]
+      },
+      "code": "const grid = document.querySelector('#grid');\n\nconst courses = [\n  { title: '자바스크립트 입문', hours: 12 },\n  { title: '리액트 시작하기', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', hours: 8 },\n];\n\nconst cardOf = (course) => `\n  <article class=\"course\">\n    <h3 class=\"course__title\">${course.title}</h3>\n    <p class=\"course__meta\">${course.hours}시간</p>\n  </article>\n`;\n\nconst render = (list) => {\n  grid.innerHTML = list.map(cardOf).join('');\n};\n\nconsole.log('비교 함수 없이:', [12, 20, 8].sort());\nconsole.log('비교 함수와 함께:', [12, 20, 8].sort((a, b) => a - b));\n\nconsole.log('정렬 전 첫 코스:', courses[0].title);\n\nconst sorted = courses.sort((a, b) => a.hours - b.hours);\n\nconsole.log('정렬 후 첫 코스:', courses[0].title);\nconsole.log('원본과 결과가 같은 배열인가:', courses === sorted);\n\nrender(sorted);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "비교 함수 채우기",
+      "brief": [
+        "정렬하고 그리는 것까지 돼 있습니다. 두 코스 중 어느 것이 앞에 올지 답하는 함수만 비어 있습니다.",
+        "null 자리를 채워 시간이 짧은 코스가 앞에 오게 해 주세요. 두 값을 받아 숫자를 돌려주는 함수입니다.",
+        "검사가 그려진 순서를 확인합니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div class=\"controls\">",
+          "  <button id=\"asc\" type=\"button\">짧은 순</button>",
+          "  <button id=\"desc\" type=\"button\">긴 순</button>",
+          "</div>",
+          "",
+          "<div class=\"grid\" id=\"grid\"></div>"
+        ],
+        "css": [
+          ".controls { display: flex; gap: 6px; margin-bottom: 8px; }",
+          ".grid { display: grid; gap: 8px; }",
+          ".course { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
+          ".course__title { margin: 0 0 2px; font-size: 1rem; }",
+          ".course__meta { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }"
+        ]
+      },
+      "code": "const grid = document.querySelector('#grid');\n\nconst courses = [\n  { title: '자바스크립트 입문', hours: 12 },\n  { title: '리액트 시작하기', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', hours: 8 },\n];\n\nconst cardOf = (course) => `\n  <article class=\"course\">\n    <h3 class=\"course__title\">${course.title}</h3>\n    <p class=\"course__meta\">${course.hours}시간</p>\n  </article>\n`;\n\nconst render = (list) => {\n  grid.innerHTML = list.map(cardOf).join('');\n};\n\nconst byHours = null; // ← 여기를 채우세요\n\nrender(courses.sort(byHours));\n",
+      "solutionCode": "const grid = document.querySelector('#grid');\n\nconst courses = [\n  { title: '자바스크립트 입문', hours: 12 },\n  { title: '리액트 시작하기', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', hours: 8 },\n];\n\nconst cardOf = (course) => `\n  <article class=\"course\">\n    <h3 class=\"course__title\">${course.title}</h3>\n    <p class=\"course__meta\">${course.hours}시간</p>\n  </article>\n`;\n\nconst render = (list) => {\n  grid.innerHTML = list.map(cardOf).join('');\n};\n\nconst byHours = (a, b) => a.hours - b.hours;\n\nrender(courses.sort(byHours));\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "시간이 짧은 순으로 그려집니다",
+          "select": ".course__title",
+          "text": [
+            "CSS 레이아웃 마스터",
+            "자바스크립트 입문",
+            "리액트 시작하기"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "시간도 순서대로 붙습니다",
+          "select": ".course__meta",
+          "text": [
+            "8시간",
+            "12시간",
+            "20시간"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "두 방향으로 정렬하기",
+      "brief": [
+        "처음에는 주어진 배열 순서 그대로 카드를 그려 주세요. 카드에는 제목과 '12시간' 형태의 줄이 들어갑니다. 클래스 이름은 course · course__title · course__meta 를 그대로 쓰세요.",
+        "'짧은 순' 버튼을 누르면 시간이 적은 코스가 위로, '긴 순' 버튼을 누르면 많은 코스가 위로 오게 해 주세요. 버튼을 번갈아 눌러도 매번 맞아야 합니다.",
+        "sort 가 원본을 바꾼다는 것에 주의하세요. 원본 순서를 지키고 싶으면 [...courses] 로 복사한 뒤 정렬하면 됩니다.",
+        "코드로 클릭을 일으키지 마세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div class=\"controls\">",
+          "  <button id=\"asc\" type=\"button\">짧은 순</button>",
+          "  <button id=\"desc\" type=\"button\">긴 순</button>",
+          "</div>",
+          "",
+          "<div class=\"grid\" id=\"grid\"></div>"
+        ],
+        "css": [
+          ".controls { display: flex; gap: 6px; margin-bottom: 8px; }",
+          ".grid { display: grid; gap: 8px; }",
+          ".course { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
+          ".course__title { margin: 0 0 2px; font-size: 1rem; }",
+          ".course__meta { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }"
+        ]
+      },
+      "code": "const courses = [\n  { title: '자바스크립트 입문', hours: 12 },\n  { title: '리액트 시작하기', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', hours: 8 },\n];\n\n// 여기를 채우세요\n",
+      "solutionCode": "const courses = [\n  { title: '자바스크립트 입문', hours: 12 },\n  { title: '리액트 시작하기', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', hours: 8 },\n];\n\nconst grid = document.querySelector('#grid');\n\nconst cardOf = (course) => `\n  <article class=\"course\">\n    <h3 class=\"course__title\">${course.title}</h3>\n    <p class=\"course__meta\">${course.hours}시간</p>\n  </article>\n`;\n\nconst render = (list) => {\n  grid.innerHTML = list.map(cardOf).join('');\n};\n\nrender(courses);\n\ndocument.querySelector('#asc').addEventListener('click', () => {\n  render([...courses].sort((a, b) => a.hours - b.hours));\n});\n\ndocument.querySelector('#desc').addEventListener('click', () => {\n  render([...courses].sort((a, b) => b.hours - a.hours));\n});\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 주어진 순서 그대로입니다",
+          "select": ".course__title",
+          "text": [
+            "자바스크립트 입문",
+            "리액트 시작하기",
+            "CSS 레이아웃 마스터"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "짧은 순을 누르면 시간이 적은 것이 위로 옵니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "#asc"
+            }
+          ],
+          "select": ".course__meta",
+          "text": [
+            "8시간",
+            "12시간",
+            "20시간"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "긴 순을 누르면 뒤집힙니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "#desc"
+            }
+          ],
+          "select": ".course__meta",
+          "text": [
+            "20시간",
+            "12시간",
+            "8시간"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "다시 짧은 순을 눌러도 맞습니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "#asc"
+            }
+          ],
+          "select": ".course__title",
+          "text": [
+            "CSS 레이아웃 마스터",
+            "자바스크립트 입문",
+            "리액트 시작하기"
+          ]
+        }
+      ]
+    }
+  ]
+}
