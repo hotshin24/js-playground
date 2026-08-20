@@ -15,7 +15,7 @@ const TIMEOUT_TEXT = {
  * 실행 1회분의 수명을 관리한다. 콘솔·검사 결과 패널이 여기에 묶인다.
  * @param {{ mount, logEl, statusEl, listEl, summaryEl, onAllPassed: () => void }} options
  */
-export function createSession({ mount, logEl, statusEl, listEl, summaryEl, onAllPassed }) {
+export function createSession({ mount, previewMount, logEl, statusEl, listEl, summaryEl, onAllPassed, onPreview }) {
   const panel = createConsolePanel({ logEl, statusEl });
   const results = createResultPanel({ listEl, summaryEl });
 
@@ -44,6 +44,7 @@ export function createSession({ mount, logEl, statusEl, listEl, summaryEl, onAll
     mount,
     onEvent: (event) => {
       if (event.type === 'assert') return void assertEvents.push(event);
+      if (event.type === 'ready') return void onPreview('ready');
       if (event.type === 'done') {
         panel.setStatus('실행·검사 완료 (' + event.ms + 'ms) · 감시 중');
         settle();
@@ -52,6 +53,7 @@ export function createSession({ mount, logEl, statusEl, listEl, summaryEl, onAll
       if (event.type === 'timeout') {
         panel.append('system', TIMEOUT_TEXT[event.phase]);
         panel.setStatus('강제 종료됨');
+        onPreview('stopped');
         if (!settled && assertTotal) {
           settled = true;
           results.setSummary('실행이 중단되어 검사하지 못했습니다.', 'error');
@@ -64,7 +66,7 @@ export function createSession({ mount, logEl, statusEl, listEl, summaryEl, onAll
     },
   });
 
-  const run = (code, { assertScript = '', total = 0, scaffold } = {}) => {
+  const run = (code, { assertScript = '', total = 0, scaffold, preview = false } = {}) => {
     assertEvents = [];
     assertTotal = total;
     errorSeen = false;
@@ -74,7 +76,8 @@ export function createSession({ mount, logEl, statusEl, listEl, summaryEl, onAll
     panel.setStatus('실행 중…');
     results.clear();
     results.setSummary(total ? '검사 중…' : '');
-    runner.run(code, { assertScript, scaffold });
+    if (preview) onPreview('running');
+    runner.run(code, { assertScript, scaffold, preview, mount: preview ? previewMount : mount });
   };
 
   // 레슨을 옮길 때 이전 레슨의 출력이 남아 있으면 안 된다

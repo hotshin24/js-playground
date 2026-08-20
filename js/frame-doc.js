@@ -1,0 +1,59 @@
+import { PRELUDE } from './sandbox-prelude.js';
+import { ASSERT_RUNTIME } from './validator.js';
+
+// 사용자 코드와 scaffold 안의 </script> 는 HTML 파서를 먼저 끊어버린다
+export const escapeScriptEnd = (code) => code.replace(/<\/(script)/gi, '<\\/$1');
+
+// 프레임은 별도 문서라 부모의 CSS 변수가 상속되지 않는다.
+// 값을 읽어 넘겨야 다크 모드에서 미리보기만 흰 판으로 남지 않는다.
+const THEME_TOKENS = [
+  '--c-bg', '--c-surface', '--c-surface-alt', '--c-border',
+  '--c-text-strong', '--c-text-muted', '--c-accent', '--c-accent-weak', '--c-on-accent',
+  '--c-text-error', '--c-text-ok', '--c-text-warn',
+];
+
+const themeStyle = () => {
+  const parent = getComputedStyle(document.documentElement);
+  const lines = THEME_TOKENS.map((name) => '  ' + name + ': ' + parent.getPropertyValue(name).trim() + ';');
+  return ':root {\n' + lines.join('\n') + '\n}\n';
+};
+
+// 공통 바닥. 레슨의 scaffold CSS 는 그 레슨 고유의 상태 표현만 담는다.
+const BASE_STYLE = [
+  'body { margin: 0; padding: 12px; background: var(--c-bg); color: var(--c-text-strong);',
+  '  font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, sans-serif; }',
+  'ul, ol { margin: 0; padding-left: 1.2em; }',
+  'h1, h2, h3 { margin: 0 0 4px; font-size: 1rem; }',
+  'p { margin: 0 0 4px; }',
+  'a { color: var(--c-accent); }',
+  'img { max-width: 100%; }',
+  'button { font: inherit; padding: 4px 10px; border: 1px solid var(--c-border); border-radius: 6px;',
+  '  background: var(--c-surface); color: var(--c-text-strong); cursor: pointer; }',
+  'input, select, textarea { font: inherit; padding: 4px 8px; border: 1px solid var(--c-border);',
+  '  border-radius: 6px; background: var(--c-bg); color: var(--c-text-strong); }',
+].join('\n');
+
+/**
+ * 레슨이 주는 무대(scaffold)를 사용자 코드보다 앞에 놓는다.
+ * classic inline script 는 파싱 위치에서 동기 실행되므로 앞선 마크업은 이미 DOM 에 있다.
+ * 그래서 사용자 코드의 querySelector 가 동작한다.
+ */
+export const buildHead = ({ html = '', css = '' } = {}, withStyle) =>
+  '<!doctype html>\n<html>\n<head>\n<meta charset="utf-8">\n' +
+  (withStyle ? '<style>\n' + themeStyle() + BASE_STYLE + '\n<\/style>\n' : '') +
+  (css ? '<style>\n' + css + '\n<\/style>\n' : '') +
+  '</head>\n<body>\n' +
+  (html ? escapeScriptEnd(html) + '\n' : '') +
+  '<script>' + PRELUDE + ASSERT_RUNTIME + '<\/script>\n' +
+  '<script>\n';
+
+export const buildTail = (assertScript) =>
+  '\n<\/script>\n' +
+  (assertScript ? '<script>' + assertScript + '<\/script>\n' : '') +
+  '<script>Promise.resolve(window.__assertsPromise).then(() => window.__done());<\/script>\n' +
+  '</body>\n</html>';
+
+// window.onerror 의 lineno 는 srcdoc 문서 기준이다. 사용자 코드 1행 앞의 줄 수를 세어 빼준다.
+// scaffold 가 레슨마다 다르므로 상수로 둘 수 없다. 실행 시점에 센다.
+export const offsetOf = (head) => head.split('\n').length - 1;
+

@@ -2,6 +2,8 @@ import { createSession } from './session.js';
 import { createWorkspace } from './workspace.js';
 import { createLayout } from './layout.js';
 import { createBrowse } from './browse.js';
+import { createPreview } from './preview.js';
+import { createBrief } from './brief.js';
 import { createTheme } from './theme.js';
 import { createProgress, NOTICE } from './progress.js';
 import { loadIndex, loadLesson } from './lessons.js';
@@ -28,8 +30,18 @@ const progress = createProgress({
   onChanged: () => refreshNav(),
 });
 
+const brief = createBrief({ titleEl: el('step-title'), bodyEl: el('lesson-brief') });
+
+const preview = createPreview({
+  panelEl: el('preview-panel'),
+  statusEl: el('preview-status'),
+  hostEl: el('preview-host'),
+});
+
 const session = createSession({
   mount: el('sandbox-host'),
+  previewMount: preview.host,
+  onPreview: preview.setState,
   logEl: el('log'),
   statusEl: el('status'),
   listEl: el('asserts'),
@@ -85,6 +97,7 @@ const run = () => {
     assertScript: buildAssertScript(step),
     total: assertTotal(),
     scaffold: step.scaffold,
+    preview: preview.isOn(step, layout.isEditable()),
   });
   // 검사가 없는 단계는 실행 자체가 완료 신호다
   if (!isChecked(step.kind)) progress.complete({ ran: true, changed, allPassed: false });
@@ -97,16 +110,6 @@ const reset = () => {
   session.setStatus('예제 코드로 되돌렸습니다');
 };
 
-const renderBrief = (brief) => {
-  el('lesson-brief').replaceChildren(
-    ...brief.map((text) => {
-      const p = document.createElement('p');
-      p.textContent = text;
-      return p;
-    })
-  );
-};
-
 const showStep = (next) => {
   progress.flush();
   stepIndex = next;
@@ -115,9 +118,8 @@ const showStep = (next) => {
   progress.setContext(lesson.id, next, step);
 
   el('main').className = 'layout layout--' + step.kind;
-  // 단계 종류는 칩이 담당한다. 제목은 그 단계가 무엇을 하는지만 말한다.
-  el('step-title').textContent = step.title || labelOf(step.kind);
-  renderBrief(step.brief);
+  brief.render(step);
+  preview.reset(step, layout.isEditable());
   session.clear();
   nextButton.hidden = next >= lesson.steps.length - 1;
 

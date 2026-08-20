@@ -64,6 +64,19 @@ export const PRELUDE = `
     };
   });
 
+  // 미리보기에서 링크를 누르면 프레임이 그 주소로 떠나 무대가 사라진다.
+  // sandbox 를 넓히지 않고 여기서 막는다. allow-top-navigation 도 allow-popups 도 넣지 않는다.
+  document.addEventListener('click', (event) => {
+    const link = event.target && event.target.closest ? event.target.closest('a[href]') : null;
+    if (!link) return;
+    event.preventDefault();
+    post({
+      type: 'console',
+      level: 'info',
+      args: ['미리보기에서는 링크가 이동하지 않습니다: ' + link.getAttribute('href')],
+    });
+  });
+
   window.addEventListener('error', (e) => {
     post({
       type: 'error',
