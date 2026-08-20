@@ -1,37 +1,67 @@
 /* primitive → semantic 2단 토큰. 컴포넌트는 semantic만 참조한다. */
 :root {
-  /* primitive */
-  --c-gray-0: #ffffff;
-  --c-gray-50: #f6f6f7;
-  --c-gray-100: #ecedef;
-  --c-gray-200: #dcdde1;
-  --c-gray-500: #6b6b75;
-  --c-gray-900: #17171b;
-  --c-black-a40: rgba(23, 23, 27, 0.4);
-  --c-red-700: #b42318;
-  --c-green-700: #15803d;
-  --c-amber-800: #8a5300;
-  --c-blue-700: #1d4ed8;
+  /* ---------- primitive: 중성색 ---------- */
+  /* 노란기가 도는 모래 톤 하나의 축. 차가운 회색을 섞으면 톤이 갈라진다. */
+  --c-sand-50: #faf9f5;
+  --c-sand-100: #f3f1ea;
+  --c-sand-200: #eae7dd;
+  --c-sand-300: #ddd9cc;
+  --c-ink-500: #6e6a5e;
+  --c-ink-900: #1f1d1a;
+  --c-ink-a20: rgba(31, 29, 26, 0.2);
+  --c-ink-a35: rgba(31, 29, 26, 0.35);
 
-  /* semantic */
-  --c-bg: var(--c-gray-0);
-  --c-surface: var(--c-gray-50);
-  --c-surface-alt: var(--c-gray-100);
-  --c-border: var(--c-gray-200);
-  --c-text-strong: var(--c-gray-900);
-  --c-text-muted: var(--c-gray-500);
+  /* ---------- primitive: 강조 ---------- */
+  --c-clay-600: #b04a2f;
+  --c-clay-100: #f6e9e3;
+
+  /* ---------- primitive: 상태 ---------- */
+  --c-red-700: #a32e22;
+  --c-green-700: #3f6b37;
+  --c-amber-800: #8a5a16;
+
+  /* ---------- semantic: 면 ---------- */
+  --c-bg: var(--c-sand-50);
+  --c-surface: var(--c-sand-100);
+  --c-surface-alt: var(--c-sand-200);
+  --c-border: var(--c-sand-300);
+  --c-scrim: var(--c-ink-a35);
+
+  /* ---------- semantic: 글자 ---------- */
+  --c-text-strong: var(--c-ink-900);
+  --c-text-muted: var(--c-ink-500);
   --c-text-error: var(--c-red-700);
   --c-text-ok: var(--c-green-700);
   --c-text-warn: var(--c-amber-800);
-  --c-accent: var(--c-blue-700);
-  --c-on-accent: var(--c-gray-0);
-  --c-focus: var(--c-blue-700);
-  --c-scrim: var(--c-black-a40);
 
-  /* spacing */
+  /* ---------- semantic: 강조 ---------- */
+  /* 강조색은 하나다. 누를 곳과 지금 있는 곳에만 쓴다. */
+  --c-accent: var(--c-clay-600);
+  --c-accent-weak: var(--c-clay-100);
+  --c-on-accent: var(--c-sand-50);
+  --c-focus: var(--c-clay-600);
+
+  /* ---------- 글꼴 ---------- */
+  /* 한글 가독성 우선. 영문 기준 스택을 그대로 쓰지 않는다. */
+  --f-sans: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR',
+    'Malgun Gothic', system-ui, sans-serif;
+  --f-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'D2Coding', monospace;
+
+  /* ---------- 간격 ---------- */
   --sp-1: 4px;
   --sp-2: 8px;
   --sp-3: 12px;
   --sp-4: 16px;
   --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+
+  /* ---------- 모서리 ---------- */
+  --r-sm: 8px;
+  --r-lg: 14px;
+  --r-pill: 999px;
+
+  /* ---------- 그림자 ---------- */
+  /* 떠 있어야 하는 것에만. 그 외에는 쓰지 않는다. */
+  --sh-overlay: 0 16px 40px var(--c-ink-a20);
 }
