@@ -3,7 +3,7 @@
 실행 엔진을 만들면서 확인된 사실과 미해결 항목. 각 항목은 **증상 / 재현 조건 / 판단 / 처리 시점** 4줄로 기록한다.
 수치는 실측만 적는다. 측정하지 않았으면 "미측정"이라고 쓴다.
 
-| 문서 버전 | v0.9 |
+| 문서 버전 | v1.0 |
 |---|---|
 | 최종 갱신 | 2026-08-20 |
 | 대상 커밋 | `72d37f0` |
@@ -305,3 +305,31 @@ C_timeout0       child=2006ms   parent=2008ms
 - **판단** — 원인은 **비동기 마운트에 취소 경로가 없었던 것**이다. `mount()` 는 `if (editor) return` 으로만 중복을 막았는데, 이 검사 시점에는 아직 `editor` 가 null 이라 아무것도 걸러지지 않는다.
   **F-007 과 맞물릴 때 실사용에서 터진다.** 콜드 캐시에서 CodeMirror 첫 로드가 1799ms 이므로, `run` 단계에 들어가자마자 다음 단계를 누르면 그 1.8초 창이 그대로 열려 있다. 개발 환경(웜 캐시 181ms)에서는 잘 드러나지 않는다.
 - **앞으로 주의할 것** — **비동기로 마운트되는 것을 추가할 때마다 같은 함정이 있다.** 지금은 에디터 하나뿐이지만, T2 의 미리보기 프레임이나 M2 의 트랜스파일러 로드처럼 "기다렸다가 화면에 붙이는" 것은 모두 해당한다. 취소 경로 없이 `await` 뒤에 DOM 을 건드리면 같은 증상이 난다.
+
+---
+
+### F-009 `srcdoc` 프레임에서 경로·쿼리 라우팅 불가
+
+- **처리 상태** — **제약으로 확정.** 우회 방법 없음. 해시 라우팅으로 대체 가능하므로 결함이 아니라 설계 입력이다. PRD §4 T6에 기록했다.
+- **측정** — 2026-08-20, Chrome. 부모 문서 `http://localhost:878`, 자식은 `srcdoc` iframe. **샌드박스 프레임과 비샌드박스 프레임을 대조군으로 함께 측정했다.**
+
+  | 호출 | `sandbox="allow-scripts"` | 샌드박스 없음 |
+  |---|---|---|
+  | `pushState({}, '', '#a')` | SecurityError | SecurityError |
+  | `pushState({}, '', '/path')` | SecurityError | SecurityError |
+  | `replaceState({}, '', '#c')` | SecurityError | SecurityError |
+  | `pushState({}, '', location.href + '#b')` | OK → `#b` | OK → `#b` |
+  | `location.hash = 'd'` | OK → `#d` | OK → `#d` |
+  | `hashchange` / `popstate` | 2회 / 1회 | 2회 / 1회 |
+
+- **판단** — 원인은 **샌드박스가 아니라 `about:srcdoc`이다.** 비샌드박스 프레임은 origin이 `http://localhost:878`인데도 동일하게 실패했다. `about:srcdoc` 문서는 base URL을 부모에서 물려받으므로 상대 URL이 부모 주소로 해석되고, 문서 URL과 어긋나 거부된다.
+
+  브라우저 메시지: `A history state object with URL 'http://localhost:878/#a' cannot be created in a document with origin 'null' and URL 'about:srcdoc'.`
+
+  **`allow-same-origin`을 붙여도 해결되지 않는다.** 라우팅은 샌드박스 경계와 맞바꿀 대상이 아니다.
+
+- **`<base href="about:srcdoc">` 실측** — 상대 `pushState`·`replaceState`는 통과하게 되지만, scaffold의 상대 경로 자산이 깨진다(`pic.png` → 해석 불가). 쿼리스트링(`?q=1`)은 base를 바꿔도 여전히 실패한다. **채택하지 않는다** — 해시 라우팅이 base 변경 없이 동작하므로 대가를 치를 이유가 없다.
+
+- **미측정** — react-router 자체는 재지 않았다. `createHashHistory`가 `pushState`에 상대 문자열 `'#/foo'`를 넘기는 구조라 위 1행과 같은 실패에 걸릴 것으로 본다. 그 라이브러리는 예외를 잡아 `location.assign(url)`로 폴백하는데, 그러면 프레임이 부모 주소로 실제 이동해 실행 중인 코드가 사라진다. **추정이며 확인하지 않았다.** T6 착수 전에 측정한다.
+
+- **앞으로 주의할 것** — `srcdoc` 프레임 안에서 **문서 URL을 건드리는 API는 전부 같은 함정**이 있다. 원인이 origin이 아니라 base URL이므로, 샌드박스 속성을 아무리 조정해도 달라지지 않는다.
