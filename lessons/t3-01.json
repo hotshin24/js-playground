@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 2,
+  "id": "t3-01",
+  "track": "T3",
+  "order": 1,
+  "runtime": "react",
+  "title": "마크업을 코드에 그대로 쓰기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "그리는 함수를 React 가 대신합니다",
+      "brief": [
+        "앞 트랙의 마지막 레슨에서 상태를 한 곳에 모으고, 화면은 그 상태로부터 매번 만들었습니다. 그리는 함수 하나가 데이터를 받아 화면을 만들었고, 조건이 늘어도 고칠 곳은 그 함수 하나였습니다. React 는 바로 그 구조를 도구로 만든 것입니다. 여러분이 손으로 만든 그리는 함수를 React 가 대신합니다.",
+        "다만 화면을 만드는 방법이 다릅니다. 앞에서는 템플릿 리터럴로 HTML 문자열을 만들어 innerHTML 에 넣었습니다. 만든 것은 문자열이었고, 브라우저가 그 문자열을 해석해 요소로 바꿨습니다. React 에서는 마크업을 따옴표로 감싸지 않고 코드 안에 그대로 씁니다. 이 문법을 JSX 라고 부릅니다.",
+        "이 레슨에서 배우는 것은 하나입니다. JSX 를 쓰는 것입니다. <article className=\"card\">…</article> 처럼 따옴표 없이 마크업을 적습니다. HTML 처럼 보이지만 HTML 이 아니라 자바스크립트입니다. 그래서 class 가 아니라 className 이라고 씁니다. 왜 그런지는 다음 레슨에서 봅니다.",
+        "아래 두 줄은 지금 이해하지 않아도 됩니다. const root = ReactDOM.createRoot(document.querySelector('#root')); 와 root.render(...) 입니다. 만든 JSX 를 화면의 어느 자리에 붙일지 정하는 무대 장치입니다. 앞 트랙에서 scaffold 마크업을 그냥 주어진 것으로 두고 시작했던 것과 같습니다.",
+        "이 두 줄은 앞으로 모든 레슨의 코드에 이미 적혀 있습니다. 여러분이 백지에서 쓸 일은 없습니다. 붙잡고 있지 말고 그 아래 JSX 에만 집중하세요."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "코드 안의 마크업",
+      "brief": [
+        "상품 카드 한 장을 JSX 로 적었습니다. 문자열이 아니라 코드 안에 그대로 들어가 있습니다.",
+        "실행해 보세요. 미리보기에 카드가 나옵니다. 무대에는 빈 <div> 하나뿐이었는데 카드가 생겼습니다.",
+        "앞 트랙에서 문자열을 만들어 innerHTML 에 넣던 것과 결과는 같습니다. 다른 것은 따옴표가 사라졌다는 점입니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".card { max-width: 260px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__brand { margin: 0 0 2px; font-size: 0.75rem; letter-spacing: 0.04em; color: var(--c-text-muted); }",
+          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
+          ".card__price { margin: 0; color: var(--c-text-muted); }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nroot.render(\n  <article className=\"card\">\n    <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n    <p className=\"card__price\">189,000원</p>\n  </article>\n);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "코드처럼 고쳐 보기",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
+        "① 제목 글자를 다른 상품 이름으로 바꿔 보세요. 화면이 그대로 따라 바뀝니다. 마크업이 코드 안에 있으니 코드를 고치듯 고칩니다.",
+        "② className 을 class 로 바꿔 보세요. 화면은 똑같습니다. 테두리도 그대로 붙습니다. 대신 콘솔에 Warning 으로 시작하는 줄이 하나 뜹니다. Invalid DOM property `class`. Did you mean `className`? 라고 알려 줍니다. 화면만 봐서는 알 수 없는 실수입니다. 이런 것이 있으니 콘솔을 함께 보세요.",
+        "③ 여는 태그 <article> 만 <section> 으로 바꾸고 닫는 태그는 그대로 둔 채 실행해 보세요. 이번에는 화면이 아예 나오지 않고 콘솔에 에러가 뜹니다. ②와 다릅니다. 어떤 것은 경고로 끝나고 어떤 것은 실행 자체가 되지 않습니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".card { max-width: 260px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__brand { margin: 0 0 2px; font-size: 0.75rem; letter-spacing: 0.04em; color: var(--c-text-muted); }",
+          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
+          ".card__price { margin: 0; color: var(--c-text-muted); }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nroot.render(\n  <article className=\"card\">\n    <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n    <p className=\"card__price\">189,000원</p>\n  </article>\n);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "JSX 를 값으로 담기",
+      "brief": [
+        "무대 장치 두 줄은 그대로 있습니다. 화면에 붙일 것만 비어 있습니다.",
+        "null 자리를 채워 아래 카드가 나오게 해 주세요. JSX 는 값이라 변수에 담을 수 있습니다.",
+        "제목은 '오버사이즈 셔츠', 가격은 '189,000원' 입니다. 클래스 이름은 card · card__title · card__price 를 그대로 쓰세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".card { max-width: 260px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__brand { margin: 0 0 2px; font-size: 0.75rem; letter-spacing: 0.04em; color: var(--c-text-muted); }",
+          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
+          ".card__price { margin: 0; color: var(--c-text-muted); }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst card = null; // ← 여기를 채우세요\n\nroot.render(card);\n",
+      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst card = (\n  <article className=\"card\">\n    <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n    <p className=\"card__price\">189,000원</p>\n  </article>\n);\n\nroot.render(card);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "카드가 한 장 그려집니다",
+          "select": ".card",
+          "count": 1
+        },
+        {
+          "type": "dom",
+          "label": "제목이 들어갑니다",
+          "select": ".card__title",
+          "text": [
+            "오버사이즈 셔츠"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "가격이 들어갑니다",
+          "select": ".card__price",
+          "text": [
+            "189,000원"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "카드를 처음부터",
+      "brief": [
+        "브랜드 · 제목 · 가격 세 줄이 든 카드를 만들어 주세요. 브랜드는 'JW ANDERSON', 제목은 '니트 베스트', 가격은 '245,000원' 입니다.",
+        "바깥은 <article> 이고 클래스 이름은 card 입니다. 안쪽 세 줄의 클래스 이름은 card__brand · card__title · card__price 를 그대로 쓰세요.",
+        "class 가 아니라 className 입니다. 무대 장치 두 줄은 이미 적혀 있으니 card 변수만 채우면 됩니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".card { max-width: 260px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__brand { margin: 0 0 2px; font-size: 0.75rem; letter-spacing: 0.04em; color: var(--c-text-muted); }",
+          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
+          ".card__price { margin: 0; color: var(--c-text-muted); }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst card = null; // 여기를 채우세요\n\nroot.render(card);\n",
+      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst card = (\n  <article className=\"card\">\n    <p className=\"card__brand\">JW ANDERSON</p>\n    <h3 className=\"card__title\">니트 베스트</h3>\n    <p className=\"card__price\">245,000원</p>\n  </article>\n);\n\nroot.render(card);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "카드가 한 장 그려집니다",
+          "select": ".card",
+          "count": 1
+        },
+        {
+          "type": "dom",
+          "label": "브랜드가 들어갑니다",
+          "select": ".card__brand",
+          "text": [
+            "JW ANDERSON"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "제목이 들어갑니다",
+          "select": ".card__title",
+          "text": [
+            "니트 베스트"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "가격이 들어갑니다",
+          "select": ".card__price",
+          "text": [
+            "245,000원"
+          ]
+        }
+      ]
+    }
+  ]
+}

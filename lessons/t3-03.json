@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 2,
+  "id": "t3-03",
+  "track": "T3",
+  "order": 3,
+  "runtime": "react",
+  "title": "하나만 돌려줄 수 있습니다",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "값은 하나입니다",
+      "brief": [
+        "함수는 값을 하나만 돌려줍니다. 앞 트랙에서 return 이 값 하나를 내보내고 거기서 함수가 끝나는 것을 봤습니다. JSX 도 값입니다. 앞 레슨에서 JSX 를 변수에 담았던 것이 그 증거입니다. 담을 수 있으면 값입니다.",
+        "그래서 JSX 덩어리 두 개를 나란히 둘 수 없습니다. 값 두 개를 한꺼번에 내보낼 방법이 없기 때문입니다. 그렇게 쓰면 변환 단계에서 막힙니다. Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? 라고 알려 줍니다. 나란히 놓인 JSX 를 감싸라는 뜻입니다.",
+        "감싸는 방법은 둘입니다. 하나는 <div> 같은 진짜 요소로 감싸는 것입니다. 간단하지만 화면에 요소가 하나 더 생깁니다.",
+        "다른 하나는 <>...</> 로 감싸는 것입니다. 여는 자리와 닫는 자리에 이름이 없습니다. 이것을 Fragment 라고 부릅니다. 묶어 주기만 하고 화면에는 아무 요소도 만들지 않습니다.",
+        "둘 다 필요한 이유가 있습니다. 대개는 <div> 로 감싸도 아무 일이 없지만, 바깥이 CSS 그리드나 flex 인 경우에는 그 한 겹이 자식을 가로채 배치를 망가뜨립니다. 이 레슨의 무대가 바로 그런 그리드입니다. 두 방법이 어떻게 다른지 눈으로 보게 됩니다."
+      ]
+    },
+    {
+      "kind": "fill",
+      "title": "둘을 하나로 묶기",
+      "brief": [
+        "제목과 가격 두 줄을 함께 화면에 붙여야 합니다. 지금은 담을 것이 비어 있습니다.",
+        "null 자리를 채워 제목 '오버사이즈 셔츠'(card__title)와 가격 '189,000원'(card__price) 두 줄이 나오게 해 주세요.",
+        "요소를 하나 더 만들지 말고 묶기만 해야 합니다. 검사가 #root 바로 아래에 요소가 몇 개인지 확인합니다. <div> 로 감싸면 하나가 되어 실패합니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "#root { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: start; }",
+          ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
+          ".card__price { margin: 0; color: var(--c-text-muted); }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst block = null; // ← 여기를 채우세요\n\nroot.render(block);\n",
+      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst block = (\n  <>\n    <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n    <p className=\"card__price\">189,000원</p>\n  </>\n);\n\nroot.render(block);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "제목이 들어갑니다",
+          "select": ".card__title",
+          "text": [
+            "오버사이즈 셔츠"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "가격이 들어갑니다",
+          "select": ".card__price",
+          "text": [
+            "189,000원"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "감싸는 요소가 생기지 않았습니다",
+          "select": "#root > *",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "카드 두 장을 나란히",
+      "brief": [
+        "카드 두 장을 그리드에 나란히 놓아 주세요. 왼쪽은 '오버사이즈 셔츠' / '189,000원', 오른쪽은 '니트 베스트' / '245,000원' 입니다.",
+        "카드 하나는 <article className=\"card\"> 안에 제목(card__title)과 가격(card__price)이 들어갑니다.",
+        "두 장을 묶되 그리드 칸을 잡아먹는 요소를 새로 만들지 마세요. 카드 두 장이 #root 바로 아래에 나란히 놓여야 두 칸으로 벌어집니다. <div> 로 감싸면 한 칸에 몰립니다. 실행해서 눈으로 확인해 보세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "#root { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: start; }",
+          ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
+          ".card__price { margin: 0; color: var(--c-text-muted); }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 여기를 채우세요\n",
+      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nroot.render(\n  <>\n    <article className=\"card\">\n      <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n      <p className=\"card__price\">189,000원</p>\n    </article>\n    <article className=\"card\">\n      <h3 className=\"card__title\">니트 베스트</h3>\n      <p className=\"card__price\">245,000원</p>\n    </article>\n  </>\n);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "카드가 두 장입니다",
+          "select": ".card",
+          "count": 2
+        },
+        {
+          "type": "dom",
+          "label": "제목이 순서대로 들어갑니다",
+          "select": ".card__title",
+          "text": [
+            "오버사이즈 셔츠",
+            "니트 베스트"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "가격이 순서대로 들어갑니다",
+          "select": ".card__price",
+          "text": [
+            "189,000원",
+            "245,000원"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "카드가 그리드 칸에 직접 놓입니다",
+          "select": "#root > *",
+          "count": 2
+        }
+      ]
+    }
+  ]
+}
