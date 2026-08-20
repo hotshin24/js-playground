@@ -22,6 +22,8 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
   let assertEvents = [];
   let assertTotal = 0;
   let errorSeen = false;
+  // 도구를 준비하지 못한 것과 학습자 코드가 틀린 것은 다른 안내여야 한다
+  let blockedSeen = false;
   let settled = false;
 
   // done 을 마감 신호로 쓴다. 그 전까지 도착한 것만 이번 실행의 판정 재료다.
@@ -34,7 +36,10 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
     // error 가 assert 보다 먼저 도착하는 점으로 진짜 원인을 가려낸다.
     if (errorSeen) {
       results.clear();
-      results.setSummary('코드에 에러가 있어 검사하지 못했습니다.', 'error');
+      results.setSummary(
+        blockedSeen ? '실행 준비가 되지 않아 검사하지 못했습니다.' : '코드에 에러가 있어 검사하지 못했습니다.',
+        'error'
+      );
       return;
     }
     if (results.render(assertEvents, assertTotal) === assertTotal) onAllPassed();
@@ -46,7 +51,10 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
       if (event.type === 'assert') return void assertEvents.push(event);
       if (event.type === 'ready') return void onPreview('ready');
       if (event.type === 'done') {
-        panel.setStatus('실행·검사 완료 (' + event.ms + 'ms) · 감시 중');
+        // 프레임이 뜨지 못한 경우에는 감시할 대상도 없다. 같은 문구를 쓰면 거짓이 된다.
+        panel.setStatus(
+          event.started === false ? '실행하지 못했습니다' : '실행·검사 완료 (' + event.ms + 'ms) · 감시 중'
+        );
         settle();
         return;
       }
@@ -61,16 +69,22 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
         }
         return;
       }
-      if (event.type === 'error') errorSeen = true;
+      if (event.type === 'error') {
+        errorSeen = true;
+        if (event.blocked) blockedSeen = true;
+      }
       const line = formatEvent(event);
       if (line) panel.append(line.level, line.text);
+      // Babel 의 코드 프레임은 본문과 분리해 붙인다. .log 가 pre-wrap 이라 정렬이 유지된다.
+      if (event.frame) panel.append('system', event.frame);
     },
   });
 
-  const run = (code, { assertScript = '', total = 0, scaffold, preview = false } = {}) => {
+  const run = (code, { assertScript = '', total = 0, scaffold, preview = false, runtime = 'js' } = {}) => {
     assertEvents = [];
     assertTotal = total;
     errorSeen = false;
+    blockedSeen = false;
     settled = false;
 
     panel.clear();
@@ -78,7 +92,7 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
     results.clear();
     results.setSummary(total ? '검사 중…' : '');
     if (preview) onPreview('running');
-    runner.run(code, { assertScript, scaffold, preview, mount: preview ? previewMount : mount });
+    runner.run(code, { assertScript, scaffold, preview, runtime, mount: preview ? previewMount : mount });
   };
 
   // 레슨을 옮길 때 이전 레슨의 출력이 남아 있으면 안 된다

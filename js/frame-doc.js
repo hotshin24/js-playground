@@ -38,13 +38,15 @@ const BASE_STYLE = [
  * classic inline script 는 파싱 위치에서 동기 실행되므로 앞선 마크업은 이미 DOM 에 있다.
  * 그래서 사용자 코드의 querySelector 가 동작한다.
  */
-export const buildHead = ({ html = '', css = '' } = {}, withStyle) =>
+export const buildHead = ({ html = '', css = '' } = {}, withStyle, react = '') =>
   '<!doctype html>\n<html>\n<head>\n<meta charset="utf-8">\n' +
   (withStyle ? '<style>\n' + themeStyle() + BASE_STYLE + '\n<\/style>\n' : '') +
   (css ? '<style>\n' + css + '\n<\/style>\n' : '') +
   '</head>\n<body>\n' +
   (html ? escapeScriptEnd(html) + '\n' : '') +
   '<script>' + PRELUDE + ASSERT_RUNTIME + '<\/script>\n' +
+  // React 는 사용자 코드보다 앞에 놓는다. 여기서 늘어난 줄 수는 offsetOf 가 그대로 센다.
+  (react ? '<script>' + escapeScriptEnd(react) + '<\/script>\n' : '') +
   '<script>\n';
 
 export const buildTail = (assertScript) =>
@@ -55,5 +57,6 @@ export const buildTail = (assertScript) =>
 
 // window.onerror 의 lineno 는 srcdoc 문서 기준이다. 사용자 코드 1행 앞의 줄 수를 세어 빼준다.
 // scaffold 가 레슨마다 다르므로 상수로 둘 수 없다. 실행 시점에 센다.
+// React 를 넣으면 앞이 300줄 넘게 늘어나는데, 이 함수가 최종 head 를 세므로 자동으로 맞는다.
 export const offsetOf = (head) => head.split('\n').length - 1;
 

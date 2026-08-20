@@ -1,3 +1,4 @@
+const RUNTIMES = ['js', 'react'];
 const IDENTIFIER = /^[A-Za-z_$][\w$]*$/;
 const LESSON_FIELDS = ['schemaVersion', 'id', 'title'];
 const STEP_KINDS = ['read', 'run', 'tweak', 'fill', 'write'];
@@ -112,7 +113,12 @@ export function validateLesson(lesson, expectedId) {
 
   const steps = lesson.schemaVersion === 2 ? lesson.steps.map(normalizeStep) : wrapV1(lesson);
 
-  return { id: lesson.id, track: lesson.track, order: lesson.order, title: lesson.title, steps };
+  // 트랙 접두어나 코드 훑기로 추측하지 않는다. 데이터가 스스로 밝힌다.
+  // 기본값이 'js' 라 기존 레슨 파일은 한 글자도 고칠 필요가 없다.
+  const runtime = lesson.runtime === undefined ? 'js' : lesson.runtime;
+  if (!RUNTIMES.includes(runtime)) fail('runtime 은 ' + RUNTIMES.join('/') + ' 중 하나여야 합니다: ' + runtime);
+
+  return { id: lesson.id, track: lesson.track, order: lesson.order, title: lesson.title, runtime, steps };
 }
 
 /**

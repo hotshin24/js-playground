@@ -1,5 +1,9 @@
 import { buildHead, buildTail, offsetOf, escapeScriptEnd } from './frame-doc.js';
 
+// 이 두 모듈은 정적 import 하지 않는다. 정적으로 걸면 T1·T2 에서도 요청이 나가
+// F-007 의 요청 수가 늘어난다. React 레슨에서만 처음 받는다.
+const REACT_MODULES = () => Promise.all([import('./transpile.js'), import('./react-runtime.js')]);
+
 // 마지막 ping 이후 이 시간이 지나면 프레임이 멈춘 것으로 본다
 export const WATCHDOG_TIMEOUT_MS = 3000;
 const WATCHDOG_CHECK_MS = 500;
@@ -18,6 +22,9 @@ const PROTOCOL_VERSION = 1;
  */
 export function createRunner({ mount, onEvent }) {
   let frame = null;
+  // 준비(트랜스파일·React 로드)가 비동기라 늦게 도착한 결과가 새 실행을 덮을 수 있다.
+  // 세대 번호로 지난 실행의 결과를 버린다(F-008 과 같은 함정).
+  let generation = 0;
   let checkId = 0;
   let startedAt = 0;
   let lastPingAt = 0;
@@ -111,9 +118,7 @@ export function createRunner({ mount, onEvent }) {
   window.addEventListener('message', handleMessage);
   document.addEventListener('visibilitychange', handleVisibility);
 
-  const run = (code, { assertScript = '', scaffold, mount: target = mount, preview = false } = {}) => {
-    teardown(); // 실행마다 프레임 재생성 → 상태 초기화
-
+  const start = (code, { assertScript = '', scaffold, mount: target = mount, preview = false, react = '' }) => {
     doneSeen = false;
     pingSeen = false;
     loadSeen = false;
@@ -125,7 +130,7 @@ export function createRunner({ mount, onEvent }) {
     frame.addEventListener('load', handleLoad);
     // allow-same-origin 을 절대 넣지 않는다. 넣는 순간 부모 DOM/스토리지가 열린다.
     frame.setAttribute('sandbox', 'allow-scripts');
-    const head = buildHead(scaffold, preview);
+    const head = buildHead(scaffold, preview, react);
     lineOffset = offsetOf(head);
     frame.srcdoc = head + escapeScriptEnd(code) + buildTail(assertScript);
 
@@ -136,6 +141,51 @@ export function createRunner({ mount, onEvent }) {
 
     // 프레임 수명 내내 돈다. done 이후에도 멈추지 않는다.
     checkId = window.setInterval(check, WATCHDOG_CHECK_MS);
+  };
+
+  /**
+   * 프레임을 만들지 못한 채 끝난 경우. done 을 합성하지 않으면 세션이 '실행 중' 에서 마감되지 않는다.
+   * 프레임 밖의 실패라 window.onerror 가 잡지 못하므로 부모가 직접 같은 모양의 이벤트를 보낸다.
+   */
+  const failBeforeStart = (info, startedFrom) => {
+    onEvent({
+      type: 'error', message: info.message, line: info.line, col: info.col,
+      frame: info.frame || '', blocked: Boolean(info.blocked),
+    });
+    onEvent({ type: 'done', ms: Math.round(performance.now() - startedFrom), started: false });
+  };
+
+  const run = (code, options = {}) => {
+    teardown(); // 실행마다 프레임 재생성 → 상태 초기화
+
+    const gen = ++generation;
+    if (options.runtime !== 'react') {
+      start(code, options);
+      return;
+    }
+
+    // React 레슨만 여기로 온다. Babel 과 React 는 이 시점에 처음 받는다.
+    const began = performance.now();
+    REACT_MODULES()
+      .then(([tp, rt]) =>
+        Promise.all([
+          rt.loadReact().catch(() => { throw rt.LOAD_FAILED; }),
+          tp.transpile(code).catch((err) => { throw err && err.message ? err : tp.LOAD_FAILED; }),
+        ])
+      )
+      .then(([react, source]) => {
+        if (gen !== generation) return;
+        start(source, { ...options, react });
+      })
+      .catch((info) => {
+        if (gen !== generation) return;
+        failBeforeStart(
+          info && info.message
+            ? info
+            : { message: 'JSX 변환기를 불러오지 못했습니다. 네트워크를 확인하고 다시 실행해 주세요.', blocked: true },
+          began
+        );
+      });
   };
 
   const dispose = () => {

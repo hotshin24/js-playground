@@ -75,8 +75,20 @@ export const ASSERT_RUNTIME = `
       );
     });
 
-  window.__runAsserts = async (specs, target) => {
+  // React 18 의 렌더는 스케줄러를 거쳐 매크로태스크에 실린다.
+  // DOMContentLoaded 나 마이크로태스크까지 기다려도 DOM 은 아직 비어 있다(실측).
+  // setTimeout 은 쓰지 않는다 — 배경 탭에서 1초로 조여진다. MessageChannel 은 그 대상이 아니고
+  // React 스케줄러가 쓰는 통로라 우리 메시지가 렌더 뒤에 도착한다.
+  const yieldMacrotask = () =>
+    new Promise((done) => {
+      const channel = new MessageChannel();
+      channel.port1.onmessage = () => done();
+      channel.port2.postMessage(0);
+    });
+
+  window.__runAsserts = async (specs, target, waitRender) => {
     if (specs.some((spec) => spec.type === 'dom')) await domReady();
+    if (waitRender) await yieldMacrotask();
 
     for (let index = 0; index < specs.length; index += 1) {
       const spec = specs[index];
@@ -131,7 +143,7 @@ export const ASSERT_RUNTIME = `
  * 결과 Promise 를 __assertsPromise 에 남겨, done 이 그것을 기다린 뒤 발신되게 한다.
  * @returns {string} assert 가 없으면 빈 문자열
  */
-export function buildAssertScript(lesson) {
+export function buildAssertScript(lesson, { react = false } = {}) {
   const specs = (lesson.asserts || []).filter((spec) => spec.type === 'value' || spec.type === 'dom');
   if (!specs.length) return '';
 
@@ -146,7 +158,7 @@ export function buildAssertScript(lesson) {
   const lookup = needsEntry
     ? '(() => { try { return ' + lesson.entry + '; } catch (e) { return undefined; } })()'
     : 'undefined';
-  return 'window.__assertsPromise = window.__runAsserts(' + json + ', ' + lookup + ');';
+  return 'window.__assertsPromise = window.__runAsserts(' + json + ', ' + lookup + ', ' + (react ? 'true' : 'false') + ');';
 }
 
 /** assert 이벤트 → 결과 목록에 그릴 한 줄 */
