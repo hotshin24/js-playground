@@ -361,10 +361,16 @@ URL 압축 인코딩 공유 · 다중 파일 · TypeScript · 커스텀 레슨 �
 | 앱 | Vanilla JS (ES Modules) | 빌드 없음. 학습 대상을 학습 도구에 쓰지 않는다 |
 | 에디터 | CodeMirror 6 (패키지 5개) | `@codemirror/state` · `view` · `commands` · `language` · `lang-javascript`. esm.sh ESM 임포트 |
 | 트랜스파일 | **@babel/standalone** (`retainLines: true`) | 확정. 근거는 §6.3 |
-| React | React 18 + ReactDOM UMD **개발 빌드** | iframe 내부에서만 로드. 개발 빌드를 쓰는 이유는 production 이 `class`/`className` 을 구분해 주지 않기 때문이다(FINDINGS). **T8(엔진 M4)에서 ESM 전환 필요** |
+| React | React 18 + ReactDOM UMD **개발 빌드** | iframe 내부에서만 로드. 개발 빌드는 선택이 아니라 **필수 결정**이다 — 아래 참조. **T8(엔진 M4)에서 ESM 전환 필요** |
 | 스타일 | CSS 커스텀 프로퍼티 2단 토큰 (primitive → semantic) | 기존 프로젝트 규약 승계 |
 | 저장 | `localStorage` | 서버 없음 |
 | 배포 | GitHub Pages | `hotshin24` 계정 |
+
+**React 개발 빌드를 쓰는 이유.** production 빌드에서는 `class` 를 써도 `className` 과 결과가 **완전히 같다.** DOM 의 class 속성도, 적용된 스타일도, 콘솔도 같다. **잘못을 알 방법이 아예 없다.** §6.3 은 트랜스파일러 셋이 이것을 잡지 못한다는 것까지 알았고, **React 런타임도 잡지 못한다는 것은 T3 착수 전 실측에서 나왔다.** 학습자는 틀린 습관을 아무 신호 없이 굳히게 된다.
+
+**T4 에서 더 필요해진다.** `key` 누락, 훅 규칙 위반, 조건부 훅 호출은 **전부 개발 빌드 전용 경고**다. 지금 production 으로 두면 T4 에서 다시 뒤집어야 한다.
+
+**비용은 +1,023 KB · +118 ms** (142,586 B → 1,190,136 B, 220 ms → 338 ms). Babel(888 ms)과 병렬로 받으므로 체감 증가는 작고 §6.5 의 1.5s 기준 안이다. **다만 사용자 회선에서는 미측정이다.**
 
 **`codemirror` 메타 패키지를 쓰지 않는 이유:** 그 패키지의 `basicSetup` 은 autocomplete·lint·search·fold 를 통째로 끌고 온다. 필요한 확장만 직접 조립한다 — 실제로 쓰는 것은 `lineNumbers` · `history` · `bracketMatching` · `indentOnInput` · `syntaxHighlighting` · `javascript` 와 커스텀 Tab 키맵이다.
 
