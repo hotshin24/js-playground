@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 2,
+  "id": "t2-02",
+  "track": "T2",
+  "order": 2,
+  "title": "클래스 붙이고 떼기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "모양을 정하는 이름표",
+      "brief": [
+        "앞 레슨에서 요소를 붙잡아 글자를 바꿔 봤습니다. 그런데 화면에서 바꾸고 싶은 것은 글자만이 아닙니다. 품절이면 흐리게, 선택되면 진하게처럼 모양도 바꿔야 합니다.",
+        "모양은 이미 CSS 가 정하고 있습니다. .is-soldout { opacity: 0.5; } 처럼 클래스마다 규칙을 써 두면, 그 클래스가 붙은 요소는 그 모양이 됩니다. 그래서 자바스크립트는 모양을 직접 건드릴 필요가 없습니다. 이름표를 붙였다 떼기만 하면 됩니다.",
+        "붙잡은 요소에는 classList 라는 통로가 있습니다. add('이름') 로 붙이고, remove('이름') 로 떼고, contains('이름') 로 붙어 있는지 물어봅니다. 이름 앞에 점은 쓰지 않습니다. CSS 선택자가 아니라 이름 그 자체입니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "붙여 보기",
+      "brief": [
+        "아래는 첫 카드에 is-soldout 을 붙이고, 붙기 전과 뒤에 확인해 봅니다.",
+        "실행 버튼을 눌러 보세요. 첫 줄은 false, 둘째 줄은 true 가 나옵니다.",
+        "화면에서는 그 카드가 흐려집니다. 코드는 이름표만 붙였고 흐려지는 것은 CSS 가 한 일입니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<ul class=\"cards\">",
+          "  <li class=\"card\"><h3 class=\"card__title\">셔츠</h3><p class=\"card__stock\">3</p></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">모자</h3><p class=\"card__stock\">0</p></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">양말</h3><p class=\"card__stock\">5</p></li>",
+          "</ul>"
+        ],
+        "css": [
+          ".card { padding: 4px 0; }",
+          ".is-soldout { opacity: 0.5; }"
+        ]
+      },
+      "code": "const card = document.querySelector('.card');\n\nconsole.log(card.classList.contains('is-soldout'));\n\ncard.classList.add('is-soldout');\n\nconsole.log(card.classList.contains('is-soldout'));\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "떼고 두 번 붙여 보기",
+      "brief": [
+        "add 줄 아래에 card.classList.remove('is-soldout'); 을 추가하고 실행해 보세요. 마지막 확인이 다시 false 가 됩니다.",
+        "그 줄을 지우고 이번에는 add 줄을 한 번 더 복사해 두 번 붙여 보세요. 결과는 그대로 true 입니다. 같은 이름표를 두 번 붙여도 하나입니다.",
+        "이름에 점을 붙여 add('.is-soldout') 로 바꿔 보세요. 오류가 나지는 않지만 CSS 의 .is-soldout 과는 다른 이름이 되어 모양이 바뀌지 않습니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<ul class=\"cards\">",
+          "  <li class=\"card\"><h3 class=\"card__title\">셔츠</h3><p class=\"card__stock\">3</p></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">모자</h3><p class=\"card__stock\">0</p></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">양말</h3><p class=\"card__stock\">5</p></li>",
+          "</ul>"
+        ],
+        "css": [
+          ".card { padding: 4px 0; }",
+          ".is-soldout { opacity: 0.5; }"
+        ]
+      },
+      "code": "const card = document.querySelector('.card');\n\nconsole.log(card.classList.contains('is-soldout'));\n\ncard.classList.add('is-soldout');\n\nconsole.log(card.classList.contains('is-soldout'));\n"
+    },
+    {
+      "kind": "fill",
+      "title": "이름표 정하기",
+      "brief": [
+        "두 번째 카드에 품절 표시를 붙여야 합니다. 붙일 이름표가 아직 비어 있습니다.",
+        "null 자리에 CSS 에 정의된 품절 클래스 이름을 글자로 넣어 보세요. 점은 붙이지 않습니다.",
+        "채우지 않고 실행하면 이름표가 붙지 않아 검사가 실패합니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<ul class=\"cards\">",
+          "  <li class=\"card\"><h3 class=\"card__title\">셔츠</h3><p class=\"card__stock\">3</p></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">모자</h3><p class=\"card__stock\">0</p></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">양말</h3><p class=\"card__stock\">5</p></li>",
+          "</ul>"
+        ],
+        "css": [
+          ".card { padding: 4px 0; }",
+          ".is-soldout { opacity: 0.5; }"
+        ]
+      },
+      "code": "const cards = document.querySelectorAll('.card');\n\nconst soldOutClass = null; // ← 여기를 채우세요\n\ncards[1].classList.add(soldOutClass);\n",
+      "solutionCode": "const cards = document.querySelectorAll('.card');\n\nconst soldOutClass = 'is-soldout';\n\ncards[1].classList.add(soldOutClass);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "품절 표시가 붙은 카드가 하나 있습니다",
+          "select": ".card.is-soldout",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "품절 카드만 표시하기",
+      "brief": [
+        "재고가 0 인 카드에만 is-soldout 을 붙여 주세요. 재고는 카드 안 .card__stock 에 적혀 있습니다.",
+        "화면에서 읽은 글자는 숫자가 아니라 문자열입니다. 재고 0 은 '0' 으로 읽힙니다. 비교하기 전에 어떻게 다룰지 정해야 합니다.",
+        "재고가 있는 카드는 건드리지 마세요. 카드 개수도 그대로여야 합니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<ul class=\"cards\">",
+          "  <li class=\"card\"><h3 class=\"card__title\">셔츠</h3><p class=\"card__stock\">3</p></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">모자</h3><p class=\"card__stock\">0</p></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">양말</h3><p class=\"card__stock\">5</p></li>",
+          "</ul>"
+        ],
+        "css": [
+          ".card { padding: 4px 0; }",
+          ".is-soldout { opacity: 0.5; }"
+        ]
+      },
+      "code": "// 여기를 채우세요\n",
+      "solutionCode": "for (const card of document.querySelectorAll('.card')) {\n  const stock = Number(card.querySelector('.card__stock').textContent);\n\n  if (stock === 0) {\n    card.classList.add('is-soldout');\n  }\n}\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "품절 카드는 하나뿐입니다",
+          "select": ".card.is-soldout",
+          "count": 1
+        },
+        {
+          "type": "dom",
+          "label": "품절 표시가 붙은 것은 모자입니다",
+          "select": ".card.is-soldout .card__title",
+          "text": [
+            "모자"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "카드는 그대로 세 개입니다",
+          "select": ".card",
+          "count": 3
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 2,
+  "id": "t2-04",
+  "track": "T2",
+  "order": 4,
+  "title": "클릭에 반응하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "맡겨 두고 물러나기",
+      "brief": [
+        "여기까지 코드는 한 번 실행되고 끝났습니다. 요소를 찾고, 글자나 클래스를 바꾸고, 그것으로 끝이었습니다. 화면은 코드가 실행되는 그 순간에 한 번 정해졌습니다.",
+        "이벤트는 다릅니다. '지금 이렇게 바꿔라'가 아니라 '나중에 이런 일이 생기면 이걸 해라'를 등록해 두고 코드는 물러납니다. 등록하는 시점과 실행되는 시점이 갈라집니다. 등록은 즉시 끝나고, 실행은 사용자가 버튼을 누를 때 일어납니다.",
+        "비동기 레슨에서 setTimeout 에 함수를 맡기고 다음 줄로 넘어갔던 것과 같은 구조입니다. 그때는 '얼마 뒤에' 불러 달라고 맡겼고, 여기서는 '이 버튼이 눌리면' 불러 달라고 맡깁니다. 부르는 쪽이 내가 아니라 브라우저라는 점도 같습니다. 붙잡은 요소에 addEventListener('click', 맡길함수) 라고 씁니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "등록과 실행을 갈라 보기",
+      "brief": [
+        "아래는 담기 버튼에 함수를 맡기고, 맡긴 직후와 클릭한 뒤의 글자를 각각 찍습니다. button.click() 은 사람이 누른 것과 같은 클릭을 코드로 일으킵니다.",
+        "실행 버튼을 눌러 보세요. '등록 직후'에는 여전히 0개 담김 이고, '클릭 뒤'에야 1개 담김 으로 바뀝니다.",
+        "맡기는 것만으로는 아무 일도 일어나지 않습니다. 클릭이 있어야 맡긴 함수가 불립니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<p id=\"picked\">0개 담김</p>",
+          "",
+          "<ul class=\"cards\">",
+          "  <li class=\"card\"><h3 class=\"card__title\">셔츠</h3><button class=\"card__pick\">담기</button></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">모자</h3><button class=\"card__pick\">담기</button></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">양말</h3><button class=\"card__pick\">담기</button></li>",
+          "</ul>"
+        ],
+        "css": [
+          ".card { padding: 4px 0; }"
+        ]
+      },
+      "code": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nbutton.addEventListener('click', () => {\n  picked.textContent = '1개 담김';\n});\n\nconsole.log('등록 직후:', picked.textContent);\n\nbutton.click();\n\nconsole.log('클릭 뒤:', picked.textContent);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "맡기지 않고 눌러 보기",
+      "brief": [
+        "addEventListener 덩어리 세 줄을 통째로 지우고 실행해 보세요. 클릭은 그대로 일어나는데 글자는 바뀌지 않습니다. 맡겨 둔 것이 없으니 브라우저가 부를 것도 없습니다.",
+        "되돌린 뒤 이번에는 button.click(); 을 한 줄 더 추가해 보세요. 맡긴 함수가 두 번 불리지만 결과는 같습니다. 항상 같은 글자를 넣기 때문입니다.",
+        "맡긴 함수 안에서 console.log('불렸습니다'); 를 찍어 보세요. 클릭한 횟수만큼 찍힙니다. 등록은 한 번, 실행은 여러 번입니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<p id=\"picked\">0개 담김</p>",
+          "",
+          "<ul class=\"cards\">",
+          "  <li class=\"card\"><h3 class=\"card__title\">셔츠</h3><button class=\"card__pick\">담기</button></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">모자</h3><button class=\"card__pick\">담기</button></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">양말</h3><button class=\"card__pick\">담기</button></li>",
+          "</ul>"
+        ],
+        "css": [
+          ".card { padding: 4px 0; }"
+        ]
+      },
+      "code": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nbutton.addEventListener('click', () => {\n  picked.textContent = '1개 담김';\n});\n\nconsole.log('등록 직후:', picked.textContent);\n\nbutton.click();\n\nconsole.log('클릭 뒤:', picked.textContent);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "맡길 일 채우기",
+      "brief": [
+        "버튼에 함수를 맡기는 것까지는 돼 있고, 그 안에서 넣을 글자가 비어 있습니다.",
+        "null 자리에 '1개 담김' 을 넣어 보세요. 이 줄은 등록할 때가 아니라 클릭이 일어난 뒤에 실행됩니다.",
+        "채우지 않고 실행하면 클릭 뒤에 'null' 이라는 글자가 들어가 검사가 실패합니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<p id=\"picked\">0개 담김</p>",
+          "",
+          "<ul class=\"cards\">",
+          "  <li class=\"card\"><h3 class=\"card__title\">셔츠</h3><button class=\"card__pick\">담기</button></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">모자</h3><button class=\"card__pick\">담기</button></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">양말</h3><button class=\"card__pick\">담기</button></li>",
+          "</ul>"
+        ],
+        "css": [
+          ".card { padding: 4px 0; }"
+        ]
+      },
+      "code": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nbutton.addEventListener('click', () => {\n  picked.textContent = null; // ← 여기를 채우세요\n});\n\nbutton.click();\n",
+      "solutionCode": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nbutton.addEventListener('click', () => {\n  picked.textContent = '1개 담김';\n});\n\nbutton.click();\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "클릭 뒤 담긴 개수가 표시됩니다",
+          "select": "#picked",
+          "text": [
+            "1개 담김"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "담을 때마다 세기",
+      "brief": [
+        "카드마다 담기 버튼이 있습니다. 어느 버튼을 누르든 담긴 개수가 1 씩 늘어나고, 그 수가 위쪽 줄에 '2개 담김' 형태로 보이게 해 주세요.",
+        "버튼이 셋이므로 셋 모두에 맡겨야 합니다. 개수는 클릭 사이에도 남아 있어야 하니 맡긴 함수 바깥에 두어야 합니다.",
+        "이 단계에서는 button.click() 을 쓰지 마세요. 검사가 대신 눌러 줍니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<p id=\"picked\">0개 담김</p>",
+          "",
+          "<ul class=\"cards\">",
+          "  <li class=\"card\"><h3 class=\"card__title\">셔츠</h3><button class=\"card__pick\">담기</button></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">모자</h3><button class=\"card__pick\">담기</button></li>",
+          "  <li class=\"card\"><h3 class=\"card__title\">양말</h3><button class=\"card__pick\">담기</button></li>",
+          "</ul>"
+        ],
+        "css": [
+          ".card { padding: 4px 0; }"
+        ]
+      },
+      "code": "// 여기를 채우세요\n",
+      "solutionCode": "const picked = document.querySelector('#picked');\n\nlet count = 0;\n\nfor (const button of document.querySelectorAll('.card__pick')) {\n  button.addEventListener('click', () => {\n    count = count + 1;\n    picked.textContent = `${count}개 담김`;\n  });\n}\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "하나 담으면 1개 담김",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".card:nth-child(1) .card__pick"
+            }
+          ],
+          "select": "#picked",
+          "text": [
+            "1개 담김"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "다른 카드를 담으면 2개 담김 — 앞의 수가 남아 있어야 합니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".card:nth-child(2) .card__pick"
+            }
+          ],
+          "select": "#picked",
+          "text": [
+            "2개 담김"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "버튼은 그대로 세 개입니다",
+          "select": ".card__pick",
+          "count": 3
+        }
+      ]
+    }
+  ]
+}
