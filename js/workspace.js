@@ -10,6 +10,9 @@ import { createEditor } from './editor.js';
 export function createWorkspace({ hostEl, readonlyEl, onChange, onFallback, onReadonly, onEditableChange }) {
   let editor = null;
   let code = '';
+  // 에디터 생성은 비동기다. 만드는 도중에 단계가 바뀌면 뒤늦게 도착한 에디터가
+  // 엉뚱한 단계 화면에 붙는다. 세대 번호로 그 결과를 버린다.
+  let generation = 0;
 
   const getCode = () => (editor ? editor.getValue() : code);
 
@@ -21,9 +24,11 @@ export function createWorkspace({ hostEl, readonlyEl, onChange, onFallback, onRe
 
   const mount = async () => {
     if (editor) return;
+    const mine = (generation += 1);
     readonlyEl.hidden = true;
     hostEl.hidden = false;
-    editor = await createEditor({
+
+    const created = await createEditor({
       parent: hostEl,
       doc: code,
       onChange: (next) => {
@@ -31,12 +36,20 @@ export function createWorkspace({ hostEl, readonlyEl, onChange, onFallback, onRe
         onChange(next);
       },
     });
+
+    if (mine !== generation) {
+      created.destroy(); // 만드는 사이에 단계가 바뀌었다
+      return;
+    }
+
+    editor = created;
     if (editor.mode === 'textarea') onFallback();
     onEditableChange(true);
   };
 
   // <768 은 에디터를 아예 만들지 않는다. 띄워놓고 편집만 막지 않는다.
   const unmount = () => {
+    generation += 1; // 진행 중인 mount 결과를 무효화한다
     if (editor) {
       code = editor.getValue();
       editor.destroy();

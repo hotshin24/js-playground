@@ -33,26 +33,6 @@
         "값 하나를 다른 것으로 바꿔 봐도 좋다. 통과·실패는 없다."
       ],
       "code": "console.log('안녕');\nconsole.log(12000);\nconsole.log('가격은', 12000);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "값을 확인하고 돌려주기",
-      "brief": [
-        "total에는 두 값을 더한 결과가 들어 있다. 그 값이 얼마인지 console.log로 확인한 다음, null 자리에 그 숫자를 직접 적어라.",
-        "실행하면 콘솔에서 답을 볼 수 있다. 콘솔을 보고 답을 옮겨 적는 것이 이 단계의 목적이다.",
-        "getAnswer 부분은 신경 쓰지 않아도 된다. 함수는 다음 레슨에서 다룬다."
-      ],
-      "code": "const total = 12000 + 3500;\n\nconsole.log(total);\n\nconst answer = null; // ← 콘솔에 나온 숫자를 적으세요\n\nfunction getAnswer() {\n  return answer;\n}\n",
-      "entry": "getAnswer",
-      "solutionCode": "const total = 12000 + 3500;\n\nconsole.log(total);\n\nconst answer = 15500;\n\nfunction getAnswer() {\n  return answer;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "콘솔에 찍힌 값과 같은 숫자를 적었다",
-          "args": [],
-          "expected": 15500
-        }
-      ]
     }
   ]
 }

@@ -33,26 +33,6 @@
         "이름을 부른다는 것이 무슨 뜻인지 여기서 확인하는 것이 목적이다. 통과·실패는 없다."
       ],
       "code": "const price = 12000;\n\nconsole.log(price);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "이름 붙여 보기",
-      "brief": [
-        "null이라고 적힌 자리에 상품 이름을 넣어라. 문자열(string — 따옴표로 감싼 글자)이므로 '셔츠'처럼 작은따옴표로 감싼다.",
-        "아래쪽 getName 부분은 지금 신경 쓰지 않아도 된다. 함수는 T0-3에서 다룬다. 여기서는 productName에 붙인 이름이 그대로 전달된다는 것만 보면 된다.",
-        "채우지 않고 실행하면 검사 결과에 기대값과 실제값이 나란히 나온다. 실제값이 null인 것을 확인한 다음 채워도 좋다."
-      ],
-      "code": "const productName = null; // ← 여기를 채우세요\n\nfunction getName() {\n  return productName;\n}\n",
-      "entry": "getName",
-      "solutionCode": "const productName = '셔츠';\n\nfunction getName() {\n  return productName;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "productName에 '셔츠'라는 이름이 붙어 있다",
-          "args": [],
-          "expected": "셔츠"
-        }
-      ]
     }
   ]
 }
