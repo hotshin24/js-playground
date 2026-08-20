@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 2,
+  "id": "t3-13",
+  "track": "T3",
+  "order": 13,
+  "runtime": "react",
+  "title": "컴포넌트 안에 컴포넌트",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "JSX 가 값이기 때문입니다",
+      "brief": [
+        "앞 레슨에서 컴포넌트를 태그 사이에 넣어 보냈습니다. 그것이 특별한 기능처럼 보였다면, 여기서 이유를 정리하고 갑시다. 특별한 기능이 아닙니다. JSX 가 값이기 때문에 그냥 되는 일입니다.",
+        "이 트랙의 세 번째 레슨에서 JSX 를 변수에 담아 봤습니다. 담을 수 있으면 값입니다. 값이면 할 수 있는 일이 정해져 있습니다. 변수에 담고, 함수에 넘기고, 함수가 돌려주고, 배열에 넣을 수 있습니다.",
+        "지금까지 한 것이 모두 그것이었습니다. 컴포넌트는 JSX 를 돌려주는 함수였고, map 은 JSX 를 배열에 담은 것이었고, children 은 JSX 를 props 로 받은 것이었습니다. 이름은 달랐지만 전부 값을 다루는 익숙한 방법이었습니다.",
+        "그래서 컴포넌트 안에 컴포넌트를 넣는 데 새 문법이 필요 없습니다. 모양은 셋입니다. 안에 직접 쓰거나, props 로 넘기거나, 태그 사이에 넣습니다. 셋 다 결국 JSX 라는 값을 어디에 두느냐의 차이일 뿐입니다.",
+        "이렇게 조각을 짜 맞추는 것을 합성이라고 부릅니다. 뱃지는 뱃지만 알고, 카드는 뱃지가 무엇인지 몰라도 자리만 내주면 됩니다. 앞 트랙에서 문자열을 조립할 때는 이렇게 나눌 수 없었습니다. 문자열은 어디까지가 뱃지인지 표시가 남지 않기 때문입니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "뱃지를 넘겨 받기",
+      "brief": [
+        "코스 카드가 뱃지를 props 로 받습니다. 카드는 뱃지가 어떻게 생겼는지 모릅니다.",
+        "실행해 보세요. 앞의 두 카드에만 뱃지가 붙고 세 번째는 자리만 비어 있습니다.",
+        "Course 안을 보세요. {badge} 한 줄뿐입니다. 뱃지의 모양과 글자는 쓰는 쪽이 정합니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "#root { display: grid; gap: 8px; }",
+          ".course { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".course__head { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; }",
+          ".course__title { margin: 0; font-size: 1rem; }",
+          ".course__meta { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".badge { padding: 2px 6px; border-radius: 4px; background: var(--c-surface-alt);",
+          "  color: var(--c-text-warn); font-size: 0.75rem; }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Badge = ({ label }) => <span className=\"badge\">{label}</span>;\n\nconst Course = ({ title, hours, badge }) => (\n  <article className=\"course\">\n    <div className=\"course__head\">\n      <h3 className=\"course__title\">{title}</h3>\n      {badge}\n    </div>\n    <p className=\"course__meta\">{hours}시간</p>\n  </article>\n);\n\nroot.render(\n  <>\n    <Course title=\"자바스크립트 입문\" hours={12} badge={<Badge label=\"신규\" />} />\n    <Course title=\"리액트 시작하기\" hours={20} badge={<Badge label=\"인기\" />} />\n    <Course title=\"CSS 레이아웃\" hours={8} />\n  </>\n);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "값을 여기저기 옮겨 보기",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
+        "① 뱃지를 변수에 담아 보세요. const newBadge = <Badge label=\"신규\" />; 라고 만든 뒤 badge={newBadge} 로 넘깁니다. 결과가 같습니다. JSX 는 값이라 변수에 담아 두었다가 넘길 수 있습니다.",
+        "② 그 변수를 두 카드에 모두 넘겨 보세요. 같은 값을 두 번 써도 뱃지가 두 개 나옵니다. 값 하나를 두 자리에 두었을 뿐인데 화면에는 각각 그려집니다.",
+        "③ Course 가 badge 대신 children 을 받도록 바꿔 보세요. 받는 자리를 ({ title, hours, children }) 로 하고 {badge} 를 {children} 으로 고친 뒤, 쓰는 쪽을 <Course title=\"...\" hours={12}><Badge label=\"신규\" /></Course> 로 바꿉니다. 결과가 같습니다. props 로 넘기든 태그 사이에 넣든 같은 값이 같은 자리에 가는 것입니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "#root { display: grid; gap: 8px; }",
+          ".course { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".course__head { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; }",
+          ".course__title { margin: 0; font-size: 1rem; }",
+          ".course__meta { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".badge { padding: 2px 6px; border-radius: 4px; background: var(--c-surface-alt);",
+          "  color: var(--c-text-warn); font-size: 0.75rem; }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Badge = ({ label }) => <span className=\"badge\">{label}</span>;\n\nconst Course = ({ title, hours, badge }) => (\n  <article className=\"course\">\n    <div className=\"course__head\">\n      <h3 className=\"course__title\">{title}</h3>\n      {badge}\n    </div>\n    <p className=\"course__meta\">{hours}시간</p>\n  </article>\n);\n\nroot.render(\n  <>\n    <Course title=\"자바스크립트 입문\" hours={12} badge={<Badge label=\"신규\" />} />\n    <Course title=\"리액트 시작하기\" hours={20} badge={<Badge label=\"인기\" />} />\n    <Course title=\"CSS 레이아웃\" hours={8} />\n  </>\n);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "뱃지 만들어 넘기기",
+      "brief": [
+        "카드는 뱃지를 받을 자리를 마련해 두었습니다. 넘길 뱃지만 비어 있습니다.",
+        "null 자리를 채워 '신규' 라고 적힌 뱃지가 첫 카드에 붙게 해 주세요. Badge 컴포넌트가 이미 있습니다.",
+        "JSX 는 값이라 변수에 담아 두었다가 넘길 수 있습니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "#root { display: grid; gap: 8px; }",
+          ".course { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".course__head { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; }",
+          ".course__title { margin: 0; font-size: 1rem; }",
+          ".course__meta { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".badge { padding: 2px 6px; border-radius: 4px; background: var(--c-surface-alt);",
+          "  color: var(--c-text-warn); font-size: 0.75rem; }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Badge = ({ label }) => <span className=\"badge\">{label}</span>;\n\nconst Course = ({ title, hours, badge }) => (\n  <article className=\"course\">\n    <div className=\"course__head\">\n      <h3 className=\"course__title\">{title}</h3>\n      {badge}\n    </div>\n    <p className=\"course__meta\">{hours}시간</p>\n  </article>\n);\n\nconst newBadge = null; // ← 여기를 채우세요\n\nroot.render(\n  <>\n    <Course title=\"자바스크립트 입문\" hours={12} badge={newBadge} />\n    <Course title=\"CSS 레이아웃\" hours={8} />\n  </>\n);\n",
+      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Badge = ({ label }) => <span className=\"badge\">{label}</span>;\n\nconst Course = ({ title, hours, badge }) => (\n  <article className=\"course\">\n    <div className=\"course__head\">\n      <h3 className=\"course__title\">{title}</h3>\n      {badge}\n    </div>\n    <p className=\"course__meta\">{hours}시간</p>\n  </article>\n);\n\nconst newBadge = <Badge label=\"신규\" />;\n\nroot.render(\n  <>\n    <Course title=\"자바스크립트 입문\" hours={12} badge={newBadge} />\n    <Course title=\"CSS 레이아웃\" hours={8} />\n  </>\n);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "카드가 두 장 나옵니다",
+          "select": ".course",
+          "count": 2
+        },
+        {
+          "type": "dom",
+          "label": "뱃지는 하나만 붙습니다",
+          "select": ".badge",
+          "count": 1
+        },
+        {
+          "type": "dom",
+          "label": "첫 카드에 신규 뱃지가 붙습니다",
+          "select": ".course:first-child .badge",
+          "text": [
+            "신규"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "뱃지와 카드를 따로 만들기",
+      "brief": [
+        "뱃지 컴포넌트 Badge 와 코스 카드 Course 를 각각 만들고 코스 셋을 그려 주세요.",
+        "Badge 는 label 을 받아 <span className=\"badge\"> 로 그립니다. Course 는 title · hours · badge 를 받아 <article className=\"course\"> 안에 제목 묶음(course__head 안의 course__title 과 뱃지 자리)과 시간 줄(course__meta)을 그립니다.",
+        "코스는 '자바스크립트 입문' 12시간에 '신규', '리액트 시작하기' 20시간에 '인기', 'CSS 레이아웃' 8시간이며 뱃지가 없습니다. 뱃지가 없는 카드에는 <span> 자체가 없어야 합니다.",
+        "Course 는 뱃지가 어떻게 생겼는지 몰라야 합니다. 뱃지 모양을 Course 안에 적지 마세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "#root { display: grid; gap: 8px; }",
+          ".course { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".course__head { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; }",
+          ".course__title { margin: 0; font-size: 1rem; }",
+          ".course__meta { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".badge { padding: 2px 6px; border-radius: 4px; background: var(--c-surface-alt);",
+          "  color: var(--c-text-warn); font-size: 0.75rem; }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 여기를 채우세요\n",
+      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Badge = ({ label }) => <span className=\"badge\">{label}</span>;\n\nconst Course = ({ title, hours, badge }) => (\n  <article className=\"course\">\n    <div className=\"course__head\">\n      <h3 className=\"course__title\">{title}</h3>\n      {badge}\n    </div>\n    <p className=\"course__meta\">{hours}시간</p>\n  </article>\n);\n\nroot.render(\n  <>\n    <Course title=\"자바스크립트 입문\" hours={12} badge={<Badge label=\"신규\" />} />\n    <Course title=\"리액트 시작하기\" hours={20} badge={<Badge label=\"인기\" />} />\n    <Course title=\"CSS 레이아웃\" hours={8} />\n  </>\n);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "카드가 세 장 나옵니다",
+          "select": ".course",
+          "count": 3
+        },
+        {
+          "type": "dom",
+          "label": "제목이 순서대로 들어갑니다",
+          "select": ".course__title",
+          "text": [
+            "자바스크립트 입문",
+            "리액트 시작하기",
+            "CSS 레이아웃"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "뱃지는 둘뿐입니다",
+          "select": ".badge",
+          "text": [
+            "신규",
+            "인기"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "세 번째 카드에는 뱃지가 없습니다",
+          "select": ".course:nth-child(3) .badge",
+          "count": 0
+        },
+        {
+          "type": "dom",
+          "label": "시간 줄이 순서대로 들어갑니다",
+          "select": ".course__meta",
+          "text": [
+            "12시간",
+            "20시간",
+            "8시간"
+          ]
+        }
+      ]
+    }
+  ]
+}

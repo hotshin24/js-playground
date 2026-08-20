@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 2,
+  "id": "t3-14",
+  "track": "T3",
+  "order": 14,
+  "runtime": "react",
+  "title": "어디서 자를 것인가",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "정답이 하나가 아닙니다",
+      "brief": [
+        "여기까지 컴포넌트를 만드는 방법을 배웠습니다. 이번에는 방법이 아니라 판단입니다. 화면을 컴포넌트로 옮길 때 어디서 잘라야 하는가. 이 질문에는 정답이 하나가 아닙니다. 같은 화면을 두 사람이 다르게 나눠도 둘 다 맞을 수 있습니다.",
+        "그래도 기준은 있습니다. 첫째, 같은 것이 두 번 이상 나오면 나눕니다. 상품 카드가 화면에 열 번 나온다면 카드는 컴포넌트입니다. 이건 쉽습니다.",
+        "둘째, 이름을 붙일 수 있으면 나눌 만합니다. '뱃지', '가격 표시', '강사 줄' 처럼 그 덩어리를 부르는 이름이 자연스럽게 나온다면, 그 덩어리는 하나의 뜻을 가진 조각입니다. 이름이 안 떠오르고 '카드 위쪽 부분' 같은 말밖에 안 나온다면 아직 자를 때가 아닙니다.",
+        "셋째, 나누는 데에도 비용이 있습니다. 이름을 지어야 하고, 어떤 값을 받을지 정해야 하고, 읽는 사람은 그 컴포넌트를 찾아가야 합니다. 한 화면에서 한 번만 쓰이는 세 줄짜리 덩어리를 컴포넌트로 빼면, 얻는 것보다 오가는 수고가 큽니다.",
+        "지나치게 잘게 나눈 코드는 읽기 어렵습니다. 제목 한 줄이 Title 컴포넌트가 되고, 그 안의 글자가 다시 Text 컴포넌트가 되면, 화면 하나를 이해하는 데 파일 여섯 곳을 열어야 합니다. 나누지 않은 코드보다 나쁩니다.",
+        "그래서 실제로는 이렇게 합니다. 처음에는 한 덩어리로 씁니다. 같은 것이 반복되거나, 덩어리가 너무 길어져 한눈에 안 들어오거나, 이름이 또렷하게 떠오를 때 나눕니다. 미리 나누지 않습니다. 이 레슨에는 검사가 없습니다. 나누는 방식에 정답이 없어 결과 화면으로는 갈리지 않기 때문입니다. 직접 나눠 보고 어느 쪽이 읽기 좋은지 판단해 보세요."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "한 덩어리로 된 카드",
+      "brief": [
+        "코스 카드가 한 덩어리로 적혀 있습니다. 제목과 뱃지, 시간, 강사 줄이 모두 Course 안에 있습니다.",
+        "실행해 보세요. 카드 두 장이 정상으로 나옵니다. 나누지 않아도 화면은 잘 나옵니다.",
+        "코드를 위에서 아래로 읽어 보세요. 지금 길이라면 한눈에 들어옵니다. 나눌 이유가 아직 뚜렷하지 않습니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "#root { display: grid; gap: 8px; }",
+          ".course { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".course__head { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; }",
+          ".course__title { margin: 0; font-size: 1rem; }",
+          ".course__meta { margin: 0 0 6px; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".course__tutor { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 0.875rem; }",
+          ".course__tutor-face { width: 22px; height: 22px; border-radius: 50%; background: var(--c-accent-weak); }",
+          ".badge { padding: 2px 6px; border-radius: 4px; background: var(--c-surface-alt);",
+          "  color: var(--c-text-warn); font-size: 0.75rem; }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst courses = [\n  { id: 'js', title: '자바스크립트 입문', hours: 12, badge: '신규', tutor: '김강사' },\n  { id: 'react', title: '리액트 시작하기', hours: 20, badge: '인기', tutor: '이강사' },\n];\n\n// 한 덩어리로 적었습니다. 아직 아무것도 나누지 않았습니다.\nconst Course = ({ title, hours, badge, tutor }) => (\n  <article className=\"course\">\n    <div className=\"course__head\">\n      <h3 className=\"course__title\">{title}</h3>\n      <span className=\"badge\">{badge}</span>\n    </div>\n    <p className=\"course__meta\">{hours}시간</p>\n    <p className=\"course__tutor\">\n      <span className=\"course__tutor-face\" />\n      {tutor}\n    </p>\n  </article>\n);\n\nroot.render(\n  <>\n    {courses.map((course) => (\n      <Course\n        key={course.id}\n        title={course.title}\n        hours={course.hours}\n        badge={course.badge}\n        tutor={course.tutor}\n      />\n    ))}\n  </>\n);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "나눠 보고 되돌려 보기",
+      "brief": [
+        "정답을 맞히는 단계가 아닙니다. 세 가지를 해 보고 어느 쪽이 읽기 좋은지 스스로 판단해 보세요. 매번 다시 실행하면 화면이 그대로인 것을 확인할 수 있습니다.",
+        "① 뱃지를 나눠 보세요. const Badge = ({ label }) => <span className=\"badge\">{label}</span>; 를 만들고 Course 안에서 <Badge label={badge} /> 로 바꿉니다. 화면은 그대로입니다. 뱃지는 이름이 또렷하고 다른 카드에서도 쓸 만하니 나눌 이유가 있습니다.",
+        "② 강사 줄도 나눠 보세요. 얼굴 동그라미와 이름이 함께 다니고 '강사 줄' 이라는 이름이 붙습니다. 이것도 나눌 만합니다. 여기까지가 대체로 합의되는 선입니다.",
+        "③ 이번에는 지나치게 나눠 보세요. 제목 한 줄을 Title 컴포넌트로, 시간 한 줄을 Meta 컴포넌트로 빼 봅니다. 화면은 여전히 그대로입니다. 그런데 Course 안을 읽어 보세요. 무엇이 어떻게 생겼는지 알려면 컴포넌트 넷을 오가야 합니다. 나누기 전보다 읽기 어려워졌는지 판단해 보세요.",
+        "①②만 남기고 ③은 되돌리는 것이 흔한 선택입니다. 다르게 판단해도 됩니다. 다만 왜 그렇게 잘랐는지 말할 수 있어야 합니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "#root { display: grid; gap: 8px; }",
+          ".course { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".course__head { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; }",
+          ".course__title { margin: 0; font-size: 1rem; }",
+          ".course__meta { margin: 0 0 6px; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".course__tutor { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 0.875rem; }",
+          ".course__tutor-face { width: 22px; height: 22px; border-radius: 50%; background: var(--c-accent-weak); }",
+          ".badge { padding: 2px 6px; border-radius: 4px; background: var(--c-surface-alt);",
+          "  color: var(--c-text-warn); font-size: 0.75rem; }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst courses = [\n  { id: 'js', title: '자바스크립트 입문', hours: 12, badge: '신규', tutor: '김강사' },\n  { id: 'react', title: '리액트 시작하기', hours: 20, badge: '인기', tutor: '이강사' },\n];\n\n// 한 덩어리로 적었습니다. 아직 아무것도 나누지 않았습니다.\nconst Course = ({ title, hours, badge, tutor }) => (\n  <article className=\"course\">\n    <div className=\"course__head\">\n      <h3 className=\"course__title\">{title}</h3>\n      <span className=\"badge\">{badge}</span>\n    </div>\n    <p className=\"course__meta\">{hours}시간</p>\n    <p className=\"course__tutor\">\n      <span className=\"course__tutor-face\" />\n      {tutor}\n    </p>\n  </article>\n);\n\nroot.render(\n  <>\n    {courses.map((course) => (\n      <Course\n        key={course.id}\n        title={course.title}\n        hours={course.hours}\n        badge={course.badge}\n        tutor={course.tutor}\n      />\n    ))}\n  </>\n);\n"
+    }
+  ]
+}
