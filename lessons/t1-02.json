@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "t1-02",
+  "track": "T1",
+  "order": 2,
+  "title": "각자 기억하는 카운터 두 개",
+  "brief": [
+    "함수는 값처럼 다룰 수 있다. 함수가 함수를 만들어 돌려줄 수도 있고, 그렇게 만들어진 함수는 자기가 태어난 자리의 변수를 계속 기억한다.",
+    "alternate 함수를 완성하라. 서로 독립된 카운터 두 개를 만들고, A · B · A · B · A 순서로 다섯 번 호출한 결과를 배열로 반환한다. 각 카운터는 호출될 때마다 1씩 커진 값을 돌려주며, 첫 호출은 시작값보다 1 큰 값이다.",
+    "카운터를 만드는 함수를 따로 만들어 두 번 호출하는 방식으로 풀어라. 두 카운터는 서로의 숫자에 영향을 주지 않아야 하고, alternate를 다시 호출하면 언제나 처음부터 다시 세어야 한다."
+  ],
+  "entry": "alternate",
+  "starterCode": "function alternate(startA, startB) {\n  // 여기를 채우세요\n}\n",
+  "solutionCode": "function alternate(startA, startB) {\n  const makeCounter = (start) => {\n    let current = start;\n\n    return () => {\n      current += 1;\n      return current;\n    };\n  };\n\n  const a = makeCounter(startA);\n  const b = makeCounter(startB);\n\n  return [a(), b(), a(), b(), a()];\n}\n",
+  "asserts": [
+    {
+      "type": "value",
+      "label": "시작값이 다른 두 카운터가 섞이지 않는다",
+      "args": [0, 100],
+      "expected": [1, 101, 2, 102, 3]
+    },
+    {
+      "type": "value",
+      "label": "시작값이 같아도 각자 센다 — 하나를 공유하면 여기서 어긋난다",
+      "args": [10, 10],
+      "expected": [11, 11, 12, 12, 13]
+    },
+    {
+      "type": "value",
+      "label": "다시 호출하면 처음부터 — 상태가 함수 밖으로 새면 안 된다",
+      "args": [0, 100],
+      "expected": [1, 101, 2, 102, 3]
+    }
+  ]
+}
