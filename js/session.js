@@ -45,7 +45,7 @@ export function createSession({ mount, logEl, statusEl, listEl, summaryEl, onAll
     onEvent: (event) => {
       if (event.type === 'assert') return void assertEvents.push(event);
       if (event.type === 'done') {
-        panel.setStatus('동기 실행 완료 (' + event.ms + 'ms) · 감시 중');
+        panel.setStatus('실행·검사 완료 (' + event.ms + 'ms) · 감시 중');
         settle();
         return;
       }

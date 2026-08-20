@@ -8,6 +8,7 @@ export const ASSERT_RUNTIME = `
 (() => {
   // 사용자 코드가 실행되기 전에 참조를 확보한다
   const rt = window.__pgRuntime;
+  const ASYNC_TIMEOUT_MS = 2000;
 
   const deepEqual = (a, b) => {
     if (Object.is(a, b)) return true;
@@ -21,22 +22,40 @@ export const ASSERT_RUNTIME = `
   };
 
   const describe = (err) => (err && err.name ? err.name + ': ' + err.message : String(err));
+  const isThenable = (value) => Boolean(value) && typeof value.then === 'function';
 
-  window.__runAsserts = (specs, target) => {
-    specs.forEach((spec, index) => {
+  // 영영 resolve 되지 않는 Promise 는 워치독이 잡지 못한다(ping 이 계속 흐르므로).
+  // assert 레벨에서 끊어야 학습자에게 멈춘 화면을 보여주지 않는다.
+  const withTimeout = (value) =>
+    new Promise((resolve, reject) => {
+      const timer = setTimeout(
+        () => reject(new Error('결과가 ' + ASYNC_TIMEOUT_MS / 1000 + '초 안에 완료되지 않았습니다')),
+        ASYNC_TIMEOUT_MS
+      );
+      Promise.resolve(value).then(
+        (settled) => { clearTimeout(timer); resolve(settled); },
+        (err) => { clearTimeout(timer); reject(err); }
+      );
+    });
+
+  window.__runAsserts = async (specs, target) => {
+    for (let index = 0; index < specs.length; index += 1) {
+      const spec = specs[index];
       const base = { type: 'assert', index: index, label: spec.label };
 
       if (typeof target !== 'function') {
         rt.post(Object.assign({}, base, { status: 'error', message: '함수를 찾을 수 없습니다' }));
-        return;
+        continue;
       }
 
       let actual;
       try {
         actual = target.apply(null, spec.args || []);
+        // 반환값이 thenable 이면 기다렸다가 비교한다. Promise 자체를 비교하면 항상 실패한다.
+        if (isThenable(actual)) actual = await withTimeout(actual);
       } catch (err) {
         rt.post(Object.assign({}, base, { status: 'error', message: describe(err) }));
-        return;
+        continue;
       }
 
       rt.post(Object.assign({}, base, {
@@ -44,7 +63,7 @@ export const ASSERT_RUNTIME = `
         expected: rt.fmt(spec.expected),
         actual: rt.fmt(actual),
       }));
-    });
+    }
   };
 })();
 `;
@@ -52,6 +71,7 @@ export const ASSERT_RUNTIME = `
 /**
  * 레슨의 value assert 들을 실행하는 script 태그 본문을 만든다.
  * 사용자 코드 뒤, done 앞에 놓이므로 줄 번호 오프셋에는 영향이 없다.
+ * 결과 Promise 를 __assertsPromise 에 남겨, done 이 그것을 기다린 뒤 발신되게 한다.
  * @returns {string} assert 가 없으면 빈 문자열
  */
 export function buildAssertScript(lesson) {
@@ -66,7 +86,7 @@ export function buildAssertScript(lesson) {
   const json = JSON.stringify(specs).replace(/</g, '\\u003c');
   // const/let/class 로 선언한 함수는 window 에 붙지 않는다. 식별자를 그대로 적어 렉시컬 스코프로 찾는다.
   const lookup = '(() => { try { return ' + lesson.entry + '; } catch (e) { return undefined; } })()';
-  return 'window.__runAsserts(' + json + ', ' + lookup + ');';
+  return 'window.__assertsPromise = window.__runAsserts(' + json + ', ' + lookup + ');';
 }
 
 /** assert 이벤트 → 결과 목록에 그릴 한 줄 */

@@ -9,8 +9,9 @@ const PROTOCOL_VERSION = 1;
 /**
  * srcdoc 구성: [프렐류드+assert 런타임] → [사용자 코드] → [assert 실행] → [완료 신호].
  * script 태그를 분리해 두면 사용자 코드가 구문 에러로 죽어도 뒤 태그는 실행되어
- * assert 결과와 done 이 발신된다. done 은 '동기 실행 완료'일 뿐 실행 종료가 아니다.
- * assert 를 done 앞에 두는 이유: done 이 '이번 실행의 판정이 전부 도착했다'는 마감 신호가 된다.
+ * assert 결과와 done 이 발신된다.
+ * done 은 '이번 실행의 판정이 전부 끝났다'는 뜻이다. assert 가 비동기면 그것까지 기다린다.
+ * 다만 프레임은 done 이후에도 살아 있어 워치독의 감시 대상으로 남는다.
  */
 const DOC_HEAD =
   '<!doctype html>\n<html>\n<head>\n<meta charset="utf-8">\n</head>\n<body>\n' +
@@ -20,7 +21,8 @@ const DOC_HEAD =
 const buildTail = (assertScript) =>
   '\n<\/script>\n' +
   (assertScript ? '<script>' + assertScript + '<\/script>\n' : '') +
-  '<script>window.__done();<\/script>\n</body>\n</html>';
+  '<script>Promise.resolve(window.__assertsPromise).then(() => window.__done());<\/script>\n' +
+  '</body>\n</html>';
 
 // window.onerror 의 lineno 는 srcdoc 문서 기준이다. 사용자 코드 1행 앞의 줄 수를 세어 빼준다.
 const LINE_OFFSET = DOC_HEAD.split('\n').length - 1;

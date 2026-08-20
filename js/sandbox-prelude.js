@@ -83,7 +83,8 @@ export const PRELUDE = `
   // 이후 사용자 코드가 이 전역을 덮어써도 assert 런타임은 영향받지 않는다.
   window.__pgRuntime = { post: post, fmt: (value) => fmt(value, 0, new Set()) };
 
-  // done 은 '동기 실행 완료'만 뜻한다. 실행 종료가 아니다 — 이후 비동기 코드는 워치독이 본다.
+  // done 은 '이번 실행의 판정이 전부 끝났다'는 뜻이다. 프레임 종료가 아니다 —
+  // done 이후에도 프레임은 살아 있고 워치독이 계속 본다.
   window.__done = () => post({ type: 'done' });
 
   // --- 하트비트 워치독 ---
