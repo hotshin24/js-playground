@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 2,
+  "id": "t1-12",
+  "track": "T1",
+  "order": 12,
+  "title": "reduce로 하나로 접기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "여러 개를 하나로",
+      "brief": [
+        "map은 값마다 바꿔 배열을 돌려주고, filter는 골라내 배열을 돌려줍니다. 둘 다 결과가 배열입니다. 그런데 합계나 개수처럼 결과가 값 하나여야 할 때가 있습니다.",
+        "reduce는 배열을 훑으면서 값을 하나로 접습니다. 앞에서 반복문으로 합계를 낼 때 total을 만들어 두고 값마다 더했던 것과 같은 일입니다. 그 total을 reduce가 대신 들고 다닙니다.",
+        "그래서 콜백이 값을 두 개 받습니다. 지금까지 쌓인 값과 이번에 꺼낸 값입니다. 콜백이 돌려준 것이 다음 번의 쌓인 값이 됩니다. 시작할 때 무엇부터 쌓을지는 두 번째 인자로 정합니다. 합계라면 0에서 시작합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "합계를 내 보기",
+      "brief": [
+        "아래는 가격 세 개를 더합니다. sum이 쌓인 값, price가 이번에 꺼낸 값입니다.",
+        "실행 버튼을 눌러 보세요. 6000이 나옵니다. 0에서 시작해 1000, 3000, 6000 순으로 쌓인 결과입니다.",
+        "map이나 filter와 달리 결과가 배열이 아니라 숫자 하나입니다."
+      ],
+      "code": "const prices = [1000, 2000, 3000];\n\nconst total = prices.reduce((sum, price) => sum + price, 0);\n\nconsole.log(total);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "시작값을 바꿔 보기",
+      "brief": [
+        "마지막의 0을 10000으로 바꾸고 실행해 보세요. 결과가 16000이 됩니다. 배송비를 미리 얹어 두고 시작한 셈입니다.",
+        "시작값은 첫 번째 쌓인 값입니다. 배열이 비어 있으면 한 번도 쌓지 않으므로 시작값이 그대로 결과가 됩니다. 배열을 []로 비우고 확인해 보세요.",
+        "sum + price를 sum + 1로 바꿔 보세요. 값을 세는 것이 됩니다. 무엇을 쌓을지는 콜백이 정합니다."
+      ],
+      "code": "const prices = [1000, 2000, 3000];\n\nconst total = prices.reduce((sum, price) => sum + price, 0);\n\nconsole.log(total);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "쌓는 방법 채우기",
+      "brief": [
+        "콜백의 오른쪽이 비어 있습니다. 여기 적은 값이 다음 번의 sum이 됩니다.",
+        "null 자리에 지금까지 쌓인 sum에 이번 price를 더한 값을 넣어 보세요.",
+        "채우지 않고 실행하면 마지막 콜백이 돌려준 null이 그대로 결과가 됩니다."
+      ],
+      "code": "const prices = [1000, 2000, 3000];\n\nconst total = prices.reduce((sum, price) => null, 0); // ← 여기를 채우세요\n\nfunction getTotal() {\n  return total;\n}\n",
+      "entry": "getTotal",
+      "solutionCode": "const prices = [1000, 2000, 3000];\n\nconst total = prices.reduce((sum, price) => sum + price, 0);\n\nfunction getTotal() {\n  return total;\n}\n",
+      "asserts": [
+        { "type": "value", "label": "1000 + 2000 + 3000 은 6000입니다", "args": [], "expected": 6000 }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "장바구니 합계를 내는 함수",
+      "brief": [
+        "totalPrice 함수를 완성해 보세요. 상품 객체 배열을 받아 가격의 합계를 숫자 하나로 반환합니다.",
+        "각 상품은 name과 price를 가지고 있습니다. 쌓아야 하는 것은 price입니다.",
+        "빈 배열이 들어오면 0이 나와야 합니다. 시작값을 무엇으로 둘지가 여기서 갈립니다."
+      ],
+      "code": "function totalPrice(items) {\n  // 여기를 채우세요\n}\n",
+      "entry": "totalPrice",
+      "solutionCode": "function totalPrice(items) {\n  return items.reduce((sum, item) => sum + item.price, 0);\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "세 상품의 가격을 더합니다",
+          "args": [[{ "name": "셔츠", "price": 39000 }, { "name": "모자", "price": 19000 }, { "name": "양말", "price": 5000 }]],
+          "expected": 63000
+        },
+        { "type": "value", "label": "빈 장바구니는 0입니다 — 시작값이 그대로 결과가 됩니다", "args": [[]], "expected": 0 },
+        {
+          "type": "value",
+          "label": "0원 상품이 섞여도 합계는 그대로입니다",
+          "args": [[{ "name": "사은품", "price": 0 }, { "name": "셔츠", "price": 39000 }]],
+          "expected": 39000
+        }
+      ]
+    }
+  ]
+}

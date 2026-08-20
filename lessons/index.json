@@ -90,6 +90,24 @@
       "title": "map으로 배열 변환하기"
     },
     {
+      "id": "t1-11",
+      "track": "T1",
+      "order": 11,
+      "title": "filter로 골라내기"
+    },
+    {
+      "id": "t1-12",
+      "track": "T1",
+      "order": 12,
+      "title": "reduce로 하나로 접기"
+    },
+    {
+      "id": "t1-13",
+      "track": "T1",
+      "order": 13,
+      "title": "구조 분해로 꺼내기"
+    },
+    {
       "id": "t1-14",
       "track": "T1",
       "order": 14,

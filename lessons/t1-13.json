@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "t1-13",
+  "track": "T1",
+  "order": 13,
+  "title": "구조 분해로 꺼내기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "꺼내면서 이름 붙이기",
+      "brief": [
+        "객체에서 값을 꺼낼 때 지금까지는 점을 찍었습니다. 한 함수 안에서 같은 객체의 값을 여러 번 쓰면 product.name, product.price처럼 앞부분이 계속 반복됩니다.",
+        "구조 분해(destructuring — 묶음에서 값을 꺼내 각각 이름을 붙이는 표기)는 그 반복을 없앱니다. const { name, price } = product; 라고 쓰면 product.name이 name에, product.price가 price에 담깁니다.",
+        "중괄호 안에 적는 것은 꺼낼 이름표입니다. 객체에 없는 이름을 적으면 undefined가 담깁니다. 그럴 때 쓸 값을 미리 정해 둘 수 있는데, name = '이름 없음' 처럼 등호를 붙이면 됩니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "꺼내 보기",
+      "brief": [
+        "아래는 같은 객체에서 값을 두 가지 방법으로 꺼냅니다. 위는 점을 찍었고 아래는 구조 분해입니다.",
+        "실행 버튼을 눌러 보세요. 네 줄 모두 같은 값이 나옵니다. 꺼내는 방법만 다를 뿐 결과는 같습니다.",
+        "구조 분해 쪽이 한 줄로 끝난다는 점을 확인하세요. 꺼낼 것이 많아질수록 차이가 커집니다."
+      ],
+      "code": "const product = { name: '셔츠', price: 39000 };\n\nconsole.log(product.name);\nconsole.log(product.price);\n\nconst { name, price } = product;\n\nconsole.log(name);\nconsole.log(price);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "없는 이름을 꺼내 보기",
+      "brief": [
+        "구조 분해 줄을 const { name, price, color } = product; 로 바꾸고 console.log(color); 를 한 줄 넣어 실행해 보세요. undefined가 나옵니다.",
+        "이번에는 color = '기본색' 처럼 등호를 붙여 보세요. 객체에 color가 없으니 이 값이 대신 담깁니다.",
+        "객체에 color: '파랑' 을 추가하고 다시 실행해 보세요. 이번에는 기본값이 쓰이지 않습니다. 기본값은 값이 없을 때만 나섭니다."
+      ],
+      "code": "const product = { name: '셔츠', price: 39000 };\n\nconsole.log(product.name);\nconsole.log(product.price);\n\nconst { name, price } = product;\n\nconsole.log(name);\nconsole.log(price);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "기본값 정하기",
+      "brief": [
+        "아래 상품에는 stock이 없습니다. 그래서 구조 분해에 기본값을 붙여 두었는데, 그 값이 아직 null입니다.",
+        "null 자리에 기본 재고로 쓸 숫자 0을 넣어 보세요.",
+        "채우지 않고 실행하면 실제값이 null로 나옵니다."
+      ],
+      "code": "const product = { name: '모자', price: 19000 };\n\nconst { stock = null } = product; // ← 여기를 채우세요\n\nfunction getStock() {\n  return stock;\n}\n",
+      "entry": "getStock",
+      "solutionCode": "const product = { name: '모자', price: 19000 };\n\nconst { stock = 0 } = product;\n\nfunction getStock() {\n  return stock;\n}\n",
+      "asserts": [
+        { "type": "value", "label": "재고가 없으면 기본값 0이 담깁니다", "args": [], "expected": 0 }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "주문 한 줄 만들기",
+      "brief": [
+        "orderLine 함수를 완성해 보세요. 주문 항목을 받아 name과 count만 담은 새 객체를 반환합니다.",
+        "count가 없으면 1로 봅니다. 구조 분해의 기본값을 쓰면 조건문 없이 처리됩니다.",
+        "count가 0으로 들어오는 경우도 있습니다. 0은 없는 것이 아니므로 그대로 0이어야 합니다."
+      ],
+      "code": "function orderLine(item) {\n  // 여기를 채우세요\n}\n",
+      "entry": "orderLine",
+      "solutionCode": "function orderLine(item) {\n  const { name, count = 1 } = item;\n\n  return { name, count };\n}\n",
+      "asserts": [
+        { "type": "value", "label": "수량이 있으면 그대로 옮깁니다", "args": [{ "name": "셔츠", "count": 3 }], "expected": { "name": "셔츠", "count": 3 } },
+        { "type": "value", "label": "수량이 없으면 1로 봅니다", "args": [{ "name": "모자" }], "expected": { "name": "모자", "count": 1 } },
+        { "type": "value", "label": "0은 없는 것이 아닙니다 — 기본값이 나서지 않습니다", "args": [{ "name": "양말", "count": 0 }], "expected": { "name": "양말", "count": 0 } }
+      ]
+    }
+  ]
+}

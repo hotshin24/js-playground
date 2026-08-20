@@ -1,57 +1,116 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "t1-10",
   "track": "T1",
   "order": 10,
   "title": "map으로 배열 변환하기",
-  "brief": [
-    "배열의 모든 요소를 같은 규칙으로 바꿔 새 배열을 만들 때 map을 씁니다. 원본 배열은 건드리지 않고 새 배열을 반환합니다.",
-    "doubleAll 함수를 완성해 보세요. 숫자 배열을 받아 각 요소를 2배로 만든 새 배열을 반환해야 합니다.",
-    "for 문으로도 같은 결과를 낼 수 있지만, 이 레슨의 목표는 map으로 푸는 것입니다."
-  ],
-  "entry": "doubleAll",
-  "starterCode": "function doubleAll(numbers) {\n  // 여기를 채우세요\n}\n",
-  "solutionCode": "function doubleAll(numbers) {\n  return numbers.map((n) => n * 2);\n}\n",
-  "asserts": [
+  "steps": [
     {
-      "type": "value",
-      "label": "[1, 2, 3] → [2, 4, 6]",
-      "args": [
-        [
-          1,
-          2,
-          3
-        ]
-      ],
-      "expected": [
-        2,
-        4,
-        6
+      "kind": "read",
+      "title": "값마다 같은 일을 시키기",
+      "brief": [
+        "배열의 값을 하나씩 꺼내 같은 일을 하는 것은 반복문으로 해봤습니다. 그런데 그 결과를 다시 배열로 모으는 일이 아주 자주 나옵니다. 가격 배열을 할인가 배열로, 상품 배열을 이름 배열로 바꾸는 식입니다.",
+        "map은 그 일을 한 줄로 합니다. 배열의 각 값에 같은 함수를 적용하고, 나온 값들을 새 배열에 담아 돌려줍니다.",
+        "이때 넘겨주는 함수를 콜백(callback — 다른 함수에게 넘겨서 대신 불러 달라고 맡기는 함수)이라고 합니다. 앞에서 배운 화살표 표기를 여기에 씁니다. 원본 배열은 그대로 남고 새 배열이 하나 생깁니다."
       ]
     },
     {
-      "type": "value",
-      "label": "음수와 0이 섞인 배열",
-      "args": [
-        [
-          -2,
-          0,
-          5
-        ]
+      "kind": "run",
+      "title": "두 배로 만들어 보기",
+      "brief": [
+        "아래는 가격 세 개를 각각 두 배로 만듭니다. map에 넘긴 화살표 함수가 값마다 한 번씩 불립니다.",
+        "실행 버튼을 눌러 보세요. 첫 줄은 새로 만들어진 배열이고, 둘째 줄은 원본입니다.",
+        "원본이 그대로라는 점을 확인하세요. map은 바꾸는 것이 아니라 새로 만드는 것입니다."
       ],
-      "expected": [
-        -4,
-        0,
-        10
+      "code": "const prices = [1000, 2000, 3000];\n\nconst doubled = prices.map((price) => price * 2);\n\nconsole.log(doubled);\nconsole.log(prices);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "규칙을 바꿔 보기",
+      "brief": [
+        "price * 2를 price + 500으로 바꾸고 실행해 보세요. 배열의 길이는 그대로인데 값만 달라집니다.",
+        "map은 값을 골라내지 않습니다. 넣은 개수와 나온 개수가 항상 같습니다.",
+        "price * 2를 price > 1500으로 바꿔 보세요. 참·거짓 배열이 나옵니다. 콜백이 무엇을 돌려주든 그대로 담깁니다."
+      ],
+      "code": "const prices = [1000, 2000, 3000];\n\nconst doubled = prices.map((price) => price * 2);\n\nconsole.log(doubled);\nconsole.log(prices);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "콜백 안 채우기",
+      "brief": [
+        "map에 넘길 화살표 함수의 오른쪽이 비어 있습니다. 중괄호가 없으므로 여기 적은 값이 그대로 새 배열에 담깁니다.",
+        "null 자리에 price를 두 배로 만드는 식을 넣어 보세요.",
+        "채우지 않고 실행하면 실제값이 null이 세 개 담긴 배열로 나옵니다."
+      ],
+      "code": "const prices = [1000, 2000, 3000];\n\nconst doubled = prices.map((price) => null); // ← 여기를 채우세요\n\nfunction getDoubled() {\n  return doubled;\n}\n",
+      "entry": "getDoubled",
+      "solutionCode": "const prices = [1000, 2000, 3000];\n\nconst doubled = prices.map((price) => price * 2);\n\nfunction getDoubled() {\n  return doubled;\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "세 값이 모두 두 배가 됩니다",
+          "args": [],
+          "expected": [
+            2000,
+            4000,
+            6000
+          ]
+        }
       ]
     },
     {
-      "type": "value",
-      "label": "빈 배열은 빈 배열로",
-      "args": [
-        []
+      "kind": "write",
+      "title": "map으로 배열 변환하기",
+      "brief": [
+        "배열의 모든 요소를 같은 규칙으로 바꿔 새 배열을 만들 때 map을 씁니다. 원본 배열은 건드리지 않고 새 배열을 반환합니다.",
+        "doubleAll 함수를 완성해 보세요. 숫자 배열을 받아 각 요소를 2배로 만든 새 배열을 반환해야 합니다.",
+        "for 문으로도 같은 결과를 낼 수 있지만, 이 레슨의 목표는 map으로 푸는 것입니다."
       ],
-      "expected": []
+      "code": "function doubleAll(numbers) {\n  // 여기를 채우세요\n}\n",
+      "entry": "doubleAll",
+      "solutionCode": "function doubleAll(numbers) {\n  return numbers.map((n) => n * 2);\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "[1, 2, 3] → [2, 4, 6]",
+          "args": [
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          "expected": [
+            2,
+            4,
+            6
+          ]
+        },
+        {
+          "type": "value",
+          "label": "음수와 0이 섞인 배열",
+          "args": [
+            [
+              -2,
+              0,
+              5
+            ]
+          ],
+          "expected": [
+            -4,
+            0,
+            10
+          ]
+        },
+        {
+          "type": "value",
+          "label": "빈 배열은 빈 배열로",
+          "args": [
+            []
+          ],
+          "expected": []
+        }
+      ]
     }
   ]
 }
