@@ -2,42 +2,68 @@
   "schemaVersion": 1,
   "lessons": [
     {
+      "id": "t0-01",
+      "track": "T0",
+      "order": 1,
+      "title": "값에 이름 붙이기"
+    },
+    {
+      "id": "t0-02",
+      "track": "T0",
+      "order": 2,
+      "title": "값을 눈으로 확인하기"
+    },
+    {
+      "id": "t0-03",
+      "track": "T0",
+      "order": 3,
+      "title": "입력을 받아 결과 돌려주기"
+    },
+    {
       "id": "t1-01",
+      "track": "T1",
       "order": 1,
       "title": "값의 타입과 형변환 들여다보기"
     },
     {
       "id": "t1-02",
+      "track": "T1",
       "order": 2,
       "title": "각자 기억하는 카운터 두 개"
     },
     {
       "id": "t1-03",
+      "track": "T1",
       "order": 3,
       "title": "map으로 배열 변환하기"
     },
     {
       "id": "t1-04",
+      "track": "T1",
       "order": 4,
       "title": "객체에서 필요한 것만 꺼내 새 객체 만들기"
     },
     {
       "id": "t1-05",
+      "track": "T1",
       "order": 5,
       "title": "조건으로 분류하고 세기"
     },
     {
       "id": "t1-06",
+      "track": "T1",
       "order": 6,
       "title": "데이터에서 HTML 문자열 만들기"
     },
     {
       "id": "t1-07",
+      "track": "T1",
       "order": 7,
       "title": "모듈 패턴으로 내부 상태 감추기"
     },
     {
       "id": "t1-08",
+      "track": "T1",
       "order": 8,
       "title": "기다렸다가 결과 돌려주기"
     }

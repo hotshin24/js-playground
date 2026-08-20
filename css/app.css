@@ -55,6 +55,8 @@ h1 { font-size: 1.2rem; }
 
 @media (min-width: 1280px) {
   .layout { grid-template-columns: minmax(0, 20rem) minmax(0, 1fr) minmax(0, 24rem); }
+  /* read 단계는 문제 패널 하나뿐이라 3열 격자에 남겨두면 폭이 20rem 으로 눌린다 */
+  .layout--read { grid-template-columns: minmax(0, 46rem); }
   .panel--brief { grid-column: auto; }
   .button--toggle { display: none; }
   .layout--brief-collapsed .panel--brief { display: block; }
@@ -96,6 +98,37 @@ h1 { font-size: 1.2rem; }
   font-size: 0.75rem;
   white-space: nowrap;
 }
+
+/* 단계 종류가 패널 표시를 정한다. 열 배치는 반응형 규칙에 맡기고 여기서는 빼기만 한다. */
+.layout--read :is(.panel--editor, .panel--result) { display: none; }
+:is(.layout--run, .layout--tweak) .result-block { display: none; }
+
+.step-list { margin: 0 0 var(--sp-3); padding: 0; list-style: none; }
+.step-list li { margin-bottom: var(--sp-1); }
+
+.step-link {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  width: 100%;
+  padding: var(--sp-1) var(--sp-2);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: none;
+  color: var(--c-text-strong);
+  font: inherit;
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+}
+.step-link:hover { background: var(--c-surface); }
+.step-link--current { border-color: var(--c-accent); background: var(--c-surface); font-weight: 600; }
+.step-link--done { color: var(--c-text-ok); }
+
+.step-kind { margin-left: auto; color: var(--c-text-muted); font-size: 0.75rem; white-space: nowrap; }
+.step-link--current .step-kind { color: var(--c-accent); }
+
+.step-title { margin-top: var(--sp-3); }
 
 /* ---------- 에디터 ---------- */
 .editor-host {

@@ -1,39 +1,29 @@
 import { createSession } from './session.js';
 import { createWorkspace } from './workspace.js';
 import { createLayout } from './layout.js';
-import { createNav } from './nav.js';
+import { createNav, createStepNav } from './nav.js';
+import { createProgress, NOTICE } from './progress.js';
 import { loadIndex, loadLesson } from './lessons.js';
 import { buildAssertScript } from './validator.js';
-import {
-  hashText, readLesson, readLessons, saveLesson, clearLesson, setLastLesson, readLastLesson,
-} from './storage.js';
-
-const SAVE_DELAY_MS = 600;
-
-const NOTICE = {
-  fallback: '편집기를 불러오지 못해 기본 입력창으로 대체했습니다. 구문 강조가 없지만 실행과 검사는 그대로 동작합니다.',
-  saveFailed: '진행 상황을 저장하지 못했습니다. 학습은 그대로 계속할 수 있습니다.',
-  readonly: '화면이 좁아 읽기 전용입니다. 768px 이상에서 편집하고 실행할 수 있습니다.',
-  starterChanged: '이 레슨의 초기 코드가 바뀌었습니다. 되돌리기를 누르면 새 초기 코드로 시작합니다.',
-};
+import { policyOf, labelOf, isChecked } from './steps.js';
+import { setLastLesson, readLastPosition } from './storage.js';
 
 const el = (id) => document.querySelector('#' + id);
 const runButton = el('run');
 const resetButton = el('reset');
+const nextButton = el('next-step');
 
 let index = [];
 let lesson = null;
-let assertScript = '';
-let assertTotal = 0;
-let starterHash = '';
-let saveTimer = 0;
+let stepIndex = 0;
+let step = null;
+let ran = false;
 
-const shown = new Set();
-const notify = (message) => {
-  if (shown.has(message)) return; // 같은 안내를 반복해 띄우지 않는다
-  shown.add(message);
-  el('notice').textContent = message;
-};
+const progress = createProgress({
+  noticeEl: el('notice'),
+  getCode: () => workspace.getCode(),
+  onChanged: () => refreshNav(),
+});
 
 const session = createSession({
   mount: el('sandbox-host'),
@@ -41,75 +31,73 @@ const session = createSession({
   statusEl: el('status'),
   listEl: el('asserts'),
   summaryEl: el('assert-summary'),
-  onAllPassed: () => {
-    saveLesson(lesson.id, { completedAt: new Date().toISOString() });
-    refreshNav();
-  },
+  onAllPassed: () => progress.complete({ ran: true, changed: true, allPassed: true }),
 });
-
-const flushSave = () => {
-  if (saveTimer) clearTimeout(saveTimer);
-  saveTimer = 0;
-  if (!lesson) return;
-  if (!saveLesson(lesson.id, { code: workspace.getCode(), starterHash })) notify(NOTICE.saveFailed);
-};
 
 const workspace = createWorkspace({
   hostEl: el('editor-host'),
   readonlyEl: el('readonly-code'),
-  onChange: () => {
-    if (saveTimer) clearTimeout(saveTimer);
-    saveTimer = window.setTimeout(flushSave, SAVE_DELAY_MS);
-  },
-  onFallback: () => notify(NOTICE.fallback),
-  onReadonly: () => notify(NOTICE.readonly),
+  onChange: () => progress.schedule(),
+  onFallback: () => progress.notify(NOTICE.fallback),
+  onReadonly: () => progress.notify(NOTICE.readonly),
   onEditableChange: (editable) => {
-    runButton.disabled = !editable;
-    resetButton.disabled = !editable;
-    if (!editable) flushSave();
+    applyPolicy(editable);
+    if (!editable) progress.flush();
   },
 });
 
 const nav = createNav({
   listEl: el('lesson-list'),
   onSelect: (id) => {
-    if (!lesson || id !== lesson.id) openLesson(id);
+    if (!lesson || id !== lesson.id) openLesson(id, 0);
+  },
+});
+
+const stepNav = createStepNav({
+  listEl: el('step-list'),
+  onSelect: (next) => {
+    if (next !== stepIndex) showStep(next);
   },
 });
 
 const refreshNav = () => {
-  const saved = readLessons();
   nav.render(index, {
     currentId: lesson ? lesson.id : null,
-    isCompleted: (id) => Boolean(saved[id] && saved[id].completedAt),
+    isCompleted: (id) => progress.isLessonDone(id, lesson && lesson.id === id ? lesson.steps.length : 0),
   });
+  if (lesson) {
+    stepNav.render(lesson.steps, { currentIndex: stepIndex, isCompleted: progress.isStepDone, labelOf });
+  }
 };
 
-const run = () => session.run(workspace.getCode(), { assertScript, total: assertTotal });
+const applyPolicy = (editable) => {
+  const policy = policyOf(step ? step.kind : 'write');
+  runButton.hidden = !policy.run;
+  resetButton.hidden = !policy.reset;
+  runButton.disabled = !editable;
+  resetButton.disabled = !editable;
+};
+
+const assertTotal = () => (step.asserts || []).filter((spec) => spec.type === 'value').length;
+
+const run = () => {
+  ran = true;
+  const changed = progress.isCurrentCodeChanged();
+  session.run(workspace.getCode(), { assertScript: buildAssertScript(step), total: assertTotal() });
+  // 검사가 없는 단계는 실행 자체가 완료 신호다
+  if (!isChecked(step.kind)) progress.complete({ ran: true, changed, allPassed: false });
+};
 
 const reset = () => {
-  if (!lesson) return;
-  clearLesson(lesson.id); // 저장분까지 초기화한다
-  setLastLesson(lesson.id);
-  workspace.setCode(lesson.starterCode);
+  progress.reset();
+  workspace.setCode(step.code);
   workspace.focus();
-  session.setStatus('초기 코드로 되돌렸습니다');
-  refreshNav();
+  session.setStatus('예제 코드로 되돌렸습니다');
 };
 
-/** 이어하기 우선순위: 저장분 > 초기 코드. 단 손대지 않은 저장분은 조용히 갱신한다. */
-const resolveCode = (data, saved) => {
-  if (!saved || typeof saved.code !== 'string') return data.starterCode;
-  if (saved.starterHash === starterHash) return saved.code;
-  if (hashText(saved.code) === saved.starterHash) return data.starterCode;
-  notify(NOTICE.starterChanged);
-  return saved.code;
-};
-
-const renderLesson = (data) => {
-  el('lesson-title').textContent = data.title;
+const renderBrief = (brief) => {
   el('lesson-brief').replaceChildren(
-    ...data.brief.map((text) => {
+    ...brief.map((text) => {
       const p = document.createElement('p');
       p.textContent = text;
       return p;
@@ -117,24 +105,45 @@ const renderLesson = (data) => {
   );
 };
 
-const openLesson = async (id) => {
-  flushSave(); // 옮기기 전에 이전 레슨을 저장한다
-  const data = await loadLesson(id);
+const showStep = (next) => {
+  progress.flush();
+  stepIndex = next;
+  step = lesson.steps[next];
+  ran = false;
+  progress.setContext(lesson.id, next, step);
 
-  lesson = data;
-  assertScript = buildAssertScript(data);
-  assertTotal = (data.asserts || []).filter((spec) => spec.type === 'value').length;
-  starterHash = hashText(data.starterCode);
-
+  el('main').className = 'layout layout--' + step.kind;
+  // 제목이 단계 이름과 같으면 "실행해 보기 · 실행해 보기"가 된다
+  const kindLabel = labelOf(step.kind);
+  el('step-title').textContent = step.title && step.title !== kindLabel ? step.title + ' · ' + kindLabel : kindLabel;
+  renderBrief(step.brief);
   session.clear();
-  renderLesson(data);
-  workspace.setCode(resolveCode(data, readLesson(id)));
-  setLastLesson(id);
+  nextButton.hidden = next >= lesson.steps.length - 1;
+
+  workspace.setCode(progress.resolveCode(step));
+  setLastLesson(lesson.id, next);
   refreshNav();
+
+  // read 단계는 에디터를 만들지 않는다. CodeMirror 를 받지 않아 첫 화면이 즉시 뜬다.
+  const editable = policyOf(step.kind).editor && layout.isEditable();
+  if (editable) workspace.mount();
+  else workspace.unmount();
+  applyPolicy(editable);
+};
+
+const openLesson = async (id, from) => {
+  lesson = await loadLesson(id);
+  el('lesson-title').textContent = lesson.title;
+  showStep(Math.min(from, lesson.steps.length - 1));
+};
+
+const goNext = () => {
+  progress.complete({ ran, changed: true, allPassed: false }); // read 의 유일한 완료 신호
+  if (stepIndex < lesson.steps.length - 1) showStep(stepIndex + 1);
 };
 
 const handleKeydown = (e) => {
-  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && step && policyOf(step.kind).run) {
     e.preventDefault();
     run();
   }
@@ -143,32 +152,37 @@ const handleKeydown = (e) => {
 const layout = createLayout({
   root: el('main'),
   toggleButton: el('brief-toggle'),
-  onEditableChange: (editable) => (editable ? workspace.mount() : workspace.unmount()),
+  onEditableChange: (editable) => {
+    if (step && policyOf(step.kind).editor && editable) workspace.mount();
+    else workspace.unmount();
+  },
 });
 
 runButton.addEventListener('click', run);
 resetButton.addEventListener('click', reset);
+nextButton.addEventListener('click', goNext);
 document.addEventListener('keydown', handleKeydown);
 
 const dispose = () => {
-  flushSave();
+  progress.flush();
   runButton.removeEventListener('click', run);
   resetButton.removeEventListener('click', reset);
+  nextButton.removeEventListener('click', goNext);
   document.removeEventListener('keydown', handleKeydown);
   workspace.destroy();
   layout.dispose();
   nav.dispose();
+  stepNav.dispose();
   session.dispose();
 };
 window.addEventListener('pagehide', dispose, { once: true });
 
 loadIndex()
-  .then(async (entries) => {
+  .then((entries) => {
     index = entries;
-    const last = readLastLesson();
-    const start = entries.some((entry) => entry.id === last) ? last : entries[0].id;
-    await openLesson(start);
-    return layout.isEditable() ? workspace.mount() : workspace.unmount();
+    const last = readLastPosition();
+    const start = entries.some((entry) => entry.id === last.lessonId) ? last.lessonId : entries[0].id;
+    return openLesson(start, start === last.lessonId ? last.stepIndex : 0);
   })
   .catch((err) => {
     el('lesson-title').textContent = '레슨을 불러오지 못했습니다';

@@ -18,7 +18,13 @@
       </nav>
 
       <h1 id="lesson-title">레슨을 불러오는 중…</h1>
+
+      <ol id="step-list" class="step-list" aria-label="단계 목록"></ol>
+
+      <h2 id="step-title" class="step-title"></h2>
       <div id="lesson-brief" class="lesson-brief"></div>
+
+      <button id="next-step" class="button button--primary" type="button">다음 단계</button>
     </section>
 
     <section class="panel panel--editor" aria-labelledby="editor-heading">
@@ -39,14 +45,16 @@
 
       <div class="button-row">
         <button id="run" class="button button--primary" type="button" disabled>실행</button>
-        <button id="reset" class="button" type="button" disabled>초기 코드로 되돌리기</button>
+        <button id="reset" class="button" type="button" disabled>코드 되돌리기</button>
       </div>
     </section>
 
-    <section class="panel panel--result" aria-labelledby="result-heading">
-      <h2 id="result-heading">검사 결과</h2>
-      <p id="assert-summary" class="status" role="status" aria-live="polite"></p>
-      <ol id="asserts" class="assert-list"></ol>
+    <section class="panel panel--result">
+      <div id="result-block" class="result-block">
+        <h2>검사 결과</h2>
+        <p id="assert-summary" class="status" role="status" aria-live="polite"></p>
+        <ol id="asserts" class="assert-list"></ol>
+      </div>
 
       <h2>콘솔</h2>
       <p id="status" class="status" role="status" aria-live="polite"></p>
