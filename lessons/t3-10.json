@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 2,
+  "id": "t3-10",
+  "track": "T3",
+  "order": 10,
+  "runtime": "react",
+  "title": "갈라 그리기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "글자가 아니라 요소를 고릅니다",
+      "brief": [
+        "앞에서 삼항 연산자를 한 번 썼습니다. sale 이 참이면 '할인 중', 아니면 '정가' 를 골랐습니다. 그때 고른 것은 글자였습니다. 줄 자체는 언제나 있었고 안의 글자만 바뀌었습니다.",
+        "이번에는 요소를 고릅니다. 품절 뱃지는 품절일 때만 있어야 합니다. 팔고 있는 상품에 빈 뱃지가 남아 있으면 안 됩니다. 줄 자체가 나타나거나 사라져야 합니다.",
+        "방법은 같습니다. 중괄호 안은 자바스크립트이고, 삼항 연산자는 두 값 중 하나를 고릅니다. 그 값이 글자여도 되고 JSX 여도 됩니다. {soldOut ? <p className=\"card__badge\">품절</p> : null} 이라고 쓰면 됩니다.",
+        "아무것도 내지 않으려면 null 을 고르면 됩니다. 앞에서 본 성질입니다. null 과 false 와 undefined 는 화면에 아무 글자도 남기지 않습니다. 그래서 뱃지가 통째로 사라집니다.",
+        "앞 트랙에서는 이것을 문자열로 처리했습니다. 조건에 따라 다른 HTML 문자열을 만들어 innerHTML 에 넣었습니다. 지금은 문자열을 조립하지 않고 요소를 고릅니다. 조건이 늘어도 어느 요소가 언제 나오는지 그 자리에서 읽힙니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "품절일 때만 뱃지",
+      "brief": [
+        "카드 둘을 그립니다. 첫 카드만 품절입니다.",
+        "실행해 보세요. 첫 카드에만 품절 뱃지가 있습니다. 둘째 카드에는 뱃지 줄 자체가 없습니다.",
+        "미리보기에서 둘째 카드를 보세요. 빈 자리도 남지 않았습니다. null 을 골랐기 때문에 요소가 아예 만들어지지 않았습니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "#root { display: grid; gap: 8px; }",
+          ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
+          ".card__price { margin: 0; color: var(--c-text-muted); }",
+          ".card__badge { margin: 6px 0 0; padding: 2px 6px; display: inline-block; border-radius: 4px;",
+          "  background: var(--c-surface-alt); color: var(--c-text-warn); font-size: 0.75rem; }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = ({ title, price, soldOut }) => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">{title}</h3>\n    <p className=\"card__price\">{price}</p>\n    {soldOut ? <p className=\"card__badge\">품절</p> : null}\n  </article>\n);\n\nroot.render(\n  <>\n    <Card title=\"오버사이즈 셔츠\" price=\"189,000원\" soldOut />\n    <Card title=\"니트 베스트\" price=\"245,000원\" />\n  </>\n);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "고르는 것을 바꿔 보기",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
+        "① : null 을 : <p className=\"card__badge\">판매 중</p> 로 바꿔 보세요. 이제 둘 중 하나가 언제나 나옵니다. 삼항은 두 값 중 하나를 고르는 것이므로 양쪽 다 요소여도 됩니다.",
+        "② 조건을 {soldOut ? null : <p className=\"card__badge\">판매 중</p>} 로 뒤집어 보세요. 품절이 아닌 카드에만 뱃지가 붙습니다. 어느 쪽에 null 을 두느냐로 갈립니다.",
+        "③ 뱃지 전체를 글자로 바꿔 보세요. {soldOut ? '품절' : '판매 중'} 입니다. 글자만 나오고 뱃지 모양은 사라집니다. 앞 레슨에서 한 것이 이것이고, 이번 레슨은 요소를 고른다는 점이 다릅니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "#root { display: grid; gap: 8px; }",
+          ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
+          ".card__price { margin: 0; color: var(--c-text-muted); }",
+          ".card__badge { margin: 6px 0 0; padding: 2px 6px; display: inline-block; border-radius: 4px;",
+          "  background: var(--c-surface-alt); color: var(--c-text-warn); font-size: 0.75rem; }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = ({ title, price, soldOut }) => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">{title}</h3>\n    <p className=\"card__price\">{price}</p>\n    {soldOut ? <p className=\"card__badge\">품절</p> : null}\n  </article>\n);\n\nroot.render(\n  <>\n    <Card title=\"오버사이즈 셔츠\" price=\"189,000원\" soldOut />\n    <Card title=\"니트 베스트\" price=\"245,000원\" />\n  </>\n);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "뱃지 갈라 넣기",
+      "brief": [
+        "카드는 거의 다 돼 있습니다. 뱃지 자리만 비어 있습니다.",
+        "null 자리를 채워 soldOut 이 참일 때만 <p className=\"card__badge\">품절</p> 이 나오게 해 주세요. 참이 아니면 아무 요소도 없어야 합니다.",
+        "삼항 연산자로 요소와 null 중 하나를 고르면 됩니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "#root { display: grid; gap: 8px; }",
+          ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
+          ".card__price { margin: 0; color: var(--c-text-muted); }",
+          ".card__badge { margin: 6px 0 0; padding: 2px 6px; display: inline-block; border-radius: 4px;",
+          "  background: var(--c-surface-alt); color: var(--c-text-warn); font-size: 0.75rem; }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = ({ title, price, soldOut }) => {\n  const badge = null; // ← 여기를 채우세요\n\n  return (\n    <article className=\"card\">\n      <h3 className=\"card__title\">{title}</h3>\n      <p className=\"card__price\">{price}</p>\n      {badge}\n    </article>\n  );\n};\n\nroot.render(\n  <>\n    <Card title=\"오버사이즈 셔츠\" price=\"189,000원\" soldOut />\n    <Card title=\"니트 베스트\" price=\"245,000원\" />\n  </>\n);\n",
+      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = ({ title, price, soldOut }) => {\n  const badge = soldOut ? <p className=\"card__badge\">품절</p> : null;\n\n  return (\n    <article className=\"card\">\n      <h3 className=\"card__title\">{title}</h3>\n      <p className=\"card__price\">{price}</p>\n      {badge}\n    </article>\n  );\n};\n\nroot.render(\n  <>\n    <Card title=\"오버사이즈 셔츠\" price=\"189,000원\" soldOut />\n    <Card title=\"니트 베스트\" price=\"245,000원\" />\n  </>\n);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "카드가 두 장 나옵니다",
+          "select": ".card",
+          "count": 2
+        },
+        {
+          "type": "dom",
+          "label": "뱃지는 하나만 있습니다",
+          "select": ".card__badge",
+          "count": 1
+        },
+        {
+          "type": "dom",
+          "label": "품절 카드에만 붙습니다",
+          "select": ".card:first-child .card__badge",
+          "text": [
+            "품절"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "세 상품의 상태 갈라 보이기",
+      "brief": [
+        "카드 컴포넌트 Card 를 만들고 상품 세 개를 그려 주세요. 받을 값은 title · price · soldOut 셋입니다.",
+        "카드는 <article className=\"card\"> 안에 제목(card__title)과 가격(card__price)이 들어갑니다.",
+        "soldOut 이 참인 카드에만 <p className=\"card__badge\">품절</p> 이 하나 더 나와야 합니다. 참이 아니면 그 요소가 아예 없어야 합니다.",
+        "상품은 '오버사이즈 셔츠' 189,000원 품절, '니트 베스트' 245,000원, '울 코트' 590,000원 품절 순입니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "#root { display: grid; gap: 8px; }",
+          ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
+          ".card__price { margin: 0; color: var(--c-text-muted); }",
+          ".card__badge { margin: 6px 0 0; padding: 2px 6px; display: inline-block; border-radius: 4px;",
+          "  background: var(--c-surface-alt); color: var(--c-text-warn); font-size: 0.75rem; }"
+        ]
+      },
+      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 여기를 채우세요\n",
+      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = ({ title, price, soldOut }) => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">{title}</h3>\n    <p className=\"card__price\">{price}</p>\n    {soldOut ? <p className=\"card__badge\">품절</p> : null}\n  </article>\n);\n\nroot.render(\n  <>\n    <Card title=\"오버사이즈 셔츠\" price=\"189,000원\" soldOut />\n    <Card title=\"니트 베스트\" price=\"245,000원\" />\n    <Card title=\"울 코트\" price=\"590,000원\" soldOut />\n  </>\n);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "카드가 세 장 나옵니다",
+          "select": ".card",
+          "count": 3
+        },
+        {
+          "type": "dom",
+          "label": "제목이 순서대로 들어갑니다",
+          "select": ".card__title",
+          "text": [
+            "오버사이즈 셔츠",
+            "니트 베스트",
+            "울 코트"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "뱃지는 품절인 둘에만 있습니다",
+          "select": ".card__badge",
+          "text": [
+            "품절",
+            "품절"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "가운데 카드에는 뱃지가 없습니다",
+          "select": ".card:nth-child(2) .card__badge",
+          "count": 0
+        }
+      ]
+    }
+  ]
+}
