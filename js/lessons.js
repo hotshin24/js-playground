@@ -18,12 +18,23 @@ const checkAsserts = (step, where) => {
   if (!Array.isArray(asserts)) fail(where + ' 의 asserts 는 배열이어야 합니다');
   asserts.forEach((spec, i) => {
     if (!spec || typeof spec.type !== 'string') fail(where + ' asserts[' + i + '] 에 type 이 없습니다');
+    if (spec.type !== 'dom') return;
+    const at = where + ' asserts[' + i + ']';
+    if (typeof spec.select !== 'string') fail(at + ' 의 dom assert 에는 select 가 필요합니다');
+    // 둘 다 있으면 무엇을 검사하는지가 모호해진다
+    const hasCount = spec.count !== undefined;
+    const hasText = spec.text !== undefined;
+    if (hasCount === hasText) fail(at + ' 의 dom assert 는 count 와 text 중 하나만 있어야 합니다');
+    if (hasText && !Array.isArray(spec.text)) fail(at + ' 의 text 는 배열이어야 합니다');
   });
   // entry 는 무조건 필수가 아니다. 반환값을 읽어야 하는 value assert 가 있을 때만 요구한다.
   if (asserts.some((spec) => spec.type === 'value') && !IDENTIFIER.test(step.entry || '')) {
     fail(where + ' 에 value assert 가 있으면 entry 가 유효한 식별자여야 합니다: ' + step.entry);
   }
 };
+
+// scaffold 는 줄 배열로 적는다. JSON 안에서 \n 이스케이프를 없애기 위해서다.
+const joinLines = (value) => (Array.isArray(value) ? value.join('\n') : typeof value === 'string' ? value : '');
 
 const normalizeStep = (step, i) => {
   const where = 'steps[' + i + ']';
@@ -44,6 +55,10 @@ const normalizeStep = (step, i) => {
     entry: step.entry || '',
     solutionCode: step.solutionCode || '',
     asserts: step.asserts || [],
+    scaffold: {
+      html: joinLines(step.scaffold && step.scaffold.html),
+      css: joinLines(step.scaffold && step.scaffold.css),
+    },
   };
 };
 

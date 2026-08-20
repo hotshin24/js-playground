@@ -75,12 +75,17 @@ const applyPolicy = (editable) => {
   resetButton.disabled = !editable;
 };
 
-const assertTotal = () => (step.asserts || []).filter((spec) => spec.type === 'value').length;
+const assertTotal = () =>
+  (step.asserts || []).filter((spec) => spec.type === 'value' || spec.type === 'dom').length;
 
 const run = () => {
   ran = true;
   const changed = progress.isCurrentCodeChanged();
-  session.run(workspace.getCode(), { assertScript: buildAssertScript(step), total: assertTotal() });
+  session.run(workspace.getCode(), {
+    assertScript: buildAssertScript(step),
+    total: assertTotal(),
+    scaffold: step.scaffold,
+  });
   // 검사가 없는 단계는 실행 자체가 완료 신호다
   if (!isChecked(step.kind)) progress.complete({ ran: true, changed, allPassed: false });
 };

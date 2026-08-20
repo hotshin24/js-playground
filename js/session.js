@@ -64,7 +64,7 @@ export function createSession({ mount, logEl, statusEl, listEl, summaryEl, onAll
     },
   });
 
-  const run = (code, { assertScript = '', total = 0 } = {}) => {
+  const run = (code, { assertScript = '', total = 0, scaffold } = {}) => {
     assertEvents = [];
     assertTotal = total;
     errorSeen = false;
@@ -74,7 +74,7 @@ export function createSession({ mount, logEl, statusEl, listEl, summaryEl, onAll
     panel.setStatus('실행 중…');
     results.clear();
     results.setSummary(total ? '검사 중…' : '');
-    runner.run(code, { assertScript });
+    runner.run(code, { assertScript, scaffold });
   };
 
   // 레슨을 옮길 때 이전 레슨의 출력이 남아 있으면 안 된다

@@ -24,6 +24,43 @@ export const ASSERT_RUNTIME = `
   const describe = (err) => (err && err.name ? err.name + ': ' + err.message : String(err));
   const isThenable = (value) => Boolean(value) && typeof value.then === 'function';
 
+  // assert 는 파싱 도중 실행된다. 학습자가 DOMContentLoaded 로 코드를 감싸면
+  // 핸들러가 붙기 전에 클릭이 날아가 정답인데도 전부 실패한다.
+  const domReady = () =>
+    document.readyState === 'loading'
+      ? new Promise((done) => document.addEventListener('DOMContentLoaded', done, { once: true }))
+      : Promise.resolve();
+
+  // 보이는 문자열을 읽는다. 폼 컨트롤은 타이핑한 값이 textContent 에 없다.
+  const visibleText = (node) =>
+    ['INPUT', 'TEXTAREA', 'SELECT'].includes(node.tagName) ? node.value : node.textContent;
+
+  const runActions = async (actions) => {
+    for (const step of actions) {
+      const target = document.querySelector(step.selector);
+      if (!target) throw new Error('요소를 찾지 못했습니다: ' + step.selector);
+
+      if (step.action === 'click') {
+        target.click();
+      } else if (step.action === 'fill') {
+        target.value = step.value;
+        target.dispatchEvent(new Event('input', { bubbles: true }));
+        target.dispatchEvent(new Event('change', { bubbles: true }));
+      } else {
+        throw new Error('알 수 없는 동작: ' + step.action);
+      }
+
+      // 마이크로태스크 한 번만 양보한다. setTimeout 은 백그라운드 탭에서 1초로 조여진다.
+      await null;
+    }
+  };
+
+  const readDom = async (spec) => {
+    await runActions(spec.actions || []);
+    const nodes = Array.prototype.slice.call(document.querySelectorAll(spec.select));
+    return spec.count !== undefined ? nodes.length : nodes.map(visibleText);
+  };
+
   // 영영 resolve 되지 않는 Promise 는 워치독이 잡지 못한다(ping 이 계속 흐르므로).
   // assert 레벨에서 끊어야 학습자에게 멈춘 화면을 보여주지 않는다.
   const withTimeout = (value) =>
@@ -39,9 +76,29 @@ export const ASSERT_RUNTIME = `
     });
 
   window.__runAsserts = async (specs, target) => {
+    if (specs.some((spec) => spec.type === 'dom')) await domReady();
+
     for (let index = 0; index < specs.length; index += 1) {
       const spec = specs[index];
       const base = { type: 'assert', index: index, label: spec.label };
+
+      if (spec.type === 'dom') {
+        // 액션 대상이 없으면 fail 이 아니라 error 다. 학습자가 볼 곳이 다르다.
+        let seen;
+        try {
+          seen = await readDom(spec);
+        } catch (err) {
+          rt.post(Object.assign({}, base, { status: 'error', message: describe(err) }));
+          continue;
+        }
+        const want = spec.count !== undefined ? spec.count : spec.text;
+        rt.post(Object.assign({}, base, {
+          status: deepEqual(seen, want) ? 'pass' : 'fail',
+          expected: rt.fmt(want),
+          actual: rt.fmt(seen),
+        }));
+        continue;
+      }
 
       if (typeof target !== 'function') {
         rt.post(Object.assign({}, base, { status: 'error', message: '함수를 찾을 수 없습니다' }));
@@ -75,17 +132,20 @@ export const ASSERT_RUNTIME = `
  * @returns {string} assert 가 없으면 빈 문자열
  */
 export function buildAssertScript(lesson) {
-  const specs = (lesson.asserts || []).filter((spec) => spec.type === 'value');
+  const specs = (lesson.asserts || []).filter((spec) => spec.type === 'value' || spec.type === 'dom');
   if (!specs.length) return '';
 
-  if (!IDENTIFIER.test(lesson.entry || '')) {
+  const needsEntry = specs.some((spec) => spec.type === 'value');
+  if (needsEntry && !IDENTIFIER.test(lesson.entry || '')) {
     throw new Error('entry 가 유효한 식별자가 아닙니다: ' + lesson.entry);
   }
 
   // JSON 안의 '<' 는 HTML 파서를 끊을 수 있어 이스케이프한다
   const json = JSON.stringify(specs).replace(/</g, '\\u003c');
   // const/let/class 로 선언한 함수는 window 에 붙지 않는다. 식별자를 그대로 적어 렉시컬 스코프로 찾는다.
-  const lookup = '(() => { try { return ' + lesson.entry + '; } catch (e) { return undefined; } })()';
+  const lookup = needsEntry
+    ? '(() => { try { return ' + lesson.entry + '; } catch (e) { return undefined; } })()'
+    : 'undefined';
   return 'window.__assertsPromise = window.__runAsserts(' + json + ', ' + lookup + ');';
 }
 

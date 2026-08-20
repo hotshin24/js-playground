@@ -13,8 +13,19 @@ const PROTOCOL_VERSION = 1;
  * done 은 '이번 실행의 판정이 전부 끝났다'는 뜻이다. assert 가 비동기면 그것까지 기다린다.
  * 다만 프레임은 done 이후에도 살아 있어 워치독의 감시 대상으로 남는다.
  */
-const DOC_HEAD =
-  '<!doctype html>\n<html>\n<head>\n<meta charset="utf-8">\n</head>\n<body>\n' +
+// 사용자 코드 안의 </script> 는 HTML 파서를 먼저 끊어버린다
+const escapeScriptEnd = (code) => code.replace(/<\/(script)/gi, '<\\/$1');
+
+/**
+ * 레슨이 주는 무대(scaffold)를 사용자 코드보다 앞에 놓는다.
+ * classic inline script 는 파싱 위치에서 동기 실행되므로 앞선 마크업은 이미 DOM 에 있다.
+ * 그래서 사용자 코드의 querySelector 가 동작한다.
+ */
+const buildHead = ({ html = '', css = '' } = {}) =>
+  '<!doctype html>\n<html>\n<head>\n<meta charset="utf-8">\n' +
+  (css ? '<style>\n' + css + '\n<\/style>\n' : '') +
+  '</head>\n<body>\n' +
+  (html ? escapeScriptEnd(html) + '\n' : '') +
   '<script>' + PRELUDE + ASSERT_RUNTIME + '<\/script>\n' +
   '<script>\n';
 
@@ -25,10 +36,8 @@ const buildTail = (assertScript) =>
   '</body>\n</html>';
 
 // window.onerror 의 lineno 는 srcdoc 문서 기준이다. 사용자 코드 1행 앞의 줄 수를 세어 빼준다.
-const LINE_OFFSET = DOC_HEAD.split('\n').length - 1;
-
-// 사용자 코드 안의 </script> 는 HTML 파서를 먼저 끊어버린다
-const escapeScriptEnd = (code) => code.replace(/<\/(script)/gi, '<\\/$1');
+// scaffold 가 레슨마다 다르므로 상수로 둘 수 없다. 실행 시점에 센다.
+const offsetOf = (head) => head.split('\n').length - 1;
 
 /**
  * @param {{ mount: HTMLElement, onEvent: (e: object) => void }} options
@@ -39,6 +48,7 @@ export function createRunner({ mount, onEvent }) {
   let checkId = 0;
   let startedAt = 0;
   let lastPingAt = 0;
+  let lineOffset = 0;
   let doneSeen = false;
   let pingSeen = false;
   let loadSeen = false;
@@ -101,7 +111,7 @@ export function createRunner({ mount, onEvent }) {
     }
 
     if (msg.type === 'error') {
-      const line = msg.line > LINE_OFFSET ? msg.line - LINE_OFFSET : null;
+      const line = msg.line > lineOffset ? msg.line - lineOffset : null;
       onEvent({ type: 'error', message: msg.message, line, col: line ? msg.col || null : null });
       return;
     }
@@ -127,7 +137,7 @@ export function createRunner({ mount, onEvent }) {
   window.addEventListener('message', handleMessage);
   document.addEventListener('visibilitychange', handleVisibility);
 
-  const run = (code, { assertScript = '' } = {}) => {
+  const run = (code, { assertScript = '', scaffold } = {}) => {
     teardown(); // 실행마다 프레임 재생성 → 상태 초기화
 
     doneSeen = false;
@@ -141,7 +151,9 @@ export function createRunner({ mount, onEvent }) {
     frame.addEventListener('load', handleLoad);
     // allow-same-origin 을 절대 넣지 않는다. 넣는 순간 부모 DOM/스토리지가 열린다.
     frame.setAttribute('sandbox', 'allow-scripts');
-    frame.srcdoc = DOC_HEAD + escapeScriptEnd(code) + buildTail(assertScript);
+    const head = buildHead(scaffold);
+    lineOffset = offsetOf(head);
+    frame.srcdoc = head + escapeScriptEnd(code) + buildTail(assertScript);
 
     startedAt = performance.now();
     // srcdoc 를 먼저 넣고 붙인다. 순서를 바꾸면 초기 about:blank 로드가
