@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 2,
+  "id": "t2-15",
+  "track": "T2",
+  "order": 15,
+  "title": "종합 — 걸러 정렬해 세기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "상태 하나, 그리는 곳 하나",
+      "brief": [
+        "새로 배울 것은 없습니다. 앞의 두 레슨에서 만든 거르기와 정렬을 한 화면에 모읍니다. 다만 모으는 순간 새 문제가 생깁니다. 조건이 둘이 되면 어디에 무엇을 두어야 할지가 문제가 됩니다.",
+        "먼저 해 보면 알게 되는 함정이 있습니다. 검색 처리 안에서 그리고, 정렬 버튼 처리 안에서도 그리면, 검색한 뒤 정렬하는 순간 검색어가 사라집니다. 정렬 버튼은 검색어를 모르기 때문입니다. 반대도 마찬가지입니다. 조건이 셋이 되면 경우의 수가 더 늘어납니다.",
+        "그래서 지금 화면이 어떤 상태인지를 한 곳에 모읍니다. 검색어와 정렬 방향을 객체 하나에 담아 두면, 무엇이 바뀌든 그 객체만 고치고 다시 그리면 됩니다. 그리는 함수는 화면을 만들 때 언제나 그 객체를 처음부터 다시 읽습니다.",
+        "이렇게 하면 그리는 곳이 한 군데로 줄어듭니다. 조건이 늘어도 고칠 곳은 그 함수 하나입니다. 이벤트가 하는 일은 상태를 고치고 다시 그려 달라고 부르는 것뿐입니다.",
+        "상태를 한 곳에 두고, 화면은 그 상태로부터 매번 만든다. 이것이 다음 트랙에서 만날 React 의 구조입니다. 여기서 손으로 만들어 보면 그때 새로울 것이 없습니다."
+      ]
+    },
+    {
+      "kind": "fill",
+      "title": "상태에서 목록을 만들기",
+      "brief": [
+        "상태 객체와 그리는 함수, 이벤트 연결까지 모두 돼 있습니다. 상태를 읽어 보여 줄 목록을 만드는 부분만 비어 있습니다.",
+        "null 자리를 채워, 제목에 state.keyword 가 든 코스만 남기고 state.order 에 따라 시간 순으로 정렬해 돌려주세요. 'asc' 면 짧은 것이 앞, 'desc' 면 긴 것이 앞입니다.",
+        "sort 는 원본을 바꾸므로 복사한 뒤 정렬하는 편이 안전합니다. 검사가 검색과 정렬을 차례로 시켜 확인합니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<label class=\"field\" for=\"search\">코스 검색</label>",
+          "<input id=\"search\" class=\"field__input\" type=\"search\" placeholder=\"코스 이름\">",
+          "",
+          "<div class=\"controls\">",
+          "  <button id=\"asc\" type=\"button\">짧은 순</button>",
+          "  <button id=\"desc\" type=\"button\">긴 순</button>",
+          "</div>",
+          "",
+          "<p id=\"count\">코스 0개</p>",
+          "<p id=\"picked\">담은 코스: 없음</p>",
+          "",
+          "<div class=\"grid\" id=\"grid\"></div>"
+        ],
+        "css": [
+          ".field { display: block; margin-bottom: 4px; }",
+          ".field__input { width: 200px; }",
+          ".controls { display: flex; gap: 6px; margin: 8px 0; }",
+          "#count, #picked { margin: 0 0 4px; color: var(--c-text-muted); }",
+          ".grid { display: grid; gap: 8px; margin-top: 8px; }",
+          ".course { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
+          ".course__title { margin: 0 0 2px; font-size: 1rem; }",
+          ".course__meta { margin: 0 0 6px; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".empty { margin: 0; padding: 12px; border: 1px dashed var(--c-border); border-radius: 6px;",
+          "  color: var(--c-text-muted); text-align: center; }"
+        ]
+      },
+      "code": "const search = document.querySelector('#search');\nconst grid = document.querySelector('#grid');\nconst count = document.querySelector('#count');\nconst picked = document.querySelector('#picked');\n\nconst courses = [\n  { title: '자바스크립트 입문', level: '입문', hours: 12 },\n  { title: '리액트 시작하기', level: '보통', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', level: '보통', hours: 8 },\n  { title: '자바스크립트 심화', level: '심화', hours: 24 },\n  { title: '접근성 기초', level: '입문', hours: 6 },\n];\n\nconst cardOf = (course) => `\n  <article class=\"course\" data-title=\"${course.title}\">\n    <h3 class=\"course__title\">${course.title}</h3>\n    <p class=\"course__meta\">${course.level} · ${course.hours}시간</p>\n    <button class=\"course__pick\" type=\"button\">담기</button>\n  </article>\n`;\n\nconst state = { keyword: '', order: 'asc' };\n\nconst visibleOf = () => null; // ← 여기를 채우세요\n\nconst render = () => {\n  const visible = visibleOf();\n\n  count.textContent = `코스 ${visible.length}개`;\n\n  if (visible.length === 0) {\n    grid.innerHTML = '<p class=\"empty\">조건에 맞는 코스가 없습니다.</p>';\n    return;\n  }\n\n  grid.innerHTML = visible.map(cardOf).join('');\n};\n\nrender();\n\nsearch.addEventListener('input', () => {\n  state.keyword = search.value;\n  render();\n});\n\ndocument.querySelector('#asc').addEventListener('click', () => {\n  state.order = 'asc';\n  render();\n});\n\ndocument.querySelector('#desc').addEventListener('click', () => {\n  state.order = 'desc';\n  render();\n});\n\ngrid.addEventListener('click', (event) => {\n  const button = event.target.closest('.course__pick');\n  if (button === null) return;\n\n  picked.textContent = `담은 코스: ${button.closest('.course').dataset.title}`;\n});\n",
+      "solutionCode": "const search = document.querySelector('#search');\nconst grid = document.querySelector('#grid');\nconst count = document.querySelector('#count');\nconst picked = document.querySelector('#picked');\n\nconst courses = [\n  { title: '자바스크립트 입문', level: '입문', hours: 12 },\n  { title: '리액트 시작하기', level: '보통', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', level: '보통', hours: 8 },\n  { title: '자바스크립트 심화', level: '심화', hours: 24 },\n  { title: '접근성 기초', level: '입문', hours: 6 },\n];\n\nconst cardOf = (course) => `\n  <article class=\"course\" data-title=\"${course.title}\">\n    <h3 class=\"course__title\">${course.title}</h3>\n    <p class=\"course__meta\">${course.level} · ${course.hours}시간</p>\n    <button class=\"course__pick\" type=\"button\">담기</button>\n  </article>\n`;\n\nconst state = { keyword: '', order: 'asc' };\n\nconst visibleOf = () =>\n  [...courses]\n    .filter((course) => course.title.includes(state.keyword))\n    .sort((a, b) => (state.order === 'asc' ? a.hours - b.hours : b.hours - a.hours));\n\nconst render = () => {\n  const visible = visibleOf();\n\n  count.textContent = `코스 ${visible.length}개`;\n\n  if (visible.length === 0) {\n    grid.innerHTML = '<p class=\"empty\">조건에 맞는 코스가 없습니다.</p>';\n    return;\n  }\n\n  grid.innerHTML = visible.map(cardOf).join('');\n};\n\nrender();\n\nsearch.addEventListener('input', () => {\n  state.keyword = search.value;\n  render();\n});\n\ndocument.querySelector('#asc').addEventListener('click', () => {\n  state.order = 'asc';\n  render();\n});\n\ndocument.querySelector('#desc').addEventListener('click', () => {\n  state.order = 'desc';\n  render();\n});\n\ngrid.addEventListener('click', (event) => {\n  const button = event.target.closest('.course__pick');\n  if (button === null) return;\n\n  picked.textContent = `담은 코스: ${button.closest('.course').dataset.title}`;\n});\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 다섯 코스가 짧은 순으로 보입니다",
+          "select": ".course__title",
+          "text": [
+            "접근성 기초",
+            "CSS 레이아웃 마스터",
+            "자바스크립트 입문",
+            "리액트 시작하기",
+            "자바스크립트 심화"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "검색어에 맞는 것만 남습니다",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#search",
+              "value": "자바스크립트"
+            }
+          ],
+          "select": ".course__title",
+          "text": [
+            "자바스크립트 입문",
+            "자바스크립트 심화"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "검색을 유지한 채 정렬이 뒤집힙니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "#desc"
+            }
+          ],
+          "select": ".course__title",
+          "text": [
+            "자바스크립트 심화",
+            "자바스크립트 입문"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "화면 하나로 합치기",
+      "brief": [
+        "T2 에서 만들어 온 것을 한 화면에 모읍니다. 검색창에 친 글자가 제목에 든 코스만 보이고, '짧은 순' 과 '긴 순' 버튼으로 시간 순서를 바꿀 수 있어야 합니다. 검색과 정렬은 서로를 지우지 않아야 합니다. 처음 상태는 검색어 없음, 짧은 순입니다.",
+        "카드에는 제목과 '입문 · 12시간' 줄, 담기 버튼이 들어갑니다. 클래스 이름은 course · course__title · course__meta · course__pick 을 그대로 쓰고, 카드에 data-title 로 제목을 심어 두세요.",
+        "#count 에는 '코스 5개' 형태로 지금 보이는 개수를, 맞는 코스가 하나도 없으면 '조건에 맞는 코스가 없습니다.' 안내를 클래스 empty 로 보여 주세요. 이때 개수는 0 입니다.",
+        "담기 버튼을 누르면 '담은 코스: 리액트 시작하기' 형태로 바뀌어야 합니다. 검색과 정렬을 몇 번 하든 담기는 계속 동작해야 합니다.",
+        "코드로 클릭이나 입력을 일으키지 마세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<label class=\"field\" for=\"search\">코스 검색</label>",
+          "<input id=\"search\" class=\"field__input\" type=\"search\" placeholder=\"코스 이름\">",
+          "",
+          "<div class=\"controls\">",
+          "  <button id=\"asc\" type=\"button\">짧은 순</button>",
+          "  <button id=\"desc\" type=\"button\">긴 순</button>",
+          "</div>",
+          "",
+          "<p id=\"count\">코스 0개</p>",
+          "<p id=\"picked\">담은 코스: 없음</p>",
+          "",
+          "<div class=\"grid\" id=\"grid\"></div>"
+        ],
+        "css": [
+          ".field { display: block; margin-bottom: 4px; }",
+          ".field__input { width: 200px; }",
+          ".controls { display: flex; gap: 6px; margin: 8px 0; }",
+          "#count, #picked { margin: 0 0 4px; color: var(--c-text-muted); }",
+          ".grid { display: grid; gap: 8px; margin-top: 8px; }",
+          ".course { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
+          ".course__title { margin: 0 0 2px; font-size: 1rem; }",
+          ".course__meta { margin: 0 0 6px; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".empty { margin: 0; padding: 12px; border: 1px dashed var(--c-border); border-radius: 6px;",
+          "  color: var(--c-text-muted); text-align: center; }"
+        ]
+      },
+      "code": "const courses = [\n  { title: '자바스크립트 입문', level: '입문', hours: 12 },\n  { title: '리액트 시작하기', level: '보통', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', level: '보통', hours: 8 },\n  { title: '자바스크립트 심화', level: '심화', hours: 24 },\n  { title: '접근성 기초', level: '입문', hours: 6 },\n];\n\n// 여기를 채우세요\n",
+      "solutionCode": "const search = document.querySelector('#search');\nconst grid = document.querySelector('#grid');\nconst count = document.querySelector('#count');\nconst picked = document.querySelector('#picked');\n\nconst courses = [\n  { title: '자바스크립트 입문', level: '입문', hours: 12 },\n  { title: '리액트 시작하기', level: '보통', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', level: '보통', hours: 8 },\n  { title: '자바스크립트 심화', level: '심화', hours: 24 },\n  { title: '접근성 기초', level: '입문', hours: 6 },\n];\n\nconst cardOf = (course) => `\n  <article class=\"course\" data-title=\"${course.title}\">\n    <h3 class=\"course__title\">${course.title}</h3>\n    <p class=\"course__meta\">${course.level} · ${course.hours}시간</p>\n    <button class=\"course__pick\" type=\"button\">담기</button>\n  </article>\n`;\n\nconst state = { keyword: '', order: 'asc' };\n\nconst visibleOf = () =>\n  [...courses]\n    .filter((course) => course.title.includes(state.keyword))\n    .sort((a, b) => (state.order === 'asc' ? a.hours - b.hours : b.hours - a.hours));\n\nconst render = () => {\n  const visible = visibleOf();\n\n  count.textContent = `코스 ${visible.length}개`;\n\n  if (visible.length === 0) {\n    grid.innerHTML = '<p class=\"empty\">조건에 맞는 코스가 없습니다.</p>';\n    return;\n  }\n\n  grid.innerHTML = visible.map(cardOf).join('');\n};\n\nrender();\n\nsearch.addEventListener('input', () => {\n  state.keyword = search.value;\n  render();\n});\n\ndocument.querySelector('#asc').addEventListener('click', () => {\n  state.order = 'asc';\n  render();\n});\n\ndocument.querySelector('#desc').addEventListener('click', () => {\n  state.order = 'desc';\n  render();\n});\n\ngrid.addEventListener('click', (event) => {\n  const button = event.target.closest('.course__pick');\n  if (button === null) return;\n\n  picked.textContent = `담은 코스: ${button.closest('.course').dataset.title}`;\n});\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 다섯 코스가 짧은 순으로 보입니다",
+          "select": ".course__meta",
+          "text": [
+            "입문 · 6시간",
+            "보통 · 8시간",
+            "입문 · 12시간",
+            "보통 · 20시간",
+            "심화 · 24시간"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "처음 개수는 코스 5개입니다",
+          "select": "#count",
+          "text": [
+            "코스 5개"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "검색하면 맞는 것만 남습니다",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#search",
+              "value": "자바스크립트"
+            }
+          ],
+          "select": ".course__title",
+          "text": [
+            "자바스크립트 입문",
+            "자바스크립트 심화"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "개수도 함께 줄어듭니다",
+          "select": "#count",
+          "text": [
+            "코스 2개"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "정렬을 바꿔도 검색어가 남습니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "#desc"
+            }
+          ],
+          "select": ".course__title",
+          "text": [
+            "자바스크립트 심화",
+            "자바스크립트 입문"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "맞는 것이 없으면 안내가 보입니다",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#search",
+              "value": "파이썬"
+            }
+          ],
+          "select": ".empty",
+          "text": [
+            "조건에 맞는 코스가 없습니다."
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "그때 개수는 코스 0개입니다",
+          "select": "#count",
+          "text": [
+            "코스 0개"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "지우면 전체가 긴 순으로 돌아옵니다",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#search",
+              "value": ""
+            }
+          ],
+          "select": ".course__meta",
+          "text": [
+            "심화 · 24시간",
+            "보통 · 20시간",
+            "입문 · 12시간",
+            "보통 · 8시간",
+            "입문 · 6시간"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "여러 번 다시 그린 뒤에도 담기가 동작합니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".course:nth-child(2) .course__pick"
+            }
+          ],
+          "select": "#picked",
+          "text": [
+            "담은 코스: 리액트 시작하기"
+          ]
+        }
+      ]
+    }
+  ]
+}

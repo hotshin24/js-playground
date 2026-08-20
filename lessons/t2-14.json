@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 2,
+  "id": "t2-14",
+  "track": "T2",
+  "order": 14,
+  "title": "포커스 옮기기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "초점도 함께 옮겨야 합니다",
+      "brief": [
+        "앞 레슨에서는 상태를 전했습니다. 이번에는 위치입니다. 마우스를 쓰지 않는 사람은 Tab 으로 초점을 옮겨 다닙니다. 초점은 지금 어디에 있는지를 알려 주는 표시이고, 화면에는 테두리로 보입니다. 키보드로 무언가를 누르려면 먼저 그곳에 초점이 가 있어야 합니다.",
+        "화면이 바뀔 때 초점이 갈 곳을 잃는 일이 생깁니다. 버튼을 눌러 목록이 통째로 바뀌었는데 초점은 여전히 버튼에 있습니다. 눈으로 보는 사람은 바뀐 목록이 바로 보이지만, 낭독기를 쓰는 사람은 자기가 있던 자리에서 아무 소식도 듣지 못합니다. 무엇이 바뀌었는지 확인하려면 Tab 을 여러 번 눌러 찾아가야 합니다.",
+        "그래서 코드가 초점을 옮겨 줍니다. element.focus() 입니다. 다만 아무 요소나 초점을 받는 것은 아닙니다. 버튼·링크·입력창처럼 원래 초점을 받는 요소는 그냥 됩니다. div 나 p 처럼 받지 않는 요소에 보내려면 tabindex 를 붙여야 합니다. 마크업에 적어도 되고 코드로 붙여도 됩니다.",
+        "tabindex 값이 -1 인지 0 인지가 갈립니다. 0 은 'Tab 순서에 넣어라' 이고, -1 은 'Tab 순서에는 넣지 말고 코드로 보내는 것만 허용하라' 입니다. 결과를 담는 영역은 대개 -1 입니다. 평소 Tab 으로 지나갈 이유는 없지만, 결과가 바뀌었을 때는 그곳으로 데려가야 하기 때문입니다.",
+        "마지막으로 둘을 구분해 두세요. 사용자가 Tab 으로 옮기는 것과 코드가 focus() 로 옮기는 것은 결과가 같아도 성격이 다릅니다. Tab 은 사용자가 원해서 가는 것이고 focus() 는 우리가 데려가는 것입니다. 필요할 때만 써야 합니다. 아무 때나 초점을 빼앗으면 사용자는 자기가 어디에 있었는지 잃어버립니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "Tab 과 focus 를 나란히 보기",
+      "brief": [
+        "버튼 둘과 결과 영역이 있습니다. '짧은 코스만' 을 누르면 목록이 걸러지고, 코드가 초점을 결과 영역으로 옮깁니다.",
+        "실행한 뒤 미리보기 안을 한 번 누르고 Tab 을 눌러 보세요. 초점이 '전체' → '짧은 코스만' → '다음 영역으로 가는 링크' 순으로 돕니다. 결과 영역은 지나가지 않습니다.",
+        "이제 '짧은 코스만' 을 눌러 보세요. 목록이 줄고 결과 영역에 테두리가 생깁니다. 콘솔에 지금 초점이 어디인지 찍힙니다. Tab 으로는 지나칠 수 없던 곳에 코드로는 갈 수 있습니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div class=\"controls\">",
+          "  <button id=\"all\" type=\"button\">전체</button>",
+          "  <button id=\"short\" type=\"button\">짧은 코스만</button>",
+          "</div>",
+          "",
+          "<div class=\"result\" id=\"result\">",
+          "  <p id=\"summary\">코스 0개</p>",
+          "  <ul class=\"list\" id=\"list\"></ul>",
+          "</div>",
+          "",
+          "<a class=\"after\" href=\"#\">다음 영역으로 가는 링크</a>"
+        ],
+        "css": [
+          ".controls { display: flex; gap: 6px; margin-bottom: 8px; }",
+          ".result { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
+          ".result:focus { outline: 2px solid var(--c-accent); outline-offset: 2px; }",
+          "#summary { margin: 0 0 4px; color: var(--c-text-muted); }",
+          ".list { margin: 0; padding-left: 1.2em; }",
+          ".after { display: inline-block; margin-top: 8px; }"
+        ]
+      },
+      "code": "const result = document.querySelector('#result');\nconst summary = document.querySelector('#summary');\nconst list = document.querySelector('#list');\n\nconst courses = [\n  { title: '자바스크립트 입문', hours: 12 },\n  { title: '리액트 시작하기', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', hours: 8 },\n];\n\n// 결과 영역은 원래 초점을 받지 않습니다. 코드로 보낼 수 있게 표시해 둡니다.\nresult.setAttribute('tabindex', '-1');\n\nconst render = (items) => {\n  summary.textContent = `코스 ${items.length}개`;\n  list.innerHTML = items.map((course) => `<li>${course.title} · ${course.hours}시간</li>`).join('');\n};\n\nrender(courses);\n\ndocument.querySelector('#short').addEventListener('click', () => {\n  render(courses.filter((course) => course.hours <= 12));\n  result.focus();\n  console.log('지금 초점:', document.activeElement.tagName, document.activeElement.id);\n});\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "-1 과 0, 그리고 옮기지 않기",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행하고 미리보기 안을 한 번 누른 뒤 Tab 을 눌러야 합니다.",
+        "① setAttribute('tabindex', '-1') 을 setAttribute('tabindex', '0') 으로 바꿔 보세요. 이번에는 Tab 을 누르면 결과 영역에도 초점이 들어옵니다. 평소에 지나갈 이유가 없는 곳까지 Tab 순서가 길어집니다. -1 과 0 의 차이입니다.",
+        "② setAttribute 줄을 통째로 지우고 '짧은 코스만' 을 눌러 보세요. 콘솔의 초점이 결과 영역으로 옮겨 가지 않습니다. 초점을 받도록 표시하지 않은 요소에는 코드로도 보낼 수 없습니다.",
+        "③ 줄을 되돌리고 이번에는 result.focus() 만 지워 보세요. 목록은 바뀌는데 초점은 버튼에 그대로 남습니다. 눈으로 보면 아무 문제가 없습니다. 화면을 보지 않는 사람에게만 문제가 됩니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div class=\"controls\">",
+          "  <button id=\"all\" type=\"button\">전체</button>",
+          "  <button id=\"short\" type=\"button\">짧은 코스만</button>",
+          "</div>",
+          "",
+          "<div class=\"result\" id=\"result\">",
+          "  <p id=\"summary\">코스 0개</p>",
+          "  <ul class=\"list\" id=\"list\"></ul>",
+          "</div>",
+          "",
+          "<a class=\"after\" href=\"#\">다음 영역으로 가는 링크</a>"
+        ],
+        "css": [
+          ".controls { display: flex; gap: 6px; margin-bottom: 8px; }",
+          ".result { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
+          ".result:focus { outline: 2px solid var(--c-accent); outline-offset: 2px; }",
+          "#summary { margin: 0 0 4px; color: var(--c-text-muted); }",
+          ".list { margin: 0; padding-left: 1.2em; }",
+          ".after { display: inline-block; margin-top: 8px; }"
+        ]
+      },
+      "code": "const result = document.querySelector('#result');\nconst summary = document.querySelector('#summary');\nconst list = document.querySelector('#list');\n\nconst courses = [\n  { title: '자바스크립트 입문', hours: 12 },\n  { title: '리액트 시작하기', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', hours: 8 },\n];\n\n// 결과 영역은 원래 초점을 받지 않습니다. 코드로 보낼 수 있게 표시해 둡니다.\nresult.setAttribute('tabindex', '-1');\n\nconst render = (items) => {\n  summary.textContent = `코스 ${items.length}개`;\n  list.innerHTML = items.map((course) => `<li>${course.title} · ${course.hours}시간</li>`).join('');\n};\n\nrender(courses);\n\ndocument.querySelector('#short').addEventListener('click', () => {\n  render(courses.filter((course) => course.hours <= 12));\n  result.focus();\n  console.log('지금 초점:', document.activeElement.tagName, document.activeElement.id);\n});\n"
+    },
+    {
+      "kind": "fill",
+      "title": "초점을 받을 수 있게 표시하기",
+      "brief": [
+        "거르고 그리는 것과 초점을 옮기는 것까지 돼 있습니다. 결과 영역을 초점 받을 수 있게 표시하는 값만 비어 있습니다.",
+        "null 자리를 채워, Tab 순서에는 들어가지 않으면서 코드로는 초점을 보낼 수 있게 해 주세요. 값은 문자열입니다.",
+        "검사가 표시가 붙었는지와 걸러진 결과를 확인합니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div class=\"controls\">",
+          "  <button id=\"all\" type=\"button\">전체</button>",
+          "  <button id=\"short\" type=\"button\">짧은 코스만</button>",
+          "</div>",
+          "",
+          "<div class=\"result\" id=\"result\">",
+          "  <p id=\"summary\">코스 0개</p>",
+          "  <ul class=\"list\" id=\"list\"></ul>",
+          "</div>",
+          "",
+          "<a class=\"after\" href=\"#\">다음 영역으로 가는 링크</a>"
+        ],
+        "css": [
+          ".controls { display: flex; gap: 6px; margin-bottom: 8px; }",
+          ".result { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
+          ".result:focus { outline: 2px solid var(--c-accent); outline-offset: 2px; }",
+          "#summary { margin: 0 0 4px; color: var(--c-text-muted); }",
+          ".list { margin: 0; padding-left: 1.2em; }",
+          ".after { display: inline-block; margin-top: 8px; }"
+        ]
+      },
+      "code": "const result = document.querySelector('#result');\nconst summary = document.querySelector('#summary');\nconst list = document.querySelector('#list');\n\nconst courses = [\n  { title: '자바스크립트 입문', hours: 12 },\n  { title: '리액트 시작하기', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', hours: 8 },\n];\n\n// 결과 영역은 원래 초점을 받지 않습니다. 코드로 보낼 수 있게 표시해 둡니다.\nresult.setAttribute('tabindex', null); // ← 여기를 채우세요\n\nconst render = (items) => {\n  summary.textContent = `코스 ${items.length}개`;\n  list.innerHTML = items.map((course) => `<li>${course.title} · ${course.hours}시간</li>`).join('');\n};\n\nrender(courses);\n\ndocument.querySelector('#short').addEventListener('click', () => {\n  render(courses.filter((course) => course.hours <= 12));\n  result.focus();\n  console.log('지금 초점:', document.activeElement.tagName, document.activeElement.id);\n});\n",
+      "solutionCode": "const result = document.querySelector('#result');\nconst summary = document.querySelector('#summary');\nconst list = document.querySelector('#list');\n\nconst courses = [\n  { title: '자바스크립트 입문', hours: 12 },\n  { title: '리액트 시작하기', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', hours: 8 },\n];\n\n// 결과 영역은 원래 초점을 받지 않습니다. 코드로 보낼 수 있게 표시해 둡니다.\nresult.setAttribute('tabindex', '-1');\n\nconst render = (items) => {\n  summary.textContent = `코스 ${items.length}개`;\n  list.innerHTML = items.map((course) => `<li>${course.title} · ${course.hours}시간</li>`).join('');\n};\n\nrender(courses);\n\ndocument.querySelector('#short').addEventListener('click', () => {\n  render(courses.filter((course) => course.hours <= 12));\n  result.focus();\n  console.log('지금 초점:', document.activeElement.tagName, document.activeElement.id);\n});\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "Tab 순서에는 들어가지 않는 표시가 붙습니다",
+          "select": "#result[tabindex=\"-1\"]",
+          "count": 1
+        },
+        {
+          "type": "dom",
+          "label": "짧은 코스만 누르면 둘로 줄어듭니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "#short"
+            }
+          ],
+          "select": "#list li",
+          "count": 2
+        },
+        {
+          "type": "dom",
+          "label": "요약도 함께 바뀝니다",
+          "select": "#summary",
+          "text": [
+            "코스 2개"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "걸러 보여 주고 데려가기",
+      "brief": [
+        "'전체' 를 누르면 세 코스가 모두, '짧은 코스만' 을 누르면 12시간 이하인 코스만 보이게 해 주세요. 목록 한 줄은 '자바스크립트 입문 · 12시간' 형태이고 #list 안에 <li> 로 넣습니다. 처음에는 전체가 보여야 합니다.",
+        "#summary 에는 '코스 3개' 형태로 개수를 보여 주세요.",
+        "그리고 두 버튼 모두, 목록을 바꾼 뒤 결과 영역으로 초점을 옮겨 주세요. 결과 영역은 원래 초점을 받지 않으므로 먼저 표시를 붙여야 합니다. Tab 순서는 늘리지 마세요.",
+        "코드로 클릭을 일으키지 마세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div class=\"controls\">",
+          "  <button id=\"all\" type=\"button\">전체</button>",
+          "  <button id=\"short\" type=\"button\">짧은 코스만</button>",
+          "</div>",
+          "",
+          "<div class=\"result\" id=\"result\">",
+          "  <p id=\"summary\">코스 0개</p>",
+          "  <ul class=\"list\" id=\"list\"></ul>",
+          "</div>",
+          "",
+          "<a class=\"after\" href=\"#\">다음 영역으로 가는 링크</a>"
+        ],
+        "css": [
+          ".controls { display: flex; gap: 6px; margin-bottom: 8px; }",
+          ".result { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
+          ".result:focus { outline: 2px solid var(--c-accent); outline-offset: 2px; }",
+          "#summary { margin: 0 0 4px; color: var(--c-text-muted); }",
+          ".list { margin: 0; padding-left: 1.2em; }",
+          ".after { display: inline-block; margin-top: 8px; }"
+        ]
+      },
+      "code": "const courses = [\n  { title: '자바스크립트 입문', hours: 12 },\n  { title: '리액트 시작하기', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', hours: 8 },\n];\n\n// 여기를 채우세요\n",
+      "solutionCode": "const courses = [\n  { title: '자바스크립트 입문', hours: 12 },\n  { title: '리액트 시작하기', hours: 20 },\n  { title: 'CSS 레이아웃 마스터', hours: 8 },\n];\n\nconst result = document.querySelector('#result');\nconst summary = document.querySelector('#summary');\nconst list = document.querySelector('#list');\n\nresult.setAttribute('tabindex', '-1');\n\nconst render = (items) => {\n  summary.textContent = `코스 ${items.length}개`;\n  list.innerHTML = items.map((course) => `<li>${course.title} · ${course.hours}시간</li>`).join('');\n  result.focus();\n};\n\nrender(courses);\n\ndocument.querySelector('#all').addEventListener('click', () => {\n  render(courses);\n});\n\ndocument.querySelector('#short').addEventListener('click', () => {\n  render(courses.filter((course) => course.hours <= 12));\n});\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "결과 영역에 초점 표시가 붙습니다",
+          "select": "#result[tabindex=\"-1\"]",
+          "count": 1
+        },
+        {
+          "type": "dom",
+          "label": "처음에는 세 코스가 모두 보입니다",
+          "select": "#list li",
+          "count": 3
+        },
+        {
+          "type": "dom",
+          "label": "처음 요약은 코스 3개입니다",
+          "select": "#summary",
+          "text": [
+            "코스 3개"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "짧은 코스만 누르면 둘로 줄어듭니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "#short"
+            }
+          ],
+          "select": "#list li",
+          "text": [
+            "자바스크립트 입문 · 12시간",
+            "CSS 레이아웃 마스터 · 8시간"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "요약도 함께 바뀝니다",
+          "select": "#summary",
+          "text": [
+            "코스 2개"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "전체를 누르면 다시 셋이 됩니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "#all"
+            }
+          ],
+          "select": "#list li",
+          "count": 3
+        }
+      ]
+    }
+  ]
+}
