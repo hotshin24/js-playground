@@ -119,7 +119,7 @@ const showStep = (next) => {
 
   el('main').className = 'layout layout--' + step.kind;
   brief.render(step);
-  preview.reset(step, layout.isEditable());
+  el('main').classList.toggle('layout--with-preview', preview.reset(step, layout.isEditable()));
   session.clear();
   nextButton.hidden = next >= lesson.steps.length - 1;
 

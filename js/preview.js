@@ -24,11 +24,16 @@ export function createPreview({ panelEl, statusEl, hostEl }) {
     statusEl.textContent = TEXT[state] || '';
   };
 
-  /** 단계를 옮길 때 이전 화면이 남아 있으면 안 된다 */
+  /**
+   * 단계를 옮길 때 이전 화면이 남아 있으면 안 된다.
+   * @returns {boolean} 이 단계에서 미리보기를 쓰는지
+   */
   const reset = (step, editable) => {
-    panelEl.hidden = !isOn(step, editable);
+    const on = isOn(step, editable);
+    panelEl.hidden = !on;
     hostEl.replaceChildren();
     setState('ready');
+    return on;
   };
 
   return { isOn, setState, reset, host: hostEl };
