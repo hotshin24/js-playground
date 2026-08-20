@@ -5,9 +5,9 @@
   "order": 4,
   "title": "객체에서 필요한 것만 꺼내 새 객체 만들기",
   "brief": [
-    "서버가 주는 객체에는 화면에 필요 없는 필드가 섞여 있다. 필요한 것만 꺼내고, 없는 값은 기본값으로 채우고, 바깥에서 덮어쓸 값이 있으면 그것을 우선하는 일이 반복해서 나온다.",
-    "toCard 함수를 완성하라. product에서 id, name, price 세 개만 꺼내 새 객체로 반환한다. 나머지 필드는 버린다. name이 없으면 '이름 없음'을 쓴다.",
-    "두 번째 인자 overrides에 값이 들어 있으면 그 값이 최종값이 된다. 원본 product는 절대 바꾸지 마라."
+    "서버가 주는 객체에는 화면에 필요 없는 필드가 섞여 있습니다. 필요한 것만 꺼내고, 없는 값은 기본값으로 채우고, 바깥에서 덮어쓸 값이 있으면 그것을 우선하는 일이 반복해서 나옵니다.",
+    "toCard 함수를 완성해 보세요. product에서 id, name, price 세 개만 꺼내 새 객체로 반환합니다. 나머지 필드는 버립니다. name이 없으면 '이름 없음'을 씁니다.",
+    "두 번째 인자 overrides에 값이 들어 있으면 그 값이 최종값이 됩니다. 원본 product는 절대 바꾸지 마세요."
   ],
   "entry": "toCard",
   "starterCode": "function toCard(product, overrides) {\n  // 여기를 채우세요\n}\n",
@@ -15,21 +15,56 @@
   "asserts": [
     {
       "type": "value",
-      "label": "필요한 필드만 남긴다 — memo는 버려져야 한다",
-      "args": [{ "id": 1, "name": "셔츠", "price": 39000, "memo": "내부용" }, {}],
-      "expected": { "id": 1, "name": "셔츠", "price": 39000 }
+      "label": "필요한 필드만 남깁니다 — memo는 버려져야 합니다",
+      "args": [
+        {
+          "id": 1,
+          "name": "셔츠",
+          "price": 39000,
+          "memo": "내부용"
+        },
+        {}
+      ],
+      "expected": {
+        "id": 1,
+        "name": "셔츠",
+        "price": 39000
+      }
     },
     {
       "type": "value",
-      "label": "overrides가 이긴다 — price가 덮어써져야 한다",
-      "args": [{ "id": 2, "name": "모자", "price": 19000 }, { "price": 9900 }],
-      "expected": { "id": 2, "name": "모자", "price": 9900 }
+      "label": "overrides가 이깁니다 — price가 덮어써져야 합니다",
+      "args": [
+        {
+          "id": 2,
+          "name": "모자",
+          "price": 19000
+        },
+        {
+          "price": 9900
+        }
+      ],
+      "expected": {
+        "id": 2,
+        "name": "모자",
+        "price": 9900
+      }
     },
     {
       "type": "value",
-      "label": "name이 없으면 기본값이 들어간다",
-      "args": [{ "id": 3, "price": 5000 }, {}],
-      "expected": { "id": 3, "name": "이름 없음", "price": 5000 }
+      "label": "name이 없으면 기본값이 들어갑니다",
+      "args": [
+        {
+          "id": 3,
+          "price": 5000
+        },
+        {}
+      ],
+      "expected": {
+        "id": 3,
+        "name": "이름 없음",
+        "price": 5000
+      }
     }
   ]
 }

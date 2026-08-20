@@ -5,9 +5,9 @@
   "order": 1,
   "title": "값의 타입과 형변환 들여다보기",
   "brief": [
-    "자바스크립트는 값의 타입을 바꿔 쓸 수 있다. 문제는 그 변환이 항상 성공하지는 않는다는 것이다. 숫자로 못 바꾸는 값을 Number()에 넣으면 NaN이 나오는데, NaN은 자기 자신과도 같지 않아서 === 로는 찾아낼 수 없다.",
-    "describeValue 함수를 완성하라. 값 하나를 받아 정확히 세 개의 필드를 가진 객체를 반환해야 한다. type은 그 값의 typeof 결과, text는 String()으로 바꾼 결과, asNumber는 Number()로 바꾼 결과다.",
-    "단 asNumber는 변환에 실패했을 때 NaN을 그대로 두지 말고 null로 바꿔서 담아라. 실패를 알아내는 방법을 직접 찾아야 한다."
+    "자바스크립트는 값의 타입을 바꿔 쓸 수 있습니다. 문제는 그 변환이 항상 성공하지는 않는다는 것입니다. 숫자로 못 바꾸는 값을 Number()에 넣으면 NaN이 나오는데, NaN은 자기 자신과도 같지 않아서 === 로는 찾아낼 수 없습니다.",
+    "describeValue 함수를 완성해 보세요. 값 하나를 받아 정확히 세 개의 필드를 가진 객체를 반환해야 합니다. type은 그 값의 typeof 결과, text는 String()으로 바꾼 결과, asNumber는 Number()로 바꾼 결과입니다.",
+    "단 asNumber는 변환에 실패했을 때 NaN을 그대로 두지 말고 null로 바꿔서 담아 주세요. 실패를 알아내는 방법을 직접 찾아야 합니다."
   ],
   "entry": "describeValue",
   "starterCode": "function describeValue(value) {\n  // 여기를 채우세요\n}\n",
@@ -16,20 +16,38 @@
     {
       "type": "value",
       "label": "숫자 42 — 타입은 number, 변환도 그대로",
-      "args": [42],
-      "expected": { "type": "number", "text": "42", "asNumber": 42 }
+      "args": [
+        42
+      ],
+      "expected": {
+        "type": "number",
+        "text": "42",
+        "asNumber": 42
+      }
     },
     {
       "type": "value",
-      "label": "숫자처럼 생긴 문자열 '9800' — 타입은 string이지만 변환은 성공한다",
-      "args": ["9800"],
-      "expected": { "type": "string", "text": "9800", "asNumber": 9800 }
+      "label": "숫자처럼 생긴 문자열 '9800' — 타입은 string이지만 변환은 성공합니다",
+      "args": [
+        "9800"
+      ],
+      "expected": {
+        "type": "string",
+        "text": "9800",
+        "asNumber": 9800
+      }
     },
     {
       "type": "value",
-      "label": "변환할 수 없는 문자열 'abc' — NaN을 null로 바꿔야 한다",
-      "args": ["abc"],
-      "expected": { "type": "string", "text": "abc", "asNumber": null }
+      "label": "변환할 수 없는 문자열 'abc' — NaN을 null로 바꿔야 합니다",
+      "args": [
+        "abc"
+      ],
+      "expected": {
+        "type": "string",
+        "text": "abc",
+        "asNumber": null
+      }
     }
   ]
 }

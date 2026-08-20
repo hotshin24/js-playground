@@ -5,9 +5,9 @@
   "order": 6,
   "title": "데이터에서 HTML 문자열 만들기",
   "brief": [
-    "마크업을 손으로 쓰는 대신 데이터에서 만들어 내는 것이 이 도구가 가르치려는 전환점이다. 배열을 문자열 조각으로 바꾸고 하나로 이어 붙이면 목록 마크업이 된다.",
-    "renderList 함수를 완성하라. products 배열을 받아 아래 구조의 HTML 문자열 하나를 반환한다. 줄바꿈이나 공백을 넣지 마라. 정확히 이 형태여야 한다.",
-    "<ul class=\"list\">, 각 항목은 <li class=\"item\">이름 - 가격원</li>, 닫는 </ul>. 단 soldOut이 true인 항목은 클래스가 \"item item--soldout\"이 된다."
+    "마크업을 손으로 쓰는 대신 데이터에서 만들어 내는 것이 이 도구가 가르치려는 전환점입니다. 배열을 문자열 조각으로 바꾸고 하나로 이어 붙이면 목록 마크업이 됩니다.",
+    "renderList 함수를 완성해 보세요. products 배열을 받아 아래 구조의 HTML 문자열 하나를 반환합니다. 줄바꿈이나 공백을 넣지 마세요. 정확히 이 형태여야 합니다.",
+    "<ul class=\"list\">, 각 항목은 <li class=\"item\">이름 - 가격원</li>, 닫는 </ul>. 단 soldOut이 true인 항목은 클래스가 \"item item--soldout\"이 됩니다."
   ],
   "entry": "renderList",
   "starterCode": "function renderList(products) {\n  // 여기를 채우세요\n}\n",
@@ -15,20 +15,43 @@
   "asserts": [
     {
       "type": "value",
-      "label": "항목 두 개가 순서대로 이어 붙는다",
-      "args": [[{ "name": "셔츠", "price": 39000, "soldOut": false }, { "name": "모자", "price": 19000, "soldOut": false }]],
+      "label": "항목 두 개가 순서대로 이어 붙습니다",
+      "args": [
+        [
+          {
+            "name": "셔츠",
+            "price": 39000,
+            "soldOut": false
+          },
+          {
+            "name": "모자",
+            "price": 19000,
+            "soldOut": false
+          }
+        ]
+      ],
       "expected": "<ul class=\"list\"><li class=\"item\">셔츠 - 39000원</li><li class=\"item\">모자 - 19000원</li></ul>"
     },
     {
       "type": "value",
-      "label": "품절 항목은 클래스가 달라진다",
-      "args": [[{ "name": "양말", "price": 5000, "soldOut": true }]],
+      "label": "품절 항목은 클래스가 달라집니다",
+      "args": [
+        [
+          {
+            "name": "양말",
+            "price": 5000,
+            "soldOut": true
+          }
+        ]
+      ],
       "expected": "<ul class=\"list\"><li class=\"item item--soldout\">양말 - 5000원</li></ul>"
     },
     {
       "type": "value",
-      "label": "빈 배열이면 껍데기만 남는다",
-      "args": [[]],
+      "label": "빈 배열이면 껍데기만 남습니다",
+      "args": [
+        []
+      ],
       "expected": "<ul class=\"list\"></ul>"
     }
   ]

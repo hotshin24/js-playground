@@ -16,7 +16,7 @@ export function createLayout({ root, toggleButton, onEditableChange }) {
   const handleToggle = () => {
     const collapsed = root.classList.toggle(COLLAPSED_CLASS);
     toggleButton.setAttribute('aria-expanded', String(!collapsed));
-    toggleButton.textContent = collapsed ? '문제 보기' : '문제 숨기기';
+    toggleButton.textContent = collapsed ? '설명 보기' : '설명 숨기기';
   };
 
   editableQuery.addEventListener('change', handleQuery);
