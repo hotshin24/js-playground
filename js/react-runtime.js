@@ -1,6 +1,9 @@
+// 개발 빌드를 쓴다. production 은 class 와 className 을 똑같이 통과시켜(실측)
+// 학습자가 무엇을 잘못했는지 알 방법이 없다. 개발 빌드는 그것을 콘솔로 알려 준다.
+// 대가는 +1,023KB 이지만 Babel(888ms)과 병렬로 받으므로 체감 시간은 늘지 않는다.
 const REACT_URLS = [
-  'https://unpkg.com/react@18.3.1/umd/react.production.min.js',
-  'https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js',
+  'https://unpkg.com/react@18.3.1/umd/react.development.js',
+  'https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js',
 ];
 
 // 프레임은 실행마다 새로 만들어진다. 매번 받지 않도록 부모가 텍스트를 들고 있는다.
