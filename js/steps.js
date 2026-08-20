@@ -1,13 +1,16 @@
 /**
  * 단계 종류별 정책. 화면 구성과 완료 판정이 여기 모여 있다.
  * 통과/실패가 없는 단계에 빈 검사 패널을 띄우면 학습자는 자기가 뭘 놓쳤다고 생각한다.
+ *
+ * 되돌리기는 여기에 없다. 단계 종류가 아니라 에디터가 있는지로 정한다 —
+ * 고칠 수 있는 곳이면 되돌릴 수도 있어야 한다.
  */
 const POLICY = {
-  read: { editor: false, result: false, run: false, reset: false },
-  run: { editor: true, result: false, run: true, reset: false },
-  tweak: { editor: true, result: false, run: true, reset: true },
-  fill: { editor: true, result: true, run: true, reset: true },
-  write: { editor: true, result: true, run: true, reset: true },
+  read: { editor: false, result: false, run: false },
+  run: { editor: true, result: false, run: true },
+  tweak: { editor: true, result: false, run: true },
+  fill: { editor: true, result: true, run: true },
+  write: { editor: true, result: true, run: true },
 };
 
 // read/run/tweak/fill/write 는 레슨 JSON 안에서만 쓰는 이름이다.

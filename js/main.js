@@ -47,6 +47,10 @@ const session = createSession({
   listEl: el('asserts'),
   summaryEl: el('assert-summary'),
   onAllPassed: () => progress.complete({ ran: true, changed: true, allPassed: true }),
+  onTimeout: () => {
+    progress.discard();
+    progress.notify(NOTICE.discarded);
+  },
 });
 
 const workspace = createWorkspace({
@@ -80,9 +84,9 @@ const refreshNav = () =>
   browse.refresh({ index, lesson, stepIndex, isStepDone: progress.isStepDone });
 
 const applyPolicy = (editable) => {
-  const policy = policyOf(step ? step.kind : 'write');
-  runButton.hidden = !policy.run;
-  resetButton.hidden = !policy.reset;
+  runButton.hidden = !policyOf(step ? step.kind : 'write').run;
+  // 고칠 수 있는 곳이면 되돌릴 수도 있어야 한다. 무한 루프를 넣고 빠져나올 길이 없으면 안 된다.
+  resetButton.hidden = !editable;
   runButton.disabled = !editable;
   resetButton.disabled = !editable;
 };

@@ -15,7 +15,7 @@ const TIMEOUT_TEXT = {
  * 실행 1회분의 수명을 관리한다. 콘솔·검사 결과 패널이 여기에 묶인다.
  * @param {{ mount, logEl, statusEl, listEl, summaryEl, onAllPassed: () => void }} options
  */
-export function createSession({ mount, previewMount, logEl, statusEl, listEl, summaryEl, onAllPassed, onPreview }) {
+export function createSession({ mount, previewMount, logEl, statusEl, listEl, summaryEl, onAllPassed, onPreview, onTimeout }) {
   const panel = createConsolePanel({ logEl, statusEl });
   const results = createResultPanel({ listEl, summaryEl });
 
@@ -54,6 +54,7 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
         panel.append('system', TIMEOUT_TEXT[event.phase]);
         panel.setStatus('강제 종료됨');
         onPreview('stopped');
+        onTimeout();
         if (!settled && assertTotal) {
           settled = true;
           results.setSummary('실행이 중단되어 검사하지 못했습니다.', 'error');
