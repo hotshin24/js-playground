@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 2,
+  "id": "t2-06",
+  "track": "T2",
+  "order": 6,
+  "title": "목록을 한 번에 듣기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "하나에만 맡기고 전부 받기",
+      "brief": [
+        "앞 레슨까지는 버튼마다 함수를 맡겼습니다. 버튼이 셋이면 세 번 맡깁니다. 지금은 문제가 없습니다. 화면에 있는 것이 처음부터 셋이고 늘지 않기 때문입니다. 하지만 목록을 코드로 그리기 시작하면 달라집니다. 나중에 생긴 버튼에는 맡긴 것이 없어 눌러도 아무 일이 일어나지 않습니다. 이 문제는 목록을 코드로 그리는 레슨에서 직접 보게 됩니다.",
+        "클릭은 눌린 요소에서 멈추지 않습니다. 부모로 한 단계씩 올라갑니다. 담기 버튼을 누르면 버튼 → 항목 → 목록 → 문서 순으로 지나갑니다. 그래서 목록 하나에만 맡겨도 그 안에서 일어난 클릭을 전부 받을 수 있습니다. 이것을 이벤트 위임이라고 부릅니다. 맡기는 횟수가 항목 수와 상관없이 한 번입니다.",
+        "대신 새로운 문제가 생깁니다. event.target 이 무엇일지 알 수 없습니다. 담기 버튼일 수도, 그 옆 상품 이름일 수도, 항목의 빈 여백일 수도 있습니다. 그래서 두 가지가 더 필요합니다. closest 는 눌린 자리에서 위로 올라가며 조건에 맞는 첫 요소를 찾아 주고, 끝까지 없으면 null 을 줍니다. 그리고 어느 상품인지 알아야 하니 마크업에 data-name=\"셔츠\" 처럼 심어 두고 dataset.name 으로 읽습니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "맡긴 곳은 하나입니다",
+      "brief": [
+        "목록 하나에만 함수를 맡겼습니다. 버튼에는 아무것도 맡기지 않았습니다.",
+        "실행한 뒤 미리보기에서 세 곳을 눌러 보세요. ① 담기 버튼 ② 그 옆의 상품 이름 글자 ③ 항목 안의 빈 여백.",
+        "세 번 다 함수가 불립니다. 맡긴 곳은 목록 하나인데 그 안의 클릭이 전부 올라옵니다. 대신 눌린 요소는 매번 다릅니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<p id=\"picked\">0개 담음</p>",
+          "<p id=\"last\">마지막: 없음</p>",
+          "",
+          "<ul class=\"list\">",
+          "  <li class=\"item\" data-name=\"셔츠\"><span class=\"item__name\">셔츠</span> <button class=\"item__pick\">담기</button></li>",
+          "  <li class=\"item\" data-name=\"모자\"><span class=\"item__name\">모자</span> <button class=\"item__pick\">담기</button></li>",
+          "  <li class=\"item\" data-name=\"양말\"><span class=\"item__name\">양말</span> <button class=\"item__pick\">담기</button></li>",
+          "</ul>"
+        ],
+        "css": [
+          ".list { list-style: none; margin: 0; padding: 10px 0; border: 1px dashed var(--c-border); }",
+          ".item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; }"
+        ]
+      },
+      "code": "const list = document.querySelector('.list');\n\nlist.addEventListener('click', (event) => {\n  console.log('눌린 요소:', event.target.tagName, '/', event.target.className);\n});\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "target 만으로는 부족합니다",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요.",
+        "① 담기 버튼과 상품 이름 글자를 번갈아 눌러 보세요. BUTTON / item__pick 과 SPAN / item__name 으로 갈립니다. 지금 코드로는 담기 버튼이 눌린 것인지 이름이 눌린 것인지 매번 확인해야 합니다.",
+        "② 점선 테두리 안쪽, 항목이 없는 위아래 여백을 눌러 보세요. UL / list 가 찍힙니다. 목록 자체가 눌린 경우입니다. 이때는 담을 상품이 아예 없습니다.",
+        "③ console.log('맡긴 곳과 같은가:', event.target === list); 한 줄을 추가해 실행하고 세 곳을 눌러 보세요. 목록 여백을 눌렀을 때만 true 입니다. 맡긴 곳과 눌린 곳은 다릅니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<p id=\"picked\">0개 담음</p>",
+          "<p id=\"last\">마지막: 없음</p>",
+          "",
+          "<ul class=\"list\">",
+          "  <li class=\"item\" data-name=\"셔츠\"><span class=\"item__name\">셔츠</span> <button class=\"item__pick\">담기</button></li>",
+          "  <li class=\"item\" data-name=\"모자\"><span class=\"item__name\">모자</span> <button class=\"item__pick\">담기</button></li>",
+          "  <li class=\"item\" data-name=\"양말\"><span class=\"item__name\">양말</span> <button class=\"item__pick\">담기</button></li>",
+          "</ul>"
+        ],
+        "css": [
+          ".list { list-style: none; margin: 0; padding: 10px 0; border: 1px dashed var(--c-border); }",
+          ".item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; }"
+        ]
+      },
+      "code": "const list = document.querySelector('.list');\n\nlist.addEventListener('click', (event) => {\n  console.log('눌린 요소:', event.target.tagName, '/', event.target.className);\n});\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "closest 로 올라가 찾기",
+      "brief": [
+        "코드에 closest 한 줄이 들어갔습니다. 먼저 실행한 뒤 아래 셋을 해 보세요.",
+        "① 담기 버튼, 상품 이름, 항목 여백을 차례로 눌러 보세요. 눌린 요소는 셋 다 다른데 closest 가 찾은 항목은 같습니다. 위로 올라가다 .item 을 처음 만나는 곳에서 멈추기 때문입니다.",
+        "② 점선 안쪽 위아래 여백을 눌러 보세요. null 이 찍힙니다. 끝까지 올라가도 조건에 맞는 것이 없으면 null 입니다. 그래서 closest 를 쓴 뒤에는 null 인지 먼저 확인해야 합니다.",
+        "③ closest('.item') 을 closest('.item__pick') 으로 바꿔 실행해 보세요. 이번에는 담기 버튼을 눌렀을 때만 요소가 나오고 나머지는 null 입니다. 찾을 조건을 바꾸면 무엇을 눌렀는지를 가려낼 수 있습니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<p id=\"picked\">0개 담음</p>",
+          "<p id=\"last\">마지막: 없음</p>",
+          "",
+          "<ul class=\"list\">",
+          "  <li class=\"item\" data-name=\"셔츠\"><span class=\"item__name\">셔츠</span> <button class=\"item__pick\">담기</button></li>",
+          "  <li class=\"item\" data-name=\"모자\"><span class=\"item__name\">모자</span> <button class=\"item__pick\">담기</button></li>",
+          "  <li class=\"item\" data-name=\"양말\"><span class=\"item__name\">양말</span> <button class=\"item__pick\">담기</button></li>",
+          "</ul>"
+        ],
+        "css": [
+          ".list { list-style: none; margin: 0; padding: 10px 0; border: 1px dashed var(--c-border); }",
+          ".item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; }"
+        ]
+      },
+      "code": "const list = document.querySelector('.list');\n\nlist.addEventListener('click', (event) => {\n  const item = event.target.closest('.item');\n\n  console.log('눌린 요소:', event.target.tagName);\n  console.log('closest 가 찾은 항목:', item);\n  console.log('상품 이름:', item === null ? '(없음)' : item.dataset.name);\n});\n"
+    },
+    {
+      "kind": "fill",
+      "title": "심어 둔 값 읽기",
+      "brief": [
+        "목록에 맡기고 closest 로 항목을 찾는 것까지 돼 있습니다. null 일 때 빠져나가는 줄도 있습니다.",
+        "아래 문단에 '마지막: 모자' 형태로 보이게 채워 주세요. 상품 이름은 항목의 data-name 에 심어 두었고, item.dataset.name 으로 읽습니다.",
+        "검사가 모자 항목의 담기 버튼을 대신 누르고, 이어서 목록의 빈 곳도 눌러 확인합니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<p id=\"picked\">0개 담음</p>",
+          "<p id=\"last\">마지막: 없음</p>",
+          "",
+          "<ul class=\"list\">",
+          "  <li class=\"item\" data-name=\"셔츠\"><span class=\"item__name\">셔츠</span> <button class=\"item__pick\">담기</button></li>",
+          "  <li class=\"item\" data-name=\"모자\"><span class=\"item__name\">모자</span> <button class=\"item__pick\">담기</button></li>",
+          "  <li class=\"item\" data-name=\"양말\"><span class=\"item__name\">양말</span> <button class=\"item__pick\">담기</button></li>",
+          "</ul>"
+        ],
+        "css": [
+          ".list { list-style: none; margin: 0; padding: 10px 0; border: 1px dashed var(--c-border); }",
+          ".item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; }"
+        ]
+      },
+      "code": "const list = document.querySelector('.list');\nconst last = document.querySelector('#last');\n\nlist.addEventListener('click', (event) => {\n  const item = event.target.closest('.item');\n  if (item === null) return;\n\n  last.textContent = null; // ← 여기를 채우세요\n});\n",
+      "solutionCode": "const list = document.querySelector('.list');\nconst last = document.querySelector('#last');\n\nlist.addEventListener('click', (event) => {\n  const item = event.target.closest('.item');\n  if (item === null) return;\n\n  last.textContent = `마지막: ${item.dataset.name}`;\n});\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "모자를 누르면 그 이름이 표시됩니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".item:nth-child(2) .item__pick"
+            }
+          ],
+          "select": "#last",
+          "text": [
+            "마지막: 모자"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "목록의 빈 곳을 눌러도 바뀌지 않습니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".list"
+            }
+          ],
+          "select": "#last",
+          "text": [
+            "마지막: 모자"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "위임으로 담기",
+      "brief": [
+        "담기 버튼을 누르면 담긴 개수가 1 늘고, 위 문단이 '2개 담음' 형태로, 아래 문단이 '마지막: 모자' 형태로 보이게 해 주세요.",
+        "맡기는 곳은 목록 하나여야 합니다. 버튼마다 맡기지 마세요. 담기 버튼이 아닌 곳(상품 이름 글자, 항목 여백, 목록 여백)을 눌렀을 때는 아무 일도 일어나지 않아야 합니다.",
+        "무엇이 눌렸는지 가려내는 것과 어느 상품인지 알아내는 것은 다른 일입니다. closest 를 두 번 써도 됩니다. 개수는 클릭 사이에 남아야 하니 맡긴 함수 바깥에 두세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<p id=\"picked\">0개 담음</p>",
+          "<p id=\"last\">마지막: 없음</p>",
+          "",
+          "<ul class=\"list\">",
+          "  <li class=\"item\" data-name=\"셔츠\"><span class=\"item__name\">셔츠</span> <button class=\"item__pick\">담기</button></li>",
+          "  <li class=\"item\" data-name=\"모자\"><span class=\"item__name\">모자</span> <button class=\"item__pick\">담기</button></li>",
+          "  <li class=\"item\" data-name=\"양말\"><span class=\"item__name\">양말</span> <button class=\"item__pick\">담기</button></li>",
+          "</ul>"
+        ],
+        "css": [
+          ".list { list-style: none; margin: 0; padding: 10px 0; border: 1px dashed var(--c-border); }",
+          ".item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; }"
+        ]
+      },
+      "code": "// 여기를 채우세요\n",
+      "solutionCode": "const list = document.querySelector('.list');\nconst picked = document.querySelector('#picked');\nconst last = document.querySelector('#last');\n\nlet count = 0;\n\nlist.addEventListener('click', (event) => {\n  const button = event.target.closest('.item__pick');\n  if (button === null) return;\n\n  const item = button.closest('.item');\n\n  count = count + 1;\n  picked.textContent = `${count}개 담음`;\n  last.textContent = `마지막: ${item.dataset.name}`;\n});\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "셔츠를 담으면 1개 담음",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".item:nth-child(1) .item__pick"
+            }
+          ],
+          "select": "#picked",
+          "text": [
+            "1개 담음"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "마지막에 담은 이름이 표시됩니다",
+          "select": "#last",
+          "text": [
+            "마지막: 셔츠"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "양말을 담으면 마지막이 바뀝니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".item:nth-child(3) .item__pick"
+            }
+          ],
+          "select": "#last",
+          "text": [
+            "마지막: 양말"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "상품 이름 글자를 눌러도 담기지 않습니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".item__name"
+            }
+          ],
+          "select": "#picked",
+          "text": [
+            "2개 담음"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "목록의 빈 곳을 눌러도 담기지 않습니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".list"
+            }
+          ],
+          "select": "#picked",
+          "text": [
+            "2개 담음"
+          ]
+        }
+      ]
+    }
+  ]
+}
