@@ -1,0 +1,41 @@
+name: Deploy to Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 배포 시점에만 정해지는 값이라 리포에 커밋해 둘 수 없다.
+      # version.json 은 항상 새로 받는 쪽, js/version.js 는 캐시된 번들에 실려 오는 쪽이다.
+      - name: 버전 주입
+        run: |
+          printf '{"commit":"%s","ref":"%s","builtAt":"%s"}\n' \
+            "$GITHUB_SHA" "$GITHUB_REF_NAME" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > version.json
+          printf "export const BUILD = '%s';\n" "$GITHUB_SHA" > js/version.js
+          cat version.json
+          cat js/version.js
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
