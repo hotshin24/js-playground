@@ -3,7 +3,7 @@
 실행 엔진을 만들면서 확인된 사실과 미해결 항목. 각 항목은 **증상 / 재현 조건 / 판단 / 처리 시점** 4줄로 기록한다.
 수치는 실측만 적는다. 측정하지 않았으면 "미측정"이라고 쓴다.
 
-| 문서 버전 | v1.3 |
+| 문서 버전 | v1.4 |
 |---|---|
 | 최종 갱신 | 2026-08-20 |
 | 대상 커밋 | `72d37f0` |
@@ -283,6 +283,82 @@ CodeMirror 6 도입, 3분할 반응형, 진행 저장. 대상 커밋 `dd0cd7a`.
 | `t2-06` | 이벤트 위임을 쓸 것 | **강제 안 됨.** 요소가 늘지 않아 두 구현의 DOM 상태가 같다 (F-010) |
 | `t2-11`·`t2-15` | 〃 | **강제됨.** 여러 번 다시 그린 뒤 담기를 눌러 확인한다 |
 | `t2-14` | 초점을 결과 영역으로 옮길 것 | **강제 안 됨.** `:focus` 는 문서에 시스템 초점이 있어야 매칭돼 채택하지 않았다 (F-011) |
+
+---
+
+## 트랜스파일러 실측 (2026-08-20)
+
+**PRD §6.3 의 잠정 결정(Sucrase)을 확정 결정(@babel/standalone)으로 뒤집은 근거.**
+
+측정 환경 — Chrome, localhost 부모 문서, CDN 은 esm.sh(트랜스파일러)·unpkg(React UMD). 각 1회 측정.
+
+### 1. 로드 비용
+
+**바이트는 압축 해제 기준이다.** cross-origin 리소스에 `Timing-Allow-Origin` 이 없어 `transferSize` 가 0 으로 나온다. F-007 과 같은 조건이며 같은 단위로 비교해야 한다.
+
+| 후보 | 크기 | 파일 수 | 콜드 로드 | 변환 1회 (200회 평균) |
+|---|---:|---:|---:|---:|
+| Sucrase 3.35.0 | 251,703 B (246 KB) | 16 | 973 ms | **0.29 ms** (58 ms) |
+| **@babel/standalone 7.26.4** | 2,972,188 B (2,903 KB) | 2 | **888 ms** | 0.76 ms (151 ms) |
+| esbuild-wasm 0.24.2 | 96,137 B + wasm 11,907,565 B = 12,003,702 B (11,722 KB) | 3 + wasm | 1,689 ms | 10.03 ms (2,006 ms) |
+| React 18.3.1 UMD (react + react-dom, production) | 142,586 B (139 KB) | 2 | 188 ms | — |
+
+esbuild 의 wasm 초기화는 바이너리가 캐시된 뒤 61 ms 였다. 위 1,689 ms 는 wasm 내려받기 시간이다.
+
+**크기가 11배 작은 Sucrase 가 더 느리다.** 모듈 그래프가 16파일이라 발견과 왕복이 직렬로 쌓인다. Babel 은 2파일이다. "작으니 빠를 것" 이라는 초판의 전제가 성립하지 않았다.
+
+**§6.5 "T3/T4 첫 실행 1.5s" 대비** — 트랜스파일러와 React 는 병렬로 받을 수 있으므로 둘 중 큰 쪽이 기준이 된다.
+
+| 후보 | T3 진입 추가 크기 | 병렬 가정 시간 | 판정 |
+|---|---:|---:|---|
+| Sucrase | 385 KB | 973 ms | 충족 |
+| **@babel/standalone** | 3,042 KB | **888 ms** | **충족** |
+| esbuild-wasm | 11,862 KB | 1,689 ms | **초과** |
+
+### 2. 구문 에러 메시지
+
+JSX 를 처음 쓰는 사람이 낼 법한 실수 넷으로 쟀다.
+
+| 실수 | Sucrase | @babel/standalone | esbuild-wasm |
+|---|---|---|---|
+| 닫는 태그 누락 (`<h1>제목` 미닫음, 5행) | `Unexpected token, expected ";" (1:16)` | `Unterminated JSX contents. (5:10)` + 코드 프레임 | `Unexpected closing "div" tag does not match opening "h1" tag @5:6` |
+| `class` 대신 `className` (2행) | **통과** | **통과** | **통과** |
+| 중괄호 짝 안 맞음 (`{name` 미닫음, 3행) | `Unexpected token, expected ";" (1:16)` | `Unterminated regular expression. (3:19)` + 코드 프레임 | `Unterminated regular expression @3:22` |
+| 여러 요소를 감싸지 않고 반환 (4행) | `Unexpected token, expected ";" (1:16)` | `Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (4:4)` + 코드 프레임 | `Unterminated regular expression @4:17` |
+
+**Sucrase 는 세 오류 모두 같은 메시지에 같은 위치를 낸다.** `1:16` 은 `const App = () => {` 의 화살표 위치이며, 어떤 실수를 하든 이 값이 나온다. **학습자는 4행의 오타를 1행에서 찾게 된다.**
+
+Babel 은 위치가 정확하고 코드 프레임이 붙으며, 마지막 사례에서는 고칠 방법까지 제시한다. esbuild 는 위치는 정확하지만 두 사례에서 `Unterminated regular expression` 이라는 실제 원인과 다른 이름을 붙인다.
+
+### 3. 줄 번호 보존 — 결정 요인
+
+입력 11행 중 **10행**에 마커를 두고 변환 후 출력 위치를 봤다.
+
+| 후보 | 마커 출력 행 | 출력 총 행 | 판정 |
+|---|---:|---:|---|
+| Sucrase | 10 | 11 | 보존 |
+| @babel/standalone (기본) | 8 | 9 | 밀림 |
+| **@babel/standalone + `retainLines: true`** | **10** | **11** | **보존** |
+| esbuild-wasm | 4 | 6 | 깨짐 |
+
+**`retainLines: true` 로 소스맵 없이 보존된다.** Babel 을 배제할 유일한 기술적 이유였던 항목이 사라진다. `runner.js` 의 `lineno - offsetOf(head)` 산술을 그대로 쓸 수 있다.
+
+esbuild 는 공백을 접어 11행을 6행으로 줄인다. 채택하려면 소스맵이 필수이고, 위 산술을 소스맵 조회로 교체해야 한다.
+
+### 4. `class` vs `className` — 셋 다 잡지 못한다
+
+세 후보 모두 **통과**시킨다. `class` 는 JSX 구문으로 유효한 속성명이라 파서가 걸러 낼 이유가 없다. 오류 없이 변환되고, 화면에는 스타일만 조용히 빠진 채 나온다.
+
+**검사로 막을 수 없으므로 레슨 설계가 막아야 한다.** F-010 과 같은 성질이다 — 결과만 보는 검사는 이 실수를 구분하지 못한다. **T3-1(JSX 문법과 HTML 의 차이)이 정확히 그 자리다.** 그 레슨의 지문이 이것을 명시적으로 세워야 하며, PRD §4 T3 에 설계 조건으로 남겼다.
+
+### 미측정
+
+| 항목 | 사유 |
+|---|---|
+| 압축 전송 바이트 | cross-origin 에 `Timing-Allow-Origin` 이 없어 `transferSize` 가 0. 위 수치는 전부 압축 해제 기준 |
+| 다른 네트워크에서의 콜드 로드 | 측정자의 연결에서 각 1회. 회선이 느리면 Babel 의 2.9 MB 가 불리해지는 지점이 있다 |
+| Safari · Edge | Chrome 만 측정했다 |
+| `retainLines` 의 여러 줄 JSX 정렬 | 마커 1개 기준으로만 확인했다. M2 에서 확인한다 |
 
 ---
 
