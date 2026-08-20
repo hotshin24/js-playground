@@ -6,6 +6,7 @@ import { createEditor } from './editor.js';
  * @param {{ hostEl, readonlyEl, onChange: (code) => void,
  *           onFallback: () => void, onReadonly: () => void,
  *           onEditableChange: (editable: boolean) => void }} options
+ * onReadonly 는 '화면이 좁아서' 에디터가 없을 때만 불린다. read 단계는 해당하지 않는다.
  */
 export function createWorkspace({ hostEl, readonlyEl, onChange, onFallback, onReadonly, onEditableChange }) {
   let editor = null;
@@ -47,8 +48,15 @@ export function createWorkspace({ hostEl, readonlyEl, onChange, onFallback, onRe
     onEditableChange(true);
   };
 
-  // <768 은 에디터를 아예 만들지 않는다. 띄워놓고 편집만 막지 않는다.
-  const unmount = () => {
+  /**
+   * 에디터를 내린다.
+   * 사유가 둘이라 구분해야 한다 — 화면이 좁아서('narrow')와 read 단계라서('step').
+   * 둘을 같은 경로로 두면 넓은 화면에서 read 단계를 거친 뒤
+   * "화면이 좁아 읽기 전용" 안내가 잘못 남는다.
+   * <768 은 에디터를 아예 만들지 않는다. 띄워놓고 편집만 막지 않는다.
+   * @param {'narrow'|'step'} reason
+   */
+  const unmount = (reason = 'narrow') => {
     generation += 1; // 진행 중인 mount 결과를 무효화한다
     if (editor) {
       code = editor.getValue();
@@ -60,7 +68,7 @@ export function createWorkspace({ hostEl, readonlyEl, onChange, onFallback, onRe
     readonlyEl.textContent = code;
     readonlyEl.hidden = false;
     onEditableChange(false);
-    onReadonly();
+    if (reason === 'narrow') onReadonly();
   };
 
   return {

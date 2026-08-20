@@ -120,7 +120,7 @@ const showStep = (next) => {
   // read 단계는 에디터를 만들지 않는다. CodeMirror 를 받지 않아 첫 화면이 즉시 뜬다.
   const editable = policyOf(step.kind).editor && layout.isEditable();
   if (editable) workspace.mount();
-  else workspace.unmount();
+  else workspace.unmount(layout.isEditable() ? 'step' : 'narrow');
   applyPolicy(editable);
 };
 
@@ -150,7 +150,7 @@ const layout = createLayout({
   toggleButton: el('brief-toggle'),
   onEditableChange: (editable) => {
     if (step && policyOf(step.kind).editor && editable) workspace.mount();
-    else workspace.unmount();
+    else workspace.unmount(editable ? 'step' : 'narrow');
   },
 });
 
