@@ -558,6 +558,36 @@ URL 압축 인코딩 공유 · 다중 파일 · TypeScript · 커스텀 레슨 �
 
 **주입은 `env` 가 있을 때만 한다.** 없으면 head 는 한 글자도 달라지지 않는다. 줄 번호는 `offsetOf` 가 최종 head 를 세므로 자동으로 맞는다. 앱 코드 변경은 4파일 9줄이다 — `lessons.js`(정규화) · `frame-doc.js`(주입) · `runner.js`·`main.js`(전달). `preview.js` 는 건드리지 않았다.
 
+**단계 레벨 `files[]` 필드 — 여러 파일로 이루어진 단계.** T8(모듈)이 여기 걸려 있다.
+
+```json
+{
+  "kind": "write",
+  "entry": "doubleAll",
+  "files": [
+    { "name": "main.js", "entry": true,
+      "code": ["import { double } from './utils.js';", ""],
+      "solutionCode": ["…"] },
+    { "name": "utils.js", "readOnly": true,
+      "code": ["export const double = (n) => n * 2;"] }
+  ]
+}
+```
+
+| 필드 | 규칙 |
+|---|---|
+| `name` | 파일 이름. 지정자 해석의 키. 중복 금지. 하위 디렉터리 없음 |
+| `entry` | **정확히 하나**의 파일에 `true`. 이 파일부터 불러온다 |
+| `code` · `solutionCode` | 파일별. 줄 배열 또는 문자열 |
+| `readOnly` | 참고 파일. 편집기에서 잠그고 저장하지 않는다. `solutionCode` 를 둘 수 없다 |
+| 순서 | **배열 순서가 곧 탭 순서.** 순서 필드를 따로 두지 않는다 |
+
+**단어 하나가 두 층에서 다른 뜻이다.** 파일의 `entry` 는 "어느 파일부터 불러오는가", 단계의 `entry` 는 "그 파일에서 무엇을 검사하는가"다. 층이 다르므로 이름을 바꾸지 않았다. 검사기는 전역이 아니라 진입 모듈의 네임스페이스에서 그 이름을 찾는다 — 모듈 안의 `export` 는 `window` 에 붙지 않는다.
+
+**`files` 와 `code`/`solutionCode` 를 함께 둘 수 없다.** 어느 쪽이 이기는지 규칙을 만들면 반드시 틀린다. 레슨 로드에서 거절한다. `runtime: 'react'` 와의 조합도 거절한다 — 실측하지 않았다.
+
+동작 계약과 알려진 한계는 기능정의서 §8 에 있다.
+
 **레슨 레벨 `runtime` 필드** — `'js'`(기본) 또는 `'react'`. 생략하면 `'js'` 이므로 기존 레슨 파일은 고치지 않는다. 트랙 접두어나 코드에 JSX 가 있는지로 추측하지 않는다 — 그렇게 하면 판정이 파일명 규칙이나 문자열 추측에 얹힌다. `'react'` 인 레슨만 Babel 과 React UMD 를 받고, 그 외에는 요청이 나가지 않는다.
 
 
