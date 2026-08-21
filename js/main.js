@@ -99,6 +99,7 @@ const run = () => {
     assertScript: buildAssertScript(step, { react }),
     total: (step.asserts || []).filter((spec) => spec.type === 'value' || spec.type === 'dom').length,
     scaffold: step.scaffold,
+    env: step.env,
     preview: preview.isOn(step, layout.isEditable()),
     runtime: lesson.runtime,
   });

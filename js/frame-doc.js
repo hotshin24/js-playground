@@ -38,13 +38,16 @@ const BASE_STYLE = [
  * classic inline script 는 파싱 위치에서 동기 실행되므로 앞선 마크업은 이미 DOM 에 있다.
  * 그래서 사용자 코드의 querySelector 가 동작한다.
  */
-export const buildHead = ({ html = '', css = '' } = {}, withStyle, react = '') =>
+export const buildHead = ({ html = '', css = '' } = {}, withStyle, react = '', env = '') =>
   '<!doctype html>\n<html>\n<head>\n<meta charset="utf-8">\n' +
   (withStyle ? '<style>\n' + themeStyle() + BASE_STYLE + '\n<\/style>\n' : '') +
   (css ? '<style>\n' + css + '\n<\/style>\n' : '') +
   '</head>\n<body>\n' +
   (html ? escapeScriptEnd(html) + '\n' : '') +
   '<script>' + PRELUDE + ASSERT_RUNTIME + '<\/script>\n' +
+  // 레슨이 정한 환경(가짜 fetch 등). 프렐류드 뒤라 console 미러를 쓸 수 있고,
+  // 사용자 코드 앞이라 학습자가 부를 때는 이미 준비돼 있다. 없으면 아무것도 넣지 않는다.
+  (env ? '<script>' + escapeScriptEnd(env) + '<\/script>\n' : '') +
   // React 는 사용자 코드보다 앞에 놓는다. 여기서 늘어난 줄 수는 offsetOf 가 그대로 센다.
   (react ? '<script>' + escapeScriptEnd(react) + '<\/script>\n' : '') +
   '<script>\n';

@@ -118,7 +118,7 @@ export function createRunner({ mount, onEvent }) {
   window.addEventListener('message', handleMessage);
   document.addEventListener('visibilitychange', handleVisibility);
 
-  const start = (code, { assertScript = '', scaffold, mount: target = mount, preview = false, react = '' }) => {
+  const start = (code, { assertScript = '', scaffold, mount: target = mount, preview = false, react = '', env = '' }) => {
     doneSeen = false;
     pingSeen = false;
     loadSeen = false;
@@ -130,7 +130,7 @@ export function createRunner({ mount, onEvent }) {
     frame.addEventListener('load', handleLoad);
     // allow-same-origin 을 절대 넣지 않는다. 넣는 순간 부모 DOM/스토리지가 열린다.
     frame.setAttribute('sandbox', 'allow-scripts');
-    const head = buildHead(scaffold, preview, react);
+    const head = buildHead(scaffold, preview, react, env);
     lineOffset = offsetOf(head);
     frame.srcdoc = head + escapeScriptEnd(code) + buildTail(assertScript);
 
