@@ -80,12 +80,17 @@ export const PRELUDE = `
     });
   });
 
+  // 모듈 실행 시 오류의 filename 은 blob URL 로 온다. 학습자에게는 파일 이름으로 보여야 한다.
+  // 표는 모듈 로더가 채운다. files[] 가 없는 단계에서는 비어 있고 file 은 빈 문자열로 나간다.
+  let fileNames = {};
+
   window.addEventListener('error', (e) => {
     post({
       type: 'error',
       message: e.message || 'Unknown error',
       line: e.lineno || 0,
       col: e.colno || 0,
+      file: fileNames[e.filename] || '',
     });
   });
 
@@ -97,7 +102,11 @@ export const PRELUDE = `
 
   // assert 런타임이 쓸 수 있게 최소한만 노출한다. 사용자 코드보다 먼저 참조를 잡아가므로
   // 이후 사용자 코드가 이 전역을 덮어써도 assert 런타임은 영향받지 않는다.
-  window.__pgRuntime = { post: post, fmt: (value) => fmt(value, 0, new Set()) };
+  window.__pgRuntime = {
+    post: post,
+    fmt: (value) => fmt(value, 0, new Set()),
+    setFiles: (map) => { fileNames = map; },
+  };
 
   // done 은 '이번 실행의 판정이 전부 끝났다'는 뜻이다. 프레임 종료가 아니다 —
   // done 이후에도 프레임은 살아 있고 워치독이 계속 본다.

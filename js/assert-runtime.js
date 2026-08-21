@@ -117,7 +117,9 @@ export const ASSERT_RUNTIME = `
     await yieldMacrotask();
   };
 
-  window.__runAsserts = async (specs, target, waitRender) => {
+  // entryProblem: files[] 단계에서 진입 함수를 못 찾은 이유. 고칠 곳이 경우마다 달라
+  // 로더가 문구를 정해 넘긴다. files[] 가 없는 단계는 넘기지 않아 기존 문구가 그대로 쓰인다.
+  window.__runAsserts = async (specs, target, waitRender, entryProblem) => {
     if (specs.some((spec) => spec.type === 'dom')) await domReady();
     await settle(waitRender);
 
@@ -144,7 +146,7 @@ export const ASSERT_RUNTIME = `
       }
 
       if (typeof target !== 'function') {
-        rt.post(Object.assign({}, base, { status: 'error', message: '함수를 찾을 수 없습니다' }));
+        rt.post(Object.assign({}, base, { status: 'error', message: entryProblem || '함수를 찾을 수 없습니다' }));
         continue;
       }
 

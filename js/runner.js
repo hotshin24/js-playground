@@ -1,8 +1,5 @@
 import { buildHead, buildTail, offsetOf, escapeScriptEnd } from './frame-doc.js';
-
-// 이 두 모듈은 정적 import 하지 않는다. 정적으로 걸면 T1·T2 에서도 요청이 나가
-// F-007 의 요청 수가 늘어난다. React 레슨에서만 처음 받는다.
-const REACT_MODULES = () => Promise.all([import('./transpile.js'), import('./react-runtime.js')]);
+import { prepareReact, PREPARE_FAILED } from './react-prepare.js';
 
 // 마지막 ping 이후 이 시간이 지나면 프레임이 멈춘 것으로 본다
 export const WATCHDOG_TIMEOUT_MS = 3000;
@@ -167,27 +164,15 @@ export function createRunner({ mount, onEvent }) {
       return;
     }
 
-    // React 레슨만 여기로 온다. Babel 과 React 는 이 시점에 처음 받는다.
     const began = performance.now();
-    REACT_MODULES()
-      .then(([tp, rt]) =>
-        Promise.all([
-          rt.loadReact().catch(() => { throw rt.LOAD_FAILED; }),
-          tp.transpile(code).catch((err) => { throw err && err.message ? err : tp.LOAD_FAILED; }),
-        ])
-      )
-      .then(([react, source]) => {
+    prepareReact(code)
+      .then(({ react, source }) => {
         if (gen !== generation) return;
         start(source, { ...options, react });
       })
       .catch((info) => {
         if (gen !== generation) return;
-        failBeforeStart(
-          info && info.message
-            ? info
-            : { message: 'JSX 변환기를 불러오지 못했습니다. 네트워크를 확인하고 다시 실행해 주세요.', blocked: true },
-          began
-        );
+        failBeforeStart(info && info.message ? info : PREPARE_FAILED, began);
       });
   };
 
