@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 2,
+  "id": "t5-13",
+  "track": "T5",
+  "order": 13,
+  "runtime": "js",
+  "title": "순서대로 vs 한꺼번에",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "더해지는 시간과 겹치는 시간",
+      "brief": [
+        "T5 를 마무리하면서 앞의 두 레슨을 나란히 놓고 봅니다. 순서대로 기다리는 것과 한꺼번에 기다리는 것입니다.",
+        "await 를 이어 쓰면 앞의 것이 끝나야 뒤의 것이 출발합니다. 그래서 걸리는 시간이 더해집니다. 세 요청이 각각 얼마씩 걸린다면 그 셋을 합한 만큼입니다.",
+        "Promise.all 은 셋을 한꺼번에 내보내고 다 끝나기를 기다립니다. 셋이 같이 흐르므로 걸리는 시간은 합이 아니라 셋 중 가장 느린 하나만큼입니다. 나머지 둘은 그 시간 안에 이미 끝나 있습니다.",
+        "다음 두 단계에 같은 일을 두 형태로 두었습니다. 시간을 재는 줄을 넣어 두었으니 직접 실행해 두 값을 견줘 보세요.",
+        "숫자에 대해 미리 말해 둘 것이 있습니다. 이 지문에는 정확한 밀리초를 적지 않았습니다. 여러분이 잰 값은 우리가 잰 값과 다를 것이고, 달라도 이상한 것이 아닙니다. 브라우저는 탭이 뒤에 있으면 타이머를 늦추고, 기계와 그때 사정에 따라서도 달라집니다. 그러니 절대 시간을 외우지 마세요. 볼 것은 두 값의 관계입니다. 순서대로 기다린 쪽이 한꺼번에 기다린 쪽보다 두세 배 걸린다는 것, 그리고 요청이 늘수록 그 차이가 커진다는 것입니다.",
+        "어느 쪽이 낫다는 이야기가 아닙니다. 고르는 기준은 하나뿐입니다. 뒤의 요청이 앞의 결과를 필요로 하는가.",
+        "필요하다면 순서대로 말고는 방법이 없습니다. 내 번호를 알아야 내 등록 목록을 받을 수 있다면, 내 정보를 먼저 받아야 합니다. 이것을 한꺼번에 보내려 해도 보낼 주소를 아직 모릅니다. 느린 것이 아니라 그렇게 해야만 하는 것입니다.",
+        "필요 없다면 한꺼번에 보낼 수 있습니다. 코스 목록과 공지 목록은 서로를 모르고도 받을 수 있습니다. 이런 것을 순서대로 기다리는 것은 그냥 기다림을 늘리는 일입니다.",
+        "실제 화면에서는 둘이 섞입니다. 서로 필요 없는 것끼리 묶어 한꺼번에 보내고, 그 결과가 있어야 하는 것을 그다음에 보냅니다. 다음 두 단계 뒤의 연습이 그 모양입니다.",
+        "한 가지는 다루지 않고 넘어갑니다. 한꺼번에 보내는 개수가 아주 많아지면 브라우저와 서버 쪽에 제한이 생깁니다. 이 무대에는 진짜 서버가 없어 확인할 수 없는 이야기라 여기서는 짚기만 합니다.",
+        "여기까지가 T5 입니다. 이 트랙 내내 결과를 확인한 방법을 돌아보세요. console.log 로 찍어 보거나, t5-10 처럼 요소를 만들어 손으로 붙였습니다. 상태가 바뀔 때마다 화면을 지우고 다시 그렸습니다. 다음 트랙에서 바로 그 네 갈래 화면을 React 로 옮깁니다. 값을 바꾸면 화면이 따라오는 방식이라, 지금 손으로 하던 일 가운데 무엇이 사라지는지 그때 견주어 보게 됩니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "먼저 · 순서대로 기다리기",
+      "brief": [
+        "코스 목록과 공지 목록과 내 정보를 받습니다. 셋은 서로를 필요로 하지 않는데도 순서대로 기다립니다.",
+        "실행해 보세요. 맨 아래에 걸린 시간이 찍힙니다. 그 숫자를 기억해 두세요.",
+        "await 가 세 줄 이어져 있습니다. 첫째 줄이 끝나야 둘째 줄이 출발합니다."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다. 주소마다 걸리는 시간이 다릅니다.",
+        "(() => {",
+        "  const DB = {",
+        "    '/api/courses': { delay: 60, body: [",
+        "      { id: 1, name: '리액트 입문' },",
+        "      { id: 2, name: 'CSS 레이아웃' },",
+        "      { id: 3, name: '자바스크립트 기초' },",
+        "    ] },",
+        "    '/api/notices': { delay: 90, body: [",
+        "      { id: 1, title: '휴강 안내' },",
+        "      { id: 2, title: '교재 배포' },",
+        "    ] },",
+        "    '/api/me': { delay: 40, body: { id: 7, name: '신호진' } },",
+        "    '/api/me2': { delay: 40, body: { id: 8, name: '김학생' } },",
+        "    '/api/enrolled/7': { delay: 60, body: [1, 3] },",
+        "    '/api/enrolled/8': { delay: 60, body: [] },",
+        "  };",
+        "",
+        "  window.fetch = (url) => new Promise((resolve) => {",
+        "    const hit = DB[String(url)];",
+        "    setTimeout(() => {",
+        "      if (!hit) {",
+        "        resolve(new Response('<!doctype html><h1>Not Found</h1>', {",
+        "          status: 404,",
+        "          statusText: 'Not Found',",
+        "          headers: { 'Content-Type': 'text/html' },",
+        "        }));",
+        "        return;",
+        "      }",
+        "      resolve(new Response(JSON.stringify(hit.body), {",
+        "        status: 200,",
+        "        statusText: 'OK',",
+        "        headers: { 'Content-Type': 'application/json' },",
+        "      }));",
+        "    }, hit ? hit.delay : 40);",
+        "  });",
+        "})();"
+      ],
+      "code": "// 이 함수는 그대로 두세요\nasync function get(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  return res.json();\n}\n\nasync function main() {\n  const start = Date.now();\n\n  const courses = await get('/api/courses');\n  const notices = await get('/api/notices');\n  const me = await get('/api/me');\n\n  console.log('코스', courses.length + '개 · 공지', notices.length + '개 ·', me.name);\n  console.log('순서대로 기다린 시간:', Date.now() - start, 'ms');\n}\n\nmain();\n"
+    },
+    {
+      "kind": "run",
+      "title": "다음 · 한꺼번에 기다리기",
+      "brief": [
+        "받는 것도 찍는 것도 같습니다. 보내는 방식만 바뀌었습니다.",
+        "실행해서 앞 단계의 숫자와 견줘 보세요. 두세 배 차이가 날 것입니다. 정확한 배수는 그때그때 다릅니다.",
+        "앞 단계와 이 단계의 코드를 나란히 놓고 보세요. await 세 줄이 Promise.all 한 덩어리로 바뀌었을 뿐이고, 받는 쪽은 구조 분해로 똑같이 셋을 꺼냅니다.",
+        "여러 번 실행해 보면 값이 조금씩 달라집니다. 절대 시간이 아니라 두 값의 관계를 보세요."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다. 주소마다 걸리는 시간이 다릅니다.",
+        "(() => {",
+        "  const DB = {",
+        "    '/api/courses': { delay: 60, body: [",
+        "      { id: 1, name: '리액트 입문' },",
+        "      { id: 2, name: 'CSS 레이아웃' },",
+        "      { id: 3, name: '자바스크립트 기초' },",
+        "    ] },",
+        "    '/api/notices': { delay: 90, body: [",
+        "      { id: 1, title: '휴강 안내' },",
+        "      { id: 2, title: '교재 배포' },",
+        "    ] },",
+        "    '/api/me': { delay: 40, body: { id: 7, name: '신호진' } },",
+        "    '/api/me2': { delay: 40, body: { id: 8, name: '김학생' } },",
+        "    '/api/enrolled/7': { delay: 60, body: [1, 3] },",
+        "    '/api/enrolled/8': { delay: 60, body: [] },",
+        "  };",
+        "",
+        "  window.fetch = (url) => new Promise((resolve) => {",
+        "    const hit = DB[String(url)];",
+        "    setTimeout(() => {",
+        "      if (!hit) {",
+        "        resolve(new Response('<!doctype html><h1>Not Found</h1>', {",
+        "          status: 404,",
+        "          statusText: 'Not Found',",
+        "          headers: { 'Content-Type': 'text/html' },",
+        "        }));",
+        "        return;",
+        "      }",
+        "      resolve(new Response(JSON.stringify(hit.body), {",
+        "        status: 200,",
+        "        statusText: 'OK',",
+        "        headers: { 'Content-Type': 'application/json' },",
+        "      }));",
+        "    }, hit ? hit.delay : 40);",
+        "  });",
+        "})();"
+      ],
+      "code": "// 이 함수는 그대로 두세요\nasync function get(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  return res.json();\n}\n\nasync function main() {\n  const start = Date.now();\n\n  const [courses, notices, me] = await Promise.all([\n    get('/api/courses'),\n    get('/api/notices'),\n    get('/api/me'),\n  ]);\n\n  console.log('코스', courses.length + '개 · 공지', notices.length + '개 ·', me.name);\n  console.log('한꺼번에 기다린 시간:', Date.now() - start, 'ms');\n}\n\nmain();\n"
+    },
+    {
+      "kind": "fill",
+      "title": "기다려야만 하는 줄 채우기",
+      "brief": [
+        "앞의 셋은 한꺼번에 보내는 것으로 돼 있습니다. 등록 목록을 받는 자리가 비어 있습니다.",
+        "null 자리를 채워 내 번호로 등록 목록을 받아 주세요. 주소는 '/api/enrolled/' 뒤에 me.id 를 붙인 것입니다.",
+        "이 줄은 위의 Promise.all 안으로 옮길 수 없습니다. me 를 받기 전에는 주소를 만들 수 없기 때문입니다.",
+        "채우지 않고 실행하면 null 의 length 를 읽으려다 실패합니다."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다. 주소마다 걸리는 시간이 다릅니다.",
+        "(() => {",
+        "  const DB = {",
+        "    '/api/courses': { delay: 60, body: [",
+        "      { id: 1, name: '리액트 입문' },",
+        "      { id: 2, name: 'CSS 레이아웃' },",
+        "      { id: 3, name: '자바스크립트 기초' },",
+        "    ] },",
+        "    '/api/notices': { delay: 90, body: [",
+        "      { id: 1, title: '휴강 안내' },",
+        "      { id: 2, title: '교재 배포' },",
+        "    ] },",
+        "    '/api/me': { delay: 40, body: { id: 7, name: '신호진' } },",
+        "    '/api/me2': { delay: 40, body: { id: 8, name: '김학생' } },",
+        "    '/api/enrolled/7': { delay: 60, body: [1, 3] },",
+        "    '/api/enrolled/8': { delay: 60, body: [] },",
+        "  };",
+        "",
+        "  window.fetch = (url) => new Promise((resolve) => {",
+        "    const hit = DB[String(url)];",
+        "    setTimeout(() => {",
+        "      if (!hit) {",
+        "        resolve(new Response('<!doctype html><h1>Not Found</h1>', {",
+        "          status: 404,",
+        "          statusText: 'Not Found',",
+        "          headers: { 'Content-Type': 'text/html' },",
+        "        }));",
+        "        return;",
+        "      }",
+        "      resolve(new Response(JSON.stringify(hit.body), {",
+        "        status: 200,",
+        "        statusText: 'OK',",
+        "        headers: { 'Content-Type': 'application/json' },",
+        "      }));",
+        "    }, hit ? hit.delay : 40);",
+        "  });",
+        "})();"
+      ],
+      "code": "// 이 함수는 그대로 두세요\nasync function get(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  return res.json();\n}\n\nasync function dashboard() {\n  // 셋은 서로를 필요로 하지 않습니다\n  const [courses, notices, me] = await Promise.all([\n    get('/api/courses'),\n    get('/api/notices'),\n    get('/api/me'),\n  ]);\n\n  // 등록 목록은 내 번호를 알아야 받을 수 있습니다\n  const enrolled = null; // ← 여기를 채우세요\n\n  return {\n    courses: courses.length,\n    notices: notices.length,\n    name: me.name,\n    enrolled: enrolled.length,\n  };\n}\n",
+      "entry": "dashboard",
+      "solutionCode": "// 이 함수는 그대로 두세요\nasync function get(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  return res.json();\n}\n\nasync function dashboard() {\n  // 셋은 서로를 필요로 하지 않습니다\n  const [courses, notices, me] = await Promise.all([\n    get('/api/courses'),\n    get('/api/notices'),\n    get('/api/me'),\n  ]);\n\n  // 등록 목록은 내 번호를 알아야 받을 수 있습니다\n  const enrolled = await get('/api/enrolled/' + me.id);\n\n  return {\n    courses: courses.length,\n    notices: notices.length,\n    name: me.name,\n    enrolled: enrolled.length,\n  };\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "한꺼번에 셋, 그다음 하나",
+          "args": [],
+          "expected": {
+            "courses": 3,
+            "notices": 2,
+            "name": "신호진",
+            "enrolled": 2
+          }
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "섞어서 짜기",
+      "brief": [
+        "화면 하나에 필요한 것을 모아 오는 dashboard 를 만들어 주세요. 순서대로 해야 하는 것과 한꺼번에 보낼 수 있는 것이 섞여 있습니다.",
+        "dashboard(meUrl) 은 내 정보 주소를 받습니다. 코스 목록('/api/courses')과 공지 목록('/api/notices')과 내 정보, 이 셋은 서로를 필요로 하지 않습니다. 한꺼번에 보내세요.",
+        "등록 목록은 '/api/enrolled/' 뒤에 내 번호를 붙인 주소입니다. 내 정보를 받은 뒤에야 주소를 만들 수 있습니다.",
+        "돌려줄 것은 { courses: 코스 개수, notices: 공지 개수, name: 내 이름, enrolled: 등록 개수 } 입니다.",
+        "get 은 주어져 있습니다. 실패 처리는 넣지 마세요. 이 단계에서는 성공하는 주소만 옵니다.",
+        "검사기는 결과만 봅니다. 넷을 모두 순서대로 기다려도 값은 같아 통과합니다. 그래도 묶을 수 있는 셋은 묶으세요. 그것이 이 레슨의 내용입니다."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다. 주소마다 걸리는 시간이 다릅니다.",
+        "(() => {",
+        "  const DB = {",
+        "    '/api/courses': { delay: 60, body: [",
+        "      { id: 1, name: '리액트 입문' },",
+        "      { id: 2, name: 'CSS 레이아웃' },",
+        "      { id: 3, name: '자바스크립트 기초' },",
+        "    ] },",
+        "    '/api/notices': { delay: 90, body: [",
+        "      { id: 1, title: '휴강 안내' },",
+        "      { id: 2, title: '교재 배포' },",
+        "    ] },",
+        "    '/api/me': { delay: 40, body: { id: 7, name: '신호진' } },",
+        "    '/api/me2': { delay: 40, body: { id: 8, name: '김학생' } },",
+        "    '/api/enrolled/7': { delay: 60, body: [1, 3] },",
+        "    '/api/enrolled/8': { delay: 60, body: [] },",
+        "  };",
+        "",
+        "  window.fetch = (url) => new Promise((resolve) => {",
+        "    const hit = DB[String(url)];",
+        "    setTimeout(() => {",
+        "      if (!hit) {",
+        "        resolve(new Response('<!doctype html><h1>Not Found</h1>', {",
+        "          status: 404,",
+        "          statusText: 'Not Found',",
+        "          headers: { 'Content-Type': 'text/html' },",
+        "        }));",
+        "        return;",
+        "      }",
+        "      resolve(new Response(JSON.stringify(hit.body), {",
+        "        status: 200,",
+        "        statusText: 'OK',",
+        "        headers: { 'Content-Type': 'application/json' },",
+        "      }));",
+        "    }, hit ? hit.delay : 40);",
+        "  });",
+        "})();"
+      ],
+      "code": "// 이 함수는 그대로 두세요\nasync function get(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  return res.json();\n}\n\n// dashboard 를 여기에 작성하세요\n",
+      "entry": "dashboard",
+      "solutionCode": "// 이 함수는 그대로 두세요\nasync function get(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  return res.json();\n}\n\nasync function dashboard(meUrl) {\n  const [courses, notices, me] = await Promise.all([\n    get('/api/courses'),\n    get('/api/notices'),\n    get(meUrl),\n  ]);\n\n  const enrolled = await get('/api/enrolled/' + me.id);\n\n  return {\n    courses: courses.length,\n    notices: notices.length,\n    name: me.name,\n    enrolled: enrolled.length,\n  };\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "등록이 있는 사람",
+          "args": [
+            "/api/me"
+          ],
+          "expected": {
+            "courses": 3,
+            "notices": 2,
+            "name": "신호진",
+            "enrolled": 2
+          }
+        },
+        {
+          "type": "value",
+          "label": "등록이 없는 사람",
+          "args": [
+            "/api/me2"
+          ],
+          "expected": {
+            "courses": 3,
+            "notices": 2,
+            "name": "김학생",
+            "enrolled": 0
+          }
+        }
+      ]
+    }
+  ]
+}
