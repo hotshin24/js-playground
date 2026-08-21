@@ -1576,3 +1576,23 @@ Object.getPrototypeOf(Box.prototype) === Object.prototype true
 box.hasOwnProperty === Object.prototype.hasOwnProperty    true   ← 물려받은 것
 class 게터 · 정적 메서드 · 인스턴스 메서드                  전부 정상
 ```
+
+### T7 묶음 A 실측 (2026-08-21)
+
+`t7-01`·`t7-02`·`t7-03` 지문의 근거다. 앞의 "T7 착수 전 실측" 에 이어 `t7-02` 의 넷째 단계만 따로 쟀다.
+
+**메서드를 콜백으로 넘기면 점 앞을 잃는다** — `t7-02` 넷째 단계의 근거다.
+
+```
+점을 찍어 부르면              this.tag = 상자
+items.forEach(box.show)      this.tag = undefined     ← 넘어간 것은 함수뿐
+items.forEach(() => box.show())   this.tag = 상자
+items.forEach(box.show, box)      this.tag = 상자      ← forEach 의 둘째 인자
+items.forEach(box.show.bind(box)) this.tag = 상자
+```
+
+`forEach` 의 둘째 인자로 `this` 를 지정할 수 있다는 것을 확인했다. 배열 메서드마다 있는 자리는 아니므로 지문에도 "있는 것만 씁니다" 로 적었다.
+
+**`t7-02` 의 넷째 단계는 코드를 따로 준다.** 처음에는 앞 단계와 같은 코드 위에서 세 실험을 지시했는데, 지시가 꼬여 따라가기 어려웠다. 그 자리만 떼어 낸 짧은 코드를 단계에 주고, 세 실험을 한 줄 고치기로 바꿨다. **단계마다 코드를 따로 줄 수 있다는 것을 이 트랙에서 처음 활용했다.**
+
+**이 트랙은 `env` 도 `scaffold` 도 쓰지 않는다.** 순수 `value` assert 로만 검사한다(T1·T5 앞부분과 같은 방식). 정적 검사로 확인했다.
