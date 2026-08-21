@@ -1596,3 +1596,69 @@ items.forEach(box.show.bind(box)) this.tag = 상자
 **`t7-02` 의 넷째 단계는 코드를 따로 준다.** 처음에는 앞 단계와 같은 코드 위에서 세 실험을 지시했는데, 지시가 꼬여 따라가기 어려웠다. 그 자리만 떼어 낸 짧은 코드를 단계에 주고, 세 실험을 한 줄 고치기로 바꿨다. **단계마다 코드를 따로 줄 수 있다는 것을 이 트랙에서 처음 활용했다.**
 
 **이 트랙은 `env` 도 `scaffold` 도 쓰지 않는다.** 순수 `value` assert 로만 검사한다(T1·T5 앞부분과 같은 방식). 정적 검사로 확인했다.
+
+### T7 묶음 B 실측 (2026-08-21)
+
+`t7-04`·`t7-05`·`t7-06` 지문의 근거다.
+
+**`bind` · `call` · `apply`**
+
+```
+call                      안녕하세요, 리액트 입문입니다!     ← 인자를 낱개로, 즉시
+apply                     반갑습니다, 리액트 입문입니다.     ← 인자를 배열로, 즉시
+bind 가 돌려주는 것         function · 원본과 같은가: false   ← 새 함수를 만든다
+bind 뒤 부르면             처음 뵙겠습니다, 리액트 입문입니다~
+부분 적용                  미리 넣은 인사, 리액트 입문입니다?
+bind 한 것을 또 bind        리액트 입문 (안 바뀜)
+bind 한 것을 call          리액트 입문 (안 바뀜)
+length · name             2 → 1 · 'bound intro'
+```
+
+**부분 적용을 레슨에 넣었다.** 재현됐고, `bind` 만 그것을 할 수 있는 이유가 분명하기 때문이다 — `call`·`apply` 는 그 자리에서 부르고 끝나 기억해 둘 곳이 없지만 `bind` 는 새 함수를 만들어 두므로 `this` 도 인자도 함께 넣어 둘 수 있다. T1 의 클로저와 같은 성질이라 `t7-04` read 에 그렇게 적었다. `partial.length` 가 2에서 1로 줄어든 것도 tweak 에 넣었다 — 미리 넣은 만큼 받을 인자가 준 것이 숫자로 드러난다.
+
+**프로토타입 체인**
+
+```
+객체가 가진 것              ["name"]
+hasOwnProperty 는 동작      true · 출처 Object.prototype  (같은 함수)
+toString 도 마찬가지        [object Object]
+한 단계 위                  Object.prototype
+그 위                       null                          ← 체인의 끝
+__proto__                  getPrototypeOf 와 같은 것
+배열                        Array.prototype → Object.prototype · map 은 거기
+Object.create 로 이으면      메서드는 위에서, 값은 자기 것
+가리기                      아래가 이기고 위는 그대로 남는다
+```
+
+**`__proto__` 와 `Object.getPrototypeOf` 를 둘 다 보여 주되 쓰는 쪽을 밝혔다.** 코드에는 `getPrototypeOf` 를 쓰고 `__proto__` 는 남의 코드와 개발자 도구에서 읽을 줄만 알면 된다고 적었다. 이 트랙의 목적이 읽기라는 것과 맞는다.
+
+**`new` 가 하는 일 네 가지 — 전부 관측했다.**
+
+```
+① 안에서 this 가 빈 객체인가                    true
+② this 의 프로토타입이 Course.prototype 인가     true
+③ 본문 실행                                    name·hours 가 새 객체에 담김
+④ 결과                                        객체를 돌려주지 않으면 그 새 객체
+
+메서드는 인스턴스에 없다     Object.keys = ["name","hours"]
+둘이 같은 메서드를 쓴다      a.describe === b.describe → true
+constructor · instanceof   둘 다 true
+```
+
+**`new` 없이 부르면** — `t7-01` 실측 ⑨의 회수 자리다.
+
+```
+안에서 this 가 빈 객체인가        false
+프로토타입이 이어졌는가            false
+돌려준 값                        undefined
+window 가 더러워졌나              window.name='없는것' · window.hours=1
+```
+
+오류가 나지 않는다는 것이 이 사고의 성격이다. `t7-06` write 에서 `this instanceof Course` 로 스스로 막는 옛 라이브러리 방식까지 쓰게 했다. `class` 가 이것을 어떻게 막는지는 `t7-07` 이다.
+
+**생성자가 무엇을 돌려주느냐에 따라 갈린다.**
+
+```
+객체를 돌려주면      그 객체가 결과 (체인이 이어지지 않은 남남)
+원시값을 돌려주면    무시되고 새 객체가 결과
+```
