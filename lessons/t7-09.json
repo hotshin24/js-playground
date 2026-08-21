@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 2,
+  "id": "t7-09",
+  "track": "T7",
+  "order": 9,
+  "runtime": "js",
+  "title": "붙어 있는 것들",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "인스턴스에 붙는 것과 class 에 붙는 것",
+      "brief": [
+        "class 안에 적는 것이 전부 인스턴스로 가는 것은 아닙니다. 두 갈래가 더 있습니다.",
+        "첫째는 정적 멤버입니다. static 을 붙여 적으면 인스턴스가 아니라 class 자체에 붙습니다. Course.count 처럼 class 이름으로 부릅니다. 인스턴스에서는 보이지 않습니다.",
+        "가장 흔한 쓰임이 정적 팩토리입니다. static of(name, hours) { return new Course(name, hours); } 처럼 두고 Course.of(...) 로 만듭니다. new 를 쓰는 것과 결과는 같은데 이름을 붙일 수 있다는 것이 다릅니다. 만드는 방법이 여럿일 때 fromJSON · fromText 처럼 이름으로 구분합니다.",
+        "정적 멤버는 자식에게도 물려집니다. Workshop extends Course 이면 Workshop.of 도 부를 수 있습니다.",
+        "둘째는 게터와 세터입니다. get 을 붙인 메서드는 괄호 없이 값처럼 읽습니다. a.label 이라고 적으면 그 함수가 실행돼 결과가 나옵니다. set 을 붙인 것은 a.hoursText = '15' 처럼 대입하면 실행됩니다.",
+        "왜 그냥 메서드로 두지 않을까요. 값처럼 읽히는 것이 자연스러운 자리가 있기 때문입니다. isLong 은 상태를 묻는 것이지 무엇을 시키는 것이 아닙니다. 그런 자리에 괄호가 붙으면 읽는 사람이 '무슨 일을 하는 함수인가' 하고 잠깐 멈춥니다.",
+        "다만 게터 안에서 오래 걸리는 일을 하면 안 됩니다. 읽는 쪽은 그것이 그냥 값인 줄 알고 여러 번 읽습니다. 계산이 무거우면 메서드로 두어 괄호를 보이게 하는 편이 낫습니다.",
+        "게터도 프로토타입에 붙습니다. Object.keys 에는 나오지 않고 JSON.stringify 에도 담기지 않습니다. 서버로 보낼 때 게터로 만든 값이 빠져 있어 당황하는 일이 흔합니다.",
+        "여기까지가 이 트랙에서 다루는 문법입니다. 마지막으로 이 트랙을 시작한 이유로 돌아갑니다. 읽기 위해서였습니다. 실무에서 만나게 될 대표적인 코드를 하나 읽어 보겠습니다.",
+        "t4-01 에서 만든 것과 같은 화면입니다. 누르면 숫자가 올라가는 버튼이고, 그때는 이렇게 썼습니다. function Counter() { const [n, setN] = useState(0); return <button onClick={() => setN(n + 1)}>{n}</button>; }",
+        "class 컴포넌트로 쓰면 이런 모양입니다. class Counter extends React.Component { constructor(props) { super(props); this.state = { n: 0 }; this.handleClick = this.handleClick.bind(this); } handleClick() { this.setState({ n: this.state.n + 1 }); } render() { return <button onClick={this.handleClick}>{this.state.n}</button>; } }",
+        "이 트랙에서 배운 것이 전부 들어 있습니다. extends 로 React.Component 를 물려받고, 생성자에서 super(props) 를 먼저 부르고, this.state 에 상태를 담고, 그리고 this.handleClick = this.handleClick.bind(this) 로 메서드의 this 를 고정합니다. t7-04 에서 본 그 bind 입니다. 이 줄이 없으면 버튼이 눌렸을 때 this 가 undefined 라 터집니다.",
+        "무엇이 달라졌는지 보세요. 상태를 두는 자리가 this.state 라는 정해진 이름에서 useState 가 돌려주는 값으로 바뀌었습니다. 상태가 여럿이면 그때는 한 객체에 담아 setState 로 부분만 갱신했고, 지금은 useState 를 여러 번 부릅니다. 화면을 그리는 자리가 render 메서드에서 함수 본문 자체로 바뀌었습니다. 그리고 this 를 고정하는 줄이 사라졌습니다 — 메서드가 아니라 함수라서 고정할 this 가 없습니다.",
+        "어느 쪽이 낫다는 이야기가 아닙니다. class 컴포넌트는 그때의 방식이었고 지금도 잘 돌아갑니다. 실무에서 이런 코드를 만나면 잘못 쓴 코드가 아니라 그때 쓰던 문법으로 적힌 코드입니다. 고칠 이유가 없으면 그대로 두고 읽으면 됩니다. 여러분은 이제 그것을 읽을 수 있습니다.",
+        "여기까지가 T7 입니다. 돌아보면 이 트랙 내내, 아니 이 도구의 모든 레슨이 한 파일 안에서 끝났습니다. 실무의 코드는 그렇지 않습니다. 컴포넌트 하나가 파일 하나이고, 값과 함수는 여러 파일에 흩어져 있으며, 그것을 잇는 것이 import 와 export 입니다.",
+        "그 이야기가 T8 입니다. 다만 T8 은 아직 만들어지지 않았습니다. 파일 여러 개를 한꺼번에 실행하려면 이 도구의 실행 엔진을 먼저 고쳐야 하고 그 작업이 남아 있습니다. 목록에서 T8 을 찾지 못하더라도 빠뜨린 것이 아닙니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "class 에 붙는 것들",
+      "brief": [
+        "정적 팩토리로 만들고 게터로 읽고 세터로 넣습니다.",
+        "실행해 보세요. label 과 isLong 에 괄호가 없는 것을 보세요. 값처럼 읽힙니다.",
+        "a.hoursText = '15' 한 줄이 실제로는 함수를 부른 것입니다. 그 뒤 label 과 isLong 이 함께 달라집니다.",
+        "마지막 두 줄을 보세요. Object.keys 에도 JSON 에도 게터가 없습니다. 인스턴스가 가진 것은 name 과 hours 뿐입니다."
+      ],
+      "code": "class Course {\n  static count = 0;\n\n  static of(name, hours) {\n    return new Course(name, hours);\n  }\n\n  constructor(name, hours) {\n    this.name = name;\n    this.hours = hours;\n    Course.count += 1;\n  }\n\n  get label() {\n    return this.name + '(' + this.hours + '시간)';\n  }\n\n  get isLong() {\n    return this.hours >= 10;\n  }\n\n  set hoursText(text) {\n    this.hours = Number(text);\n  }\n}\n\nconst a = Course.of('리액트 입문', 8);\nconst b = Course.of('자바스크립트 기초', 12);\n\nconsole.log('게터는 괄호 없이 :', a.label, '·', a.isLong);\nconsole.log('긴 강의 :', b.label, '·', b.isLong);\n\na.hoursText = '15';\nconsole.log('세터로 넣은 뒤 :', a.label, '·', a.isLong);\n\nconsole.log('정적 값 :', Course.count, '· 인스턴스에는 :', a.count);\nconsole.log('자기 것 :', Object.keys(a));\nconsole.log('JSON 으로 만들면 :', JSON.stringify(a));\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "괄호 · 정적 · JSON",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 되돌리고 다시 실행해야 합니다.",
+        "① a.label 을 a.label() 로 바꿔 보세요. TypeError 가 납니다. 게터가 돌려준 것은 글자이고 글자는 부를 수 없습니다. 반대로 게터가 아닌 메서드를 괄호 없이 읽으면 함수 자체가 나옵니다. 남의 코드에서 괄호 유무가 헷갈리면 이 둘 중 하나가 나옵니다.",
+        "② 되돌린 뒤 Course.count 를 a.count 로 바꿔 찍어 보세요. undefined 입니다. 정적 멤버는 class 에 붙어 있고 인스턴스의 체인에는 없습니다.",
+        "③ 되돌린 뒤 get label 앞의 get 만 지워 보세요. JSON.stringify 결과는 그대로인데 a.label 이 함수가 됩니다. 화면에 label 을 그대로 쓰던 코드가 있었다면 갑자기 함수가 찍힙니다. get 한 글자가 읽는 방법을 바꿉니다."
+      ],
+      "code": "class Course {\n  static count = 0;\n\n  static of(name, hours) {\n    return new Course(name, hours);\n  }\n\n  constructor(name, hours) {\n    this.name = name;\n    this.hours = hours;\n    Course.count += 1;\n  }\n\n  get label() {\n    return this.name + '(' + this.hours + '시간)';\n  }\n\n  get isLong() {\n    return this.hours >= 10;\n  }\n\n  set hoursText(text) {\n    this.hours = Number(text);\n  }\n}\n\nconst a = Course.of('리액트 입문', 8);\nconst b = Course.of('자바스크립트 기초', 12);\n\nconsole.log('게터는 괄호 없이 :', a.label, '·', a.isLong);\nconsole.log('긴 강의 :', b.label, '·', b.isLong);\n\na.hoursText = '15';\nconsole.log('세터로 넣은 뒤 :', a.label, '·', a.isLong);\n\nconsole.log('정적 값 :', Course.count, '· 인스턴스에는 :', a.count);\nconsole.log('자기 것 :', Object.keys(a));\nconsole.log('JSON 으로 만들면 :', JSON.stringify(a));\n"
+    },
+    {
+      "kind": "fill",
+      "title": "게터 채우기",
+      "brief": [
+        "정적 팩토리와 생성자는 돼 있고 게터가 비어 있습니다.",
+        "null 자리를 채워 label 게터를 만들어 주세요. '리액트 입문(8시간)' 형태를 돌려줍니다. 괄호는 반각입니다.",
+        "get label() { return ...; } 형태입니다. 부를 때는 괄호를 붙이지 않습니다.",
+        "채우지 않고 실행하면 label 이 없어 undefined 가 나옵니다."
+      ],
+      "code": "class Course {\n  static of(name, hours) {\n    return new Course(name, hours);\n  }\n\n  constructor(name, hours) {\n    this.name = name;\n    this.hours = hours;\n  }\n\n  null; // ← 여기를 채우세요\n}\n\n// 이 함수는 그대로 두세요\nfunction report(name, hours) {\n  const c = Course.of(name, hours);\n  return c.label + ' / 자기 것: ' + Object.keys(c).join(',');\n}\n",
+      "entry": "report",
+      "solutionCode": "class Course {\n  static of(name, hours) {\n    return new Course(name, hours);\n  }\n\n  constructor(name, hours) {\n    this.name = name;\n    this.hours = hours;\n  }\n\n  get label() {\n    return this.name + '(' + this.hours + '시간)';\n  }\n}\n\n// 이 함수는 그대로 두세요\nfunction report(name, hours) {\n  const c = Course.of(name, hours);\n  return c.label + ' / 자기 것: ' + Object.keys(c).join(',');\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "게터가 값처럼 읽힙니다",
+          "args": [
+            "리액트 입문",
+            8
+          ],
+          "expected": "리액트 입문(8시간) / 자기 것: name,hours"
+        },
+        {
+          "type": "value",
+          "label": "게터는 인스턴스에 담기지 않습니다",
+          "args": [
+            "CSS 레이아웃",
+            6
+          ],
+          "expected": "CSS 레이아웃(6시간) / 자기 것: name,hours"
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "T7 종합 — 읽고 쓸 수 있게",
+      "brief": [
+        "이 트랙에서 배운 것을 모아 Course 와 Workshop 을 만들어 주세요.",
+        "Course 는 정적 멤버를 둘 가집니다. count 는 0 에서 시작해 만들어질 때마다 1 씩 늘어납니다. of(name, hours) 는 새 인스턴스를 만들어 돌려줍니다. 만들 때는 new this(...) 를 쓰세요. 그래야 자식이 물려받아 써도 자식이 만들어집니다.",
+        "생성자는 name 과 hours 를 받아 담고 count 를 늘립니다.",
+        "게터를 둘 두세요. label 은 '리액트 입문(8시간)' 형태이고, isLong 은 시간이 10 이상인지입니다.",
+        "Workshop 은 Course 를 물려받습니다. name 과 hours 와 seats 를 받고, 부모 생성자를 먼저 부르세요. label 게터를 덮어써서 부모의 결과 뒤에 ' 정원 12명' 형태를 덧붙입니다. 부모의 게터는 super.label 로 읽습니다. 괄호를 붙이지 마세요.",
+        "report 는 그대로 두세요. 검사기가 이 함수를 부릅니다. 정적 팩토리가 자식에서도 자식을 만드는지 함께 봅니다."
+      ],
+      "code": "// Course 와 Workshop 을 여기에 작성하세요\n\n// 이 함수는 그대로 두세요\nfunction report() {\n  Course.count = 0;\n  const a = Course.of('리액트 입문', 8);\n  const b = Course.of('자바스크립트 기초', 12);\n  const w = new Workshop('리액트 심화', 4, 12);\n  const madeByChild = Workshop.of('임시', 1);\n  return a.label + ' / ' + b.label + '=' + b.isLong\n    + ' / ' + w.label\n    + ' / 만든 개수: ' + Course.count\n    + ' / 자식이 만든 것: ' + (madeByChild instanceof Workshop);\n}\n",
+      "entry": "report",
+      "solutionCode": "class Course {\n  static count = 0;\n\n  static of(name, hours) {\n    return new this(name, hours);\n  }\n\n  constructor(name, hours) {\n    this.name = name;\n    this.hours = hours;\n    Course.count += 1;\n  }\n\n  get label() {\n    return this.name + '(' + this.hours + '시간)';\n  }\n\n  get isLong() {\n    return this.hours >= 10;\n  }\n}\n\nclass Workshop extends Course {\n  constructor(name, hours, seats) {\n    super(name, hours);\n    this.seats = seats;\n  }\n\n  get label() {\n    return super.label + ' 정원 ' + this.seats + '명';\n  }\n}\n\n// 이 함수는 그대로 두세요\nfunction report() {\n  Course.count = 0;\n  const a = Course.of('리액트 입문', 8);\n  const b = Course.of('자바스크립트 기초', 12);\n  const w = new Workshop('리액트 심화', 4, 12);\n  const madeByChild = Workshop.of('임시', 1);\n  return a.label + ' / ' + b.label + '=' + b.isLong\n    + ' / ' + w.label\n    + ' / 만든 개수: ' + Course.count\n    + ' / 자식이 만든 것: ' + (madeByChild instanceof Workshop);\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "정적·게터·상속이 함께",
+          "args": [],
+          "expected": "리액트 입문(8시간) / 자바스크립트 기초(12시간)=true / 리액트 심화(4시간) 정원 12명 / 만든 개수: 4 / 자식이 만든 것: true"
+        }
+      ]
+    }
+  ]
+}

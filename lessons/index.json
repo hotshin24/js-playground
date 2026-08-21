@@ -646,6 +646,24 @@
       "track": "T7",
       "order": 6,
       "title": "옛날 방식의 생성자"
+    },
+    {
+      "id": "t7-07",
+      "track": "T7",
+      "order": 7,
+      "title": "같은 것을 class 로"
+    },
+    {
+      "id": "t7-08",
+      "track": "T7",
+      "order": 8,
+      "title": "물려주기와 조립하기"
+    },
+    {
+      "id": "t7-09",
+      "track": "T7",
+      "order": 9,
+      "title": "붙어 있는 것들"
     }
   ]
 }
