@@ -859,3 +859,44 @@ function search(list) { const [k, setK] = useState(''); ... }   ← use 없는 �
 ```
 
 레슨 69개 · 단계 322개 · 검사 단계 131개. T4 는 18레슨 88단계다.
+
+### T5 착수 전 실측 — 실행 프레임의 `fetch` (2026-08-21)
+
+`t5-06`~`t5-13` 의 설계 근거다. **나중에 진짜 요청으로 바꾸고 싶어질 때 프레임 권한부터 의심하지 않도록** 남긴다.
+
+**프레임 정보** — `sandbox="allow-scripts"` · `location.origin` = `null` · `document.baseURI` = 부모 문서 URL(상속)
+
+| 대상 | 로컬 (`python -m http.server`) | GitHub Pages |
+|---|---|---|
+| `fetch('lessons/index.json')` | **FAIL** `TypeError: Failed to fetch` (2ms) | **OK** `status=200` (2ms) |
+| 절대 URL 같은 호스트 | **FAIL** `Failed to fetch` (0ms) | **OK** `status=200` (224ms) |
+| 없는 파일 | — | **OK** `status=404`, `content-type: text/html` |
+| `XMLHttpRequest` 상대경로 | **FAIL** `onerror`, `status=0` | 미측정 |
+
+| 대상 | 결과 |
+|---|---|
+| CORS `*` 공개 API (jsonplaceholder) | OK `status=200` (338ms) |
+| CORS 헤더 없는 사이트 (example.com) | FAIL `Failed to fetch` (120ms) |
+| `data:` URL | OK `status=200` (1ms) |
+| `blob:` URL | OK `status=200` (4ms) |
+| `new Response(...)` 직접 생성 | OK — `ok`·`status`·`statusText`·`headers.get()`·`json()` 전부 동작 |
+| `window.fetch` 덮어쓰기 | OK |
+| `Response.json()` 파싱 실패 | `SyntaxError: Failed to execute 'json' on 'Response': Unexpected token '<', "<!doctype "... is not valid JSON` |
+| `AbortController` | OK — `DOMException: signal is aborted without reason` |
+
+**막는 것은 샌드박스가 아니라 CORS 헤더다.**
+
+```
+GitHub Pages  →  access-control-allow-origin: *      → 통과
+python http.server →  (헤더 없음)                    → 차단
+```
+
+프레임의 origin 이 `null`(opaque)이므로 **같은 호스트의 파일을 받는 것도 교차 출처 요청**이 된다. 서버가 `Access-Control-Allow-Origin` 을 보내야 통과한다. `allow-same-origin` 을 붙이면 해결되지만 **그것은 절대 하지 않는다**(CLAUDE.md 보안 항목. 부모 DOM·스토리지가 열린다).
+
+**따라서 진짜 fetch 는 배포판에서만 동작하고 로컬에서는 전부 실패한다.** 전수 회귀를 로컬에서 돌리는 현재 체계로는 검증할 수 없다. 이것이 가짜 fetch 를 택한 이유다. 프레임 권한 문제가 아니다.
+
+**나중에 진짜 요청으로 바꾸려면 필요한 것** — 프레임 권한이 아니라 **CORS 헤더를 보내는 로컬 서버** 하나다. 배포판 쪽은 이미 된다.
+
+**T6 에서 같은 결정을 다시 하게 된다.** React 에서 데이터를 가져오는 트랙이고, 그때도 같은 갈림길에 선다. T5 와 같은 가짜 fetch 를 그대로 쓰는 것이 기본안이다.
+
+**가짜 fetch 의 형태** — 레슨 `scaffold.html` 안 `<script>` 에서 `window.fetch` 를 갈아 끼운다. 앱 코드 변경 0줄, 레슨 스키마 변경 0건(`buildHead` 가 scaffold 를 사용자 코드보다 먼저 넣는다). 돌려주는 것은 흉내가 아니라 진짜 `Response` 객체이므로 학습자 코드는 진짜와 같다. 네트워크 실패는 실측한 문구 그대로 `TypeError('Failed to fetch')` 를 던져 맞춘다. **`t5-06` read 에서 이 무대 장치를 밝힌다.**
