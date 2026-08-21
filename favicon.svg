@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="JS·React 학습 플레이그라운드">
+  <!--
+    파비콘은 문서 밖에서 그려지므로 css/tokens.css 의 커스텀 프로퍼티를 참조할 수 없다.
+    그래서 값을 옮겨 적는다. 아래 둘은 tokens.css 의 primitive 와 같은 값이다.
+      #b04a2f = --c-clay-600 (라이트 모드의 --c-accent)
+      #faf9f5 = --c-sand-50  (라이트 모드의 --c-on-accent)
+    다크 모드 대응은 하지 않는다. 파비콘은 브라우저 UI 영역이라 문서 테마를 따르지 않는다.
+  -->
+  <rect width="32" height="32" rx="7" fill="#b04a2f"/>
+  <path d="M9.5 11.5 14.5 16l-5 4.5" fill="none" stroke="#faf9f5" stroke-width="3"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M17.5 21h5.5" fill="none" stroke="#faf9f5" stroke-width="3" stroke-linecap="round"/>
+</svg>

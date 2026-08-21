@@ -181,7 +181,13 @@ body {
   font-size: 1.0625rem;
   line-height: 1.85;
 }
-.prose p { margin: 0 0 1.25em; }
+/*
+ * 지문에는 ReactDOM.createRoot(...).render(...) 같은 공백 없는 코드 조각이 섞인다.
+ * 좁은 화면에서 그 한 덩어리가 줄을 넘겨 문서 전체에 가로 스크롤을 만든다(실측: 390px 에서 문서폭 551).
+ * word-break: break-all 은 평범한 낱말까지 아무 데서나 끊어 useEffect 같은 이름이 두 줄로 갈린다.
+ * overflow-wrap: break-word 는 한 낱말이 제 줄에 들어가지 못할 때만 끊는다. 그 경우가 코드 조각뿐이다.
+ */
+.prose p { margin: 0 0 1.25em; overflow-wrap: break-word; }
 .prose p:last-child { margin-bottom: 0; }
 
 /* read 단계는 본문 한 덩어리뿐이라 넓은 화면에서 가운데로 모은다 */

@@ -27,23 +27,46 @@ JS/React 학습 플레이그라운드. 상세 요구사항은 `docs/PRD.md` 참�
 ```
 /
 ├─ index.html
+├─ favicon.svg
 ├─ CLAUDE.md
+├─ .gitignore
+├─ .github/
+│  └─ workflows/pages.yml   # 배포 시 커밋 해시 주입
 ├─ docs/
-│  └─ PRD.md
+│  ├─ PRD.md
+│  └─ FINDINGS.md
 ├─ css/
 │  ├─ tokens.css      # primitive → semantic 2단 토큰
-│  ├─ base.css
 │  └─ app.css
 ├─ js/
-│  ├─ main.js
-│  ├─ editor.js       # CodeMirror 래핑
-│  ├─ runner.js       # iframe 실행 엔진
-│  ├─ console.js      # 콘솔 미러
-│  ├─ validator.js    # assert 실행
-│  ├─ storage.js      # localStorage
-│  └─ lessons.js      # 레슨 로더
+│  ├─ brief.js
+│  ├─ browse.js
+│  ├─ build-info.js       # 배포 버전 확인
+│  ├─ console.js
+│  ├─ editor.js           # CodeMirror 래핑
+│  ├─ frame-doc.js        # 프레임 문서 조립(scaffold·env·react 주입)
+│  ├─ layout.js
+│  ├─ lessons.js          # 레슨 로드·정규화
+│  ├─ main.js             # 진입 · 단계 전환
+│  ├─ nav.js
+│  ├─ overlay.js
+│  ├─ preview.js          # 미리보기 패널
+│  ├─ progress.js
+│  ├─ react-runtime.js    # React UMD 로드(지연)
+│  ├─ results.js
+│  ├─ runner.js           # iframe 실행 엔진
+│  ├─ sandbox-prelude.js  # 프레임 안 프렐류드(console·ping·링크 차단)
+│  ├─ session.js          # 실행 세션·콘솔 미러
+│  ├─ steps.js
+│  ├─ storage.js          # localStorage
+│  ├─ theme.js
+│  ├─ transpile.js        # JSX 변환(지연 로드)
+│  ├─ validator.js        # assert 실행·판정
+│  ├─ version.js          # 배포 시 주입되는 커밋 해시
+│  └─ workspace.js
 └─ lessons/
-   └─ t1-03.json
+   ├─ index.json        # 트랙·레슨 목록
+   └─ t0-01.json … t7-09.json   # 105개 (T0 3 · T1 17 · T2 15 · T3 16 · T4 18 · T5 13 · T6 14 · T7 9)
 ```
 
 모듈 1개는 200줄을 넘기지 않는다. 넘으면 분리하고 이유를 보고한다.
