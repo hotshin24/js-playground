@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 2,
+  "id": "t4-01",
+  "track": "T4",
+  "order": 1,
+  "runtime": "react",
+  "title": "스스로 바뀌는 화면",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "값이 바뀌면 알아서 다시 그립니다",
+      "brief": [
+        "앞 트랙의 마지막에서 이렇게 끝냈습니다. 그 트랙 내내 데이터가 고정돼 있었고, 화면이 스스로 바뀐 적은 한 번도 없었다고요. 목록의 순서를 뒤집을 때도 우리가 코드로 root.render 를 다시 불렀습니다. 이번 트랙에서 그 마지막 단계가 사라집니다.",
+        "React 에게 지켜볼 값을 맡기면 됩니다. useState 가 그 일을 합니다. 부르면 두 가지를 한 쌍으로 돌려줍니다. 지금 값과, 그 값을 바꾸는 함수입니다. const [count, setCount] = useState(0) 이라고 씁니다. 0 은 처음 값입니다. 배열을 구조 분해로 받는 것이라 앞 트랙에서 쓰던 문법 그대로입니다.",
+        "이렇게 맡겨 둔 값을 setCount 로 바꾸면 React 가 그 컴포넌트를 다시 그립니다. 우리가 다시 그려 달라고 부탁하지 않습니다. 값이 바뀌었다는 사실만으로 충분합니다. 앞 트랙에서 손으로 하던 세 번째 단계가 여기서 없어집니다.",
+        "코드 맨 위의 const { useState } = React; 한 줄을 설명하고 넘어가겠습니다. 이 도구에는 빌드 과정이 없어서 React 를 UMD 라는 형태로 불러옵니다. 그러면 훅이 React 라는 객체 안에 들어 있어 원래는 React.useState 라고 길게 써야 합니다. 실무에서는 파일 맨 위에 import { useState } from 'react' 라고 적고 useState 로 짧게 씁니다. 그 형태와 맞추려고 구조 분해로 꺼내 두는 것입니다. T8 에서 import 를 배우면 그 한 줄이 import 로 바뀔 뿐 나머지는 같습니다.",
+        "이번 레슨에는 버튼이 없습니다. 버튼은 다음 레슨입니다. 대신 2초 뒤에 값이 바뀌도록 해 두었습니다. 앞 트랙에서 5초 뒤 순서를 뒤집던 그 자리와 같은 모양인데, 결정적으로 다른 것이 하나 있습니다. 그때는 그 안에서 root.render 를 다시 불렀고, 이번에는 부르지 않습니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "root.render 없이 바뀝니다",
+      "brief": [
+        "담은 개수를 useState 에 맡겼습니다. 2초 뒤에 값을 1 로 바꿉니다.",
+        "실행하고 기다려 보세요. 2초 뒤에 화면의 숫자가 0 에서 1 로 바뀝니다.",
+        "setTimeout 안을 보세요. root.render 가 없습니다. 값만 바꿨습니다. 콘솔에는 '그려집니다' 가 두 번 찍힙니다. 값이 바뀌자 React 가 컴포넌트를 다시 부른 것입니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".cart { margin: 0 0 8px; padding: 6px 10px; display: inline-block; border-radius: 6px;",
+          "  background: var(--c-surface-alt); font-size: 0.875rem; }",
+          ".card { max-width: 260px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
+          ".card__price { margin: 0; color: var(--c-text-muted); }",
+          ".card__stock { margin: 6px 0 0; color: var(--c-text-warn); font-size: 0.875rem; }"
+        ]
+      },
+      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 이번 레슨에서만 쓰는 임시 통로입니다. 다음 레슨에서 버튼을 배우면 필요 없어집니다.\nlet changeFromOutside = null;\n\nconst Cart = () => {\n  const [count, setCount] = useState(0);\n  changeFromOutside = setCount;\n\n  console.log('그려집니다. 이번 렌더의 개수 =', count);\n\n  return <p className=\"cart\">담은 것 {count}개</p>;\n};\n\nroot.render(<Cart />);\n\nsetTimeout(() => {\n  console.log('--- 값을 1 로 바꿉니다. root.render 는 부르지 않습니다 ---');\n  changeFromOutside(1);\n}, 2000);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "맡기지 않으면 어떻게 되는가",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행하고 2초를 기다려야 합니다.",
+        "① useState 를 쓰지 않는 형태로 바꿔 보세요. 컴포넌트 바깥에 let count = 0; 을 두고, 안에서는 useState 줄과 changeFromOutside 줄을 지웁니다. setTimeout 안은 count = 1; 로 바꿉니다. 2초 뒤에 아무 일도 일어나지 않습니다. 콘솔의 '그려집니다' 도 한 번뿐입니다. 변수는 바뀌었는데 React 는 그 사실을 모릅니다.",
+        "② 되돌린 뒤 useState(0) 을 useState(3) 으로 바꿔 보세요. 처음부터 3개로 시작합니다. 괄호 안의 값은 처음 한 번만 쓰입니다.",
+        "③ setTimeout 안에서 changeFromOutside(1) 을 두 번 이어서 써 보세요. 화면은 1 이고 '그려집니다' 도 한 번만 더 찍힙니다. 같은 값으로 바꾸면 React 는 다시 그리지 않습니다. 바뀐 것이 없기 때문입니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".cart { margin: 0 0 8px; padding: 6px 10px; display: inline-block; border-radius: 6px;",
+          "  background: var(--c-surface-alt); font-size: 0.875rem; }",
+          ".card { max-width: 260px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
+          ".card__price { margin: 0; color: var(--c-text-muted); }",
+          ".card__stock { margin: 6px 0 0; color: var(--c-text-warn); font-size: 0.875rem; }"
+        ]
+      },
+      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 이번 레슨에서만 쓰는 임시 통로입니다. 다음 레슨에서 버튼을 배우면 필요 없어집니다.\nlet changeFromOutside = null;\n\nconst Cart = () => {\n  const [count, setCount] = useState(0);\n  changeFromOutside = setCount;\n\n  console.log('그려집니다. 이번 렌더의 개수 =', count);\n\n  return <p className=\"cart\">담은 것 {count}개</p>;\n};\n\nroot.render(<Cart />);\n\nsetTimeout(() => {\n  console.log('--- 값을 1 로 바꿉니다. root.render 는 부르지 않습니다 ---');\n  changeFromOutside(1);\n}, 2000);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "값을 맡기기",
+      "brief": [
+        "화면과 임시 통로는 돼 있습니다. React 에게 값을 맡기는 줄만 비어 있습니다.",
+        "null 자리를 채워 처음 값이 0 인 상태를 만들어 주세요. 지금 값은 count, 바꾸는 함수는 setCount 라는 이름으로 받습니다.",
+        "검사는 2초를 기다리지 않고 처음 화면만 봅니다. 값이 바뀌는 것은 직접 기다려서 확인하세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".cart { margin: 0 0 8px; padding: 6px 10px; display: inline-block; border-radius: 6px;",
+          "  background: var(--c-surface-alt); font-size: 0.875rem; }",
+          ".card { max-width: 260px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
+          ".card__price { margin: 0; color: var(--c-text-muted); }",
+          ".card__stock { margin: 6px 0 0; color: var(--c-text-warn); font-size: 0.875rem; }"
+        ]
+      },
+      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nlet changeFromOutside = null;\n\nconst Cart = () => {\n  const [count, setCount] = null; // ← 여기를 채우세요\n  changeFromOutside = setCount;\n\n  return <p className=\"cart\">담은 것 {count}개</p>;\n};\n\nroot.render(<Cart />);\n\nsetTimeout(() => changeFromOutside(1), 2000);\n",
+      "solutionCode": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nlet changeFromOutside = null;\n\nconst Cart = () => {\n  const [count, setCount] = useState(0);\n  changeFromOutside = setCount;\n\n  return <p className=\"cart\">담은 것 {count}개</p>;\n};\n\nroot.render(<Cart />);\n\nsetTimeout(() => changeFromOutside(1), 2000);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 0개로 보입니다",
+          "select": ".cart",
+          "text": [
+            "담은 것 0개"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "3초 뒤 품절이 되는 카드",
+      "brief": [
+        "상품 카드를 만들어 주세요. <article className=\"card\"> 안에 제목 '오버사이즈 셔츠'(card__title)와 가격 '189,000원'(card__price)이 들어갑니다.",
+        "품절 여부를 React 에게 맡기세요. 처음에는 품절이 아닙니다. 품절이면 <p className=\"card__stock\">품절</p> 이 하나 더 나오고, 아니면 그 요소가 없어야 합니다.",
+        "아래에 이미 적혀 있는 임시 통로로 3초 뒤에 품절로 바뀝니다. 여러분은 상태를 만들고 화면을 그리기만 하면 됩니다.",
+        "검사는 처음 화면만 봅니다. 3초 뒤에 품절 줄이 생기는지는 직접 기다려서 확인하세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".cart { margin: 0 0 8px; padding: 6px 10px; display: inline-block; border-radius: 6px;",
+          "  background: var(--c-surface-alt); font-size: 0.875rem; }",
+          ".card { max-width: 260px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
+          ".card__price { margin: 0; color: var(--c-text-muted); }",
+          ".card__stock { margin: 6px 0 0; color: var(--c-text-warn); font-size: 0.875rem; }"
+        ]
+      },
+      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nlet changeFromOutside = null;\n\n// 여기에 Card 컴포넌트를 만드세요\n// 상태를 만든 뒤 changeFromOutside 에 그 바꾸는 함수를 넣어 두세요\n\nroot.render(<Card />);\n\nsetTimeout(() => changeFromOutside(true), 3000);\n",
+      "solutionCode": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nlet changeFromOutside = null;\n\nconst Card = () => {\n  const [soldOut, setSoldOut] = useState(false);\n  changeFromOutside = setSoldOut;\n\n  return (\n    <article className=\"card\">\n      <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n      <p className=\"card__price\">189,000원</p>\n      {soldOut ? <p className=\"card__stock\">품절</p> : null}\n    </article>\n  );\n};\n\nroot.render(<Card />);\n\nsetTimeout(() => changeFromOutside(true), 3000);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "카드가 한 장 나옵니다",
+          "select": ".card",
+          "count": 1
+        },
+        {
+          "type": "dom",
+          "label": "제목과 가격이 들어갑니다",
+          "select": ".card__title, .card__price",
+          "text": [
+            "오버사이즈 셔츠",
+            "189,000원"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "처음에는 품절이 아닙니다",
+          "select": ".card__stock",
+          "count": 0
+        }
+      ]
+    }
+  ]
+}

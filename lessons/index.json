@@ -16,6 +16,10 @@
     {
       "id": "T3",
       "title": "React 로 옮기기"
+    },
+    {
+      "id": "T4",
+      "title": "React 상태 다루기"
     }
   ],
   "lessons": [
@@ -324,6 +328,24 @@
       "track": "T3",
       "order": 16,
       "title": "종합 — 코스 그리드"
+    },
+    {
+      "id": "t4-01",
+      "track": "T4",
+      "order": 1,
+      "title": "스스로 바뀌는 화면"
+    },
+    {
+      "id": "t4-02",
+      "track": "T4",
+      "order": 2,
+      "title": "누르면 바뀝니다"
+    },
+    {
+      "id": "t4-03",
+      "track": "T4",
+      "order": 3,
+      "title": "이번 렌더의 값"
     }
   ]
 }
