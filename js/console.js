@@ -66,8 +66,9 @@ export function formatEvent(event) {
     return { level: event.level, text: event.args.join(' ') };
   }
   if (event.type === 'error') {
-    const where = event.line ? '  (' + event.line + ':' + (event.col || 0) + ')' : '';
-    return { level: 'error', text: event.message + where };
+    // file 은 files[] 단계에서만 온다. 없으면 표기가 지금까지와 한 글자도 다르지 않다.
+    const at = [event.file, event.line ? event.line + ':' + (event.col || 0) : ''].filter(Boolean).join(' ');
+    return { level: 'error', text: event.message + (at ? '  (' + at + ')' : '') };
   }
   return null;
 }

@@ -15,7 +15,8 @@ const TIMEOUT_TEXT = {
  * 실행 1회분의 수명을 관리한다. 콘솔·검사 결과 패널이 여기에 묶인다.
  * @param {{ mount, logEl, statusEl, listEl, summaryEl, onAllPassed: () => void }} options
  */
-export function createSession({ mount, previewMount, logEl, statusEl, listEl, summaryEl, onAllPassed, onPreview, onTimeout }) {
+export function createSession({ mount, previewMount, logEl, statusEl, listEl, summaryEl,
+  onAllPassed, onPreview, onTimeout, onFileError = () => {} }) {
   const panel = createConsolePanel({ logEl, statusEl });
   const results = createResultPanel({ listEl, summaryEl });
 
@@ -25,6 +26,9 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
   // 도구를 준비하지 못한 것과 학습자 코드가 틀린 것은 다른 안내여야 한다
   let blockedSeen = false;
   let settled = false;
+  // files[] 단계는 오류의 진단을 검사 결과가 직접 들고 온다(어느 파일 몇 행 · export 누락 …).
+  // 그것을 '코드에 에러가 있어 검사하지 못했습니다' 로 덮으면 학습자가 고칠 곳을 잃는다.
+  let filesMode = false;
 
   // done 을 마감 신호로 쓴다. 그 전까지 도착한 것만 이번 실행의 판정 재료다.
   const settle = () => {
@@ -34,7 +38,7 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
 
     // 구문 에러가 나면 사용자 코드 스크립트만 죽고 assert 스크립트는 그대로 돈다.
     // error 가 assert 보다 먼저 도착하는 점으로 진짜 원인을 가려낸다.
-    if (errorSeen) {
+    if (errorSeen && !filesMode) {
       results.clear();
       results.setSummary(
         blockedSeen ? '실행 준비가 되지 않아 검사하지 못했습니다.' : '코드에 에러가 있어 검사하지 못했습니다.',
@@ -72,6 +76,8 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
       if (event.type === 'error') {
         errorSeen = true;
         if (event.blocked) blockedSeen = true;
+        // 오류가 활성 탭이 아닌 파일에서 났을 수 있다. 탭을 넘기지는 않고 표시만 남긴다.
+        if (event.file) onFileError(event.file);
       }
       const line = formatEvent(event);
       if (line) panel.append(line.level, line.text);
@@ -89,6 +95,7 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
     errorSeen = false;
     blockedSeen = false;
     settled = false;
+    filesMode = Boolean(files);
 
     panel.clear();
     panel.setStatus('실행 중…');
