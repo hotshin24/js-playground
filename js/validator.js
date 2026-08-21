@@ -35,6 +35,25 @@ export const ASSERT_RUNTIME = `
   const visibleText = (node) =>
     ['INPUT', 'TEXTAREA', 'SELECT'].includes(node.tagName) ? node.value : node.textContent;
 
+  // React 는 폼 요소의 value 세터를 인스턴스에 덮어써서 값 추적기를 함께 갱신한다.
+  // 그래서 node.value = x 로 넣으면 추적기도 같이 바뀌고, 뒤이어 input 이벤트가 와도
+  // "바뀐 것이 없다"고 보아 onChange 를 부르지 않는다. 제어 컴포넌트가 통째로 검사 불가가 된다.
+  // 프로토타입의 원래 세터를 직접 부르면 추적기가 옛 값으로 남아 React 가 변화를 알아챈다.
+  const setNativeValue = (node, value) => {
+    const proto =
+      node.tagName === 'TEXTAREA'
+        ? window.HTMLTextAreaElement.prototype
+        : node.tagName === 'SELECT'
+          ? window.HTMLSelectElement.prototype
+          : window.HTMLInputElement.prototype;
+    const desc = Object.getOwnPropertyDescriptor(proto, 'value');
+    if (desc && desc.set) {
+      desc.set.call(node, value);
+    } else {
+      node.value = value;
+    }
+  };
+
   const runActions = async (actions) => {
     for (const step of actions) {
       const target = document.querySelector(step.selector);
@@ -43,7 +62,7 @@ export const ASSERT_RUNTIME = `
       if (step.action === 'click') {
         target.click();
       } else if (step.action === 'fill') {
-        target.value = step.value;
+        setNativeValue(target, step.value);
         target.dispatchEvent(new Event('input', { bubbles: true }));
         target.dispatchEvent(new Event('change', { bubbles: true }));
       } else {
