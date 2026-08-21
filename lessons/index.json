@@ -28,6 +28,10 @@
     {
       "id": "T6",
       "title": "React 앱"
+    },
+    {
+      "id": "T7",
+      "title": "JS 심화"
     }
   ],
   "lessons": [
@@ -606,6 +610,24 @@
       "track": "T6",
       "order": 14,
       "title": "지금 어디에 있는지"
+    },
+    {
+      "id": "t7-01",
+      "track": "T7",
+      "order": 1,
+      "title": "읽기 위해 배웁니다"
+    },
+    {
+      "id": "t7-02",
+      "track": "T7",
+      "order": 2,
+      "title": "누가 불렀는가"
+    },
+    {
+      "id": "t7-03",
+      "track": "T7",
+      "order": 3,
+      "title": "화살표는 묻지 않습니다"
     }
   ]
 }

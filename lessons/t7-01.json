@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 2,
+  "id": "t7-01",
+  "track": "T7",
+  "order": 1,
+  "runtime": "js",
+  "title": "읽기 위해 배웁니다",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "이 트랙은 성격이 다릅니다",
+      "brief": [
+        "T6 를 마치며 이야기했습니다. 여기까지 함수 컴포넌트만 썼고 this 도 class 도 나오지 않았다고 했습니다. 그것들을 몰라도 앱을 만들 수 있었습니다.",
+        "이 트랙은 성격이 다릅니다. 지금까지는 만들기 위해 배웠고 여기서는 읽기 위해 배웁니다. 새로 만들 때 쓰라고 배우는 것이 아닙니다.",
+        "그런데 읽을 일은 반드시 옵니다. 오래된 React 코드에는 class 컴포넌트가 있고, 라이브러리 안쪽에는 생성자 함수와 프로토타입이 있습니다. MDN 예제와 스택오버플로 답변에도 이 문법이 그대로 나옵니다. 에러가 났을 때 남의 코드를 열어 봐야 하는 순간에 읽지 못하면 거기서 멈춥니다.",
+        "그래서 이 트랙의 목표는 '쓸 수 있게' 가 아니라 '읽고 무슨 뜻인지 알게' 입니다. 각 레슨의 write 도 남이 쓴 것과 같은 꼴을 직접 써 보며 눈에 익히는 자리입니다.",
+        "첫 주제는 this 입니다. 함수 안에서 쓰는 this 는 '지금 이 함수를 누구를 통해 불렀는가' 를 가리킵니다.",
+        "중요한 것은 그 값이 함수를 선언한 자리에서 정해지지 않는다는 점입니다. 부르는 순간에 정해집니다. 같은 함수라도 어떻게 부르느냐에 따라 this 가 달라집니다. 다른 언어를 해 본 사람이 가장 많이 걸려 넘어지는 지점입니다.",
+        "객체의 메서드로 부르면 그 객체가 this 입니다. course.describe() 라고 쓰면 점 앞의 course 가 this 가 됩니다.",
+        "그런데 그 함수를 변수에 담아 그냥 부르면 점 앞에 아무것도 없습니다. 그때 this 가 무엇이 되는지가 문제입니다.",
+        "여기서 이 도구의 성격을 밝혀 둡니다. 이 실행 틀은 옛 방식(sloppy mode)으로 돌아갑니다. 그래서 그냥 부른 함수의 this 는 window 라는 전역 객체가 됩니다. 반면 실무의 React 코드는 모듈이고, 모듈은 언제나 엄격 모드(strict mode)라 그 자리에서 this 는 undefined 입니다.",
+        "차이가 왜 중요한지가 핵심입니다. window 가 들어오면 this.name 은 조용히 undefined 가 되어 잘못된 값이 화면까지 흘러갑니다. undefined 가 들어오면 그 자리에서 Cannot read properties of undefined 로 터집니다. 실무에서 보게 될 증상은 뒤쪽입니다.",
+        "다행히 여러분이 직접 실무와 같은 조건을 만들 수 있습니다. 코드 맨 위에 'use strict' 한 줄을 적으면 됩니다. 다음 단계에서 그것도 해 봅니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "같은 함수, 다른 결과",
+      "brief": [
+        "코스 객체에 자기를 설명하는 메서드가 있습니다.",
+        "실행해 보세요. 메서드로 부른 것은 제대로 나오고, 떼어 내어 부른 것은 'undefined · undefined시간' 이 나옵니다.",
+        "두 줄이 부르는 함수는 완전히 같은 함수입니다. 다른 것은 부르는 방식뿐입니다.",
+        "떼어 낸 쪽에서 this 는 window 입니다. window 에는 name 도 hours 도 우리가 넣은 적이 없으니 undefined 가 나옵니다."
+      ],
+      "code": "const course = {\n  name: '리액트 입문',\n  hours: 8,\n  describe() {\n    return this.name + ' · ' + this.hours + '시간';\n  },\n};\n\nconsole.log('메서드로 부르면:', course.describe());\n\nconst taken = course.describe;\nconsole.log('떼어 내어 부르면:', taken());\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "엄격 모드로 · 값을 넣어 보고 · 점 앞을 바꿔",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 되돌리고 다시 실행해야 합니다.",
+        "① 코드 맨 위에 'use strict'; 한 줄을 추가하고 실행해 보세요. 떼어 낸 쪽이 이번에는 조용히 undefined 를 내지 않고 Cannot read properties of undefined (reading 'name') 로 터집니다. 실무의 모듈에서 보게 될 증상이 이것입니다. 조용히 틀린 값이 흘러가는 쪽과 그 자리에서 터지는 쪽 중 어느 것이 나은지 생각해 보세요.",
+        "② 되돌린 뒤 taken() 앞에 window.name = '전역'; window.hours = 99; 두 줄을 넣어 보세요. '전역 · 99시간' 이 나옵니다. 떼어 낸 함수의 this 가 정말 window 라는 것이 이렇게 드러납니다. 실무에서 이런 코드가 있으면 원인을 찾기가 대단히 어렵습니다.",
+        "③ 되돌린 뒤 const other = { name: '다른 코스', hours: 3, describe: course.describe }; 를 만들고 other.describe() 를 찍어 보세요. '다른 코스 · 3시간' 이 나옵니다. 함수는 그대로인데 점 앞이 바뀌니 결과가 바뀝니다. this 는 함수에 붙어 있는 것이 아니라 부를 때 정해진다는 뜻입니다."
+      ],
+      "code": "const course = {\n  name: '리액트 입문',\n  hours: 8,\n  describe() {\n    return this.name + ' · ' + this.hours + '시간';\n  },\n};\n\nconsole.log('메서드로 부르면:', course.describe());\n\nconst taken = course.describe;\nconsole.log('떼어 내어 부르면:', taken());\n"
+    },
+    {
+      "kind": "fill",
+      "title": "자기를 설명하는 메서드 채우기",
+      "brief": [
+        "객체와 값은 돼 있고 메서드 본문이 비어 있습니다.",
+        "null 자리를 채워 '리액트 입문 · 8시간' 형태의 글자를 돌려주세요. course 라는 이름을 직접 쓰지 말고 this 로 값을 꺼내세요.",
+        "this.name 과 this.hours 를 이어 붙이면 됩니다. 가운데는 공백과 가운뎃점입니다.",
+        "채우지 않고 실행하면 null 이 그대로 나옵니다."
+      ],
+      "code": "const course = {\n  name: '리액트 입문',\n  hours: 8,\n  describe() {\n    return null; // ← 여기를 채우세요\n  },\n};\n\n// 이 함수는 그대로 두세요\nfunction ask() {\n  return course.describe();\n}\n",
+      "entry": "ask",
+      "solutionCode": "const course = {\n  name: '리액트 입문',\n  hours: 8,\n  describe() {\n    return this.name + ' · ' + this.hours + '시간';\n  },\n};\n\n// 이 함수는 그대로 두세요\nfunction ask() {\n  return course.describe();\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "메서드가 자기 값을 씁니다",
+          "args": [],
+          "expected": "리액트 입문 · 8시간"
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "this 로 읽는 객체 만들기",
+      "brief": [
+        "코스를 담는 객체를 만드는 makeCourse 를 만들어 주세요. 남이 쓴 코드에서 흔히 보는 꼴입니다.",
+        "makeCourse(name, hours) 는 객체를 하나 돌려줍니다. 그 객체에는 name 과 hours 가 담기고, 메서드가 둘 있습니다.",
+        "describe() 는 '리액트 입문 · 8시간' 형태를 돌려줍니다.",
+        "longer(other) 는 다른 코스를 받아 둘 중 시간이 더 긴 쪽의 이름을 돌려줍니다. 같으면 자기 이름을 돌려주세요.",
+        "두 메서드 모두 값을 this 로 꺼내세요. 바깥 변수를 직접 붙잡지 마세요. 그렇게 해야 만들어진 객체마다 자기 값을 씁니다.",
+        "report 는 그대로 두세요. 검사기가 이 함수를 부릅니다."
+      ],
+      "code": "// makeCourse 를 여기에 작성하세요\n\n// 이 함수는 그대로 두세요\nfunction report(aName, aHours, bName, bHours) {\n  const a = makeCourse(aName, aHours);\n  const b = makeCourse(bName, bHours);\n  return a.describe() + ' / ' + b.describe() + ' / 긴 쪽: ' + a.longer(b);\n}\n",
+      "entry": "report",
+      "solutionCode": "function makeCourse(name, hours) {\n  return {\n    name: name,\n    hours: hours,\n    describe() {\n      return this.name + ' · ' + this.hours + '시간';\n    },\n    longer(other) {\n      return other.hours > this.hours ? other.name : this.name;\n    },\n  };\n}\n\n// 이 함수는 그대로 두세요\nfunction report(aName, aHours, bName, bHours) {\n  const a = makeCourse(aName, aHours);\n  const b = makeCourse(bName, bHours);\n  return a.describe() + ' / ' + b.describe() + ' / 긴 쪽: ' + a.longer(b);\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "둘 다 자기 값을 씁니다",
+          "args": [
+            "리액트 입문",
+            8,
+            "CSS 레이아웃",
+            6
+          ],
+          "expected": "리액트 입문 · 8시간 / CSS 레이아웃 · 6시간 / 긴 쪽: 리액트 입문"
+        },
+        {
+          "type": "value",
+          "label": "뒤가 더 길면 뒤가 나옵니다",
+          "args": [
+            "CSS 레이아웃",
+            6,
+            "자바스크립트 기초",
+            12
+          ],
+          "expected": "CSS 레이아웃 · 6시간 / 자바스크립트 기초 · 12시간 / 긴 쪽: 자바스크립트 기초"
+        },
+        {
+          "type": "value",
+          "label": "같으면 자기 이름",
+          "args": [
+            "리액트 입문",
+            8,
+            "접근성 기초",
+            8
+          ],
+          "expected": "리액트 입문 · 8시간 / 접근성 기초 · 8시간 / 긴 쪽: 리액트 입문"
+        }
+      ]
+    }
+  ]
+}
