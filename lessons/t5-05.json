@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 2,
+  "id": "t5-05",
+  "track": "T5",
+  "order": 5,
+  "runtime": "js",
+  "title": "기다린다고 쓰기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "같은 일을 쓰는 두 번째 방법",
+      "brief": [
+        "앞 레슨에서 .then 과 .catch 로 결과를 받았습니다. 같은 일을 쓰는 방법이 하나 더 있습니다. async 와 await 입니다.",
+        "await 는 '이 줄의 결과가 나올 때까지 기다렸다가 다음 줄로 간다' 는 뜻입니다. const c = await loadCourse(1) 이라고 쓰면 c 에는 Promise 가 아니라 그 안의 값이 들어 있습니다. 풀어 주는 일을 await 가 대신합니다.",
+        "규칙이 둘 있습니다. 첫째, await 는 async 를 붙인 함수 안에서만 쓸 수 있습니다. 없이 쓰면 실행 전에 문법 오류가 납니다. 둘째, 이 도구의 코드 맨 바깥에서는 쓸 수 없습니다. async 함수를 하나 만들어 감싸고 그 함수를 부르는 형태가 됩니다.",
+        "기다린다고 해서 화면 전체가 멈추는 것이 아닙니다. 멈추는 것은 그 async 함수 하나입니다. 함수를 부른 쪽은 기다리지 않고 다음 줄로 갑니다. 이 점은 앞 레슨과 똑같습니다.",
+        "실패는 try 와 catch 로 받습니다. 앞 레슨에서 try 로는 비동기 실패를 잡지 못한다고 했는데, await 를 쓰면 잡힙니다. await 가 그 실패를 '이 줄에서 난 에러' 로 바꿔 주기 때문입니다. 그래서 동기 코드와 같은 모양으로 쓰게 됩니다.",
+        "한 가지 더. async 함수는 언제나 Promise 를 돌려줍니다. 안에서 return '값' 이라고 써도 부르는 쪽이 받는 것은 '값' 이 아니라 Promise 입니다. 부르는 쪽도 await 하거나 .then 을 붙여야 값을 봅니다.",
+        "어느 쪽이 낫다는 이야기가 아닙니다. 둘은 같은 것을 씁니다. 다른 것은 읽는 방식입니다. .then 은 '이 일이 끝나면 이것을' 이라는 순서로 읽고, await 는 위에서 아래로 한 줄씩 읽습니다. 기다릴 것이 여럿 이어질수록 await 쪽이 평평하게 읽히고, 값 하나를 다듬어 넘기는 짧은 흐름은 .then 이 짧습니다. 실무 코드에는 둘이 섞여 있습니다. 둘 다 읽을 수 있어야 합니다.",
+        "다음 두 단계에 같은 동작을 두 형태로 나란히 두었습니다. 결과가 같은지 직접 확인해 보세요."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "먼저 · then 으로 쓴 것",
+      "brief": [
+        "앞 레슨의 형태입니다. 성공은 .then 이, 실패는 .catch 가 받습니다.",
+        "실행해 보세요. 세 줄이 나옵니다. 순서를 기억해 두세요. '맡긴 뒤 바로 이 줄' 이 먼저입니다.",
+        "다음 단계에서 같은 동작을 다른 문법으로 봅니다."
+      ],
+      "code": "// 이 함수는 그대로 두세요\nfunction loadCourse(id) {\n  return new Promise((resolve, reject) => {\n    setTimeout(() => {\n      if (id === 1) {\n        resolve({ id: 1, name: '리액트 입문' });\n      } else {\n        reject(new Error('코스를 찾지 못했습니다'));\n      }\n    }, 60);\n  });\n}\n\nfunction show(id) {\n  loadCourse(id)\n    .then((c) => console.log('성공:', c.name))\n    .catch((e) => console.log('실패:', e.message));\n}\n\nshow(1);\nshow(9);\nconsole.log('맡긴 뒤 바로 이 줄');\n"
+    },
+    {
+      "kind": "run",
+      "title": "다음 · await 로 쓴 것",
+      "brief": [
+        "loadCourse 는 그대로이고 show 만 바뀌었습니다. 실행해서 앞 단계와 결과를 견줘 보세요. 순서까지 같습니다.",
+        "두 코드를 나란히 놓고 보세요. .then(c => ...) 이 const c = await ... 로, .catch(e => ...) 가 catch (e) { ... } 로 옮겨졌습니다. 콜백 안에 있던 것이 함수 본문으로 나왔습니다.",
+        "show 를 부른 쪽은 여전히 기다리지 않습니다. await 가 멈추는 것은 show 안쪽뿐입니다."
+      ],
+      "code": "// 이 함수는 그대로 두세요\nfunction loadCourse(id) {\n  return new Promise((resolve, reject) => {\n    setTimeout(() => {\n      if (id === 1) {\n        resolve({ id: 1, name: '리액트 입문' });\n      } else {\n        reject(new Error('코스를 찾지 못했습니다'));\n      }\n    }, 60);\n  });\n}\n\nasync function show(id) {\n  try {\n    const c = await loadCourse(id);\n    console.log('성공:', c.name);\n  } catch (e) {\n    console.log('실패:', e.message);\n  }\n}\n\nshow(1);\nshow(9);\nconsole.log('맡긴 뒤 바로 이 줄');\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "async 를 빼면 · await 를 빼면 · 돌려주는 것",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
+        "① show 앞의 async 를 지워 보세요. 실행되지 않고 await is only valid in async functions and the top level bodies of modules 라는 문법 오류가 납니다. 한 줄도 돌지 않습니다. 다른 오류와 달리 실행 전에 걸립니다.",
+        "② 되돌린 뒤 const c = await loadCourse(id) 에서 await 만 지워 보세요. 세 가지가 한꺼번에 달라집니다. 먼저 두 번 다 '성공: undefined' 가 찍힙니다. c 에 값이 아니라 Promise 가 들어갔고 Promise 에는 name 이 없기 때문입니다. 다음으로 순서가 바뀝니다. 그 두 줄이 '맡긴 뒤 바로 이 줄' 보다 먼저 나옵니다. 기다리지 않으니 show 가 그 자리에서 끝나 버린 것입니다. 마지막으로 없는 코스 쪽 실패는 아무에게도 닿지 않아 Uncaught (in promise) 로 남습니다. try 가 감싸고 있는데도 그렇습니다. await 가 없으면 try 는 앞 레슨에서 본 그대로, 비동기 실패를 잡지 못합니다.",
+        "③ 되돌린 뒤 show(1); 을 const r = show(1); console.log('돌려준 것이 Promise 인가:', r instanceof Promise); 로 바꿔 보세요. true 가 나옵니다. show 안에서는 return 이 없는데도 그렇습니다. async 함수는 언제나 Promise 를 돌려줍니다."
+      ],
+      "code": "// 이 함수는 그대로 두세요\nfunction loadCourse(id) {\n  return new Promise((resolve, reject) => {\n    setTimeout(() => {\n      if (id === 1) {\n        resolve({ id: 1, name: '리액트 입문' });\n      } else {\n        reject(new Error('코스를 찾지 못했습니다'));\n      }\n    }, 60);\n  });\n}\n\nasync function show(id) {\n  try {\n    const c = await loadCourse(id);\n    console.log('성공:', c.name);\n  } catch (e) {\n    console.log('실패:', e.message);\n  }\n}\n\nshow(1);\nshow(9);\nconsole.log('맡긴 뒤 바로 이 줄');\n"
+    },
+    {
+      "kind": "fill",
+      "title": "기다리는 줄 채우기",
+      "brief": [
+        "try 와 catch 는 돼 있고 기다리는 줄만 비어 있습니다.",
+        "null 자리를 채워 loadCourse(id) 의 결과를 기다렸다가 c 에 담아 주세요.",
+        "await 를 빠뜨리면 '성공: undefined' 가 나옵니다. 없는 코스를 넣으면 실패가 catch 에 닿지 않아 Uncaught (in promise) 도 함께 남습니다. 그 차이를 확인해 보세요.",
+        "채우지 않고 실행하면 c 가 null 이라 실패 쪽으로 빠집니다."
+      ],
+      "code": "// 이 함수는 그대로 두세요\nfunction loadCourse(id) {\n  return new Promise((resolve, reject) => {\n    setTimeout(() => {\n      if (id === 1) {\n        resolve({ id: 1, name: '리액트 입문' });\n      } else {\n        reject(new Error('코스를 찾지 못했습니다'));\n      }\n    }, 60);\n  });\n}\n\nasync function report(id) {\n  try {\n    const c = null; // ← 여기를 채우세요\n    return '성공: ' + c.name;\n  } catch (e) {\n    return '실패: ' + e.message;\n  }\n}\n",
+      "entry": "report",
+      "solutionCode": "// 이 함수는 그대로 두세요\nfunction loadCourse(id) {\n  return new Promise((resolve, reject) => {\n    setTimeout(() => {\n      if (id === 1) {\n        resolve({ id: 1, name: '리액트 입문' });\n      } else {\n        reject(new Error('코스를 찾지 못했습니다'));\n      }\n    }, 60);\n  });\n}\n\nasync function report(id) {\n  try {\n    const c = await loadCourse(id);\n    return '성공: ' + c.name;\n  } catch (e) {\n    return '실패: ' + e.message;\n  }\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "있는 코스",
+          "args": [
+            1
+          ],
+          "expected": "성공: 리액트 입문"
+        },
+        {
+          "type": "value",
+          "label": "없는 코스는 catch 로 옵니다",
+          "args": [
+            9
+          ],
+          "expected": "실패: 코스를 찾지 못했습니다"
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "이어서 기다리기",
+      "brief": [
+        "코스를 찾고, 그 코스의 강사를 찾아, 둘을 합쳐 돌려주는 report 를 만들어 주세요.",
+        "loadCourse 와 loadTeacher 는 주어져 있습니다. 강사를 찾으려면 코스 번호가 필요하므로 순서대로 기다려야 합니다.",
+        "성공하면 '리액트 입문 · 김강사' 형태로 돌려주세요. 가운데는 공백과 가운뎃점입니다.",
+        "실패하면 '실패: 코스를 찾지 못했습니다' 형태로 돌려주세요. 둘 중 어느 것이 실패하든 같은 자리에서 받으면 됩니다.",
+        "async 와 await 로 쓰세요. 검사기는 결과만 보므로 .then 으로 써도 통과합니다. 그래도 여기서는 방금 배운 형태를 손에 익히는 것이 목적입니다."
+      ],
+      "code": "// 이 둘은 그대로 두세요\nfunction loadCourse(id) {\n  const COURSES = { 1: '리액트 입문', 2: 'CSS 레이아웃' };\n  return new Promise((resolve, reject) => {\n    setTimeout(() => {\n      if (COURSES[id]) resolve({ id, name: COURSES[id] });\n      else reject(new Error('코스를 찾지 못했습니다'));\n    }, 60);\n  });\n}\n\nfunction loadTeacher(courseId) {\n  const TEACHERS = { 1: '김강사', 2: '박강사' };\n  return new Promise((resolve, reject) => {\n    setTimeout(() => {\n      if (TEACHERS[courseId]) resolve(TEACHERS[courseId]);\n      else reject(new Error('강사를 찾지 못했습니다'));\n    }, 60);\n  });\n}\n\n// report 를 여기에 작성하세요\n",
+      "entry": "report",
+      "solutionCode": "// 이 둘은 그대로 두세요\nfunction loadCourse(id) {\n  const COURSES = { 1: '리액트 입문', 2: 'CSS 레이아웃' };\n  return new Promise((resolve, reject) => {\n    setTimeout(() => {\n      if (COURSES[id]) resolve({ id, name: COURSES[id] });\n      else reject(new Error('코스를 찾지 못했습니다'));\n    }, 60);\n  });\n}\n\nfunction loadTeacher(courseId) {\n  const TEACHERS = { 1: '김강사', 2: '박강사' };\n  return new Promise((resolve, reject) => {\n    setTimeout(() => {\n      if (TEACHERS[courseId]) resolve(TEACHERS[courseId]);\n      else reject(new Error('강사를 찾지 못했습니다'));\n    }, 60);\n  });\n}\n\nasync function report(id) {\n  try {\n    const course = await loadCourse(id);\n    const teacher = await loadTeacher(course.id);\n    return course.name + ' · ' + teacher;\n  } catch (e) {\n    return '실패: ' + e.message;\n  }\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "1번 코스와 강사",
+          "args": [
+            1
+          ],
+          "expected": "리액트 입문 · 김강사"
+        },
+        {
+          "type": "value",
+          "label": "2번 코스와 강사",
+          "args": [
+            2
+          ],
+          "expected": "CSS 레이아웃 · 박강사"
+        },
+        {
+          "type": "value",
+          "label": "없는 번호는 실패로 옵니다",
+          "args": [
+            9
+          ],
+          "expected": "실패: 코스를 찾지 못했습니다"
+        }
+      ]
+    }
+  ]
+}
