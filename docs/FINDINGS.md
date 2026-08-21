@@ -1662,3 +1662,77 @@ window 가 더러워졌나              window.name='없는것' · window.hours=
 객체를 돌려주면      그 객체가 결과 (체인이 이어지지 않은 남남)
 원시값을 돌려주면    무시되고 새 객체가 결과
 ```
+
+### T7 묶음 C 실측 — `class` (2026-08-21)
+
+`t7-07`·`t7-08`·`t7-09` 지문의 근거다.
+
+**`class` 는 동작이 아니라 문법이 바뀐 것이다.**
+
+```
+메서드는 프로토타입에          a.describe === Course.prototype.describe → true
+둘이 나눠 쓴다                a.describe === b.describe → true
+체인                          a → Course.prototype → Object.prototype
+typeof Course                'function'
+```
+
+**`class` 가 더하는 규칙 셋** — `t7-06`·`t7-01` 의 회수 자리다.
+
+```
+new 없이 부르면    TypeError: Class constructor Course cannot be invoked without 'new'
+메서드를 떼어 내면  TypeError: Cannot read properties of undefined   ← 본문이 언제나 strict
+메서드 열거         Object.keys(Course.prototype) = []
+```
+
+앞 레슨에서 `new` 를 빠뜨리면 **조용히 전역이 더러워졌던 것**과 정반대다. 옛 코드가 `this instanceof` 로 손수 막던 것을 문법이 대신한다.
+
+**`extends` 와 `super`**
+
+```
+자식 describe        리액트 심화 · 4시간 · 정원 12명    ← super.describe() + 자기 것
+instanceof           Workshop true · Course true
+체인                  Workshop.prototype → Course.prototype → Object.prototype
+정적 멤버도 물려받는다  Workshop.of 로 부르면 Workshop 인스턴스가 나온다 (new this)
+super 를 빠뜨리면     ReferenceError: Must call super constructor in derived class before accessing...
+super 를 this 로 바꾸면 RangeError: Maximum call stack size exceeded
+```
+
+마지막 줄은 처음에 "끝나지 않습니다 · 워치독이 잡습니다" 로 썼다가 실측으로 고쳤다. **무한 재귀는 워치독이 아니라 스택이 먼저 잡는다.** 워치독은 3초를 세지만 재귀는 그보다 훨씬 빨리 자리가 모자란다.
+
+**정적 멤버와 게터**
+
+```
+정적 팩토리        Course.of(...) → 인스턴스 · instanceof true
+게터                괄호 없이 읽힌다 · 세터는 대입으로 실행된다
+정적 값             Course.count 에 있고 인스턴스에는 undefined
+게터의 자리          프로토타입 (constructor,label,hoursText,isLong,peek)
+Object.keys        ["name","hours"] — 게터는 없다
+JSON.stringify     {"name":"...","hours":12} — 게터는 빠진다
+비공개 필드 #secret  안에서는 읽히고 밖에서는 undefined
+```
+
+비공개 필드는 승인된 주제 밖이라 실습에 넣지 않았다. `t1-16`(모듈 패턴으로 값 감추기)의 요즘 방식이라 언급할 값은 있으나, 주제를 늘리지 않기로 했다.
+
+### T7 완료 — 검증 로그 (2026-08-21)
+
+**9레슨 46단계.** 재분할표에는 45단계로 적었는데 실제로는 46이다. 표의 단계 수를 더할 때 산술을 틀렸다(5+6+5+5+5+5+5+5+5=46). 레슨별 단계 수는 승인된 표 그대로이고 합계만 정정한다.
+
+| 항목 | 값 |
+|---|---|
+| 레슨 | 9 (`t7-01` ~ `t7-09`) |
+| 단계 | 46 |
+| assert | 44 |
+| 전수 회귀 | **203단계 통과 · 실패 0건** |
+| `runtime` | 전 레슨 `js` |
+| `env` · `scaffold` | **0단계** — 순수 `value` assert 로만 검사 |
+| `setInterval` | 0건 |
+| brief 안 마크다운 강조 | 0건 |
+| 앱 코드 변경 | **0줄** |
+
+**이 트랙은 성격이 달랐다.** 만들기 위해서가 아니라 읽기 위해 배우는 트랙이다. `t7-01` read 가 그것을 못 박고, 마지막 `t7-09` 가 `class` 컴포넌트 조각을 읽는 것으로 닫는다.
+
+**실행 프레임이 sloppy 라는 차이를 앞쪽 세 레슨에서만 다뤘다.** `class` 본문은 프레임과 무관하게 언제나 strict 라 `t7-07`~`t7-09` 는 왜곡이 없다. 학습자가 `'use strict'` 한 줄로 실무 조건을 만들 수 있다는 것도 `t7-01` tweak ①에 넣었다.
+
+**`t7-09` 의 `class` 컴포넌트 조각은 실행하지 않는다.** `runtime` 이 `'js'` 라 실행할 수도 없고 목적이 읽기다. **우열은 쓰지 않았다** — 무엇이 달라졌는지(상태를 두는 자리, 화면을 그리는 자리, `bind` 줄의 소멸)까지만 쓰고 "그때의 방식이었고 지금도 잘 돌아갑니다" 로 닫았다. `t5-05`·`t5-13` 에서 지킨 기준 그대로다.
+
+**T8 예고를 정직하게 했다.** 아직 만들어지지 않았다는 것과 그 이유(다중 파일 실행 엔진이 먼저 필요하다)를 밝혔다. 학습자가 목록에서 T8 을 찾다가 빠뜨린 것으로 오해하지 않게 한다.
