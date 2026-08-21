@@ -1,0 +1,341 @@
+{
+  "schemaVersion": 2,
+  "id": "t6-08",
+  "track": "T6",
+  "order": 8,
+  "runtime": "react",
+  "title": "제출 가로채기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "버튼이 아니라 폼이 제출합니다",
+      "brief": [
+        "앞 레슨에서 값을 담는 데까지 했습니다. 이제 보냅니다.",
+        "버튼에 onClick 을 달아 처리하고 싶겠지만 그렇게 하지 않습니다. 제출은 버튼의 일이 아니라 폼의 일입니다. <form onSubmit={...}> 에 달아야 합니다.",
+        "이유가 셋 있습니다. 첫째, 입력창에서 Enter 를 눌러도 제출됩니다. 버튼에만 달아 두면 Enter 로 보낸 사용자는 아무 반응도 얻지 못합니다. 둘째, 브라우저와 보조 기술이 '이것은 폼이고 저것은 제출 버튼' 이라는 것을 압니다. 셋째, 제출을 받는 자리가 한 곳으로 모입니다.",
+        "폼은 원래 스스로 서버에 값을 보내고 페이지를 통째로 새로 그립니다. React 로 만든 화면에서는 그것을 원하지 않습니다. 그래서 핸들러 맨 위에서 e.preventDefault() 를 불러 기본 동작을 막고, 우리가 직접 처리합니다.",
+        "여기서 이 도구의 한계를 밝혀 둡니다. 이 실행 틀은 안전을 위해 폼의 기본 제출이 막혀 있습니다. 그래서 원래대로라면 submit 이벤트조차 발생하지 않습니다. 무대가 대신 그 이벤트를 쏘아 주고 있어서 여러분의 onSubmit 은 정상적으로 동작합니다.",
+        "다만 막을 기본 동작이 없으므로, 이 안에서는 e.preventDefault() 를 빠뜨려도 아무 일이 일어나지 않습니다. 실무에서는 그것을 빠뜨리면 페이지가 통째로 새로고침되고 입력한 것이 전부 날아갑니다. 화면이 깜빡이며 처음으로 돌아가는 증상을 보면 이것을 먼저 의심하세요.",
+        "도구가 보여 주지 못하는 것을 사람이 알아야 하는 자리가 이 트랙에 몇 번 있었습니다. class 와 className 의 차이, 숫자 0 이 화면에 새는 것, 훅 규칙을 어겨도 조용히 지나가는 경우가 그것입니다. 이번 것도 같은 계열입니다. 보이지 않아도 반드시 쓰세요.",
+        "버튼의 type 도 알아 두세요. 폼 안의 button 은 type 을 적지 않으면 기본이 submit 입니다. 폼 안에 있는데 제출과 상관없는 버튼이라면 type=\"button\" 을 반드시 적어야 합니다. 적지 않으면 누를 때마다 폼이 제출됩니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "등록을 눌러 보기",
+      "brief": [
+        "제목과 시간을 받아 제출하는 폼입니다.",
+        "실행하고 미리보기에서 값을 채운 뒤 등록을 눌러 보세요. 아래 줄이 '보냄: …' 으로 바뀝니다.",
+        "제목 칸에서 Enter 를 눌러도 같습니다. 버튼을 누르지 않아도 제출됩니다.",
+        "onSubmit 이 form 에 달려 있고 button 에는 아무것도 달려 있지 않은 것을 보세요."
+      ],
+      "env": [
+        "// 이 무대의 폼 장치입니다.",
+        "// 이 실행 틀은 폼 기본 제출이 막혀 있어 submit 이벤트가 아예 발생하지 않습니다.",
+        "// 그래서 무대가 대신 쏘아 줍니다. 기본 동작(페이지 새로고침)은 흉내 내지 않습니다.",
+        "(() => {",
+        "  const fire = (form) => {",
+        "    if (!form) return;",
+        "    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));",
+        "  };",
+        "",
+        "  document.addEventListener('click', (e) => {",
+        "    const btn = e.target && e.target.closest ? e.target.closest('button, input[type=\"submit\"]') : null;",
+        "    if (!btn) return;",
+        "    const type = (btn.getAttribute('type') || 'submit').toLowerCase();",
+        "    if (type !== 'submit') return;",
+        "    fire(btn.form);",
+        "  }, true);",
+        "",
+        "  document.addEventListener('keydown', (e) => {",
+        "    if (e.key !== 'Enter') return;",
+        "    const el = e.target;",
+        "    if (!el || el.tagName !== 'INPUT') return;",
+        "    const type = (el.getAttribute('type') || 'text').toLowerCase();",
+        "    if (['checkbox', 'radio', 'button', 'submit'].indexOf(type) >= 0) return;",
+        "    fire(el.form);",
+        "  }, true);",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".field { display: block; margin-bottom: 6px; }",
+          ".field__input { width: 180px; }",
+          ".preview, .result { margin: 8px 0 0; color: var(--c-text-muted); }",
+          ".err { margin: 2px 0 6px; color: var(--c-text-error); font-size: 0.875rem; }",
+          ".go { margin-top: 6px; }"
+        ]
+      },
+      "code": "const { useState } = React;\n\nfunction CourseForm() {\n  const [form, setForm] = useState({ title: '', hours: '0' });\n  const [sent, setSent] = useState(null);\n\n  const change = (e) => {\n    setForm({ ...form, [e.target.name]: e.target.value });\n  };\n\n  const submit = (e) => {\n    e.preventDefault();\n    setSent(form.title + ' · ' + form.hours + '시간');\n  };\n\n  return (\n    <form onSubmit={submit}>\n      <label className=\"field\" htmlFor=\"title\">제목</label>\n      <input className=\"field__input\" id=\"title\" name=\"title\" value={form.title} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"hours\">시간</label>\n      <input className=\"field__input\" id=\"hours\" name=\"hours\" type=\"number\" value={form.hours} onChange={change} />\n\n      <button className=\"go\" type=\"submit\">등록</button>\n\n      <p className=\"result\">{sent === null ? '아직 보내지 않았습니다' : '보냄: ' + sent}</p>\n    </form>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseForm />);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "어떤 버튼이 제출하는가",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 되돌리고 다시 실행해야 합니다.",
+        "① 등록 버튼에 type=\"button\" 을 달아 보세요. 눌러도 아무 일이 없습니다. 제출 버튼이 아니게 됐기 때문입니다. 반대로 말하면, 폼 안에 두면서 type 을 적지 않은 버튼은 전부 제출 버튼입니다.",
+        "② 되돌린 뒤 등록 버튼을 </form> 바깥으로 옮겨 보세요. 역시 아무 일이 없습니다. 버튼은 자기가 속한 폼을 제출하는데, 폼 밖에 있으면 속한 폼이 없습니다.",
+        "③ 되돌린 뒤 result 문단 아래에 <form onSubmit={() => setSent('다른 폼')}><button type=\"submit\">다른 폼</button></form> 을 통째로 넣어 보세요. 폼은 form 안에 넣을 수 없으니 return 의 바깥을 <div> 로 바꾸고 그 안에 두 폼을 나란히 두어야 합니다. 새 버튼을 누르면 '다른 폼' 만 나옵니다. 각 버튼은 자기 폼만 제출합니다.",
+        "e.preventDefault() 를 지워 보는 실험은 이 도구에서 할 수 없습니다. 막을 기본 동작이 애초에 없기 때문입니다. read 를 다시 읽어 보세요."
+      ],
+      "env": [
+        "// 이 무대의 폼 장치입니다.",
+        "// 이 실행 틀은 폼 기본 제출이 막혀 있어 submit 이벤트가 아예 발생하지 않습니다.",
+        "// 그래서 무대가 대신 쏘아 줍니다. 기본 동작(페이지 새로고침)은 흉내 내지 않습니다.",
+        "(() => {",
+        "  const fire = (form) => {",
+        "    if (!form) return;",
+        "    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));",
+        "  };",
+        "",
+        "  document.addEventListener('click', (e) => {",
+        "    const btn = e.target && e.target.closest ? e.target.closest('button, input[type=\"submit\"]') : null;",
+        "    if (!btn) return;",
+        "    const type = (btn.getAttribute('type') || 'submit').toLowerCase();",
+        "    if (type !== 'submit') return;",
+        "    fire(btn.form);",
+        "  }, true);",
+        "",
+        "  document.addEventListener('keydown', (e) => {",
+        "    if (e.key !== 'Enter') return;",
+        "    const el = e.target;",
+        "    if (!el || el.tagName !== 'INPUT') return;",
+        "    const type = (el.getAttribute('type') || 'text').toLowerCase();",
+        "    if (['checkbox', 'radio', 'button', 'submit'].indexOf(type) >= 0) return;",
+        "    fire(el.form);",
+        "  }, true);",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".field { display: block; margin-bottom: 6px; }",
+          ".field__input { width: 180px; }",
+          ".preview, .result { margin: 8px 0 0; color: var(--c-text-muted); }",
+          ".err { margin: 2px 0 6px; color: var(--c-text-error); font-size: 0.875rem; }",
+          ".go { margin-top: 6px; }"
+        ]
+      },
+      "code": "const { useState } = React;\n\nfunction CourseForm() {\n  const [form, setForm] = useState({ title: '', hours: '0' });\n  const [sent, setSent] = useState(null);\n\n  const change = (e) => {\n    setForm({ ...form, [e.target.name]: e.target.value });\n  };\n\n  const submit = (e) => {\n    e.preventDefault();\n    setSent(form.title + ' · ' + form.hours + '시간');\n  };\n\n  return (\n    <form onSubmit={submit}>\n      <label className=\"field\" htmlFor=\"title\">제목</label>\n      <input className=\"field__input\" id=\"title\" name=\"title\" value={form.title} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"hours\">시간</label>\n      <input className=\"field__input\" id=\"hours\" name=\"hours\" type=\"number\" value={form.hours} onChange={change} />\n\n      <button className=\"go\" type=\"submit\">등록</button>\n\n      <p className=\"result\">{sent === null ? '아직 보내지 않았습니다' : '보냄: ' + sent}</p>\n    </form>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseForm />);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "제출을 받는 자리 채우기",
+      "brief": [
+        "핸들러는 다 만들어져 있고 그것을 어디에 다는지가 비어 있습니다.",
+        "null 자리를 채워 폼이 제출될 때 submit 이 불리게 해 주세요.",
+        "<form onSubmit={submit}> 형태입니다. 버튼이 아니라 폼에 답니다.",
+        "채우지 않고 실행하면 등록을 눌러도 아무 일이 없습니다."
+      ],
+      "env": [
+        "// 이 무대의 폼 장치입니다.",
+        "// 이 실행 틀은 폼 기본 제출이 막혀 있어 submit 이벤트가 아예 발생하지 않습니다.",
+        "// 그래서 무대가 대신 쏘아 줍니다. 기본 동작(페이지 새로고침)은 흉내 내지 않습니다.",
+        "(() => {",
+        "  const fire = (form) => {",
+        "    if (!form) return;",
+        "    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));",
+        "  };",
+        "",
+        "  document.addEventListener('click', (e) => {",
+        "    const btn = e.target && e.target.closest ? e.target.closest('button, input[type=\"submit\"]') : null;",
+        "    if (!btn) return;",
+        "    const type = (btn.getAttribute('type') || 'submit').toLowerCase();",
+        "    if (type !== 'submit') return;",
+        "    fire(btn.form);",
+        "  }, true);",
+        "",
+        "  document.addEventListener('keydown', (e) => {",
+        "    if (e.key !== 'Enter') return;",
+        "    const el = e.target;",
+        "    if (!el || el.tagName !== 'INPUT') return;",
+        "    const type = (el.getAttribute('type') || 'text').toLowerCase();",
+        "    if (['checkbox', 'radio', 'button', 'submit'].indexOf(type) >= 0) return;",
+        "    fire(el.form);",
+        "  }, true);",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".field { display: block; margin-bottom: 6px; }",
+          ".field__input { width: 180px; }",
+          ".preview, .result { margin: 8px 0 0; color: var(--c-text-muted); }",
+          ".err { margin: 2px 0 6px; color: var(--c-text-error); font-size: 0.875rem; }",
+          ".go { margin-top: 6px; }"
+        ]
+      },
+      "code": "const { useState } = React;\n\nfunction CourseForm() {\n  const [form, setForm] = useState({ title: '', hours: '0' });\n  const [sent, setSent] = useState(null);\n\n  const change = (e) => {\n    setForm({ ...form, [e.target.name]: e.target.value });\n  };\n\n  const submit = (e) => {\n    e.preventDefault();\n    setSent(form.title + ' · ' + form.hours + '시간');\n  };\n\n  return (\n    <form null /* ← 여기를 채우세요 */>\n      <label className=\"field\" htmlFor=\"title\">제목</label>\n      <input className=\"field__input\" id=\"title\" name=\"title\" value={form.title} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"hours\">시간</label>\n      <input className=\"field__input\" id=\"hours\" name=\"hours\" type=\"number\" value={form.hours} onChange={change} />\n\n      <button className=\"go\" type=\"submit\">등록</button>\n\n      <p className=\"result\">{sent === null ? '아직 보내지 않았습니다' : '보냄: ' + sent}</p>\n    </form>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseForm />);\n",
+      "solutionCode": "const { useState } = React;\n\nfunction CourseForm() {\n  const [form, setForm] = useState({ title: '', hours: '0' });\n  const [sent, setSent] = useState(null);\n\n  const change = (e) => {\n    setForm({ ...form, [e.target.name]: e.target.value });\n  };\n\n  const submit = (e) => {\n    e.preventDefault();\n    setSent(form.title + ' · ' + form.hours + '시간');\n  };\n\n  return (\n    <form onSubmit={submit}>\n      <label className=\"field\" htmlFor=\"title\">제목</label>\n      <input className=\"field__input\" id=\"title\" name=\"title\" value={form.title} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"hours\">시간</label>\n      <input className=\"field__input\" id=\"hours\" name=\"hours\" type=\"number\" value={form.hours} onChange={change} />\n\n      <button className=\"go\" type=\"submit\">등록</button>\n\n      <p className=\"result\">{sent === null ? '아직 보내지 않았습니다' : '보냄: ' + sent}</p>\n    </form>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseForm />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 보내지 않은 상태",
+          "select": ".result",
+          "text": [
+            "아직 보내지 않았습니다"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "등록을 누르면 제출됩니다",
+          "select": ".result",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#title",
+              "value": "리액트 입문"
+            },
+            {
+              "action": "fill",
+              "selector": "#hours",
+              "value": "8"
+            },
+            {
+              "action": "click",
+              "selector": ".go"
+            }
+          ],
+          "text": [
+            "보냄: 리액트 입문 · 8시간"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "고쳐서 다시 눌러도 반영됩니다",
+          "select": ".result",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#title",
+              "value": "CSS 레이아웃"
+            },
+            {
+              "action": "click",
+              "selector": ".go"
+            }
+          ],
+          "text": [
+            "보냄: CSS 레이아웃 · 8시간"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "제출되는 폼 만들기",
+      "brief": [
+        "제목과 시간을 받아 제출하는 CourseForm 을 만들어 주세요.",
+        "상태는 둘입니다. 폼 값 객체({ title: '', hours: '0' })와 보낸 결과(처음 값 null)입니다.",
+        "칸은 둘입니다. 제목은 text, 시간은 number 이고 각각 id 와 name 을 title·hours 로 주세요. label 을 htmlFor 로 연결하고 클래스는 field 와 field__input 입니다.",
+        "값을 담는 핸들러는 앞 레슨처럼 하나만 만드세요.",
+        "제출은 form 의 onSubmit 으로 받으세요. 핸들러 맨 위에서 e.preventDefault() 를 부르고, 보낸 결과에 '리액트 입문 · 8시간' 형태를 담으세요.",
+        "버튼은 go 클래스에 type=\"submit\" 이고 글자는 '등록' 입니다.",
+        "맨 아래에 result 클래스로 한 줄을 두세요. 아직 보내지 않았으면 '아직 보내지 않았습니다', 보냈으면 '보냄: 리액트 입문 · 8시간' 형태입니다.",
+        "맨 아래에서 ReactDOM.createRoot(document.querySelector('#root')).render(<CourseForm />) 로 그리세요."
+      ],
+      "env": [
+        "// 이 무대의 폼 장치입니다.",
+        "// 이 실행 틀은 폼 기본 제출이 막혀 있어 submit 이벤트가 아예 발생하지 않습니다.",
+        "// 그래서 무대가 대신 쏘아 줍니다. 기본 동작(페이지 새로고침)은 흉내 내지 않습니다.",
+        "(() => {",
+        "  const fire = (form) => {",
+        "    if (!form) return;",
+        "    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));",
+        "  };",
+        "",
+        "  document.addEventListener('click', (e) => {",
+        "    const btn = e.target && e.target.closest ? e.target.closest('button, input[type=\"submit\"]') : null;",
+        "    if (!btn) return;",
+        "    const type = (btn.getAttribute('type') || 'submit').toLowerCase();",
+        "    if (type !== 'submit') return;",
+        "    fire(btn.form);",
+        "  }, true);",
+        "",
+        "  document.addEventListener('keydown', (e) => {",
+        "    if (e.key !== 'Enter') return;",
+        "    const el = e.target;",
+        "    if (!el || el.tagName !== 'INPUT') return;",
+        "    const type = (el.getAttribute('type') || 'text').toLowerCase();",
+        "    if (['checkbox', 'radio', 'button', 'submit'].indexOf(type) >= 0) return;",
+        "    fire(el.form);",
+        "  }, true);",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".field { display: block; margin-bottom: 6px; }",
+          ".field__input { width: 180px; }",
+          ".preview, .result { margin: 8px 0 0; color: var(--c-text-muted); }",
+          ".err { margin: 2px 0 6px; color: var(--c-text-error); font-size: 0.875rem; }",
+          ".go { margin-top: 6px; }"
+        ]
+      },
+      "code": "const { useState } = React;\n\n// CourseForm 을 여기에 작성하세요\n",
+      "solutionCode": "const { useState } = React;\n\nfunction CourseForm() {\n  const [form, setForm] = useState({ title: '', hours: '0' });\n  const [sent, setSent] = useState(null);\n\n  const change = (e) => {\n    setForm({ ...form, [e.target.name]: e.target.value });\n  };\n\n  const submit = (e) => {\n    e.preventDefault();\n    setSent(form.title + ' · ' + form.hours + '시간');\n  };\n\n  return (\n    <form onSubmit={submit}>\n      <label className=\"field\" htmlFor=\"title\">제목</label>\n      <input className=\"field__input\" id=\"title\" name=\"title\" value={form.title} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"hours\">시간</label>\n      <input className=\"field__input\" id=\"hours\" name=\"hours\" type=\"number\" value={form.hours} onChange={change} />\n\n      <button className=\"go\" type=\"submit\">등록</button>\n\n      <p className=\"result\">{sent === null ? '아직 보내지 않았습니다' : '보냄: ' + sent}</p>\n    </form>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseForm />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 보내지 않은 상태",
+          "select": ".result",
+          "text": [
+            "아직 보내지 않았습니다"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "등록을 누르면 제출됩니다",
+          "select": ".result",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#title",
+              "value": "리액트 입문"
+            },
+            {
+              "action": "fill",
+              "selector": "#hours",
+              "value": "8"
+            },
+            {
+              "action": "click",
+              "selector": ".go"
+            }
+          ],
+          "text": [
+            "보냄: 리액트 입문 · 8시간"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "고쳐서 다시 눌러도 반영됩니다",
+          "select": ".result",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#title",
+              "value": "CSS 레이아웃"
+            },
+            {
+              "action": "click",
+              "selector": ".go"
+            }
+          ],
+          "text": [
+            "보냄: CSS 레이아웃 · 8시간"
+          ]
+        }
+      ]
+    }
+  ]
+}
