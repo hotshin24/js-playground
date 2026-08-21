@@ -1,0 +1,287 @@
+{
+  "schemaVersion": 2,
+  "id": "t6-01",
+  "track": "T6",
+  "order": 1,
+  "runtime": "react",
+  "title": "화면이 열리면 가져옵니다",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "손으로 그리던 것을 넘기기",
+      "brief": [
+        "T5 를 마치며 이야기했습니다. 그 트랙 내내 결과를 console.log 로 찍거나, t5-10 처럼 요소를 만들어 손으로 붙였습니다. 상태가 바뀔 때마다 지우고 다시 그렸습니다. 이제 그 화면을 React 로 옮깁니다.",
+        "달라지는 것은 하나뿐입니다. 그리는 일을 우리가 하지 않습니다. 값을 바꾸면 화면이 따라옵니다. 그래서 코드에 남는 것은 '무엇을 보여 줄지' 뿐이고, '어떻게 그릴지' 는 사라집니다.",
+        "먼저 언제 가져올지를 정해야 합니다. 컴포넌트 본문에서 바로 fetch 를 부르면 안 됩니다. 본문은 화면을 계산하는 자리이고, 화면을 계산할 때마다 실행됩니다. 요청은 계산이 아닙니다. 게다가 응답이 오면 상태가 바뀌고, 상태가 바뀌면 본문이 다시 실행되고, 그러면 또 요청이 나갑니다. 끝나지 않습니다.",
+        "t4-13 에서 기준을 세웠습니다. React 바깥과 맞출 때 useEffect 를 쓴다고 했습니다. 서버는 React 바깥입니다. 그래서 요청은 효과 안에서 보냅니다.",
+        "의존성 배열도 t4-13 에서 배웠습니다. 빈 배열을 주면 처음 한 번만 돕니다. 화면이 열릴 때 한 번 가져오고 그 뒤로는 두지 않겠다는 뜻입니다. 목록을 여는 화면이 대개 이 모양입니다. 무엇이 바뀌면 다시 가져오는 것은 t6-04 에서 다룹니다.",
+        "상태는 하나로 시작합니다. 받아 온 목록을 담을 자리입니다. 처음 값은 null 로 둡니다. 빈 배열이 아니라 null 인 것이 중요합니다. 빈 배열로 두면 '아직 안 왔다' 와 '왔는데 0개다' 를 구분할 수 없습니다. 그 둘은 화면에 다르게 보여야 합니다.",
+        "이 트랙의 fetch 도 T5 와 같습니다. 우리가 심어 둔 가짜이고 진짜 서버는 없습니다. 주소와 응답은 정해져 있고, 돌려주는 것은 진짜 응답 객체입니다.",
+        "이 레슨은 두 갈래만 다룹니다. 아직 안 온 상태와 왔고 내용이 있는 상태입니다. 나머지 둘은 다음 레슨입니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "열면 가져옵니다",
+      "brief": [
+        "화면이 열리면 코스 목록을 가져와 그립니다.",
+        "실행해 보세요. 미리보기에 '불러오는 중…' 이 잠깐 보였다가 목록으로 바뀝니다.",
+        "코드를 보세요. 그리는 코드가 없습니다. setCourses 로 값을 바꾸면 React 가 본문을 다시 계산하고 화면을 맞춥니다. t5-10 에서 draw 와 line 으로 하던 일이 통째로 사라졌습니다.",
+        "useEffect 의 둘째 인자가 빈 배열입니다. 그래서 요청은 처음 한 번만 나갑니다."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
+        "(() => {",
+        "  const COURSES = [",
+        "    { id: 1, name: '리액트 입문', hours: 8 },",
+        "    { id: 2, name: 'CSS 레이아웃', hours: 6 },",
+        "    { id: 3, name: '자바스크립트 기초', hours: 12 },",
+        "  ];",
+        "",
+        "  const json = (data, status, statusText) => new Response(JSON.stringify(data), {",
+        "    status,",
+        "    statusText,",
+        "    headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "",
+        "  window.fetch = (url) => new Promise((resolve, reject) => {",
+        "    const key = String(url);",
+        "    setTimeout(() => {",
+        "      if (key === '/api/down') { reject(new TypeError('Failed to fetch')); return; }",
+        "      if (key === '/api/courses') { resolve(json(COURSES, 200, 'OK')); return; }",
+        "      if (key === '/api/none') { resolve(json([], 200, 'OK')); return; }",
+        "      if (key === '/api/broken') { resolve(json({ message: '서버가 잠시 멈췄습니다' }, 500, 'Internal Server Error')); return; }",
+        "      resolve(new Response('<!doctype html><h1>Not Found</h1>', {",
+        "        status: 404,",
+        "        statusText: 'Not Found',",
+        "        headers: { 'Content-Type': 'text/html' },",
+        "      }));",
+        "    }, 60);",
+        "  });",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
+          ".hint { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\n\nfunction CourseList() {\n  const [courses, setCourses] = useState(null);\n\n  useEffect(() => {\n    fetch('/api/courses')\n      .then((res) => res.json())\n      .then((list) => setCourses(list));\n  }, []);\n\n  if (courses === null) {\n    return <p className=\"state\">불러오는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">코스 {courses.length}개</p>\n      {courses.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseList />);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "처음 값을 바꾸면 · 알리지 않으면 · 없는 주소면",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
+        "① useState(null) 을 useState([]) 로 바꾸고, if 의 조건도 courses.length === 0 으로 바꿔 보세요. 잘 도는 것 같습니다. 그런데 이제 '아직 안 왔다' 와 '왔는데 0개다' 가 같은 화면이 됩니다. 서버가 빈 목록을 돌려주면 영원히 '불러오는 중…' 이라고 나옵니다. 다음 레슨에서 이 구분이 필요해집니다.",
+        "② 되돌린 뒤 .then((list) => setCourses(list)) 을 .then((list) => list) 로 바꿔 보세요. 요청은 나가고 응답도 옵니다. 그런데 화면은 '불러오는 중…' 에서 멈춥니다. 값을 받아도 상태에 넣지 않으면 React 는 아무것도 모릅니다.",
+        "③ 되돌린 뒤 주소를 '/api/nope' 로 바꿔 보세요. 화면이 '불러오는 중…' 에서 멈추고 콘솔에 Unexpected token '<' 로 시작하는 SyntaxError 가 남습니다. t5-08 에서 본 그 에러입니다. 없는 주소라 서버가 HTML 을 돌려줬고 res.json() 이 그것을 읽다 실패했습니다. 이 화면에는 실패를 받는 갈래가 없어서 로딩에 갇힙니다. 그 갈래를 만드는 것이 다음 레슨입니다."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
+        "(() => {",
+        "  const COURSES = [",
+        "    { id: 1, name: '리액트 입문', hours: 8 },",
+        "    { id: 2, name: 'CSS 레이아웃', hours: 6 },",
+        "    { id: 3, name: '자바스크립트 기초', hours: 12 },",
+        "  ];",
+        "",
+        "  const json = (data, status, statusText) => new Response(JSON.stringify(data), {",
+        "    status,",
+        "    statusText,",
+        "    headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "",
+        "  window.fetch = (url) => new Promise((resolve, reject) => {",
+        "    const key = String(url);",
+        "    setTimeout(() => {",
+        "      if (key === '/api/down') { reject(new TypeError('Failed to fetch')); return; }",
+        "      if (key === '/api/courses') { resolve(json(COURSES, 200, 'OK')); return; }",
+        "      if (key === '/api/none') { resolve(json([], 200, 'OK')); return; }",
+        "      if (key === '/api/broken') { resolve(json({ message: '서버가 잠시 멈췄습니다' }, 500, 'Internal Server Error')); return; }",
+        "      resolve(new Response('<!doctype html><h1>Not Found</h1>', {",
+        "        status: 404,",
+        "        statusText: 'Not Found',",
+        "        headers: { 'Content-Type': 'text/html' },",
+        "      }));",
+        "    }, 60);",
+        "  });",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
+          ".hint { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\n\nfunction CourseList() {\n  const [courses, setCourses] = useState(null);\n\n  useEffect(() => {\n    fetch('/api/courses')\n      .then((res) => res.json())\n      .then((list) => setCourses(list));\n  }, []);\n\n  if (courses === null) {\n    return <p className=\"state\">불러오는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">코스 {courses.length}개</p>\n      {courses.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseList />);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "가져오는 줄 채우기",
+      "brief": [
+        "상태와 화면은 돼 있고 효과 안이 비어 있습니다.",
+        "null 자리를 채워 '/api/courses' 를 가져오고 받은 목록을 setCourses 로 넣어 주세요.",
+        "fetch(주소).then((res) => res.json()).then((list) => setCourses(list)) 형태면 됩니다. 여기서는 await 대신 .then 을 씁니다. 효과에 넘기는 함수는 async 로 만들지 않는 것이 규칙인데, 그 이유는 t6-05 에서 다룹니다.",
+        "채우지 않고 실행하면 '불러오는 중…' 에서 멈춥니다."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
+        "(() => {",
+        "  const COURSES = [",
+        "    { id: 1, name: '리액트 입문', hours: 8 },",
+        "    { id: 2, name: 'CSS 레이아웃', hours: 6 },",
+        "    { id: 3, name: '자바스크립트 기초', hours: 12 },",
+        "  ];",
+        "",
+        "  const json = (data, status, statusText) => new Response(JSON.stringify(data), {",
+        "    status,",
+        "    statusText,",
+        "    headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "",
+        "  window.fetch = (url) => new Promise((resolve, reject) => {",
+        "    const key = String(url);",
+        "    setTimeout(() => {",
+        "      if (key === '/api/down') { reject(new TypeError('Failed to fetch')); return; }",
+        "      if (key === '/api/courses') { resolve(json(COURSES, 200, 'OK')); return; }",
+        "      if (key === '/api/none') { resolve(json([], 200, 'OK')); return; }",
+        "      if (key === '/api/broken') { resolve(json({ message: '서버가 잠시 멈췄습니다' }, 500, 'Internal Server Error')); return; }",
+        "      resolve(new Response('<!doctype html><h1>Not Found</h1>', {",
+        "        status: 404,",
+        "        statusText: 'Not Found',",
+        "        headers: { 'Content-Type': 'text/html' },",
+        "      }));",
+        "    }, 60);",
+        "  });",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
+          ".hint { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\n\nfunction CourseList() {\n  const [courses, setCourses] = useState(null);\n\n  useEffect(() => {\n    null; // ← 여기를 채우세요\n  }, []);\n\n  if (courses === null) {\n    return <p className=\"state\">불러오는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">코스 {courses.length}개</p>\n      {courses.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseList />);\n\n// 이 함수는 그대로 두세요. 검사기가 부릅니다\nfunction afterLoad() {\n  const root = document.querySelector('#root');\n  return new Promise((resolve) => {\n    const startedAt = Date.now();\n    const tick = () => {\n      const text = root.textContent;\n      if ((text && !text.includes('불러오는 중')) || Date.now() - startedAt > 3000) resolve(text);\n      else setTimeout(tick, 30);\n    };\n    tick();\n  });\n}\n",
+      "entry": "afterLoad",
+      "solutionCode": "const { useState, useEffect } = React;\n\nfunction CourseList() {\n  const [courses, setCourses] = useState(null);\n\n  useEffect(() => {\n    fetch('/api/courses')\n      .then((res) => res.json())\n      .then((list) => setCourses(list));\n  }, []);\n\n  if (courses === null) {\n    return <p className=\"state\">불러오는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">코스 {courses.length}개</p>\n      {courses.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseList />);\n\n// 이 함수는 그대로 두세요. 검사기가 부릅니다\nfunction afterLoad() {\n  const root = document.querySelector('#root');\n  return new Promise((resolve) => {\n    const startedAt = Date.now();\n    const tick = () => {\n      const text = root.textContent;\n      if ((text && !text.includes('불러오는 중')) || Date.now() - startedAt > 3000) resolve(text);\n      else setTimeout(tick, 30);\n    };\n    tick();\n  });\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "다 불러온 뒤 화면",
+          "args": [],
+          "expected": "코스 3개리액트 입문CSS 레이아웃자바스크립트 기초"
+        },
+        {
+          "type": "dom",
+          "label": "코스 줄이 세 개",
+          "select": ".course",
+          "count": 3
+        },
+        {
+          "type": "dom",
+          "label": "코스 이름",
+          "select": ".course",
+          "text": [
+            "리액트 입문",
+            "CSS 레이아웃",
+            "자바스크립트 기초"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "열면 가져오는 화면 만들기",
+      "brief": [
+        "화면이 열리면 코스 목록을 가져와 그리는 CourseList 를 만들어 주세요.",
+        "상태는 목록 하나입니다. 처음 값은 null 로 두세요.",
+        "효과 안에서 '/api/courses' 를 가져와 상태에 넣으세요. 의존성 배열은 빈 배열입니다.",
+        "아직 오지 않았으면 state 클래스로 '불러오는 중…' 한 줄만 보여 주세요.",
+        "왔으면 state 클래스로 '코스 3개' 형태를 보여 주고, 이어서 코스마다 course 클래스로 이름 한 줄씩 보여 주세요. 줄마다 key 가 필요합니다.",
+        "맨 아래에서 ReactDOM.createRoot(document.querySelector('#root')).render(<CourseList />) 로 그리세요.",
+        "afterLoad 는 그대로 두세요. 검사기가 이 함수를 부릅니다."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
+        "(() => {",
+        "  const COURSES = [",
+        "    { id: 1, name: '리액트 입문', hours: 8 },",
+        "    { id: 2, name: 'CSS 레이아웃', hours: 6 },",
+        "    { id: 3, name: '자바스크립트 기초', hours: 12 },",
+        "  ];",
+        "",
+        "  const json = (data, status, statusText) => new Response(JSON.stringify(data), {",
+        "    status,",
+        "    statusText,",
+        "    headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "",
+        "  window.fetch = (url) => new Promise((resolve, reject) => {",
+        "    const key = String(url);",
+        "    setTimeout(() => {",
+        "      if (key === '/api/down') { reject(new TypeError('Failed to fetch')); return; }",
+        "      if (key === '/api/courses') { resolve(json(COURSES, 200, 'OK')); return; }",
+        "      if (key === '/api/none') { resolve(json([], 200, 'OK')); return; }",
+        "      if (key === '/api/broken') { resolve(json({ message: '서버가 잠시 멈췄습니다' }, 500, 'Internal Server Error')); return; }",
+        "      resolve(new Response('<!doctype html><h1>Not Found</h1>', {",
+        "        status: 404,",
+        "        statusText: 'Not Found',",
+        "        headers: { 'Content-Type': 'text/html' },",
+        "      }));",
+        "    }, 60);",
+        "  });",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
+          ".hint { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\n\n// CourseList 를 여기에 작성하세요\n\n// 이 함수는 그대로 두세요. 검사기가 부릅니다\nfunction afterLoad() {\n  const root = document.querySelector('#root');\n  return new Promise((resolve) => {\n    const startedAt = Date.now();\n    const tick = () => {\n      const text = root.textContent;\n      if ((text && !text.includes('불러오는 중')) || Date.now() - startedAt > 3000) resolve(text);\n      else setTimeout(tick, 30);\n    };\n    tick();\n  });\n}\n",
+      "entry": "afterLoad",
+      "solutionCode": "const { useState, useEffect } = React;\n\nfunction CourseList() {\n  const [courses, setCourses] = useState(null);\n\n  useEffect(() => {\n    fetch('/api/courses')\n      .then((res) => res.json())\n      .then((list) => setCourses(list));\n  }, []);\n\n  if (courses === null) {\n    return <p className=\"state\">불러오는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">코스 {courses.length}개</p>\n      {courses.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseList />);\n\n// 이 함수는 그대로 두세요. 검사기가 부릅니다\nfunction afterLoad() {\n  const root = document.querySelector('#root');\n  return new Promise((resolve) => {\n    const startedAt = Date.now();\n    const tick = () => {\n      const text = root.textContent;\n      if ((text && !text.includes('불러오는 중')) || Date.now() - startedAt > 3000) resolve(text);\n      else setTimeout(tick, 30);\n    };\n    tick();\n  });\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "다 불러온 뒤 화면",
+          "args": [],
+          "expected": "코스 3개리액트 입문CSS 레이아웃자바스크립트 기초"
+        },
+        {
+          "type": "dom",
+          "label": "코스 줄이 세 개",
+          "select": ".course",
+          "count": 3
+        },
+        {
+          "type": "dom",
+          "label": "코스 이름",
+          "select": ".course",
+          "text": [
+            "리액트 입문",
+            "CSS 레이아웃",
+            "자바스크립트 기초"
+          ]
+        }
+      ]
+    }
+  ]
+}
