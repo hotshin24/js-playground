@@ -54,7 +54,7 @@ export const ASSERT_RUNTIME = `
     }
   };
 
-  const runActions = async (actions) => {
+  const runActions = async (actions, react) => {
     for (const step of actions) {
       const target = document.querySelector(step.selector);
       if (!target) throw new Error('요소를 찾지 못했습니다: ' + step.selector);
@@ -69,13 +69,13 @@ export const ASSERT_RUNTIME = `
         throw new Error('알 수 없는 동작: ' + step.action);
       }
 
-      // 마이크로태스크 한 번만 양보한다. setTimeout 은 백그라운드 탭에서 1초로 조여진다.
-      await null;
+      // 상태 갱신이 화면과 효과에 모두 반영될 때까지 기다린다
+      await settle(react);
     }
   };
 
-  const readDom = async (spec) => {
-    await runActions(spec.actions || []);
+  const readDom = async (spec, react) => {
+    await runActions(spec.actions || [], react);
     const nodes = Array.prototype.slice.call(document.querySelectorAll(spec.select));
     return spec.count !== undefined ? nodes.length : nodes.map(visibleText);
   };
@@ -105,9 +105,23 @@ export const ASSERT_RUNTIME = `
       channel.port2.postMessage(0);
     });
 
+  // 렌더 커밋과 효과 실행은 서로 다른 매크로태스크에 실린다. 실측:
+  //   양보 1회 → 화면은 그려졌지만 useEffect 는 아직 돌지 않았다
+  //   양보 2회 → 효과까지 끝났다
+  // 효과가 React 바깥을 건드리는 레슨을 검사하려면 두 번 양보해야 한다.
+  // React 가 아닌 레슨은 마이크로태스크 한 번으로 충분하다.
+  const settle = async (react) => {
+    if (!react) {
+      await null;
+      return;
+    }
+    await yieldMacrotask();
+    await yieldMacrotask();
+  };
+
   window.__runAsserts = async (specs, target, waitRender) => {
     if (specs.some((spec) => spec.type === 'dom')) await domReady();
-    if (waitRender) await yieldMacrotask();
+    await settle(waitRender);
 
     for (let index = 0; index < specs.length; index += 1) {
       const spec = specs[index];
@@ -117,7 +131,7 @@ export const ASSERT_RUNTIME = `
         // 액션 대상이 없으면 fail 이 아니라 error 다. 학습자가 볼 곳이 다르다.
         let seen;
         try {
-          seen = await readDom(spec);
+          seen = await readDom(spec, waitRender);
         } catch (err) {
           rt.post(Object.assign({}, base, { status: 'error', message: describe(err) }));
           continue;
