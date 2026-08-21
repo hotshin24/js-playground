@@ -947,3 +947,59 @@ finally 에 return             try 의 return 을 덮어씀 ('finally 의 return
 **감싸지 않으면 그 줄에서 멈춘다** — 첫 줄은 찍히고 에러 뒤의 줄은 실행되지 않는다. `catch (e) {}` 로 비워 두면 오류가 사라지고 `undefined` 가 흘러간다. 둘 다 `t5-01` tweak 에 넣었다.
 
 **로그 줄 수** — F-004 방침대로 쟀다. `t5-01` run 3줄, `t5-02` run 1건(3줄짜리 한 덩어리). 반복문 안에서 `console.log` 를 부르지 않고 모아서 한 번 낸다. `setInterval`·`setTimeout`·재시도 0건.
+
+### T5 묶음 B 실측 (2026-08-21)
+
+`t5-04`·`t5-05`·`t5-06` 지문의 근거다. 실행 프레임 안에서 쟀다.
+
+**비동기 실패는 `try`/`catch` 로 잡히지 않는다** — `t5-04` 의 뼈대다.
+
+```
+.then/.catch 로 받음      맡긴 뒤 바로 이 줄 → 성공: 리액트 입문 → 실패: 코스를 찾지 못했습니다
+.catch 없이 거부          Uncaught (in promise) Error: 코스를 찾지 못했습니다
+try 로 감싸고 .catch 제거  '여기서 잡혔습니다' 안 찍힘 + Uncaught (in promise) 그대로
+.then 이어 붙이기          이어받음: 6글자   ← 앞 then 의 반환값이 다음 then 으로
+reject 를 resolve(null) 로  실패: Cannot read properties of null (reading 'name')
+```
+
+마지막 줄이 중요하다. 실패를 성공 통로로 보내면 `.then` 안에서 터지고 **그 에러가 뒤의 `.catch` 로 흘러가** 이유가 엉뚱한 실패로 보고된다. 원래 원인은 어디에도 남지 않는다.
+
+**같은 동작, 두 형태** — `t5-05` 의 run 두 단계는 출력이 완전히 같다.
+
+```
+.then 형태      맡긴 뒤 바로 이 줄 / 성공: 리액트 입문 / 실패: 코스를 찾지 못했습니다
+async/await     맡긴 뒤 바로 이 줄 / 성공: 리액트 입문 / 실패: 코스를 찾지 못했습니다
+```
+
+**`async`/`await` 세 가지**
+
+```
+async 없이 await        Uncaught SyntaxError: await is only valid in async functions
+                        and the top level bodies of modules   ← 실행 전에 걸린다
+await 만 제거           성공: undefined 가 두 번 · 순서가 앞당겨짐 · Uncaught (in promise)
+async 함수의 반환        typeof object · instanceof Promise = true  (return 이 없어도)
+```
+
+`await` 를 지우면 세 가지가 한꺼번에 달라진다. 값이 Promise 가 되고, 함수가 기다리지 않아 동기적으로 끝나 출력 순서가 바뀌고, `try` 가 감싸고 있어도 거부가 잡히지 않는다.
+
+**가짜 `fetch`(`env`)** — `t5-06` 무대.
+
+```
+정상 주소            ok=true status=200 ct=application/json · 세 코스
+res.json() await 제거  받은 개수: undefined → Uncaught (in promise) TypeError: list.map is not a function
+fetch 앞 await 제거    Uncaught (in promise) TypeError: res.json is not a function
+없는 주소 (/api/nope)  Uncaught (in promise) SyntaxError: Failed to execute 'json' on 'Response':
+                      Unexpected token '<', "<!doctype "... is not valid JSON
+네트워크 실패          catch 로 TypeError | Failed to fetch
+```
+
+없는 주소가 **`catch` 가 아니라 `res.json()` 의 파싱 실패로 나타난다.** `t5-07`(`res.ok`) 의 필요를 그대로 보여 주는 자리라 `t5-06` tweak ③ 에 넣었다.
+
+### 실측 환경의 한계 — 배경 탭 타이머 (2026-08-21)
+
+묶음 B 를 재는 동안 관측이 세 번 어긋났고 원인이 이것이었다. F-001·F-002 와 같은 뿌리다.
+
+- 브라우저 탭이 앞에 없으면 프레임 안의 `setTimeout` 이 **1초 가까이 밀린다.** 60~120ms 로 잡은 타이머가 `done` 이후 700ms 관측 창에 들어오지 않았다. 창을 **2.5초**로 넓혀야 전부 잡혔다.
+- `done` 은 스크립트 파싱이 끝나면 나온다. **비동기 로그는 `done` 뒤에 온다.** `done` 에서 관측을 끊으면 비동기 레슨의 출력을 통째로 놓친다.
+- 그래서 **이 환경에서 잰 절대 시간은 신뢰할 수 없다.** 60ms 지연을 건 요청이 924ms 로 측정된 적이 있다. 시간 수치를 지문에 쓰지 않았다. **`t5-13`(순차 대 병렬)은 시간을 비교하는 레슨이므로, 그때는 탭을 앞에 둔 상태에서 다시 재고 상대 비교만 쓴다.**
+- 회귀 하네스는 이 때문에 단계마다 관측 창이 필요하고, 전수 회귀 한 번이 90초 안팎이 되었다.
