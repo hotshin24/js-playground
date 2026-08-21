@@ -382,6 +382,24 @@
       "track": "T4",
       "order": 9,
       "title": "폼 여러 칸 다루기"
+    },
+    {
+      "id": "t4-10",
+      "track": "T4",
+      "order": 10,
+      "title": "파생 상태를 만들지 마세요"
+    },
+    {
+      "id": "t4-11",
+      "track": "T4",
+      "order": 11,
+      "title": "상태를 위로 올리기"
+    },
+    {
+      "id": "t4-12",
+      "track": "T4",
+      "order": 12,
+      "title": "필요 없는 useEffect"
     }
   ]
 }
