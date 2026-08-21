@@ -2024,3 +2024,34 @@ J. export 를 빠뜨리면     모듈 키 = [] · 오류 없음 · window 에도
 **따라서 Babel 을 T8 에서 새로 받지 않는다.** 650ms 를 내고 얻을 것이 없다. `<script type="module">` 로 붙이는 것만으로 파일·줄·열이 전부 나온다. 줄 번호를 포기하는 선택지도 쓸 필요가 없다.
 
 **순환 의존은 이번 측정으로 판정하지 못했다.** 탐침을 잘못 만들어(자리표시자를 남겨 둔 채 blob 을 굳혔다) 실패로 나왔다. ES 모듈이 순환을 지원하는 것과 별개로 이 프레임에서의 거동은 **미측정**이다. T8 이 순환 의존을 가르치지 않으므로 지금은 막지도 열지도 않는다.
+
+### M4 실측 3 — 실패 마감 시점과 blob 의 출처 (2026-08-22)
+
+**모듈 스크립트의 `load` 는 성공 신호가 아니다. 마감 신호다.**
+
+```
+① 진입 파일 문법 오류    load  3ms · onerror 1:11 SyntaxError
+② 의존 파일 문법 오류    load  2ms · onerror utils.js 1:18 SyntaxError
+③ 최상위 throw          load  2ms · onerror utils.js 1:7  Error: 터짐
+④ 정상                  load  2ms · onerror 0건
+⑤ 없는 이름을 import     load  2ms · onerror main.js 1:10 SyntaxError: The requested module …
+⑥ 부모가 만든 blob       error 5ms · onerror 0건
+⑦ window load = 4ms (파서 삽입 모듈이 깨진 문서에서도 온다)
+```
+
+문법 오류든 최상위 throw 든 요소의 `load` 가 **2~3ms 안에** 온다. 요소의 `error` 는
+파싱 실패에는 오지 않고 **가져오기 실패에만** 온다(⑥). 그래서 판정은 이렇게 갈린다.
+
+- `load` 가 왔는데 부트가 `__startAsserts` 를 부르지 않았다 → **모듈 실패**
+- `error` 가 왔다 → 파일을 가져오지 못했다
+
+**워치독에 기대지 않아도 된다.** 3초를 기다릴 이유가 없어졌다. 실패도 2~3ms 안에 마감한다.
+
+**⑥ 이 설계를 하나 바꾼다.** opaque origin 프레임은 부모 출처의 blob URL 을 읽지 못한다.
+따라서 **blob 은 프레임 안에서 만들어야 한다.** 프레임이 문서로 들어오기 전에는 blob URL 이
+없으므로 모듈 스크립트를 **파서가 삽입할 수 없다.** 프레임 안 classic 부트스트랩이 동적으로
+붙인다. 앞선 실측이 전부 동적 삽입이었으므로 측정 결과는 그대로 유효하다.
+
+**⑤ 가 오류 보고에 한 갈래를 더한다.** 학습자가 없는 이름을 `import` 하면 실행 전
+링크 단계에서 `SyntaxError: The requested module …` 로 끊긴다. export 누락(A~D)과 달리
+`import` 쪽을 고쳐야 하는 경우다.
