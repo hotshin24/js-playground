@@ -1929,3 +1929,63 @@ Lighthouse  읽기 100/100/100/100 · 쓰기(스냅샷) 100/100/100 — 유지
 세 번째가 특히 함정이었다. 점수가 오른 것은 맞다 — 링크가 걸려 브라우저가 `/favicon.ico` 를 더 찾지 않게 됐고 콘솔 에러가 사라졌기 때문이다. **그 점에서 96 → 100 은 유효한 측정이었다.** 다만 목표는 "점수 올리기" 가 아니라 "파비콘 달기" 였고, **그 목표는 달성되지 않았는데 지표만 달성됐다.** 지표가 목표를 대신 증명해 주지 않는다.
 
 **규칙으로 남긴다 — 새로 만든 자산 파일은 만든 도구가 아니라 그것을 쓸 도구로 열어 본다.** SVG·이미지·JSON·HTML 모두 같다. `curl` 의 200 은 파일이 존재한다는 뜻이지 유효하다는 뜻이 아니다. 이번에는 브라우저로 열어 루트 요소와 도형 수와 그려진 크기까지 확인했다.
+
+## M4 착수 전 실측 — 모듈과 경로 (2026-08-21)
+
+브랜치 `feat/m4-module-runner`. `main` 에는 `v1.0-pre-m4` 태그를 붙여 두었다.
+
+### 실행 프레임에서 ES 모듈이 되는가
+
+```
+origin = null · baseURI = 부모 문서 URL (계층 경로 있음)
+A. <script type="module">        실행됨
+C. 동적 import(blobUrl)          동작 · export 를 그대로 받는다 (double(21) = 42)
+G. data: URL 모듈                동작
+```
+
+**모듈 자체는 문제가 아니다.** 막히는 것은 경로 해석 하나다.
+
+### 상대 경로가 막히는 지점
+
+`URL.createObjectURL` 이 opaque origin 에서 만드는 URL 은 **`blob:null/<uuid>`** 다. 계층 경로가 없다.
+
+```
+D. blob 모듈 안에서 './utils.js'
+   TypeError: Failed to resolve module specifier "./utils.js".
+              Invalid relative url or base scheme isn't hierarchic.
+```
+
+상대 지정자는 **참조자의 base URL 로 먼저 해석**되는데 `blob:null/…` 은 그 base 가 되지 못한다. import map 이 있어도 마찬가지다 — 해석이 먼저 실패하므로 맵을 찾아보는 단계까지 가지 않는다.
+
+### 살아 있는 길 셋
+
+파싱 시점에 `<script type="importmap">` 을 head 에 두고 잰 결과다.
+
+| 방법 | 결과 | 학습자가 쓰는 코드 |
+|---|---|---|
+| ① import map + **bare 지정자** | **동작** (`import { bare } from 'utils'`) | `'utils'` — 실무의 `'./utils.js'` 와 다르다 |
+| ② import map + **상대 경로** (blob 안) | **실패** — 위 D 와 같은 오류 | — |
+| ③ **인라인 `<script type="module">` 의 상대 경로** | **동작** (문서 base 를 쓴다) | 진입 파일에만 해당 |
+| ④ **지정자를 절대 blob URL 로 재작성** | **동작** (3파일 사슬 → 14) | `'./utils.js'` 그대로 — 실무와 같다 |
+
+### ④ 를 더 재 봤다
+
+```
+⑤ 다이아몬드 의존 · 공통 모듈 본문 실행 횟수 = 1     ← blob URL 단위로 모듈 캐시가 정상 작동
+⑥ 재작성 뒤 에러 위치 = at Module.go (blob:null/f3d61b2f-…:4:9)
+⑦ 문법 오류 → SyntaxError: Unexpected token ';'      ← 동적 import 의 거부로 온다. 줄 번호가 없다
+⑧ 최상위 throw → import 가 거부됨 · '최상위에서 던짐'
+```
+
+**⑥ 이 중요하다.** 지정자만 같은 줄에서 길어지므로 **줄 번호가 그대로 유지된다.** 그리고 파일마다 blob 이 따로이므로 **줄 번호가 이미 파일 기준**이다 — 지금의 `lineno - offsetOf(head)` 같은 오프셋 보정이 모듈 경로에서는 아예 필요 없다. 대신 필요한 것은 `blob:null/<uuid>` → 파일 이름 표다.
+
+**⑦ 은 구멍이다.** 문법 오류가 거부 메시지로만 오고 줄 번호가 없다. 지금 classic 경로는 `window.onerror` 의 `lineno` 로 줄을 짚어 준다.
+
+### 진입 식별자
+
+```
+I. export 한 것          typeof mod.doubleAll === 'function' · window.doubleAll 은 undefined
+J. export 를 빠뜨리면     모듈 키 = [] · 오류 없음 · window 에도 없음
+```
+
+**J 가 오진을 부른다.** 지금 검사기는 이 상황에서 "함수를 찾을 수 없습니다" 를 낸다. 학습자는 함수 이름을 틀렸다고 읽지만 실제 원인은 `export` 누락이다.
