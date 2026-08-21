@@ -1,5 +1,5 @@
 import { meetsCompletion } from './steps.js';
-import { hashText, readStep, saveStep, clearStep } from './storage.js';
+import { hashText, readStep, saveStep, saveStepFiles, clearStep, clearStepFile } from './storage.js';
 
 const SAVE_DELAY_MS = 600;
 
@@ -13,15 +13,16 @@ export const NOTICE = {
 
 /**
  * 단계 진행 상태와 코드 저장. 저장 실패는 던지지 않고 알림으로만 알린다.
- * @param {{ noticeEl: HTMLElement, getCode: () => string, onChanged: () => void }} options
+ * @param {{ noticeEl: HTMLElement, getCode: () => string,
+ *           getFiles: () => Array<{name, code, readOnly}>|null, onChanged: () => void }} options
  */
-export function createProgress({ noticeEl, getCode, onChanged }) {
+export function createProgress({ noticeEl, getCode, getFiles, onChanged }) {
   const shown = new Set();
   let timer = 0;
   // 강제 종료된 코드를 버린 뒤에는, 학습자가 다시 손대기 전까지 아무것도 저장하지 않는다.
   // 그러지 않으면 단계를 옮기거나 창을 닫을 때 flush 가 그 코드를 도로 써 넣는다.
   let discarded = false;
-  let ctx = { lessonId: null, stepIndex: 0, kind: 'write', codeHash: '' };
+  let ctx = { lessonId: null, stepIndex: 0, kind: 'write', codeHash: '', files: null };
 
   const notify = (message) => {
     if (shown.has(message)) return; // 같은 안내를 반복해 띄우지 않는다
@@ -29,13 +30,25 @@ export function createProgress({ noticeEl, getCode, onChanged }) {
     noticeEl.textContent = message;
   };
 
+  // readOnly 파일은 저장하지 않는다. 학습자가 고칠 수 없어 저장할 것이 없고 레슨이 이긴다.
+  const saveFiles = () => {
+    const now = getFiles() || [];
+    const records = {};
+    now.filter((file) => !file.readOnly).forEach((file) => {
+      const meta = ctx.files.find((entry) => entry.name === file.name);
+      records[file.name] = { code: file.code, codeHash: meta ? meta.hash : '' };
+    });
+    return saveStepFiles(ctx.lessonId, ctx.stepIndex, records);
+  };
+
   const flush = () => {
     if (timer) clearTimeout(timer);
     timer = 0;
     if (!ctx.lessonId || discarded) return;
-    if (!saveStep(ctx.lessonId, ctx.stepIndex, { code: getCode(), codeHash: ctx.codeHash })) {
-      notify(NOTICE.saveFailed);
-    }
+    const ok = ctx.files
+      ? saveFiles()
+      : saveStep(ctx.lessonId, ctx.stepIndex, { code: getCode(), codeHash: ctx.codeHash });
+    if (!ok) notify(NOTICE.saveFailed);
   };
 
   const schedule = () => {
@@ -46,7 +59,16 @@ export function createProgress({ noticeEl, getCode, onChanged }) {
 
   const setContext = (lessonId, stepIndex, step) => {
     discarded = false;
-    ctx = { lessonId, stepIndex, kind: step.kind, codeHash: hashText(step.code) };
+    ctx = {
+      lessonId,
+      stepIndex,
+      kind: step.kind,
+      codeHash: hashText(step.code),
+      // 서명을 파일별로 둔다. 한 파일의 예제 코드만 바뀌면 그 파일만 새 코드로 시작한다.
+      files: step.files
+        ? step.files.map((file) => ({ name: file.name, readOnly: file.readOnly, hash: hashText(file.code) }))
+        : null,
+    };
   };
 
   /** 완료 판정은 기록일 뿐 관문이 아니다 */
@@ -64,6 +86,12 @@ export function createProgress({ noticeEl, getCode, onChanged }) {
     if (hashText(saved.code) === saved.codeHash) return step.code;
     notify(NOTICE.codeChanged);
     return saved.code;
+  };
+
+  /** 파일 하나만 되돌린다. 저장이 파일별로 나뉘어 있어 다른 파일은 그대로 남는다. */
+  const resetFile = (name) => {
+    clearStepFile(ctx.lessonId, ctx.stepIndex, name);
+    onChanged();
   };
 
   const reset = () => {
@@ -84,8 +112,38 @@ export function createProgress({ noticeEl, getCode, onChanged }) {
     onChanged();
   };
 
+  /** 파일별 이어하기. 판단 기준은 코드 한 벌일 때와 같다. 안내는 한 번만 띄운다. */
+  const resolveFiles = (step) => {
+    const saved = readStep(ctx.lessonId, ctx.stepIndex);
+    const savedFiles = (saved && saved.files) || {};
+    let noticed = false;
+    return step.files.map((file) => {
+      if (file.readOnly) return { ...file };
+      const rec = savedFiles[file.name];
+      if (!rec || typeof rec.code !== 'string') return { ...file };
+      const starterHash = hashText(file.code);
+      if (rec.codeHash === starterHash) return { ...file, code: rec.code };
+      if (hashText(rec.code) === rec.codeHash) return { ...file };
+      if (!noticed) {
+        notify(NOTICE.codeChanged);
+        noticed = true;
+      }
+      return { ...file, code: rec.code };
+    });
+  };
+
+  const anyFileChanged = () => {
+    const now = getFiles() || [];
+    return now.some((file) => {
+      const meta = ctx.files.find((entry) => entry.name === file.name);
+      return meta && !meta.readOnly && hashText(file.code) !== meta.hash;
+    });
+  };
+
   return {
     notify,
+    resolveFiles,
+    resetFile,
     flush,
     schedule,
     discard,
@@ -93,7 +151,7 @@ export function createProgress({ noticeEl, getCode, onChanged }) {
     complete,
     resolveCode,
     reset,
-    isCurrentCodeChanged: () => hashText(getCode()) !== ctx.codeHash,
+    isCurrentCodeChanged: () => (ctx.files ? anyFileChanged() : hashText(getCode()) !== ctx.codeHash),
     isStepDone: (index) => Boolean((readStep(ctx.lessonId, index) || {}).completedAt),
   };
 }

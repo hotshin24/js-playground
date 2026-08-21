@@ -80,7 +80,10 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
     },
   });
 
-  const run = (code, { assertScript = '', total = 0, scaffold, env = '', preview = false, runtime = 'js' } = {}) => {
+  const run = (code, options = {}) => {
+    const { assertScript = '', total = 0, scaffold, env = '', preview = false, runtime = 'js' } = options;
+    // files 단계는 assert 를 프레임 안 로더가 돌린다. 원본 명세와 검사할 이름을 그대로 넘긴다.
+    const { files = null, entry = '', specs = [] } = options;
     assertEvents = [];
     assertTotal = total;
     errorSeen = false;
@@ -92,7 +95,10 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
     results.clear();
     results.setSummary(total ? '검사 중…' : '');
     if (preview) onPreview('running');
-    runner.run(code, { assertScript, scaffold, env, preview, runtime, mount: preview ? previewMount : mount });
+    runner.run(code, {
+      assertScript, scaffold, env, preview, runtime, files, entry, specs,
+      mount: preview ? previewMount : mount,
+    });
   };
 
   // 레슨을 옮길 때 이전 레슨의 출력이 남아 있으면 안 된다

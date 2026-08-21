@@ -28,6 +28,7 @@ let ran = false;
 const progress = createProgress({
   noticeEl: el('notice'),
   getCode: () => workspace.getCode(),
+  getFiles: () => workspace.getFiles(),
   onChanged: () => refreshNav(),
 });
 
@@ -92,23 +93,41 @@ const applyPolicy = (editable) => {
   resetButton.disabled = !editable;
 };
 
+const specsOf = () => (step.asserts || []).filter((spec) => spec.type === 'value' || spec.type === 'dom');
+
 const run = () => {
   ran = true;
   const changed = progress.isCurrentCodeChanged();
   const react = lesson.runtime === 'react';
+  const specs = specsOf();
+  // files 단계는 코드가 문서에 인라인으로 들어가지 않는다. 조립을 러너가 갈라 맡는다.
+  const forFiles = step.files ? { files: workspace.getFiles(), entry: step.entry, specs } : {};
   session.run(workspace.getCode(), {
-    assertScript: buildAssertScript(step, { react }),
-    total: (step.asserts || []).filter((spec) => spec.type === 'value' || spec.type === 'dom').length,
+    assertScript: step.files ? '' : buildAssertScript(step, { react }),
+    total: specs.length,
     scaffold: step.scaffold,
     env: step.env,
     preview: preview.isOn(step, layout.isEditable()),
     runtime: lesson.runtime,
+    ...forFiles,
   });
   // 검사가 없는 단계는 실행 자체가 완료 신호다
   if (!isChecked(step.kind)) progress.complete({ ran: true, changed, allPassed: false });
 };
 
 const reset = () => {
+  // 파일이 여럿이면 보고 있는 파일만 되돌린다. 다른 파일의 작업을 함께 날리지 않는다.
+  if (step.files) {
+    const name = workspace.activeName();
+    const source = step.files.find((file) => file.name === name);
+    if (!source) return;
+    progress.resetFile(name);
+    // 상태를 새로 만들지 않고 문서를 치환한다. 그래야 되돌린 뒤 실행 취소로 되살릴 수 있다.
+    workspace.setFileCode(name, source.code);
+    workspace.focus();
+    session.setStatus(name + ' 을(를) 예제 코드로 되돌렸습니다');
+    return;
+  }
   progress.reset();
   workspace.setCode(step.code);
   workspace.focus();
@@ -128,7 +147,8 @@ const showStep = (next) => {
   session.clear();
   nextButton.hidden = next >= lesson.steps.length - 1;
 
-  workspace.setCode(progress.resolveCode(step));
+  if (step.files) workspace.setFiles(progress.resolveFiles(step));
+  else workspace.setCode(progress.resolveCode(step));
   setLastLesson(lesson.id, next);
   refreshNav();
 
