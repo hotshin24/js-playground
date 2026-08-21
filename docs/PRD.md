@@ -662,7 +662,7 @@ M1a에서 구현·검증된 `schemaVersion: 1`. 아래는 실제 동작하는 �
 
 | 지표 | 목표 | 최근 실측 |
 |---|---|---|
-| Lighthouse Accessibility / Best Practices / SEO | 각 100 | **미측정** |
+| Lighthouse Accessibility / Best Practices / SEO | 각 100 | **실측(배포판)** — 읽기 단계 접근성 **100** · 모범 사례 **96** · SEO **90** · 성능 **100**. 쓰기 단계(스냅샷) 접근성 **100** · 모범 사례 **100** · SEO **75**. 감점 원인은 둘뿐 — 파비콘 404, `meta description` 없음 (FINDINGS "M7a") |
 | 신규 레슨 추가 비용 | JSON 1건 추가, 앱 코드 수정 0줄 | **JSON 1건 + `lessons/index.json` 1줄, 앱 코드 0줄** (누적 89건 추가·8건 이사로 확인. T7 9건 전부 `env`·`scaffold` 없이 앱 코드 변경 0줄로 추가) |
 | 실행 지연 (T1/T2) | 300ms 이내 | **T1 77~213ms** (`t1-03`, localhost·GitHub Pages) · **T2 46~88ms, 중앙값 49ms** (15레슨 55단계 전수, localhost, 미리보기 없음). 300ms 초과 **0건** |
 | 에디터 초기 로드 | 기준 없음 | **콜드 1799ms / 웜 181ms**, 요청 42건·압축 해제 525KB (F-007). 전송 바이트는 측정 불가 |
