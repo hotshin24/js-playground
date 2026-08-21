@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 2,
+  "id": "t4-15",
+  "track": "T4",
+  "order": 15,
+  "runtime": "react",
+  "title": "렌더와 무관한 값",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "기억하지만 다시 그리지 않습니다",
+      "brief": [
+        "상태에는 성질이 하나 붙어 있습니다. 바꾸면 화면을 다시 그린다는 것입니다. 대부분은 그것이 바라는 바입니다. 그런데 기억은 해야 하는데 화면과는 상관없는 값도 있습니다. 그런 값을 상태로 두면 쓸데없이 다시 그립니다.",
+        "useRef 가 그 자리를 맡습니다. const typedCount = useRef(0) 이라고 쓰면 상자를 하나 받습니다. 안의 값은 typedCount.current 로 읽고 씁니다. 바꿔도 React 는 아무 일도 하지 않습니다. 다시 그리지 않습니다.",
+        "그래서 ref 를 바꾸면 화면에 바로 나타나지 않습니다. 다음에 다른 이유로 다시 그려질 때 그제야 새 값이 보입니다. 이 성질을 모르면 버그로 보이지만, 알고 쓰면 정확히 그것이 필요한 자리가 있습니다.",
+        "기준은 간단합니다. 화면에 보여야 하는 값이면 상태입니다. 기억만 하면 되고 화면과 상관없으면 ref 입니다.",
+        "두 번째 용도는 DOM 을 붙잡는 것입니다. 앞 트랙에서 초점을 옮길 때 document.querySelector 로 요소를 찾아 focus() 를 불렀습니다. React 에서는 그렇게 찾아다니지 않습니다. 화면을 만든 것이 React 이므로 React 에게 물어봅니다.",
+        "<input ref={inputRef} /> 라고 적어 두면 React 가 그 요소를 만든 뒤 inputRef.current 에 넣어 줍니다. 그다음부터 inputRef.current.focus() 처럼 씁니다. 값이 없는 처음에는 null 이므로 useRef(null) 로 시작합니다.",
+        "DOM 을 직접 건드리는 일은 최소로 두세요. 초점 옮기기, 스크롤 위치 맞추기, 미디어 재생처럼 React 로 표현할 수 없는 것에만 씁니다. 글자나 클래스를 바꾸는 일은 상태로 하는 것이지 ref 로 하는 것이 아닙니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "두 가지 쓰임",
+      "brief": [
+        "친 횟수는 ref 에 담고, 입력창은 ref 로 붙잡았습니다.",
+        "실행한 뒤 검색창에 몇 글자 쳐 보세요. 콘솔에는 ref 가 1, 2, 3 으로 오르는데 화면의 '지금까지 N번 쳤습니다' 는 한 박자 늦게 따라옵니다. 검색어 상태가 바뀌어 다시 그려질 때 그때의 ref 값이 찍히기 때문입니다.",
+        "'지우고 커서 옮기기' 를 눌러 보세요. 검색어가 비워지고 입력창에 커서가 갑니다. 요소를 찾아다니지 않고 inputRef.current 를 바로 씁니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".panel { display: grid; gap: 8px; max-width: 340px; }",
+          ".field { font-size: 0.875rem; color: var(--c-text-muted); }",
+          ".field__input { width: 100%; }",
+          ".field__input:focus { outline: 2px solid var(--c-accent); outline-offset: 1px; }",
+          ".note { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".row { display: flex; gap: 6px; }"
+        ]
+      },
+      "code": "const { useState, useRef } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n  const typedCount = useRef(0);\n  const inputRef = useRef(null);\n\n  console.log('그려집니다. 친 횟수(ref) =', typedCount.current);\n\n  const handleChange = (event) => {\n    typedCount.current = typedCount.current + 1;\n    console.log('   ref 를', typedCount.current, '로 바꿨습니다');\n    setKeyword(event.target.value);\n  };\n\n  const clear = () => {\n    setKeyword('');\n    inputRef.current.focus();\n  };\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" ref={inputRef}\n        value={keyword} onChange={handleChange} />\n      <p className=\"note\">지금까지 {typedCount.current}번 쳤습니다</p>\n      <div className=\"row\">\n        <button className=\"clear\" type=\"button\" onClick={clear}>지우고 커서 옮기기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "상태와 무엇이 다른가",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
+        "① handleChange 에서 setKeyword 줄을 지워 보세요. 이제 상태가 바뀌지 않습니다. 쳐도 글자가 들어가지 않고, 화면의 횟수도 0 에서 멈춰 있습니다. 그런데 콘솔의 ref 는 계속 오릅니다. ref 는 기억하지만 다시 그리지 않습니다.",
+        "② 되돌린 뒤 typedCount 를 ref 대신 상태로 바꿔 보세요. const [typedCount, setTypedCount] = useState(0) 으로 두고 handleChange 에서 setTypedCount(typedCount + 1) 를 부릅니다. 화면의 횟수가 곧바로 따라옵니다. 대신 렌더 로그를 보세요. 한 글자를 쳐도 상태가 둘 바뀌니 React 가 처리할 일이 늘어납니다.",
+        "③ 되돌린 뒤 clear 에서 inputRef.current.focus() 를 document.querySelector('#q').focus() 로 바꿔 보세요. 똑같이 동작합니다. 되긴 하지만 React 가 만든 화면을 우리가 다시 뒤져 찾은 것입니다. 화면 구조가 바뀌면 그 선택자도 함께 고쳐야 합니다. ref 는 그 요소를 직접 들고 있으니 그럴 일이 없습니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".panel { display: grid; gap: 8px; max-width: 340px; }",
+          ".field { font-size: 0.875rem; color: var(--c-text-muted); }",
+          ".field__input { width: 100%; }",
+          ".field__input:focus { outline: 2px solid var(--c-accent); outline-offset: 1px; }",
+          ".note { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".row { display: flex; gap: 6px; }"
+        ]
+      },
+      "code": "const { useState, useRef } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n  const typedCount = useRef(0);\n  const inputRef = useRef(null);\n\n  console.log('그려집니다. 친 횟수(ref) =', typedCount.current);\n\n  const handleChange = (event) => {\n    typedCount.current = typedCount.current + 1;\n    console.log('   ref 를', typedCount.current, '로 바꿨습니다');\n    setKeyword(event.target.value);\n  };\n\n  const clear = () => {\n    setKeyword('');\n    inputRef.current.focus();\n  };\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" ref={inputRef}\n        value={keyword} onChange={handleChange} />\n      <p className=\"note\">지금까지 {typedCount.current}번 쳤습니다</p>\n      <div className=\"row\">\n        <button className=\"clear\" type=\"button\" onClick={clear}>지우고 커서 옮기기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "기억할 상자 만들기",
+      "brief": [
+        "검색창과 지우기는 돼 있습니다. 친 횟수를 담을 상자만 비어 있습니다.",
+        "null 자리를 채워 처음 값이 0 인 상자를 만들어 주세요. 화면에 보이기는 하지만 이 값이 바뀐다고 다시 그릴 필요는 없습니다.",
+        "아래에서 typedCount.current 로 읽고 씁니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".panel { display: grid; gap: 8px; max-width: 340px; }",
+          ".field { font-size: 0.875rem; color: var(--c-text-muted); }",
+          ".field__input { width: 100%; }",
+          ".field__input:focus { outline: 2px solid var(--c-accent); outline-offset: 1px; }",
+          ".note { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".row { display: flex; gap: 6px; }"
+        ]
+      },
+      "code": "const { useState, useRef } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n  const typedCount = null; // ← 여기를 채우세요\n  const inputRef = useRef(null);\n\n  const handleChange = (event) => {\n    typedCount.current = typedCount.current + 1;\n    setKeyword(event.target.value);\n  };\n\n  const clear = () => {\n    setKeyword('');\n    inputRef.current.focus();\n  };\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" ref={inputRef}\n        value={keyword} onChange={handleChange} />\n      <p className=\"note\">지금까지 {typedCount.current}번 쳤습니다</p>\n      <div className=\"row\">\n        <button className=\"clear\" type=\"button\" onClick={clear}>지우고 커서 옮기기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n",
+      "solutionCode": "const { useState, useRef } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n  const typedCount = useRef(0);\n  const inputRef = useRef(null);\n\n  const handleChange = (event) => {\n    typedCount.current = typedCount.current + 1;\n    setKeyword(event.target.value);\n  };\n\n  const clear = () => {\n    setKeyword('');\n    inputRef.current.focus();\n  };\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" ref={inputRef}\n        value={keyword} onChange={handleChange} />\n      <p className=\"note\">지금까지 {typedCount.current}번 쳤습니다</p>\n      <div className=\"row\">\n        <button className=\"clear\" type=\"button\" onClick={clear}>지우고 커서 옮기기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 0번입니다",
+          "select": ".note",
+          "text": [
+            "지금까지 0번 쳤습니다"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "치면 값이 들어갑니다",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#q",
+              "value": "리액트"
+            }
+          ],
+          "select": "#q",
+          "text": [
+            "리액트"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "친 횟수가 한 박자 늦게 따라옵니다",
+          "select": ".note",
+          "text": [
+            "지금까지 1번 쳤습니다"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "누르면 비워집니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".clear"
+            }
+          ],
+          "select": "#q",
+          "text": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "친 횟수와 커서",
+      "brief": [
+        "검색창을 만들어 주세요. 상태는 검색어 하나이고, ref 는 둘입니다.",
+        "바깥은 <div className=\"panel\"> 입니다. <label className=\"field\" htmlFor=\"q\">코스 검색</label> 과 <input className=\"field__input\" id=\"q\" type=\"search\"> 를 두세요. 입력창은 ref 로 붙잡습니다.",
+        "친 횟수를 ref 에 세어 두고 <p className=\"note\">지금까지 3번 쳤습니다</p> 형태로 보여 주세요. 상태로 두지 마세요. 한 박자 늦게 따라오는 것이 정상입니다.",
+        "아래 <div className=\"row\"> 에 <button className=\"clear\">지우고 커서 옮기기</button> 를 두세요. 누르면 검색어가 비워지고 입력창에 커서가 갑니다. 요소를 querySelector 로 찾지 말고 ref 를 쓰세요.",
+        "검사는 화면에 나타나는 것만 봅니다. 커서가 실제로 옮겨 가는지는 직접 눌러 확인하세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".panel { display: grid; gap: 8px; max-width: 340px; }",
+          ".field { font-size: 0.875rem; color: var(--c-text-muted); }",
+          ".field__input { width: 100%; }",
+          ".field__input:focus { outline: 2px solid var(--c-accent); outline-offset: 1px; }",
+          ".note { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".row { display: flex; gap: 6px; }"
+        ]
+      },
+      "code": "const { useState, useRef } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 여기를 채우세요\n",
+      "solutionCode": "const { useState, useRef } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n  const typedCount = useRef(0);\n  const inputRef = useRef(null);\n\n  const handleChange = (event) => {\n    typedCount.current = typedCount.current + 1;\n    setKeyword(event.target.value);\n  };\n\n  const clear = () => {\n    setKeyword('');\n    inputRef.current.focus();\n  };\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" ref={inputRef}\n        value={keyword} onChange={handleChange} />\n      <p className=\"note\">지금까지 {typedCount.current}번 쳤습니다</p>\n      <div className=\"row\">\n        <button className=\"clear\" type=\"button\" onClick={clear}>지우고 커서 옮기기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 0번입니다",
+          "select": ".note",
+          "text": [
+            "지금까지 0번 쳤습니다"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "라벨이 입력창을 가리킵니다",
+          "select": "label[for=\"q\"]",
+          "count": 1
+        },
+        {
+          "type": "dom",
+          "label": "치면 값이 들어갑니다",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "#q",
+              "value": "리액트"
+            }
+          ],
+          "select": "#q",
+          "text": [
+            "리액트"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "친 횟수가 한 박자 늦게 따라옵니다",
+          "select": ".note",
+          "text": [
+            "지금까지 1번 쳤습니다"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "누르면 비워집니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".clear"
+            }
+          ],
+          "select": "#q",
+          "text": [
+            ""
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -400,6 +400,24 @@
       "track": "T4",
       "order": 12,
       "title": "필요 없는 useEffect"
+    },
+    {
+      "id": "t4-13",
+      "track": "T4",
+      "order": 13,
+      "title": "필요한 useEffect"
+    },
+    {
+      "id": "t4-14",
+      "track": "T4",
+      "order": 14,
+      "title": "정리하고 나가기"
+    },
+    {
+      "id": "t4-15",
+      "track": "T4",
+      "order": 15,
+      "title": "렌더와 무관한 값"
     }
   ]
 }

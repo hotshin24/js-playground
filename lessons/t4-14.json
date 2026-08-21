@@ -1,0 +1,213 @@
+{
+  "schemaVersion": 2,
+  "id": "t4-14",
+  "track": "T4",
+  "order": 14,
+  "runtime": "react",
+  "title": "정리하고 나가기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "시작했으면 끝내는 법도",
+      "brief": [
+        "앞 레슨에서 효과로 바깥을 건드리는 법을 배웠습니다. 그런데 바깥에서 시작한 일 중에는 계속 이어지는 것이 있습니다. 타이머가 그렇고, 이벤트 리스너가 그렇고, 열어 둔 연결이 그렇습니다. 시작만 하고 두면 컴포넌트가 화면에서 사라져도 그 일은 계속 돕니다.",
+        "앞 트랙에서 이미 같은 이야기를 했습니다. addEventListener 를 쓸 때는 언제 떼어 낼지를 늘 함께 생각해야 한다고요. React 에서도 다르지 않습니다. 다만 떼어 내는 자리가 정해져 있습니다.",
+        "효과에서 함수를 하나 돌려주면 됩니다. useEffect(() => { 시작하기; return () => { 정리하기; }; }, []) 처럼요. React 는 그 함수를 정리할 때 불러 줍니다. 정리 함수라고 부릅니다.",
+        "언제 불릴까요. 두 경우입니다. 하나는 컴포넌트가 화면에서 사라질 때입니다. 다른 하나는 효과가 다시 돌기 직전입니다. 의존성이 바뀌어 효과를 다시 돌려야 하면, 먼저 이전 것을 정리하고 새로 시작합니다. 그래서 타이머가 둘씩 쌓이는 일이 없습니다.",
+        "정리하지 않으면 어떻게 될까요. 이 레슨의 run 이 그런 코드입니다. 배너를 끄면 화면에서는 사라지는데 타이머는 계속 돕니다. 콘솔을 보면 없어진 배너가 여전히 넘어가고 있습니다. 화면에 없는 것이 일을 하고 있으니 자원도 쓰고, 사라진 컴포넌트의 상태를 건드리려다 문제를 만들기도 합니다.",
+        "규칙으로 외워 두면 편합니다. 효과 안에서 무언가를 시작했다면 그것을 끝내는 함수를 돌려주세요. setInterval 을 켰으면 clearInterval, addEventListener 를 걸었으면 removeEventListener 입니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "끈 배너가 계속 돕니다",
+      "brief": [
+        "1.5초마다 문구가 바뀌는 배너입니다. 효과에서 타이머를 켜기만 하고 정리하지 않았습니다.",
+        "실행하고 몇 초 기다려 보세요. 문구가 차례로 넘어가고 콘솔에 '배너 넘김' 이 찍힙니다.",
+        "'배너 끄기' 를 누르세요. 화면에서는 배너가 사라집니다. 그런데 콘솔을 보세요. '배너 넘김' 이 계속 찍힙니다. 화면에 없는 컴포넌트의 타이머가 여전히 돌고 있습니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".panel { display: grid; gap: 8px; max-width: 340px; }",
+          ".banner { padding: 12px; border: 1px solid var(--c-border); border-radius: 8px; text-align: center; }",
+          ".banner__text { margin: 0; font-size: 1rem; }",
+          ".banner__step { margin: 4px 0 0; color: var(--c-text-muted); font-size: 0.75rem; }",
+          ".off { margin: 0; padding: 12px; border: 1px dashed var(--c-border); border-radius: 8px;",
+          "  color: var(--c-text-muted); text-align: center; font-size: 0.875rem; }",
+          ".row { display: flex; gap: 6px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst notices = ['신상품 20% 할인', '무료 배송 이벤트', '신규 코스 오픈'];\n\n// 정리를 하지 않았습니다. 무엇이 잘못되는지 보려고 그대로 두었습니다.\nconst Banner = () => {\n  const [index, setIndex] = useState(0);\n\n  useEffect(() => {\n    console.log('배너를 켭니다');\n    setInterval(() => {\n      console.log('   배너 넘김');\n      setIndex((i) => (i + 1) % notices.length);\n    }, 1500);\n  }, []);\n\n  return (\n    <div className=\"banner\">\n      <p className=\"banner__text\">{notices[index]}</p>\n      <p className=\"banner__step\">{index + 1} / {notices.length}</p>\n    </div>\n  );\n};\n\nconst App = () => {\n  const [shown, setShown] = useState(true);\n\n  return (\n    <div className=\"panel\">\n      {shown ? <Banner /> : <p className=\"off\">배너를 껐습니다</p>}\n      <div className=\"row\">\n        <button className=\"hide\" type=\"button\" onClick={() => setShown(false)}>배너 끄기</button>\n        <button className=\"show\" type=\"button\" onClick={() => setShown(true)}>배너 켜기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<App />);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "정리 함수를 달아 보기",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
+        "① 배너를 끄고 콘솔을 지켜보세요. '배너 넘김' 이 몇 초 더 찍히는지 세어 보세요. 멈추지 않습니다.",
+        "② 효과 안 setInterval 을 const id = setInterval(...) 로 받고, 그 아래에 return () => { console.log('배너를 정리합니다'); clearInterval(id); }; 를 넣어 보세요. 이제 끄면 '배너를 정리합니다' 가 한 번 찍히고 '배너 넘김' 이 멈춥니다.",
+        "③ 그 상태에서 껐다가 다시 켜 보세요. '배너를 켭니다' 와 '배너를 정리합니다' 가 번갈아 찍힙니다. 껐다 켜기를 여러 번 해도 타이머가 하나씩만 돕니다. 정리하지 않았다면 켤 때마다 하나씩 쌓였을 것입니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".panel { display: grid; gap: 8px; max-width: 340px; }",
+          ".banner { padding: 12px; border: 1px solid var(--c-border); border-radius: 8px; text-align: center; }",
+          ".banner__text { margin: 0; font-size: 1rem; }",
+          ".banner__step { margin: 4px 0 0; color: var(--c-text-muted); font-size: 0.75rem; }",
+          ".off { margin: 0; padding: 12px; border: 1px dashed var(--c-border); border-radius: 8px;",
+          "  color: var(--c-text-muted); text-align: center; font-size: 0.875rem; }",
+          ".row { display: flex; gap: 6px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst notices = ['신상품 20% 할인', '무료 배송 이벤트', '신규 코스 오픈'];\n\n// 정리를 하지 않았습니다. 무엇이 잘못되는지 보려고 그대로 두었습니다.\nconst Banner = () => {\n  const [index, setIndex] = useState(0);\n\n  useEffect(() => {\n    console.log('배너를 켭니다');\n    setInterval(() => {\n      console.log('   배너 넘김');\n      setIndex((i) => (i + 1) % notices.length);\n    }, 1500);\n  }, []);\n\n  return (\n    <div className=\"banner\">\n      <p className=\"banner__text\">{notices[index]}</p>\n      <p className=\"banner__step\">{index + 1} / {notices.length}</p>\n    </div>\n  );\n};\n\nconst App = () => {\n  const [shown, setShown] = useState(true);\n\n  return (\n    <div className=\"panel\">\n      {shown ? <Banner /> : <p className=\"off\">배너를 껐습니다</p>}\n      <div className=\"row\">\n        <button className=\"hide\" type=\"button\" onClick={() => setShown(false)}>배너 끄기</button>\n        <button className=\"show\" type=\"button\" onClick={() => setShown(true)}>배너 켜기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<App />);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "정리 함수 채우기",
+      "brief": [
+        "타이머를 켜는 것까지 돼 있고 그 번호를 id 로 받아 두었습니다. 정리하는 부분만 비어 있습니다.",
+        "null 자리를 채워 컴포넌트가 사라질 때 타이머가 멈추게 해 주세요. 효과가 돌려주는 것은 함수입니다.",
+        "검사는 배너가 처음에 보이는지와 끄면 사라지는지만 봅니다. 타이머가 실제로 멈추는지는 콘솔에서 직접 확인하세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".panel { display: grid; gap: 8px; max-width: 340px; }",
+          ".banner { padding: 12px; border: 1px solid var(--c-border); border-radius: 8px; text-align: center; }",
+          ".banner__text { margin: 0; font-size: 1rem; }",
+          ".banner__step { margin: 4px 0 0; color: var(--c-text-muted); font-size: 0.75rem; }",
+          ".off { margin: 0; padding: 12px; border: 1px dashed var(--c-border); border-radius: 8px;",
+          "  color: var(--c-text-muted); text-align: center; font-size: 0.875rem; }",
+          ".row { display: flex; gap: 6px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst notices = ['신상품 20% 할인', '무료 배송 이벤트', '신규 코스 오픈'];\n\nconst Banner = () => {\n  const [index, setIndex] = useState(0);\n\n  useEffect(() => {\n    const id = setInterval(() => {\n      console.log('   배너 넘김');\n      setIndex((i) => (i + 1) % notices.length);\n    }, 1500);\n\n    return null; // ← 여기를 채우세요\n  }, []);\n\n  return (\n    <div className=\"banner\">\n      <p className=\"banner__text\">{notices[index]}</p>\n      <p className=\"banner__step\">{index + 1} / {notices.length}</p>\n    </div>\n  );\n};\n\nconst App = () => {\n  const [shown, setShown] = useState(true);\n\n  return (\n    <div className=\"panel\">\n      {shown ? <Banner /> : <p className=\"off\">배너를 껐습니다</p>}\n      <div className=\"row\">\n        <button className=\"hide\" type=\"button\" onClick={() => setShown(false)}>배너 끄기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<App />);\n",
+      "solutionCode": "const { useState, useEffect } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst notices = ['신상품 20% 할인', '무료 배송 이벤트', '신규 코스 오픈'];\n\nconst Banner = () => {\n  const [index, setIndex] = useState(0);\n\n  useEffect(() => {\n    const id = setInterval(() => {\n      console.log('   배너 넘김');\n      setIndex((i) => (i + 1) % notices.length);\n    }, 1500);\n\n    return () => clearInterval(id);\n  }, []);\n\n  return (\n    <div className=\"banner\">\n      <p className=\"banner__text\">{notices[index]}</p>\n      <p className=\"banner__step\">{index + 1} / {notices.length}</p>\n    </div>\n  );\n};\n\nconst App = () => {\n  const [shown, setShown] = useState(true);\n\n  return (\n    <div className=\"panel\">\n      {shown ? <Banner /> : <p className=\"off\">배너를 껐습니다</p>}\n      <div className=\"row\">\n        <button className=\"hide\" type=\"button\" onClick={() => setShown(false)}>배너 끄기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<App />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 첫 문구가 보입니다",
+          "select": ".banner__text",
+          "text": [
+            "신상품 20% 할인"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "몇 번째인지도 보입니다",
+          "select": ".banner__step",
+          "text": [
+            "1 / 3"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "끄면 배너가 사라집니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".hide"
+            }
+          ],
+          "select": ".banner",
+          "count": 0
+        },
+        {
+          "type": "dom",
+          "label": "끈 안내가 나옵니다",
+          "select": ".off",
+          "text": [
+            "배너를 껐습니다"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "자동 넘김 배너 만들기",
+      "brief": [
+        "자동으로 넘어가는 배너를 만들어 주세요. 컴포넌트 둘로 나눕니다.",
+        "Banner 는 자기 안에 지금 몇 번째인지를 상태로 가집니다. 처음은 0 입니다. <div className=\"banner\"> 안에 <p className=\"banner__text\"> 로 주어진 notices 의 그 문구를, <p className=\"banner__step\"> 로 '1 / 3' 형태를 보여 줍니다.",
+        "효과에서 1.5초마다 다음 문구로 넘어가게 하세요. 마지막 다음에는 처음으로 돌아옵니다. 그리고 반드시 정리 함수를 돌려주세요.",
+        "App 은 배너를 보일지 말지를 상태로 가집니다. 처음에는 보입니다. 바깥은 <div className=\"panel\"> 이고, 배너가 꺼지면 그 자리에 <p className=\"off\">배너를 껐습니다</p> 를 보여 줍니다. 아래 <div className=\"row\"> 에 <button className=\"hide\">배너 끄기</button> 와 <button className=\"show\">배너 켜기</button> 를 두세요.",
+        "껐다 켜기를 여러 번 해도 타이머가 하나만 돌아야 합니다. 콘솔에서 확인하세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".panel { display: grid; gap: 8px; max-width: 340px; }",
+          ".banner { padding: 12px; border: 1px solid var(--c-border); border-radius: 8px; text-align: center; }",
+          ".banner__text { margin: 0; font-size: 1rem; }",
+          ".banner__step { margin: 4px 0 0; color: var(--c-text-muted); font-size: 0.75rem; }",
+          ".off { margin: 0; padding: 12px; border: 1px dashed var(--c-border); border-radius: 8px;",
+          "  color: var(--c-text-muted); text-align: center; font-size: 0.875rem; }",
+          ".row { display: flex; gap: 6px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst notices = ['신상품 20% 할인', '무료 배송 이벤트', '신규 코스 오픈'];\n\n// 여기를 채우세요\n",
+      "solutionCode": "const { useState, useEffect } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst notices = ['신상품 20% 할인', '무료 배송 이벤트', '신규 코스 오픈'];\n\nconst Banner = () => {\n  const [index, setIndex] = useState(0);\n\n  useEffect(() => {\n    const id = setInterval(() => {\n      setIndex((i) => (i + 1) % notices.length);\n    }, 1500);\n\n    return () => clearInterval(id);\n  }, []);\n\n  return (\n    <div className=\"banner\">\n      <p className=\"banner__text\">{notices[index]}</p>\n      <p className=\"banner__step\">{index + 1} / {notices.length}</p>\n    </div>\n  );\n};\n\nconst App = () => {\n  const [shown, setShown] = useState(true);\n\n  return (\n    <div className=\"panel\">\n      {shown ? <Banner /> : <p className=\"off\">배너를 껐습니다</p>}\n      <div className=\"row\">\n        <button className=\"hide\" type=\"button\" onClick={() => setShown(false)}>배너 끄기</button>\n        <button className=\"show\" type=\"button\" onClick={() => setShown(true)}>배너 켜기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<App />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 첫 문구가 보입니다",
+          "select": ".banner__text",
+          "text": [
+            "신상품 20% 할인"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "몇 번째인지도 보입니다",
+          "select": ".banner__step",
+          "text": [
+            "1 / 3"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "끄면 배너가 사라집니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".hide"
+            }
+          ],
+          "select": ".banner",
+          "count": 0
+        },
+        {
+          "type": "dom",
+          "label": "끈 안내가 나옵니다",
+          "select": ".off",
+          "text": [
+            "배너를 껐습니다"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "다시 켜면 처음 문구부터입니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".show"
+            }
+          ],
+          "select": ".banner__text",
+          "text": [
+            "신상품 20% 할인"
+          ]
+        }
+      ]
+    }
+  ]
+}
