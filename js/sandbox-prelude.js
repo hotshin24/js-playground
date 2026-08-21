@@ -84,10 +84,15 @@ export const PRELUDE = `
   // 표는 모듈 로더가 채운다. files[] 가 없는 단계에서는 비어 있고 file 은 빈 문자열로 나간다.
   let fileNames = {};
 
+  // 링크 오류 본문에 blob URL 이 그대로 실린다("does not provide an export named …").
+  // 학습자에게 blob:null/uuid 를 보여줄 이유가 없다.
+  const withNames = (text) =>
+    Object.keys(fileNames).reduce((acc, url) => acc.split(url).join(fileNames[url]), String(text));
+
   window.addEventListener('error', (e) => {
     post({
       type: 'error',
-      message: e.message || 'Unknown error',
+      message: withNames(e.message || 'Unknown error'),
       line: e.lineno || 0,
       col: e.colno || 0,
       file: fileNames[e.filename] || '',
@@ -97,7 +102,7 @@ export const PRELUDE = `
   window.addEventListener('unhandledrejection', (e) => {
     const r = e.reason;
     const text = r instanceof Error ? r.name + ': ' + r.message : fmt(r, 0, new Set());
-    post({ type: 'error', message: 'Uncaught (in promise) ' + text, line: 0, col: 0 });
+    post({ type: 'error', message: withNames('Uncaught (in promise) ' + text), line: 0, col: 0 });
   });
 
   // assert 런타임이 쓸 수 있게 최소한만 노출한다. 사용자 코드보다 먼저 참조를 잡아가므로
