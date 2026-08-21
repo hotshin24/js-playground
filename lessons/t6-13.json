@@ -1,0 +1,468 @@
+{
+  "schemaVersion": 2,
+  "id": "t6-13",
+  "track": "T6",
+  "order": 13,
+  "runtime": "react",
+  "title": "주소에 값 싣기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "주소의 한 조각을 값으로 읽기",
+      "brief": [
+        "앞 레슨의 라우터는 주소를 통째로 비교했습니다. '/courses' 이면 목록, 아니면 홈이었습니다. 상세 화면은 그렇게 만들 수 없습니다. 코스가 셋이면 주소도 셋이고, 코스가 늘면 주소도 늡니다.",
+        "그래서 주소에 값을 싣습니다. '/courses/3' 이면 '코스 화면인데 그중 3번' 이라는 뜻입니다. 이 3 을 경로 파라미터라고 부릅니다.",
+        "꺼내는 방법은 문자열을 나누는 것입니다. '/courses/3'.split('/') 은 ['', 'courses', '3'] 을 돌려줍니다. 맨 앞에 빈 글자가 생기는 것은 주소가 슬래시로 시작하기 때문입니다. 빈 것을 걸러 내면 ['courses', '3'] 이 남습니다.",
+        "그러면 판단이 단순해집니다. 첫 조각이 'courses' 가 아니면 홈이고, 조각이 하나면 목록이고, 둘이면 그 번호의 상세입니다.",
+        "여기서 반드시 짚을 것이 있습니다. 주소에서 꺼낸 값은 언제나 문자열입니다. '3' 이지 3 이 아닙니다. 코스의 id 가 숫자라면 그대로 비교했을 때 언제나 어긋납니다. Number() 로 바꾸거나 반대로 id 를 문자열로 만들어 비교해야 합니다. 눈에 보이는 값은 같은데 찾지 못하는 증상이 여기서 나옵니다.",
+        "없는 값이 들어오는 경우도 반드시 다뤄야 합니다. 사용자가 '/courses/999' 를 열 수 있습니다. 오래된 링크일 수도 있고 주소를 손으로 고친 것일 수도 있습니다.",
+        "t5-07 에서 같은 성질을 다뤘습니다. 서버에 요청이 닿았는데 그런 자원이 없어 404 가 돌아오는 경우였습니다. 여기도 같습니다. 주소는 우리 앱의 주소가 맞고 화면도 정해졌는데 그 번호의 코스가 없습니다. 실패가 아니라 '없음' 이라는 결과입니다.",
+        "그러니 화면도 그렇게 만들어야 합니다. 빈 화면이나 오류 화면이 아니라 '그런 코스가 없습니다' 라고 알리고, 돌아갈 길을 함께 줍니다. t5-10 에서 빈 상태와 실패를 뭉뚱그리지 말라고 한 것과 같은 이야기입니다.",
+        "숫자가 아닌 값이 들어오는 경우도 같은 갈래로 처리됩니다. Number('abc') 는 NaN 이고, NaN 과 같은 id 는 없으므로 찾지 못합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "번호를 실은 주소",
+      "brief": [
+        "홈과 목록과 상세를 오가는 화면입니다. 상세 주소에는 번호가 실려 있습니다.",
+        "실행하고 링크를 눌러 보세요. 목록의 코스 이름도 링크입니다. 각 코스가 자기 번호를 실은 주소를 가집니다.",
+        "'없는 번호' 링크도 눌러 보세요. 빈 화면이 아니라 없다고 알리고 목록으로 돌아갈 길을 줍니다.",
+        "route.split('/').filter(...) 한 줄이 주소를 조각으로 나눕니다. 그 아래 갈래 셋이 조각의 개수와 첫 조각으로 갈립니다."
+      ],
+      "env": [
+        "// 이 무대의 서버이자 폼·링크 장치입니다. 진짜 서버는 없습니다.",
+        "(() => {",
+        "  // ── 서버 ────────────────────────────────────────────",
+        "  const json = (data, status, statusText) => new Response(JSON.stringify(data), {",
+        "    status, statusText, headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "  window.fetch = (url) => new Promise((resolve, reject) => {",
+        "    const key = String(url);",
+        "    setTimeout(() => {",
+        "      if (key === '/api/save') { resolve(json({ ok: true }, 200, 'OK')); return; }",
+        "      if (key === '/api/save-down') { reject(new TypeError('Failed to fetch')); return; }",
+        "      resolve(json({ message: '그런 주소가 없습니다' }, 404, 'Not Found'));",
+        "    }, 300);",
+        "  });",
+        "",
+        "  // ── 폼 장치 ─────────────────────────────────────────",
+        "  // 이 실행 틀은 폼 기본 제출이 막혀 있어 submit 이벤트가 발생하지 않습니다.",
+        "  // 무대가 대신 쏘아 줍니다. 기본 동작(새로고침)은 흉내 내지 않습니다.",
+        "  const fire = (form) => {",
+        "    if (!form) return;",
+        "    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));",
+        "  };",
+        "  document.addEventListener('click', (e) => {",
+        "    const btn = e.target && e.target.closest ? e.target.closest('button, input[type=\"submit\"]') : null;",
+        "    if (!btn) return;",
+        "    if ((btn.getAttribute('type') || 'submit').toLowerCase() !== 'submit') return;",
+        "    if (btn.disabled) return;",
+        "    fire(btn.form);",
+        "  }, true);",
+        "  document.addEventListener('keydown', (e) => {",
+        "    if (e.key !== 'Enter') return;",
+        "    const el = e.target;",
+        "    if (!el || el.tagName !== 'INPUT') return;",
+        "    const type = (el.getAttribute('type') || 'text').toLowerCase();",
+        "    if (['checkbox', 'radio', 'button', 'submit'].indexOf(type) >= 0) return;",
+        "    fire(el.form);",
+        "  }, true);",
+        "",
+        "  // ── 링크 장치 ───────────────────────────────────────",
+        "  // 해시 링크를 그냥 누르면 프레임이 그 주소로 떠나 무대가 사라집니다.",
+        "  // 무대가 대신 주소만 바꿔 줍니다. hashchange 는 그대로 발생합니다.",
+        "  document.addEventListener('click', (e) => {",
+        "    const link = e.target && e.target.closest ? e.target.closest('a[href^=\"#\"]') : null;",
+        "    if (!link) return;",
+        "    e.preventDefault();",
+        "    const next = link.getAttribute('href');",
+        "    if (window.location.hash !== next) window.location.hash = next;",
+        "  }, true);",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".field { display: block; margin-bottom: 6px; }",
+          ".field__input { width: 180px; }",
+          ".result { margin: 8px 0 0; color: var(--c-text-muted); }",
+          ".go { margin-top: 6px; }",
+          ".nav { display: flex; gap: 8px; margin-bottom: 8px; }",
+          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\n\nconst COURSES = [\n  { id: 1, name: '리액트 입문', hours: 8 },\n  { id: 2, name: 'CSS 레이아웃', hours: 6 },\n  { id: 3, name: '자바스크립트 기초', hours: 12 },\n];\n\nfunction readRoute() {\n  return window.location.hash.slice(1) || '/';\n}\n\nfunction Detail({ id }) {\n  const course = COURSES.find((c) => c.id === id);\n\n  if (!course) {\n    return (\n      <div>\n        <p className=\"state\">그런 코스가 없습니다</p>\n        <p className=\"course\"><a href=\"#/courses\">목록으로</a></p>\n      </div>\n    );\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{course.name}</p>\n      <p className=\"course\">{course.hours}시간</p>\n    </div>\n  );\n}\n\nfunction App() {\n  const [route, setRoute] = useState(readRoute());\n\n  useEffect(() => {\n    const onChange = () => setRoute(readRoute());\n    window.addEventListener('hashchange', onChange);\n    return () => window.removeEventListener('hashchange', onChange);\n  }, []);\n\n  const parts = route.split('/').filter((piece) => piece !== '');\n\n  return (\n    <div>\n      <nav className=\"nav\">\n        <a href=\"#/\">홈</a>\n        <a href=\"#/courses\">코스</a>\n        <a href=\"#/courses/1\">1번</a>\n        <a href=\"#/courses/999\">없는 번호</a>\n      </nav>\n      {parts[0] !== 'courses' ? (\n        <p className=\"state\">홈 화면입니다</p>\n      ) : parts.length === 1 ? (\n        <div>\n          <p className=\"state\">코스 {COURSES.length}개</p>\n          {COURSES.map((c) => (\n            <p className=\"course\" key={c.id}>\n              <a href={'#/courses/' + c.id}>{c.name}</a>\n            </p>\n          ))}\n        </div>\n      ) : (\n        <Detail id={Number(parts[1])} />\n      )}\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "문자열과 숫자 · 없는 값 · 조각 수",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 되돌리고 다시 실행해야 합니다.",
+        "① <Detail id={Number(parts[1])} /> 에서 Number 를 지워 보세요. 1번을 눌러도 '그런 코스가 없습니다' 가 나옵니다. 주소에서 온 '1' 은 문자열이고 코스의 id 는 숫자라서 find 가 아무것도 찾지 못합니다. 화면에 보이는 값은 같은데 결과가 다른 전형적인 경우입니다.",
+        "② 되돌린 뒤 Detail 안의 if (!course) 블록을 지우고 '없는 번호' 를 눌러 보세요. course 가 undefined 라 course.name 을 읽다 터집니다. 화면이 통째로 사라집니다. 없는 값을 다루지 않으면 이렇게 됩니다.",
+        "③ 되돌린 뒤 nav 에 <a href=\"#/courses/1/reviews\">조각 셋</a> 을 하나 더 넣고 눌러 보세요. 조각이 셋인데 코드는 둘까지만 다루므로 마지막 갈래로 떨어져 1번 상세가 나옵니다. 실제 앱이라면 이 자리에 '찾을 수 없는 주소' 를 두거나 리뷰 화면을 따로 만들어야 합니다."
+      ],
+      "env": [
+        "// 이 무대의 서버이자 폼·링크 장치입니다. 진짜 서버는 없습니다.",
+        "(() => {",
+        "  // ── 서버 ────────────────────────────────────────────",
+        "  const json = (data, status, statusText) => new Response(JSON.stringify(data), {",
+        "    status, statusText, headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "  window.fetch = (url) => new Promise((resolve, reject) => {",
+        "    const key = String(url);",
+        "    setTimeout(() => {",
+        "      if (key === '/api/save') { resolve(json({ ok: true }, 200, 'OK')); return; }",
+        "      if (key === '/api/save-down') { reject(new TypeError('Failed to fetch')); return; }",
+        "      resolve(json({ message: '그런 주소가 없습니다' }, 404, 'Not Found'));",
+        "    }, 300);",
+        "  });",
+        "",
+        "  // ── 폼 장치 ─────────────────────────────────────────",
+        "  // 이 실행 틀은 폼 기본 제출이 막혀 있어 submit 이벤트가 발생하지 않습니다.",
+        "  // 무대가 대신 쏘아 줍니다. 기본 동작(새로고침)은 흉내 내지 않습니다.",
+        "  const fire = (form) => {",
+        "    if (!form) return;",
+        "    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));",
+        "  };",
+        "  document.addEventListener('click', (e) => {",
+        "    const btn = e.target && e.target.closest ? e.target.closest('button, input[type=\"submit\"]') : null;",
+        "    if (!btn) return;",
+        "    if ((btn.getAttribute('type') || 'submit').toLowerCase() !== 'submit') return;",
+        "    if (btn.disabled) return;",
+        "    fire(btn.form);",
+        "  }, true);",
+        "  document.addEventListener('keydown', (e) => {",
+        "    if (e.key !== 'Enter') return;",
+        "    const el = e.target;",
+        "    if (!el || el.tagName !== 'INPUT') return;",
+        "    const type = (el.getAttribute('type') || 'text').toLowerCase();",
+        "    if (['checkbox', 'radio', 'button', 'submit'].indexOf(type) >= 0) return;",
+        "    fire(el.form);",
+        "  }, true);",
+        "",
+        "  // ── 링크 장치 ───────────────────────────────────────",
+        "  // 해시 링크를 그냥 누르면 프레임이 그 주소로 떠나 무대가 사라집니다.",
+        "  // 무대가 대신 주소만 바꿔 줍니다. hashchange 는 그대로 발생합니다.",
+        "  document.addEventListener('click', (e) => {",
+        "    const link = e.target && e.target.closest ? e.target.closest('a[href^=\"#\"]') : null;",
+        "    if (!link) return;",
+        "    e.preventDefault();",
+        "    const next = link.getAttribute('href');",
+        "    if (window.location.hash !== next) window.location.hash = next;",
+        "  }, true);",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".field { display: block; margin-bottom: 6px; }",
+          ".field__input { width: 180px; }",
+          ".result { margin: 8px 0 0; color: var(--c-text-muted); }",
+          ".go { margin-top: 6px; }",
+          ".nav { display: flex; gap: 8px; margin-bottom: 8px; }",
+          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\n\nconst COURSES = [\n  { id: 1, name: '리액트 입문', hours: 8 },\n  { id: 2, name: 'CSS 레이아웃', hours: 6 },\n  { id: 3, name: '자바스크립트 기초', hours: 12 },\n];\n\nfunction readRoute() {\n  return window.location.hash.slice(1) || '/';\n}\n\nfunction Detail({ id }) {\n  const course = COURSES.find((c) => c.id === id);\n\n  if (!course) {\n    return (\n      <div>\n        <p className=\"state\">그런 코스가 없습니다</p>\n        <p className=\"course\"><a href=\"#/courses\">목록으로</a></p>\n      </div>\n    );\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{course.name}</p>\n      <p className=\"course\">{course.hours}시간</p>\n    </div>\n  );\n}\n\nfunction App() {\n  const [route, setRoute] = useState(readRoute());\n\n  useEffect(() => {\n    const onChange = () => setRoute(readRoute());\n    window.addEventListener('hashchange', onChange);\n    return () => window.removeEventListener('hashchange', onChange);\n  }, []);\n\n  const parts = route.split('/').filter((piece) => piece !== '');\n\n  return (\n    <div>\n      <nav className=\"nav\">\n        <a href=\"#/\">홈</a>\n        <a href=\"#/courses\">코스</a>\n        <a href=\"#/courses/1\">1번</a>\n        <a href=\"#/courses/999\">없는 번호</a>\n      </nav>\n      {parts[0] !== 'courses' ? (\n        <p className=\"state\">홈 화면입니다</p>\n      ) : parts.length === 1 ? (\n        <div>\n          <p className=\"state\">코스 {COURSES.length}개</p>\n          {COURSES.map((c) => (\n            <p className=\"course\" key={c.id}>\n              <a href={'#/courses/' + c.id}>{c.name}</a>\n            </p>\n          ))}\n        </div>\n      ) : (\n        <Detail id={Number(parts[1])} />\n      )}\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "없는 코스를 가르는 자리 채우기",
+      "brief": [
+        "주소를 나누는 것과 상세 화면은 돼 있고, 그 번호의 코스가 없을 때가 비어 있습니다.",
+        "null 자리를 채워 course 를 찾지 못했으면 state 클래스로 '그런 코스가 없습니다' 를, course 클래스 안에 '#/courses' 로 가는 '목록으로' 링크를 보여 주고 거기서 끝내 주세요.",
+        "if (!course) { return ( ... ); } 형태입니다. 두 줄을 감싸려면 바깥에 <div> 가 필요합니다.",
+        "채우지 않고 실행하면 없는 번호로 갔을 때 화면이 통째로 사라집니다."
+      ],
+      "env": [
+        "// 이 무대의 서버이자 폼·링크 장치입니다. 진짜 서버는 없습니다.",
+        "(() => {",
+        "  // ── 서버 ────────────────────────────────────────────",
+        "  const json = (data, status, statusText) => new Response(JSON.stringify(data), {",
+        "    status, statusText, headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "  window.fetch = (url) => new Promise((resolve, reject) => {",
+        "    const key = String(url);",
+        "    setTimeout(() => {",
+        "      if (key === '/api/save') { resolve(json({ ok: true }, 200, 'OK')); return; }",
+        "      if (key === '/api/save-down') { reject(new TypeError('Failed to fetch')); return; }",
+        "      resolve(json({ message: '그런 주소가 없습니다' }, 404, 'Not Found'));",
+        "    }, 300);",
+        "  });",
+        "",
+        "  // ── 폼 장치 ─────────────────────────────────────────",
+        "  // 이 실행 틀은 폼 기본 제출이 막혀 있어 submit 이벤트가 발생하지 않습니다.",
+        "  // 무대가 대신 쏘아 줍니다. 기본 동작(새로고침)은 흉내 내지 않습니다.",
+        "  const fire = (form) => {",
+        "    if (!form) return;",
+        "    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));",
+        "  };",
+        "  document.addEventListener('click', (e) => {",
+        "    const btn = e.target && e.target.closest ? e.target.closest('button, input[type=\"submit\"]') : null;",
+        "    if (!btn) return;",
+        "    if ((btn.getAttribute('type') || 'submit').toLowerCase() !== 'submit') return;",
+        "    if (btn.disabled) return;",
+        "    fire(btn.form);",
+        "  }, true);",
+        "  document.addEventListener('keydown', (e) => {",
+        "    if (e.key !== 'Enter') return;",
+        "    const el = e.target;",
+        "    if (!el || el.tagName !== 'INPUT') return;",
+        "    const type = (el.getAttribute('type') || 'text').toLowerCase();",
+        "    if (['checkbox', 'radio', 'button', 'submit'].indexOf(type) >= 0) return;",
+        "    fire(el.form);",
+        "  }, true);",
+        "",
+        "  // ── 링크 장치 ───────────────────────────────────────",
+        "  // 해시 링크를 그냥 누르면 프레임이 그 주소로 떠나 무대가 사라집니다.",
+        "  // 무대가 대신 주소만 바꿔 줍니다. hashchange 는 그대로 발생합니다.",
+        "  document.addEventListener('click', (e) => {",
+        "    const link = e.target && e.target.closest ? e.target.closest('a[href^=\"#\"]') : null;",
+        "    if (!link) return;",
+        "    e.preventDefault();",
+        "    const next = link.getAttribute('href');",
+        "    if (window.location.hash !== next) window.location.hash = next;",
+        "  }, true);",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".field { display: block; margin-bottom: 6px; }",
+          ".field__input { width: 180px; }",
+          ".result { margin: 8px 0 0; color: var(--c-text-muted); }",
+          ".go { margin-top: 6px; }",
+          ".nav { display: flex; gap: 8px; margin-bottom: 8px; }",
+          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\n\nconst COURSES = [\n  { id: 1, name: '리액트 입문', hours: 8 },\n  { id: 2, name: 'CSS 레이아웃', hours: 6 },\n  { id: 3, name: '자바스크립트 기초', hours: 12 },\n];\n\nfunction readRoute() {\n  return window.location.hash.slice(1) || '/';\n}\n\nfunction Detail({ id }) {\n  const course = COURSES.find((c) => c.id === id);\n\n  null; // ← 여기를 채우세요\n\n  return (\n    <div>\n      <p className=\"state\">{course.name}</p>\n      <p className=\"course\">{course.hours}시간</p>\n    </div>\n  );\n}\n\nfunction App() {\n  const [route, setRoute] = useState(readRoute());\n\n  useEffect(() => {\n    const onChange = () => setRoute(readRoute());\n    window.addEventListener('hashchange', onChange);\n    return () => window.removeEventListener('hashchange', onChange);\n  }, []);\n\n  const parts = route.split('/').filter((piece) => piece !== '');\n\n  return (\n    <div>\n      <nav className=\"nav\">\n        <a href=\"#/\">홈</a>\n        <a href=\"#/courses\">코스</a>\n        <a href=\"#/courses/1\">1번</a>\n        <a href=\"#/courses/999\">없는 번호</a>\n      </nav>\n      {parts[0] !== 'courses' ? (\n        <p className=\"state\">홈 화면입니다</p>\n      ) : parts.length === 1 ? (\n        <div>\n          <p className=\"state\">코스 {COURSES.length}개</p>\n          {COURSES.map((c) => (\n            <p className=\"course\" key={c.id}>\n              <a href={'#/courses/' + c.id}>{c.name}</a>\n            </p>\n          ))}\n        </div>\n      ) : (\n        <Detail id={Number(parts[1])} />\n      )}\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
+      "solutionCode": "const { useState, useEffect } = React;\n\nconst COURSES = [\n  { id: 1, name: '리액트 입문', hours: 8 },\n  { id: 2, name: 'CSS 레이아웃', hours: 6 },\n  { id: 3, name: '자바스크립트 기초', hours: 12 },\n];\n\nfunction readRoute() {\n  return window.location.hash.slice(1) || '/';\n}\n\nfunction Detail({ id }) {\n  const course = COURSES.find((c) => c.id === id);\n\n  if (!course) {\n    return (\n      <div>\n        <p className=\"state\">그런 코스가 없습니다</p>\n        <p className=\"course\"><a href=\"#/courses\">목록으로</a></p>\n      </div>\n    );\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{course.name}</p>\n      <p className=\"course\">{course.hours}시간</p>\n    </div>\n  );\n}\n\nfunction App() {\n  const [route, setRoute] = useState(readRoute());\n\n  useEffect(() => {\n    const onChange = () => setRoute(readRoute());\n    window.addEventListener('hashchange', onChange);\n    return () => window.removeEventListener('hashchange', onChange);\n  }, []);\n\n  const parts = route.split('/').filter((piece) => piece !== '');\n\n  return (\n    <div>\n      <nav className=\"nav\">\n        <a href=\"#/\">홈</a>\n        <a href=\"#/courses\">코스</a>\n        <a href=\"#/courses/1\">1번</a>\n        <a href=\"#/courses/999\">없는 번호</a>\n      </nav>\n      {parts[0] !== 'courses' ? (\n        <p className=\"state\">홈 화면입니다</p>\n      ) : parts.length === 1 ? (\n        <div>\n          <p className=\"state\">코스 {COURSES.length}개</p>\n          {COURSES.map((c) => (\n            <p className=\"course\" key={c.id}>\n              <a href={'#/courses/' + c.id}>{c.name}</a>\n            </p>\n          ))}\n        </div>\n      ) : (\n        <Detail id={Number(parts[1])} />\n      )}\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 홈",
+          "select": ".state",
+          "text": [
+            "홈 화면입니다"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "코스로 가면 목록",
+          "select": ".state",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "a[href='#/courses']"
+            }
+          ],
+          "text": [
+            "코스 3개"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "1번으로 가면 상세",
+          "select": ".state",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "a[href='#/courses/1']"
+            }
+          ],
+          "text": [
+            "리액트 입문"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "상세에 시간이 있습니다",
+          "select": ".course",
+          "text": [
+            "8시간"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "없는 번호는 따로 알립니다",
+          "select": ".state",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "a[href='#/courses/999']"
+            }
+          ],
+          "text": [
+            "그런 코스가 없습니다"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "돌아갈 길을 줍니다",
+          "select": ".course",
+          "text": [
+            "목록으로"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "번호를 읽는 라우터 만들기",
+      "brief": [
+        "주소에 실린 번호까지 읽는 App 과 Detail 을 만들어 주세요.",
+        "COURSES 와 readRoute 는 주어져 있습니다.",
+        "App 은 앞 레슨처럼 주소를 상태로 두고 hashchange 를 구독합니다. 처음 값은 readRoute() 로 읽고 정리 함수도 두세요.",
+        "주소를 슬래시로 나누고 빈 조각을 걸러 내세요. 첫 조각이 'courses' 가 아니면 state 클래스로 '홈 화면입니다' 입니다.",
+        "조각이 하나면 목록입니다. state 로 '코스 3개' 형태를 보여 주고, 코스마다 course 클래스 문단 안에 '#/courses/1' 형태의 링크를 이름으로 두세요. 줄마다 key 가 필요합니다.",
+        "조각이 둘이면 <Detail id={...} /> 를 그리세요. 주소에서 꺼낸 값은 문자열이므로 숫자로 바꿔 넘겨야 합니다.",
+        "Detail 은 번호를 받아 코스를 찾습니다. 찾으면 state 로 이름, course 로 '8시간' 형태를 보여 주고, 못 찾으면 state 로 '그런 코스가 없습니다', course 안에 '#/courses' 로 가는 '목록으로' 링크를 보여 주세요.",
+        "nav 클래스를 가진 <nav> 에 링크 넷을 두세요. '#/'(홈) · '#/courses'(코스) · '#/courses/1'(1번) · '#/courses/999'(없는 번호) 입니다.",
+        "맨 아래에서 ReactDOM.createRoot(document.querySelector('#root')).render(<App />) 로 그리세요."
+      ],
+      "env": [
+        "// 이 무대의 서버이자 폼·링크 장치입니다. 진짜 서버는 없습니다.",
+        "(() => {",
+        "  // ── 서버 ────────────────────────────────────────────",
+        "  const json = (data, status, statusText) => new Response(JSON.stringify(data), {",
+        "    status, statusText, headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "  window.fetch = (url) => new Promise((resolve, reject) => {",
+        "    const key = String(url);",
+        "    setTimeout(() => {",
+        "      if (key === '/api/save') { resolve(json({ ok: true }, 200, 'OK')); return; }",
+        "      if (key === '/api/save-down') { reject(new TypeError('Failed to fetch')); return; }",
+        "      resolve(json({ message: '그런 주소가 없습니다' }, 404, 'Not Found'));",
+        "    }, 300);",
+        "  });",
+        "",
+        "  // ── 폼 장치 ─────────────────────────────────────────",
+        "  // 이 실행 틀은 폼 기본 제출이 막혀 있어 submit 이벤트가 발생하지 않습니다.",
+        "  // 무대가 대신 쏘아 줍니다. 기본 동작(새로고침)은 흉내 내지 않습니다.",
+        "  const fire = (form) => {",
+        "    if (!form) return;",
+        "    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));",
+        "  };",
+        "  document.addEventListener('click', (e) => {",
+        "    const btn = e.target && e.target.closest ? e.target.closest('button, input[type=\"submit\"]') : null;",
+        "    if (!btn) return;",
+        "    if ((btn.getAttribute('type') || 'submit').toLowerCase() !== 'submit') return;",
+        "    if (btn.disabled) return;",
+        "    fire(btn.form);",
+        "  }, true);",
+        "  document.addEventListener('keydown', (e) => {",
+        "    if (e.key !== 'Enter') return;",
+        "    const el = e.target;",
+        "    if (!el || el.tagName !== 'INPUT') return;",
+        "    const type = (el.getAttribute('type') || 'text').toLowerCase();",
+        "    if (['checkbox', 'radio', 'button', 'submit'].indexOf(type) >= 0) return;",
+        "    fire(el.form);",
+        "  }, true);",
+        "",
+        "  // ── 링크 장치 ───────────────────────────────────────",
+        "  // 해시 링크를 그냥 누르면 프레임이 그 주소로 떠나 무대가 사라집니다.",
+        "  // 무대가 대신 주소만 바꿔 줍니다. hashchange 는 그대로 발생합니다.",
+        "  document.addEventListener('click', (e) => {",
+        "    const link = e.target && e.target.closest ? e.target.closest('a[href^=\"#\"]') : null;",
+        "    if (!link) return;",
+        "    e.preventDefault();",
+        "    const next = link.getAttribute('href');",
+        "    if (window.location.hash !== next) window.location.hash = next;",
+        "  }, true);",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".field { display: block; margin-bottom: 6px; }",
+          ".field__input { width: 180px; }",
+          ".result { margin: 8px 0 0; color: var(--c-text-muted); }",
+          ".go { margin-top: 6px; }",
+          ".nav { display: flex; gap: 8px; margin-bottom: 8px; }",
+          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\n\nconst COURSES = [\n  { id: 1, name: '리액트 입문', hours: 8 },\n  { id: 2, name: 'CSS 레이아웃', hours: 6 },\n  { id: 3, name: '자바스크립트 기초', hours: 12 },\n];\n\nfunction readRoute() {\n  return window.location.hash.slice(1) || '/';\n}\n\n// Detail 과 App 을 여기에 작성하세요\n",
+      "solutionCode": "const { useState, useEffect } = React;\n\nconst COURSES = [\n  { id: 1, name: '리액트 입문', hours: 8 },\n  { id: 2, name: 'CSS 레이아웃', hours: 6 },\n  { id: 3, name: '자바스크립트 기초', hours: 12 },\n];\n\nfunction readRoute() {\n  return window.location.hash.slice(1) || '/';\n}\n\nfunction Detail({ id }) {\n  const course = COURSES.find((c) => c.id === id);\n\n  if (!course) {\n    return (\n      <div>\n        <p className=\"state\">그런 코스가 없습니다</p>\n        <p className=\"course\"><a href=\"#/courses\">목록으로</a></p>\n      </div>\n    );\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{course.name}</p>\n      <p className=\"course\">{course.hours}시간</p>\n    </div>\n  );\n}\n\nfunction App() {\n  const [route, setRoute] = useState(readRoute());\n\n  useEffect(() => {\n    const onChange = () => setRoute(readRoute());\n    window.addEventListener('hashchange', onChange);\n    return () => window.removeEventListener('hashchange', onChange);\n  }, []);\n\n  const parts = route.split('/').filter((piece) => piece !== '');\n\n  return (\n    <div>\n      <nav className=\"nav\">\n        <a href=\"#/\">홈</a>\n        <a href=\"#/courses\">코스</a>\n        <a href=\"#/courses/1\">1번</a>\n        <a href=\"#/courses/999\">없는 번호</a>\n      </nav>\n      {parts[0] !== 'courses' ? (\n        <p className=\"state\">홈 화면입니다</p>\n      ) : parts.length === 1 ? (\n        <div>\n          <p className=\"state\">코스 {COURSES.length}개</p>\n          {COURSES.map((c) => (\n            <p className=\"course\" key={c.id}>\n              <a href={'#/courses/' + c.id}>{c.name}</a>\n            </p>\n          ))}\n        </div>\n      ) : (\n        <Detail id={Number(parts[1])} />\n      )}\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 홈",
+          "select": ".state",
+          "text": [
+            "홈 화면입니다"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "코스로 가면 목록",
+          "select": ".state",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "a[href='#/courses']"
+            }
+          ],
+          "text": [
+            "코스 3개"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "1번으로 가면 상세",
+          "select": ".state",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "a[href='#/courses/1']"
+            }
+          ],
+          "text": [
+            "리액트 입문"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "상세에 시간이 있습니다",
+          "select": ".course",
+          "text": [
+            "8시간"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "없는 번호는 따로 알립니다",
+          "select": ".state",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "a[href='#/courses/999']"
+            }
+          ],
+          "text": [
+            "그런 코스가 없습니다"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "돌아갈 길을 줍니다",
+          "select": ".course",
+          "text": [
+            "목록으로"
+          ]
+        }
+      ]
+    }
+  ]
+}
