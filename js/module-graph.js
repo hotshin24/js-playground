@@ -142,3 +142,11 @@ export function planModules(files) {
     order: sorted.order.map((file) => ({ name: file.name, code: tokenized[file.name] })),
   };
 }
+
+/**
+ * planModules 결과를 프레임 로더가 받는 모양으로 옮긴다.
+ * check 는 레슨이 검사할 export 이름이다. 파일의 entry(어느 파일부터 여는가)와 다르다.
+ */
+export function toPayload(plan, { entry = '', specs = [] } = {}) {
+  return { files: plan.order, entry: plan.entry, check: entry, specs: specs };
+}

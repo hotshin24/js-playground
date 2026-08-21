@@ -1,4 +1,6 @@
-import { buildHead, buildTail, offsetOf, escapeScriptEnd } from './frame-doc.js';
+import { buildHead, buildTail, buildModuleDoc, offsetOf, escapeScriptEnd } from './frame-doc.js';
+import { planModules, toPayload } from './module-graph.js';
+import { toEvent } from './frame-events.js';
 import { prepareReact, PREPARE_FAILED } from './react-prepare.js';
 
 // 마지막 ping 이후 이 시간이 지나면 프레임이 멈춘 것으로 본다
@@ -85,40 +87,21 @@ export function createRunner({ mount, onEvent }) {
       return;
     }
 
-    if (msg.type === 'done') {
+    const out = toEvent(msg, lineOffset);
+    if (!out) return;
+    // done 은 경과 시간을 러너만 알고 있어 여기서 채운다
+    if (out.type === 'done') {
       doneSeen = true;
-      onEvent({ type: 'done', ms: Math.round(performance.now() - startedAt) });
-      return;
+      out.ms = Math.round(performance.now() - startedAt);
     }
-
-    if (msg.type === 'error') {
-      const line = msg.line > lineOffset ? msg.line - lineOffset : null;
-      onEvent({ type: 'error', message: msg.message, line, col: line ? msg.col || null : null });
-      return;
-    }
-
-    if (msg.type === 'console') {
-      onEvent({ type: 'console', level: msg.level, args: msg.args });
-      return;
-    }
-
-    if (msg.type === 'assert') {
-      onEvent({
-        type: 'assert',
-        index: msg.index,
-        status: msg.status,
-        label: msg.label,
-        expected: msg.expected,
-        actual: msg.actual,
-        message: msg.message,
-      });
-    }
+    onEvent(out);
   };
 
   window.addEventListener('message', handleMessage);
   document.addEventListener('visibilitychange', handleVisibility);
 
-  const start = (code, { assertScript = '', scaffold, mount: target = mount, preview = false, react = '', env = '' }) => {
+  const start = (code, options) => {
+    const { assertScript = '', scaffold, mount: target = mount, preview = false, react = '', env = '', payload = null } = options;
     doneSeen = false;
     pingSeen = false;
     loadSeen = false;
@@ -130,9 +113,15 @@ export function createRunner({ mount, onEvent }) {
     frame.addEventListener('load', handleLoad);
     // allow-same-origin 을 절대 넣지 않는다. 넣는 순간 부모 DOM/스토리지가 열린다.
     frame.setAttribute('sandbox', 'allow-scripts');
-    const head = buildHead(scaffold, preview, react, env);
-    lineOffset = offsetOf(head);
-    frame.srcdoc = head + escapeScriptEnd(code) + buildTail(assertScript);
+    if (payload) {
+      // 사용자 코드가 문서에 인라인으로 들어가지 않는다. 줄 번호가 이미 파일 기준이라 보정하지 않는다.
+      lineOffset = 0;
+      frame.srcdoc = buildModuleDoc(scaffold, preview, env, payload);
+    } else {
+      const head = buildHead(scaffold, preview, react, env);
+      lineOffset = offsetOf(head);
+      frame.srcdoc = head + escapeScriptEnd(code) + buildTail(assertScript);
+    }
 
     startedAt = performance.now();
     // srcdoc 를 먼저 넣고 붙인다. 순서를 바꾸면 초기 about:blank 로드가
@@ -155,10 +144,35 @@ export function createRunner({ mount, onEvent }) {
     onEvent({ type: 'done', ms: Math.round(performance.now() - startedFrom), started: false });
   };
 
+  /**
+   * files[] 단계. 그래프를 세운 뒤 프레임에 넘긴다.
+   * 세우기에 실패하면(없는 파일·순환 등) 프레임을 띄우지 않고 그 자리에서 마감한다.
+   */
+  const startModules = (options) => {
+    const began = performance.now();
+    let plan;
+    try {
+      plan = planModules(options.files);
+    } catch (err) {
+      // 레슨 데이터의 잘못이다. 학습자가 고칠 수 없으므로 그대로 드러낸다.
+      plan = { ok: false, message: err.message };
+    }
+    if (!plan.ok) {
+      // 프레임을 띄우기 전이라 가리킬 줄이 없다. 0 을 주면 결과 패널이 1행으로 읽는다.
+      failBeforeStart({ message: plan.message, line: null, col: null }, began);
+      return;
+    }
+    start('', { ...options, payload: toPayload(plan, options) });
+  };
+
   const run = (code, options = {}) => {
     teardown(); // 실행마다 프레임 재생성 → 상태 초기화
 
     const gen = ++generation;
+    if (options.files) {
+      startModules(options);
+      return;
+    }
     if (options.runtime !== 'react') {
       start(code, options);
       return;
