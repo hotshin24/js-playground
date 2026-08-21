@@ -3,6 +3,7 @@ import { createWorkspace } from './workspace.js';
 import { createLayout } from './layout.js';
 import { createBrowse } from './browse.js';
 import { createPreview } from './preview.js';
+import { createFileTabs } from './file-tabs.js';
 import { createBrief } from './brief.js';
 import { createTheme } from './theme.js';
 import { createProgress, NOTICE } from './progress.js';
@@ -49,6 +50,7 @@ const session = createSession({
   listEl: el('asserts'),
   summaryEl: el('assert-summary'),
   onAllPassed: () => progress.complete({ ran: true, changed: true, allPassed: true }),
+  onFileError: (name) => tabs.markError(name),
   onTimeout: () => {
     progress.discard();
     progress.notify(NOTICE.discarded);
@@ -64,6 +66,16 @@ const workspace = createWorkspace({
   onEditableChange: (editable) => {
     applyPolicy(editable);
     if (!editable) progress.flush();
+  },
+});
+
+const tabs = createFileTabs({
+  anchorEl: el('editor-host'),
+  panelEl: el('editor-host'),
+  onSelect: (name) => {
+    workspace.select(name);
+    tabs.select(name);
+    applyPolicy(layout.isEditable());
   },
 });
 
@@ -90,7 +102,16 @@ const applyPolicy = (editable) => {
   // 고칠 수 있는 곳이면 되돌릴 수도 있어야 한다. 무한 루프를 넣고 빠져나올 길이 없으면 안 된다.
   resetButton.hidden = !editable;
   runButton.disabled = !editable;
-  resetButton.disabled = !editable;
+
+  // <768 은 편집기를 만들지 않는다. 읽기만 하는 화면에 전환 조작을 얹지 않고
+  // 파일을 세로로 이어 보여준다. 그래서 탭은 편집 가능 구간에서만 존재한다.
+  if (step && step.files && editable) tabs.render(step.files, workspace.activeName());
+  else tabs.remove();
+
+  // 파일이 여럿이면 되돌리기가 무엇을 되돌리는지 라벨이 말한다.
+  const name = step && step.files ? workspace.activeName() : '';
+  resetButton.textContent = name ? name + ' 되돌리기' : '코드 되돌리기';
+  resetButton.disabled = !editable || (Boolean(name) && workspace.isReadOnly(name));
 };
 
 const specsOf = () => (step.asserts || []).filter((spec) => spec.type === 'value' || spec.type === 'dom');
@@ -147,6 +168,7 @@ const showStep = (next) => {
   session.clear();
   nextButton.hidden = next >= lesson.steps.length - 1;
 
+  // 탭은 applyPolicy 가 붙였다 뗀다. 편집 가능 여부에 따라 존재 자체가 갈리기 때문이다.
   if (step.files) workspace.setFiles(progress.resolveFiles(step));
   else workspace.setCode(progress.resolveCode(step));
   setLastLesson(lesson.id, next);

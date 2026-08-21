@@ -76,7 +76,10 @@ export function createWorkspace({ hostEl, readonlyEl, onChange, onFallback, onRe
    */
   const setFiles = (list) => {
     code = '';
-    files = list.map((file) => ({ name: file.name, code: file.code, readOnly: file.readOnly, doc: null }));
+    // entry 는 실행 때 '어느 파일부터 여는가' 를 정한다. 여기서 흘리면 그래프를 세울 수 없다.
+    files = list.map((file) => ({
+      name: file.name, code: file.code, readOnly: file.readOnly, entry: file.entry, doc: null,
+    }));
     const first = files.find((file) => !file.readOnly) || files[0];
     active = first.name;
     if (editor) showActive();
@@ -86,7 +89,9 @@ export function createWorkspace({ hostEl, readonlyEl, onChange, onFallback, onRe
   /** 실행에 넘길 파일 묶음. 지금 편집 중인 것이 반영된다. */
   const getFiles = () => {
     capture();
-    return files ? files.map((file) => ({ name: file.name, code: file.code, readOnly: file.readOnly })) : null;
+    return files
+      ? files.map((file) => ({ name: file.name, code: file.code, readOnly: file.readOnly, entry: file.entry }))
+      : null;
   };
 
   /**
