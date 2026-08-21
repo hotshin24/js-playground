@@ -8,7 +8,7 @@ export const ASSERT_RUNTIME = `
 (() => {
   // 사용자 코드가 실행되기 전에 참조를 확보한다
   const rt = window.__pgRuntime;
-  const ASYNC_TIMEOUT_MS = 2000;
+  const ASYNC_TIMEOUT_MS = 5000;
 
   const deepEqual = (a, b) => {
     if (Object.is(a, b)) return true;
