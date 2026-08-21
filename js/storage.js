@@ -159,3 +159,28 @@ export function setLessonMeta(id, stepCount, signature) {
     : { ...entry, stepCount, signature };
   return writeState(state);
 }
+
+/**
+ * files[] 단계의 파일별 저장. 합쳐서 한 덩어리로 두지 않는다.
+ * 합치면 ① 파일을 잇는 구분자를 학습자 코드가 그대로 담을 수 있고
+ * ② 한 파일의 starter 만 고쳐도 서명이 깨져 전부 날아가며
+ * ③ 레슨에 파일이 하나 늘면 옛 저장분을 어디에 붙일지 알 수 없다.
+ *
+ * 기존 단계의 { code, codeHash } 는 형태 그대로다. files 는 새 키라
+ * SCHEMA_VERSION 도 REVISION 도 올리지 않는다. 읽는 쪽이 files 유무로 갈린다.
+ *
+ * @param {Object<string, {code: string, codeHash: string}>} records 이번에 저장할 파일들
+ */
+export function saveStepFiles(lessonId, stepIndex, records) {
+  const prev = readStep(lessonId, stepIndex);
+  return saveStep(lessonId, stepIndex, { files: { ...((prev && prev.files) || {}), ...records } });
+}
+
+/** 파일 하나만 되돌린다. 같은 단계의 다른 파일은 그대로 둔다. */
+export function clearStepFile(lessonId, stepIndex, name) {
+  const prev = readStep(lessonId, stepIndex);
+  if (!prev || !prev.files || !(name in prev.files)) return true;
+  const files = { ...prev.files };
+  delete files[name];
+  return saveStep(lessonId, stepIndex, { files });
+}
