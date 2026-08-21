@@ -9,7 +9,8 @@ import { createProgress, NOTICE } from './progress.js';
 import { loadIndex, loadLesson } from './lessons.js';
 import { buildAssertScript } from './validator.js';
 import { policyOf, labelOf, isChecked } from './steps.js';
-import { setLastLesson, readLastPosition, setLessonMeta, readLessons, firstUnfinishedStep } from './storage.js';
+import { setLastLesson, readLastPosition, setLessonMeta, readLessons } from './storage.js';
+import { firstUnfinishedStep } from './lesson-status.js';
 
 const el = (id) => document.querySelector('#' + id);
 

@@ -1,6 +1,7 @@
 import { createNav, createStepNav } from './nav.js';
 import { createOverlay } from './overlay.js';
-import { readLessons, lessonStatus } from './storage.js';
+import { readLessons } from './storage.js';
+import { lessonStatus } from './lesson-status.js';
 
 /**
  * 탐색 묶음. 레슨 목록 오버레이와 상단 단계 칩을 함께 관리한다.
