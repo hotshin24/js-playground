@@ -1989,3 +1989,38 @@ J. export 를 빠뜨리면     모듈 키 = [] · 오류 없음 · window 에도
 ```
 
 **J 가 오진을 부른다.** 지금 검사기는 이 상황에서 "함수를 찾을 수 없습니다" 를 낸다. 학습자는 함수 이름을 틀렸다고 읽지만 실제 원인은 `export` 누락이다.
+
+### M4 실측 2 — 오류 위치와 Babel 비용 (2026-08-22)
+
+**문법 오류에 줄 번호를 붙이는 데 Babel 이 필요 없다.** 붙이는 방법이 갈랐다.
+
+```
+① 동적 import(blobUrl)              SyntaxError: Unexpected token ';' · 줄 정보 없음
+② <script type="module" src=blob>   window.onerror → 3행 18열          ← 정확
+③ classic <script src=blob>         window.onerror → 3행 11열
+④ new Function(src)                 줄 번호가 엉뚱하다 (:44:9 — 래퍼 기준)
+⑤ Babel 콜드 로드                    650ms · 위치 (3:17) · 두 번째 import 0ms
+```
+
+앞선 실측에서 동적 `import()` 에 줄 번호가 없던 것은 **붙이는 방법의 문제**였다. 같은 blob 을 `<script type="module" src=…>` 로 붙이면 `window.onerror` 가 파일 기준 줄과 열을 준다. `src` 가 그 파일의 blob URL 이므로 **어느 파일인지도 함께 온다.**
+
+**의존 파일까지 정확하다.** 진입 파일만이 아니다.
+
+```
+① 의존 파일 문법 오류      utils.js 3행 18열 · Uncaught SyntaxError: Unexpected token ';'
+② 의존 파일 최상위 throw   utils.js 3행  7열 · Uncaught Error: 세 번째 줄에서 던짐
+③ 진입 파일 실행 에러      main.js  3행  6열 · Uncaught TypeError: Cannot read properties of null
+```
+
+**부트 모듈로 네임스페이스를 건네받을 수 있다.**
+
+```
+④ import * as ns from '<진입>'; window.__entry = ns;
+   → export 키 ["doubleAll"] · doubleAll([1,2]) = [2,4]
+⑤ 그 경로에서 의존 파일이 깨지면
+   → utils.js 1행 18열로 오류가 오고 window.__entry 는 undefined 로 남는다
+```
+
+**따라서 Babel 을 T8 에서 새로 받지 않는다.** 650ms 를 내고 얻을 것이 없다. `<script type="module">` 로 붙이는 것만으로 파일·줄·열이 전부 나온다. 줄 번호를 포기하는 선택지도 쓸 필요가 없다.
+
+**순환 의존은 이번 측정으로 판정하지 못했다.** 탐침을 잘못 만들어(자리표시자를 남겨 둔 채 blob 을 굳혔다) 실패로 나왔다. ES 모듈이 순환을 지원하는 것과 별개로 이 프레임에서의 거동은 **미측정**이다. T8 이 순환 의존을 가르치지 않으므로 지금은 막지도 열지도 않는다.
