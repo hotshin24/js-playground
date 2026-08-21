@@ -69,6 +69,9 @@ export const PRELUDE = `
   document.addEventListener('click', (event) => {
     const link = event.target && event.target.closest ? event.target.closest('a[href]') : null;
     if (!link) return;
+    // 이미 누군가 기본 동작을 막았으면 그쪽이 처리한 것이다. 경고할 일이 아니다.
+    // 해시 라우팅(T6)의 무대 장치가 캡처 단계에서 막고 주소만 바꾼다.
+    if (event.defaultPrevented) return;
     event.preventDefault();
     post({
       type: 'console',
