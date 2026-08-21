@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 2,
+  "id": "t4-06",
+  "track": "T4",
+  "order": 6,
+  "runtime": "react",
+  "title": "객체를 갈아 끼우기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "고치지 말고 새로 만듭니다",
+      "brief": [
+        "앞 레슨에서 상태를 여럿 두었습니다. 그런데 함께 다니는 값들은 객체 하나에 묶는 편이 낫습니다. 상품 옵션의 색과 사이즈처럼요. useState 에 객체를 넣으면 됩니다.",
+        "묶고 나면 바꾸는 방법이 달라집니다. 숫자나 문자열은 새 값을 그냥 넘겼습니다. 객체는 그렇게 하기 쉽지 않습니다. 색만 바꾸고 사이즈는 그대로 두고 싶은데, 그러려면 원래 객체를 손봐야 할 것 같습니다.",
+        "손보면 안 됩니다. option.color = '검정' 이라고 직접 고치고 setOption(option) 을 부르면 화면이 바뀌지 않습니다. React 는 넘겨받은 것이 이전과 같은 객체인지만 봅니다. 같으면 바뀐 것이 없다고 보고 다시 그리지 않습니다. 안을 뒤져 비교하지 않습니다.",
+        "여기서 고약한 일이 벌어집니다. 데이터는 이미 바뀌어 있습니다. 화면만 모릅니다. 그러다 다른 이유로 그 컴포넌트가 다시 그려지면 그때 바뀐 값이 뒤늦게 나타납니다. 눌렀을 때는 아무 일도 없다가 한참 뒤 엉뚱한 순간에 반영되는 것입니다. 이런 버그는 원인을 찾기가 아주 어렵습니다.",
+        "그래서 고치지 않고 새로 만듭니다. 앞 트랙에서 배운 전개를 그대로 씁니다. setOption({ ...option, color: '검정' }) 이라고 쓰면 원래 값을 모두 복사한 새 객체가 만들어지고 color 만 덮어써집니다. 다른 객체이므로 React 가 바뀐 것을 알아챕니다.",
+        "전개를 빠뜨리면 안 됩니다. setOption({ color: '검정' }) 이라고만 쓰면 사이즈가 사라집니다. 새 객체에는 color 밖에 없기 때문입니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "색과 사이즈를 따로 바꾸기",
+      "brief": [
+        "옵션 두 가지를 객체 하나에 담았습니다. 버튼마다 하나씩만 바꿉니다.",
+        "실행한 뒤 검정과 L 을 눌러 보세요. 하나를 바꿔도 다른 하나가 남아 있습니다.",
+        "두 함수를 보세요. 둘 다 { ...option, ... } 으로 새 객체를 만듭니다. 원래 객체는 건드리지 않습니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".card { max-width: 320px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__title { margin: 0 0 6px; font-size: 1rem; }",
+          ".card__option { margin: 0 0 8px; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".row { display: flex; flex-wrap: wrap; gap: 6px; }"
+        ]
+      },
+      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = () => {\n  const [option, setOption] = useState({ color: '흰색', size: 'M' });\n\n  console.log('그려집니다. 색 =', option.color, '/ 사이즈 =', option.size);\n\n  const pickBlack = () => setOption({ ...option, color: '검정' });\n  const pickLarge = () => setOption({ ...option, size: 'L' });\n\n  return (\n    <article className=\"card\">\n      <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n      <p className=\"card__option\">{option.color} · {option.size}</p>\n      <div className=\"row\">\n        <button className=\"color-black\" type=\"button\" onClick={pickBlack}>검정</button>\n        <button className=\"large\" type=\"button\" onClick={pickLarge}>L</button>\n      </div>\n    </article>\n  );\n};\n\nroot.render(<Card />);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "직접 고쳐 보기",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
+        "① pickBlack 을 직접 고치는 형태로 바꿔 보세요. const pickBlack = () => { option.color = '검정'; setOption(option); }; 입니다. 검정을 누르면 아무 일도 일어나지 않습니다. 화면은 흰색 그대로이고 콘솔의 렌더 로그도 늘지 않습니다.",
+        "② 그 상태에서 L 버튼을 눌러 보세요. 사이즈가 L 로 바뀌면서 색도 검정으로 함께 바뀝니다. 아까 누른 것이 이제야 나타납니다. 데이터는 그때 이미 바뀌어 있었고 화면만 몰랐던 것입니다. 실무에서 만나면 원인을 찾기 힘든 종류의 버그입니다.",
+        "③ 되돌린 뒤 pickBlack 에서 전개만 빼 보세요. setOption({ color: '검정' }) 입니다. 검정을 누르면 색은 바뀌는데 사이즈 자리가 비어 버립니다. 새 객체에 size 가 없기 때문입니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".card { max-width: 320px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__title { margin: 0 0 6px; font-size: 1rem; }",
+          ".card__option { margin: 0 0 8px; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".row { display: flex; flex-wrap: wrap; gap: 6px; }"
+        ]
+      },
+      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = () => {\n  const [option, setOption] = useState({ color: '흰색', size: 'M' });\n\n  console.log('그려집니다. 색 =', option.color, '/ 사이즈 =', option.size);\n\n  const pickBlack = () => setOption({ ...option, color: '검정' });\n  const pickLarge = () => setOption({ ...option, size: 'L' });\n\n  return (\n    <article className=\"card\">\n      <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n      <p className=\"card__option\">{option.color} · {option.size}</p>\n      <div className=\"row\">\n        <button className=\"color-black\" type=\"button\" onClick={pickBlack}>검정</button>\n        <button className=\"large\" type=\"button\" onClick={pickLarge}>L</button>\n      </div>\n    </article>\n  );\n};\n\nroot.render(<Card />);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "새 객체 만들기",
+      "brief": [
+        "버튼과 화면은 돼 있습니다. 검정을 고를 때 넘길 값만 비어 있습니다.",
+        "null 자리를 채워 색만 '검정' 으로 바뀌고 사이즈는 그대로 남게 해 주세요.",
+        "원래 객체를 고치지 말고 새 객체를 만드세요. 전개로 복사한 뒤 바꿀 것만 덮어씁니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".card { max-width: 320px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__title { margin: 0 0 6px; font-size: 1rem; }",
+          ".card__option { margin: 0 0 8px; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".row { display: flex; flex-wrap: wrap; gap: 6px; }"
+        ]
+      },
+      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = () => {\n  const [option, setOption] = useState({ color: '흰색', size: 'M' });\n\n  const pickBlack = () => {\n    const next = null; // ← 여기를 채우세요\n    setOption(next);\n  };\n\n  return (\n    <article className=\"card\">\n      <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n      <p className=\"card__option\">{option.color} · {option.size}</p>\n      <div className=\"row\">\n        <button className=\"color-black\" type=\"button\" onClick={pickBlack}>검정</button>\n      </div>\n    </article>\n  );\n};\n\nroot.render(<Card />);\n",
+      "solutionCode": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = () => {\n  const [option, setOption] = useState({ color: '흰색', size: 'M' });\n\n  const pickBlack = () => {\n    const next = { ...option, color: '검정' };\n    setOption(next);\n  };\n\n  return (\n    <article className=\"card\">\n      <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n      <p className=\"card__option\">{option.color} · {option.size}</p>\n      <div className=\"row\">\n        <button className=\"color-black\" type=\"button\" onClick={pickBlack}>검정</button>\n      </div>\n    </article>\n  );\n};\n\nroot.render(<Card />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 흰색 · M",
+          "select": ".card__option",
+          "text": [
+            "흰색 · M"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "검정을 누르면 색만 바뀝니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".color-black"
+            }
+          ],
+          "select": ".card__option",
+          "text": [
+            "검정 · M"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "옵션 네 버튼",
+      "brief": [
+        "상품 옵션을 고르는 카드를 만들어 주세요. 색과 사이즈를 객체 하나에 담습니다. 처음 값은 색 '흰색', 사이즈 'M' 입니다.",
+        "<article className=\"card\"> 안에 제목 '오버사이즈 셔츠'(card__title), 현재 옵션을 '흰색 · M' 형태로 보여 주는 줄(card__option), 그리고 <div className=\"row\"> 가 들어갑니다.",
+        "row 안에 버튼 넷을 두세요. <button className=\"color-white\">흰색</button>, <button className=\"color-black\">검정</button>, <button className=\"size-m\">M</button>, <button className=\"size-l\">L</button> 순입니다.",
+        "색 버튼은 색만, 사이즈 버튼은 사이즈만 바꿔야 합니다. 원래 객체를 고치지 말고 새 객체를 만드세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".card { max-width: 320px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
+          ".card__title { margin: 0 0 6px; font-size: 1rem; }",
+          ".card__option { margin: 0 0 8px; color: var(--c-text-muted); font-size: 0.875rem; }",
+          ".row { display: flex; flex-wrap: wrap; gap: 6px; }"
+        ]
+      },
+      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 여기를 채우세요\n",
+      "solutionCode": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = () => {\n  const [option, setOption] = useState({ color: '흰색', size: 'M' });\n\n  return (\n    <article className=\"card\">\n      <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n      <p className=\"card__option\">{option.color} · {option.size}</p>\n      <div className=\"row\">\n        <button className=\"color-white\" type=\"button\" onClick={() => setOption({ ...option, color: '흰색' })}>흰색</button>\n        <button className=\"color-black\" type=\"button\" onClick={() => setOption({ ...option, color: '검정' })}>검정</button>\n        <button className=\"size-m\" type=\"button\" onClick={() => setOption({ ...option, size: 'M' })}>M</button>\n        <button className=\"size-l\" type=\"button\" onClick={() => setOption({ ...option, size: 'L' })}>L</button>\n      </div>\n    </article>\n  );\n};\n\nroot.render(<Card />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 흰색 · M",
+          "select": ".card__option",
+          "text": [
+            "흰색 · M"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "L 을 누르면 사이즈만 바뀝니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".size-l"
+            }
+          ],
+          "select": ".card__option",
+          "text": [
+            "흰색 · L"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "검정을 누르면 사이즈가 남습니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".color-black"
+            }
+          ],
+          "select": ".card__option",
+          "text": [
+            "검정 · L"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "M 을 누르면 색이 남습니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".size-m"
+            }
+          ],
+          "select": ".card__option",
+          "text": [
+            "검정 · M"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "흰색으로 되돌릴 수 있습니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".color-white"
+            }
+          ],
+          "select": ".card__option",
+          "text": [
+            "흰색 · M"
+          ]
+        }
+      ]
+    }
+  ]
+}
