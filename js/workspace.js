@@ -9,7 +9,7 @@ import { createEditor } from './editor.js';
  *
  * @param {{ hostEl, readonlyEl, onChange: (code) => void,
  *           onFallback: () => void, onReadonly: () => void,
- *           onEditableChange: (editable: boolean) => void }} options
+ *           onEditableChange: (editable: boolean, mode: string) => void }} options
  * onReadonly 는 '화면이 좁아서' 에디터가 없을 때만 불린다. read 단계는 해당하지 않는다.
  */
 export function createWorkspace({ hostEl, readonlyEl, onChange, onFallback, onReadonly, onEditableChange }) {
@@ -147,7 +147,7 @@ export function createWorkspace({ hostEl, readonlyEl, onChange, onFallback, onRe
       showActive();
     }
     if (editor.mode === 'textarea') onFallback();
-    onEditableChange(true);
+    onEditableChange(true, editor.mode);
   };
 
   /**
@@ -172,7 +172,7 @@ export function createWorkspace({ hostEl, readonlyEl, onChange, onFallback, onRe
     hostEl.replaceChildren();
     renderReadonly();
     readonlyEl.hidden = false;
-    onEditableChange(false);
+    onEditableChange(false, '');
     if (reason === 'narrow') onReadonly();
   };
 

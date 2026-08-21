@@ -7,7 +7,7 @@ import { createFileTabs } from './file-tabs.js';
 import { createStepControls } from './step-controls.js';
 import { createBrief } from './brief.js';
 import { createTheme } from './theme.js';
-import { createProgress, NOTICE } from './progress.js';
+import { createProgress } from './progress.js';
 import { loadIndex, loadLesson } from './lessons.js';
 import { policyOf, labelOf } from './steps.js';
 import { setLastLesson, readLastPosition, setLessonMeta, readLessons } from './storage.js';
@@ -53,7 +53,7 @@ const session = createSession({
   onFileError: (name) => tabs.markError(name),
   onTimeout: () => {
     progress.discard();
-    progress.notify(NOTICE.discarded);
+    progress.notify('discarded');
   },
 });
 
@@ -61,11 +61,12 @@ const workspace = createWorkspace({
   hostEl: el('editor-host'),
   readonlyEl: el('readonly-code'),
   onChange: () => progress.schedule(),
-  onFallback: () => progress.notify(NOTICE.fallback),
-  onReadonly: () => progress.notify(NOTICE.readonly),
-  onEditableChange: (editable) => {
+  onFallback: () => progress.notify('fallback'),
+  onReadonly: () => progress.notify('readonly'),
+  onEditableChange: (editable, mode) => {
     applyPolicy(editable);
     if (!editable) progress.flush();
+    progress.editorChanged(editable, mode);
   },
 });
 
