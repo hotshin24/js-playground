@@ -900,3 +900,50 @@ python http.server →  (헤더 없음)                    → 차단
 **T6 에서 같은 결정을 다시 하게 된다.** React 에서 데이터를 가져오는 트랙이고, 그때도 같은 갈림길에 선다. T5 와 같은 가짜 fetch 를 그대로 쓰는 것이 기본안이다.
 
 **가짜 fetch 의 형태** — 레슨 `scaffold.html` 안 `<script>` 에서 `window.fetch` 를 갈아 끼운다. 앱 코드 변경 0줄, 레슨 스키마 변경 0건(`buildHead` 가 scaffold 를 사용자 코드보다 먼저 넣는다). 돌려주는 것은 흉내가 아니라 진짜 `Response` 객체이므로 학습자 코드는 진짜와 같다. 네트워크 실패는 실측한 문구 그대로 `TypeError('Failed to fetch')` 를 던져 맞춘다. **`t5-06` read 에서 이 무대 장치를 밝힌다.**
+
+### T5 묶음 A 실측 (2026-08-21)
+
+`t5-01`·`t5-02`·`t5-03` 지문의 근거다. 실행 프레임 안에서 쟀다.
+
+**에러 종류별 `name` / `message`**
+
+```
+없는 변수          ReferenceError | nope is not defined
+undefined 속성      TypeError      | Cannot read properties of undefined (reading 'b')
+null 속성          TypeError      | Cannot read properties of null (reading 'x')
+함수가 아님         TypeError      | n is not a function
+```
+
+**`JSON.parse` 실패 문구** — 레슨에 그대로 인용한 값이다.
+
+```
+'{ name: 리액트 입문, seats: 20 }'  SyntaxError | Expected property name or '}' in JSON at position 2 (line 1 column 3)
+'{ 잘못된 줄 }'                     SyntaxError | (같은 문구)
+'{ 깨진 }'                          SyntaxError | (같은 문구)
+'깨진 줄'                           SyntaxError | Unexpected token '깨', "깨진 줄" is not valid JSON
+''                                  SyntaxError | Unexpected end of JSON input
+```
+
+**무엇을 던지는가에 따라 받는 쪽이 달라진다** — `t5-02` read·tweak ①의 근거다.
+
+| 던진 것 | `typeof` | `instanceof Error` | `e.name` | `e.message` | `String(e)` |
+|---|---|---|---|---|---|
+| 문자열 | string | false | undefined | **undefined** | 코스를 찾지 못했습니다 |
+| 숫자 | number | false | undefined | **undefined** | 404 |
+| 객체 | object | false | undefined | **undefined** | **[object Object]** |
+| `new Error(...)` | object | true | Error | 코스를 찾지 못했습니다 | Error: 코스를 찾지 못했습니다 |
+
+`err.name = '정원초과'` 로 바꾸면 `String(e)` 가 `정원초과: 수강 인원을 넘었습니다` 가 된다. `stack` 은 문자열로 존재한다.
+
+**`finally` 네 갈래** — `t5-03` 의 근거다.
+
+```
+성공 경로 (try 안에 return)   try 성공 → finally → '성공값'      ← return 이 있어도 실행된다
+실패 경로 (catch 안에 return) catch   → finally → '실패값'
+catch 없이 throw              finally 실행 → 에러가 밖으로 나감
+finally 에 return             try 의 return 을 덮어씀 ('finally 의 return')   ← 함정
+```
+
+**감싸지 않으면 그 줄에서 멈춘다** — 첫 줄은 찍히고 에러 뒤의 줄은 실행되지 않는다. `catch (e) {}` 로 비워 두면 오류가 사라지고 `undefined` 가 흘러간다. 둘 다 `t5-01` tweak 에 넣었다.
+
+**로그 줄 수** — F-004 방침대로 쟀다. `t5-01` run 3줄, `t5-02` run 1건(3줄짜리 한 덩어리). 반복문 안에서 `console.log` 를 부르지 않고 모아서 한 번 낸다. `setInterval`·`setTimeout`·재시도 0건.
