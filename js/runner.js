@@ -21,42 +21,6 @@ const PROTOCOL_VERSION = 1;
  * @returns {{ run: (code: string) => void, dispose: () => void }}
  */
 
-// ── 임시 측정 코드 (F-001·F-002 재검증). 측정이 끝나면 지운다 ──────────────
-const PING_SAMPLES = [];
-let probeLabel = '';
-let probeLast = 0;
-const probeStart = (preview) => {
-  PING_SAMPLES.length = 0;
-  probeLast = 0;
-  probeLabel = preview ? '미리보기 켜짐(보이는 프레임)' : '미리보기 꺼짐(0x0 프레임)';
-  window.__PING = { label: probeLabel, samples: PING_SAMPLES };
-};
-const probeTick = () => {
-  const now = performance.now();
-  if (probeLast) PING_SAMPLES.push({ gap: Math.round(now - probeLast), hidden: document.hidden });
-  probeLast = now;
-  if (PING_SAMPLES.length > 0 && PING_SAMPLES.length % 8 === 0) probeReport();
-};
-const probeReport = () => {
-  const med = (a) => {
-    if (!a.length) return null;
-    const b = a.slice().sort((x, y) => x - y);
-    return b[Math.floor(b.length / 2)];
-  };
-  const stat = (a) => (a.length
-    ? '중앙값 ' + med(a) + 'ms (n=' + a.length + ' · ' + Math.min.apply(null, a) + '~' + Math.max.apply(null, a) + 'ms)'
-    : '표본 없음');
-  const front = PING_SAMPLES.filter((x) => !x.hidden).map((x) => x.gap);
-  const back = PING_SAMPLES.filter((x) => x.hidden).map((x) => x.gap);
-  console.log(
-    '[ping 측정] ' + probeLabel + ' · 설정 500ms · 워치독 ' + WATCHDOG_TIMEOUT_MS + 'ms\n'
-    + '  탭 앞:  ' + stat(front) + '\n'
-    + '  탭 뒤:  ' + stat(back) + '\n'
-    + '  지금 상태: ' + (document.hidden ? '탭 뒤' : '탭 앞')
-  );
-};
-// ── 임시 측정 코드 끝 ──────────────────────────────────────────────────
-
 export function createRunner({ mount, onEvent }) {
   let frame = null;
   // 준비(트랜스파일·React 로드)가 비동기라 늦게 도착한 결과가 새 실행을 덮을 수 있다.
@@ -91,7 +55,9 @@ export function createRunner({ mount, onEvent }) {
 
   const check = () => {
     // 탭이 숨겨지면 자식의 ping 타이머가 스로틀돼 멀쩡한 프레임을 죽이게 된다.
-    // 프레임 단위 스로틀까지는 못 막는다 — 알려진 이슈.
+    // 실측(F-001 정정): 조이는 것은 탭 가시성 하나다. 프레임 크기·화면 부착 여부는
+    // 간격을 바꾸지 못한다(0×0 과 833×234 모두 1000ms). 그래서 이 가드로 충분하다.
+    // 보고 있지 않은 화면에 "멈췄습니다" 를 띄울 이유도 없다.
     if (document.hidden) return;
     if (performance.now() - lastPingAt < WATCHDOG_TIMEOUT_MS) return;
 
@@ -117,7 +83,6 @@ export function createRunner({ mount, onEvent }) {
     if (!msg || msg.v !== PROTOCOL_VERSION) return;
 
     if (msg.type === 'ping') {
-      probeTick(); // 임시 측정
       pingSeen = true;
       lastPingAt = performance.now();
       return;
@@ -157,7 +122,6 @@ export function createRunner({ mount, onEvent }) {
   document.addEventListener('visibilitychange', handleVisibility);
 
   const start = (code, { assertScript = '', scaffold, mount: target = mount, preview = false, react = '', env = '' }) => {
-    probeStart(preview); // 임시 측정
     doneSeen = false;
     pingSeen = false;
     loadSeen = false;
