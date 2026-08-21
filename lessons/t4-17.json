@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 2,
+  "id": "t4-17",
+  "track": "T4",
+  "order": 17,
+  "runtime": "react",
+  "title": "여러 갈래를 한 곳에서",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "함께 움직이는 상태들",
+      "brief": [
+        "지금까지 상태가 필요하면 useState 를 하나씩 늘렸습니다. 값들이 서로 상관없을 때는 그것으로 충분합니다. 수량과 즐겨찾기 여부는 각자 움직이니 따로 두면 됩니다.",
+        "그런데 함께 움직이는 값들이 있습니다. 장바구니를 생각해 봅시다. 담은 개수와 합계 금액과 마지막 동작은 언제나 같이 바뀝니다. 담기를 누르면 셋이 다 바뀌고, 비우기를 눌러도 셋이 다 바뀝니다.",
+        "useState 셋으로 두면 동작 하나마다 셋을 함께 고쳐야 합니다. 동작이 셋이면 고치는 자리가 아홉입니다. 하나를 빠뜨리면 개수는 늘었는데 금액은 그대로인 화면이 됩니다. 앞에서 본 어긋남과 같은 종류입니다.",
+        "useReducer 는 그 규칙을 한 곳에 모읍니다. 다음 상태를 정하는 함수를 하나 만들어 두는 방식입니다. const [state, dispatch] = useReducer(reducer, 처음값) 이라고 씁니다.",
+        "reducer 는 값 두 개를 받습니다. 지금 상태와, 무슨 일이 일어났는지를 담은 객체입니다. 그 객체를 액션이라고 부르고 대개 { type: '담기' } 처럼 무슨 일인지를 담습니다. reducer 는 그 둘을 보고 다음 상태를 돌려줍니다. 앞에서 배운 대로 원래 상태를 고치지 않고 새 객체를 만들어 돌려줍니다.",
+        "화면 쪽은 단순해집니다. 버튼은 dispatch({ type: 'add' }) 처럼 무슨 일이 일어났는지만 알립니다. 어떻게 바뀌는지는 reducer 가 압니다. 규칙이 한 파일 한 함수에 모여 있으니 빠뜨릴 자리가 없습니다.",
+        "다만 useReducer 가 useState 보다 나은 것은 아닙니다. 상태가 하나이고 바꾸는 규칙이 단순하면 useState 가 훨씬 짧고 읽기 좋습니다. reducer 를 쓰면 파일 위쪽에 함수가 하나 더 생기고, 값을 바꾸려면 그 함수까지 가서 읽어야 합니다. 기준은 이렇습니다. 여러 값이 함께 움직이고 그 규칙이 여러 곳에 흩어질 때만 옮기세요."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "useState 셋으로 만든 장바구니",
+      "brief": [
+        "개수와 금액과 마지막 동작을 각각 상태로 두었습니다. 잘 동작합니다.",
+        "실행한 뒤 담기와 빼기와 비우기를 눌러 보세요. 셋이 함께 맞게 움직입니다.",
+        "코드를 보세요. 동작 함수 셋이 각각 setCount, setTotal, setLast 를 부릅니다. 같은 줄들이 반복됩니다. 동작이 하나 늘면 또 세 줄을 적어야 합니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".cart { display: grid; gap: 8px; max-width: 340px; }",
+          ".summary { margin: 0; padding: 8px 10px; border: 1px solid var(--c-border); border-radius: 8px;",
+          "  font-size: 0.875rem; }",
+          ".log { margin: 0; color: var(--c-text-muted); font-size: 0.75rem; }",
+          ".row { display: flex; flex-wrap: wrap; gap: 6px; }"
+        ]
+      },
+      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 상태 셋이 서로 얽혀 있습니다. 동작 하나마다 셋을 함께 고쳐야 합니다.\nconst Cart = () => {\n  const [count, setCount] = useState(0);\n  const [total, setTotal] = useState(0);\n  const [last, setLast] = useState('아직 없음');\n\n  const add = () => {\n    setCount(count + 1);\n    setTotal(total + 189000);\n    setLast('담기');\n  };\n\n  const remove = () => {\n    if (count === 0) return;\n    setCount(count - 1);\n    setTotal(total - 189000);\n    setLast('빼기');\n  };\n\n  const clear = () => {\n    setCount(0);\n    setTotal(0);\n    setLast('비우기');\n  };\n\n  return (\n    <div className=\"cart\">\n      <p className=\"summary\">{count}개 · {total}원</p>\n      <p className=\"log\">마지막 동작: {last}</p>\n      <div className=\"row\">\n        <button className=\"add\" type=\"button\" onClick={add}>담기</button>\n        <button className=\"remove\" type=\"button\" onClick={remove}>빼기</button>\n        <button className=\"clear\" type=\"button\" onClick={clear}>비우기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Cart />);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "빠뜨려 보고 모아 보기",
+      "brief": [
+        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
+        "① remove 에서 setTotal 줄을 지워 보세요. 두 번 담고 한 번 빼면 개수는 1개인데 금액은 378000원 그대로입니다. 오류는 없습니다. 상태가 여럿이면 이런 빠뜨림이 생깁니다.",
+        "② 되돌린 뒤 '한 개 더 담기' 버튼을 하나 추가해 보세요. 개수 2, 금액 2배, 마지막 동작을 함께 고쳐야 합니다. 동작 하나를 늘리는 데 세 줄이 듭니다. 동작이 늘수록 이 부담이 커집니다.",
+        "③ 세 동작의 공통점을 보세요. 모두 '지금 상태 + 무슨 일' 로 다음 상태가 정해집니다. 그 규칙을 함수 하나에 모을 수 있다면 화면 쪽에는 무슨 일이 일어났는지만 남습니다. 다음 단계에서 그렇게 옮깁니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".cart { display: grid; gap: 8px; max-width: 340px; }",
+          ".summary { margin: 0; padding: 8px 10px; border: 1px solid var(--c-border); border-radius: 8px;",
+          "  font-size: 0.875rem; }",
+          ".log { margin: 0; color: var(--c-text-muted); font-size: 0.75rem; }",
+          ".row { display: flex; flex-wrap: wrap; gap: 6px; }"
+        ]
+      },
+      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 상태 셋이 서로 얽혀 있습니다. 동작 하나마다 셋을 함께 고쳐야 합니다.\nconst Cart = () => {\n  const [count, setCount] = useState(0);\n  const [total, setTotal] = useState(0);\n  const [last, setLast] = useState('아직 없음');\n\n  const add = () => {\n    setCount(count + 1);\n    setTotal(total + 189000);\n    setLast('담기');\n  };\n\n  const remove = () => {\n    if (count === 0) return;\n    setCount(count - 1);\n    setTotal(total - 189000);\n    setLast('빼기');\n  };\n\n  const clear = () => {\n    setCount(0);\n    setTotal(0);\n    setLast('비우기');\n  };\n\n  return (\n    <div className=\"cart\">\n      <p className=\"summary\">{count}개 · {total}원</p>\n      <p className=\"log\">마지막 동작: {last}</p>\n      <div className=\"row\">\n        <button className=\"add\" type=\"button\" onClick={add}>담기</button>\n        <button className=\"remove\" type=\"button\" onClick={remove}>빼기</button>\n        <button className=\"clear\" type=\"button\" onClick={clear}>비우기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Cart />);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "빼기 갈래 채우기",
+      "brief": [
+        "reducer 로 옮겼습니다. 담기와 비우기는 돼 있고 빼기 갈래만 비어 있습니다.",
+        "null 자리를 채워 개수와 금액이 하나씩 줄고 마지막 동작이 '빼기' 가 되게 해 주세요. 한 개당 금액은 PRICE 입니다.",
+        "개수가 0 이면 아무것도 바뀌지 않아야 합니다. 그 경우는 이미 위에서 처리했습니다. 원래 상태를 고치지 말고 새 객체를 돌려주세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".cart { display: grid; gap: 8px; max-width: 340px; }",
+          ".summary { margin: 0; padding: 8px 10px; border: 1px solid var(--c-border); border-radius: 8px;",
+          "  font-size: 0.875rem; }",
+          ".log { margin: 0; color: var(--c-text-muted); font-size: 0.75rem; }",
+          ".row { display: flex; flex-wrap: wrap; gap: 6px; }"
+        ]
+      },
+      "code": "const { useReducer } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst PRICE = 189000;\n\nconst reducer = (state, action) => {\n  if (action.type === 'add') {\n    return { count: state.count + 1, total: state.total + PRICE, last: '담기' };\n  }\n\n  if (action.type === 'remove') {\n    if (state.count === 0) return state;\n    return null; // ← 여기를 채우세요\n  }\n\n  if (action.type === 'clear') {\n    return { count: 0, total: 0, last: '비우기' };\n  }\n\n  return state;\n};\n\nconst Cart = () => {\n  const [state, dispatch] = useReducer(reducer, { count: 0, total: 0, last: '아직 없음' });\n\n  return (\n    <div className=\"cart\">\n      <p className=\"summary\">{state.count}개 · {state.total}원</p>\n      <p className=\"log\">마지막 동작: {state.last}</p>\n      <div className=\"row\">\n        <button className=\"add\" type=\"button\" onClick={() => dispatch({ type: 'add' })}>담기</button>\n        <button className=\"remove\" type=\"button\" onClick={() => dispatch({ type: 'remove' })}>빼기</button>\n        <button className=\"clear\" type=\"button\" onClick={() => dispatch({ type: 'clear' })}>비우기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Cart />);\n",
+      "solutionCode": "const { useReducer } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst PRICE = 189000;\n\nconst reducer = (state, action) => {\n  if (action.type === 'add') {\n    return { count: state.count + 1, total: state.total + PRICE, last: '담기' };\n  }\n\n  if (action.type === 'remove') {\n    if (state.count === 0) return state;\n    return { count: state.count - 1, total: state.total - PRICE, last: '빼기' };\n  }\n\n  if (action.type === 'clear') {\n    return { count: 0, total: 0, last: '비우기' };\n  }\n\n  return state;\n};\n\nconst Cart = () => {\n  const [state, dispatch] = useReducer(reducer, { count: 0, total: 0, last: '아직 없음' });\n\n  return (\n    <div className=\"cart\">\n      <p className=\"summary\">{state.count}개 · {state.total}원</p>\n      <p className=\"log\">마지막 동작: {state.last}</p>\n      <div className=\"row\">\n        <button className=\"add\" type=\"button\" onClick={() => dispatch({ type: 'add' })}>담기</button>\n        <button className=\"remove\" type=\"button\" onClick={() => dispatch({ type: 'remove' })}>빼기</button>\n        <button className=\"clear\" type=\"button\" onClick={() => dispatch({ type: 'clear' })}>비우기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Cart />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 0개 · 0원",
+          "select": ".summary",
+          "text": [
+            "0개 · 0원"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "두 번 담으면 둘이 함께 오릅니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".add"
+            },
+            {
+              "action": "click",
+              "selector": ".add"
+            }
+          ],
+          "select": ".summary",
+          "text": [
+            "2개 · 378000원"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "빼면 둘이 함께 줄어듭니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".remove"
+            }
+          ],
+          "select": ".summary",
+          "text": [
+            "1개 · 189000원"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "마지막 동작도 기록됩니다",
+          "select": ".log",
+          "text": [
+            "마지막 동작: 빼기"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "0개에서 더 빼도 그대로입니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".remove"
+            },
+            {
+              "action": "click",
+              "selector": ".remove"
+            }
+          ],
+          "select": ".summary",
+          "text": [
+            "0개 · 0원"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "reducer 로 옮기기",
+      "brief": [
+        "장바구니를 useReducer 로 만들어 주세요. 상태는 개수 · 합계 금액 · 마지막 동작 셋을 담은 객체 하나입니다. 처음 값은 { count: 0, total: 0, last: '아직 없음' } 입니다. 한 개당 금액은 189000 입니다.",
+        "reducer 는 세 갈래를 처리합니다. 'add' 는 개수와 금액을 하나씩 올리고 마지막 동작을 '담기' 로, 'remove' 는 하나씩 내리고 '빼기' 로, 'clear' 는 0 으로 되돌리고 '비우기' 로 만듭니다. 개수가 0 일 때 빼면 아무것도 바뀌지 않아야 합니다. 모르는 갈래가 오면 지금 상태를 그대로 돌려주세요.",
+        "화면은 <div className=\"cart\"> 안에 <p className=\"summary\">0개 · 0원</p> 형태와 <p className=\"log\">마지막 동작: 아직 없음</p> 형태, 그리고 <div className=\"row\"> 안의 버튼 셋입니다. 클래스는 add · remove · clear 이고 글자는 담기 · 빼기 · 비우기 입니다.",
+        "버튼은 무슨 일이 일어났는지만 알리게 하세요. 어떻게 바뀌는지는 reducer 안에만 있어야 합니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".cart { display: grid; gap: 8px; max-width: 340px; }",
+          ".summary { margin: 0; padding: 8px 10px; border: 1px solid var(--c-border); border-radius: 8px;",
+          "  font-size: 0.875rem; }",
+          ".log { margin: 0; color: var(--c-text-muted); font-size: 0.75rem; }",
+          ".row { display: flex; flex-wrap: wrap; gap: 6px; }"
+        ]
+      },
+      "code": "const { useReducer } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 여기를 채우세요\n",
+      "solutionCode": "const { useReducer } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst PRICE = 189000;\n\nconst reducer = (state, action) => {\n  if (action.type === 'add') {\n    return { count: state.count + 1, total: state.total + PRICE, last: '담기' };\n  }\n\n  if (action.type === 'remove') {\n    if (state.count === 0) return state;\n    return { count: state.count - 1, total: state.total - PRICE, last: '빼기' };\n  }\n\n  if (action.type === 'clear') {\n    return { count: 0, total: 0, last: '비우기' };\n  }\n\n  return state;\n};\n\nconst Cart = () => {\n  const [state, dispatch] = useReducer(reducer, { count: 0, total: 0, last: '아직 없음' });\n\n  return (\n    <div className=\"cart\">\n      <p className=\"summary\">{state.count}개 · {state.total}원</p>\n      <p className=\"log\">마지막 동작: {state.last}</p>\n      <div className=\"row\">\n        <button className=\"add\" type=\"button\" onClick={() => dispatch({ type: 'add' })}>담기</button>\n        <button className=\"remove\" type=\"button\" onClick={() => dispatch({ type: 'remove' })}>빼기</button>\n        <button className=\"clear\" type=\"button\" onClick={() => dispatch({ type: 'clear' })}>비우기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Cart />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음에는 0개 · 0원",
+          "select": ".summary",
+          "text": [
+            "0개 · 0원"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "처음 기록은 아직 없음",
+          "select": ".log",
+          "text": [
+            "마지막 동작: 아직 없음"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "담으면 둘이 함께 오릅니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".add"
+            },
+            {
+              "action": "click",
+              "selector": ".add"
+            },
+            {
+              "action": "click",
+              "selector": ".add"
+            }
+          ],
+          "select": ".summary",
+          "text": [
+            "3개 · 567000원"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "빼면 둘이 함께 줄어듭니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".remove"
+            }
+          ],
+          "select": ".summary",
+          "text": [
+            "2개 · 378000원"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "마지막 동작이 기록됩니다",
+          "select": ".log",
+          "text": [
+            "마지막 동작: 빼기"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "비우면 0 으로 돌아갑니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".clear"
+            }
+          ],
+          "select": ".summary",
+          "text": [
+            "0개 · 0원"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "0개에서 빼도 그대로입니다",
+          "actions": [
+            {
+              "action": "click",
+              "selector": ".remove"
+            }
+          ],
+          "select": ".summary",
+          "text": [
+            "0개 · 0원"
+          ]
+        }
+      ]
+    }
+  ]
+}
