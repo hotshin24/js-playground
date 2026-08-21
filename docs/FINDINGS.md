@@ -1101,3 +1101,71 @@ t5-09[5] solution 실패 · pass=3/4 fail=1
 **변경 후 전수 회귀 149단계 통과, 실패 0건.**
 
 **`t5-09` write 는 되돌리지 않았다.** 순차 3건이 이제 들어오지만, 지금 형태(`['/api/save', '/api/saved']` — 실패를 앞에 둔다)가 "실패한 뒤에도 계속한다" 를 더 정확히 검사한다. 실패가 마지막이면 그 뒤에 계속할 것이 없어 아무것도 증명하지 못한다. 가르치는 것이 줄지 않았으므로 유지한다.
+
+### T5 묶음 D 실측 (2026-08-21)
+
+`t5-10`·`t5-11`·`t5-12` 지문의 근거다.
+
+**`env` 분리가 의도대로 동작한다** — T5 에서 처음으로 무대가 있는 레슨과 없는 레슨이 함께 나왔다.
+
+```
+t5-10 (scaffold + env)  preview.isOn = true    ← 그릴 화면이 있다
+t5-11 (env 만)          preview.isOn = false
+t5-12 (env 만)          preview.isOn = false
+```
+
+**로딩 화면을 검사하는 방법** — `t5-10` 의 검사는 `show(url)` 을 **기다리지 않고** 부른 직후의 화면을 읽는다. 그래야 "요청 전에 로딩을 먼저 그렸는가" 가 강제된다.
+
+```js
+function trace(url) {
+  const running = show(url);      // 기다리지 않는다
+  const loading = stateText();    // 지금 화면
+  return running.then(() => ({ loading, done: stateText() }));
+}
+```
+
+검사기는 `value` assert 를 **순서대로** 실행하고 thenable 을 기다린다(`validator.js`). 그래서 `value` 로 화면을 그려 둔 뒤 이어지는 `dom` assert 가 그 결과를 읽는다. 네 갈래를 차례로 그린 뒤 마지막 성공 화면에 `dom` 검사를 붙이는 구성이 통했다.
+
+**네 갈래 실측**
+
+```
+/api/none    불러오는 중… → 등록된 코스가 없습니다
+/api/broken  불러오는 중… → 불러오지 못했습니다
+/api/down    불러오는 중… → 불러오지 못했습니다   ← 사용자가 할 일이 같아 같은 화면
+/api/courses 불러오는 중… → 코스 3개 + 코스 줄 3개
+```
+
+**`try`/`catch` 를 걷어내면 화면이 로딩에서 멈춘다** — `t5-10` tweak ③ 의 근거다.
+
+```
+ERROR: Uncaught (in promise) TypeError: Failed to fetch
+1.5초 뒤 화면: 불러오는 중…
+```
+
+**`Promise.all`**
+
+```
+정상 둘             [3, 0]
+하나가 실패          Error: 불러오지 못했습니다 (500)   ← 성공한 것도 받지 못한다
+받지 않으면          Uncaught (in promise) Error: 불러오지 못했습니다 (500)
+순서를 바꾸면        결과의 a·b 가 함께 바뀐다 (완료 순서가 아니라 넣은 순서)
+느린 것을 먼저 넣으면 ["느린 것", "빠른 것"]
+```
+
+**거부돼도 나머지는 취소되지 않는다** — read 의 문단을 뒷받침한다.
+
+```
+빠른실패 끝남 → all 이 거부됨: 빠른실패 실패 → 느린성공 끝남   ← 거부 뒤에도 계속 진행
+```
+
+**`Promise.allSettled`**
+
+```
+길이 3 (넣은 개수와 같다)
+0 {"status":"fulfilled","value":3}
+1 {"status":"rejected","reason":"Error: 실패 (500)"}
+2 {"status":"rejected","reason":"TypeError: Failed to fetch"}
+키: status+value | status+reason | status+reason   ← 성공에는 reason 이 없다
+```
+
+**`t5-10` 은 `innerHTML` 을 값 자리에 쓰지 않는다.** `t2-09` 에서 세운 규칙을 데이터가 실제로 서버에서 오는 첫 레슨에서 지킨다. `document.createElement` 와 `appendChild` 를 여기서 도입했고(앞 레슨에 없던 API), 비우는 `panel.innerHTML = ''` 만 남겼다 — 그 자리에는 값이 들어가지 않는다.
