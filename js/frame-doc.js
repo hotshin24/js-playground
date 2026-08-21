@@ -1,5 +1,5 @@
 import { PRELUDE } from './sandbox-prelude.js';
-import { ASSERT_RUNTIME } from './validator.js';
+import { ASSERT_RUNTIME } from './assert-runtime.js';
 
 // 사용자 코드와 scaffold 안의 </script> 는 HTML 파서를 먼저 끊어버린다
 export const escapeScriptEnd = (code) => code.replace(/<\/(script)/gi, '<\\/$1');
