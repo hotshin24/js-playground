@@ -1003,3 +1003,71 @@ fetch 앞 await 제거    Uncaught (in promise) TypeError: res.json is not a fun
 - `done` 은 스크립트 파싱이 끝나면 나온다. **비동기 로그는 `done` 뒤에 온다.** `done` 에서 관측을 끊으면 비동기 레슨의 출력을 통째로 놓친다.
 - 그래서 **이 환경에서 잰 절대 시간은 신뢰할 수 없다.** 60ms 지연을 건 요청이 924ms 로 측정된 적이 있다. 시간 수치를 지문에 쓰지 않았다. **`t5-13`(순차 대 병렬)은 시간을 비교하는 레슨이므로, 그때는 탭을 앞에 둔 상태에서 다시 재고 상대 비교만 쓴다.**
 - 회귀 하네스는 이 때문에 단계마다 관측 창이 필요하고, 전수 회귀 한 번이 90초 안팎이 되었다.
+
+### T5 묶음 C 실측 (2026-08-21)
+
+`t5-07`·`t5-08`·`t5-09` 지문의 근거다.
+
+**상태별 응답** — `statusText` 까지 실제 서버처럼 채운 무대에서 쟀다.
+
+| 주소 | `ok` | `status` | `statusText` | `content-type` |
+|---|---|---|---|---|
+| `/api/courses` | true | 200 | OK | application/json |
+| `/api/nope` | false | 404 | Not Found | **text/html** |
+| `/api/broken` | false | 500 | Internal Server Error | application/json |
+
+**셋 다 `catch` 에 걸리지 않는다.** fetch 는 응답이 왔는지만 본다. 500 응답의 본문도 정상적으로 읽힌다(`서버가 잠시 멈췄습니다`). `res.ok` 로 걸러 던지면 상태 실패와 네트워크 실패가 **한 catch 로 모인다**.
+
+```
+/api/courses → 성공 · 3개
+/api/nope    → Error: 요청이 실패했습니다 (404)
+/api/broken  → Error: 요청이 실패했습니다 (500)
+/api/save    → TypeError: Failed to fetch      ← 같은 자리
+```
+
+**본문 읽기** — `t5-08` 의 뼈대다.
+
+```
+404 를 json() 으로   SyntaxError: Failed to execute 'json' on 'Response':
+                     Unexpected token '<', "<!doctype "... is not valid JSON
+404 를 text() 로     길이 102 · "<!doctype html>\n<html><head><t..."
+text() 뒤 json()     TypeError: Failed to execute 'json' on 'Response': body stream already read
+빈 본문을 json()     SyntaxError: Unexpected end of JSON input
+ct 로 갈라 읽기      JSON 이 아닙니다 · ct=text/html · 앞 30자 확인됨
+```
+
+**새어 나가는 에러** — `t5-09` 의 뼈대다. `t5-05` tweak ②의 관찰을 그대로 받는다.
+
+```
+async 함수를 부르고 버림   try 안에서 불렀습니다 / 다음 줄은 그대로 실행됩니다
+                          → Uncaught (in promise) TypeError: Failed to fetch
+.catch 를 붙임            잡음: TypeError | Failed to fetch
+await + try 로 감쌈       잡음: TypeError | Failed to fetch
+setTimeout 안에서 throw   맡겼습니다 → Uncaught Error: 나중에 터집니다   ← try 가 못 잡는다
+forEach(async ...)        forEach 다음 줄 → 처리: 1 → 처리: 2          ← 기다리지 않는다
+```
+
+`await` 를 빠뜨린 채 채우면 더 나쁘다. `done` 에 Promise 가 들어가 참으로 취급되어 **닿지도 못한 요청을 저장했다고 알린다.**
+
+```
+const done = save(url)   저장되는 주소 → 저장했습니다 (통과)
+                         닿지 못하는 주소 → 저장했습니다 (오답)
+                         → Uncaught (in promise) TypeError: Failed to fetch
+```
+
+### 검사기의 2초 한도가 T5 레슨 설계를 제한한다 (2026-08-21)
+
+`js/validator.js` 의 `ASYNC_TIMEOUT_MS` 는 2000ms 다. 동기 레슨을 전제로 정한 값이다.
+
+`t5-09` write 의 검사 하나가 **주소 3개를 순서대로 저장**했고 실패했다.
+
+```
+t5-09[5] solution 실패 · pass=3/4 fail=1
+  실제=undefined | Error: 결과가 2초 안에 완료되지 않았습니다
+```
+
+무대의 지연은 요청당 60ms 라 앞에 두면 180ms 다. 그런데 **탭이 앞에 없으면 타이머가 요청당 1초 가까이로 밀려**(위 "배경 탭 타이머" 항목) 3회 순차가 2초를 넘는다. 탭을 앞으로 올린 뒤에도 같은 결과였다.
+
+**처리** — 검사 하나가 부르는 순차 요청을 **최대 2건**으로 낮췄다. `t5-09` write 의 해당 검사는 실패를 앞에 두는 형태(`['/api/save', '/api/saved']`)로 바꿔 "실패한 뒤에도 계속한다" 를 그대로 검사한다. 레슨이 가르치는 것은 줄지 않았다.
+
+**남은 문제** — `t5-13`(순차 대 병렬)은 **순차 3건을 재는 것이 레슨의 내용**이라 이 한도와 정면으로 부딪힌다. 그 레슨에 들어가기 전에 `ASYNC_TIMEOUT_MS` 를 올릴지 결정해야 한다. 워치독(3초)은 별개이고 ping 이 계속 오므로 이 값을 올려도 오탐이 늘지 않는다.
