@@ -1,0 +1,336 @@
+{
+  "schemaVersion": 2,
+  "id": "t6-05",
+  "track": "T6",
+  "order": 5,
+  "runtime": "react",
+  "title": "늦게 온 응답",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "둘 다 성공했는데 화면이 틀렸다",
+      "brief": [
+        "앞 레슨에서 검색어가 바뀌면 다시 찾게 만들었습니다. 사용자가 빠르게 타이핑하면 요청이 연달아 나갑니다. 여기서 고약한 문제가 생깁니다.",
+        "'리' 를 치면 요청이 하나 나갑니다. 곧바로 '리액트 심' 까지 치면 요청이 또 나갑니다. 두 요청은 이제 함께 흐르고 있습니다. 그런데 걸리는 시간이 다릅니다. 찾을 것이 많은 짧은 검색어가 대개 더 오래 걸립니다.",
+        "그래서 나중에 보낸 것이 먼저 도착할 수 있습니다. '리액트 심' 의 결과가 먼저 와서 화면에 그려지고, 그다음에 '리' 의 결과가 도착해 그것을 덮어씁니다. 입력창에는 '리액트 심' 이 있는데 화면에는 '리' 의 결과가 있습니다.",
+        "이것이 경쟁 조건입니다. 고약한 이유는 아무것도 실패하지 않았다는 데 있습니다. 두 요청 다 200 으로 성공했고, 두 응답 다 올바른 데이터이며, 코드에 오류도 없습니다. 에러 화면도 뜨지 않고 콘솔도 조용합니다. 그냥 화면이 틀렸습니다.",
+        "T5 에서 이미 배운 것이 답의 절반입니다. 이미 보낸 요청은 되돌릴 수 없다고 했습니다. 그러니 늦게 온 것을 막을 방법은 없습니다. 대신 무시하면 됩니다.",
+        "무시할 방법이 t4-14 의 정리입니다. 그때는 타이머를 껐습니다. 배너를 넘기는 타이머를 켜 두고 화면이 사라질 때 껐습니다. 같은 도구로 이번에는 응답을 버립니다. 효과가 다시 돌기 직전에 React 가 이전 정리 함수를 부른다는 성질이 그대로 쓰입니다.",
+        "형태는 이렇습니다. 효과 맨 위에 let ignore = false 를 두고, 응답이 왔을 때 ignore 가 참이면 그냥 돌아갑니다. 그리고 정리 함수에서 ignore = true 로 바꿉니다. 그러면 새 검색이 시작되는 순간 옛 효과의 ignore 가 참이 되고, 뒤늦게 도착한 옛 응답은 상태를 건드리지 못합니다.",
+        "값 하나가 효과마다 따로 있다는 것이 요점입니다. 효과가 돌 때마다 새 ignore 가 만들어지고, 그 효과의 정리 함수는 자기 ignore 만 바꿉니다. 이것이 T1 에서 배운 클로저입니다.",
+        "요청 자체를 끊는 방법도 있습니다. AbortController 라고 하며, 이미 나간 요청을 취소해 달라고 서버에 알립니다. 다만 그것도 결국 응답을 무시하는 일과 함께 써야 하고, 이 트랙에서는 다루지 않습니다.",
+        "다음 두 단계에 정리 없는 것과 있는 것을 나란히 두었습니다. 콘솔을 함께 보세요."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "먼저 · 정리하지 않으면",
+      "brief": [
+        "'리' 를 치고 곧바로 '리액트 심' 까지 친 상황입니다. 두 요청이 함께 흐릅니다.",
+        "실행해 보세요. 잠깐 '리액트 심 · 1개' 가 보였다가 '리 · 2개' 로 바뀝니다. 마지막에 남는 것이 먼저 보낸 쪽의 결과입니다.",
+        "이 화면이 왜 틀렸는지 다시 짚어 보세요. 지금 사용자가 찾고 있는 것은 '리액트 심' 입니다. 그런데 목록은 '리' 의 결과입니다.",
+        "실패한 것이 하나도 없다는 점이 이 문제의 성격입니다."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
+        "// 검색어가 짧을수록 오래 걸립니다. 실제 서버도 대개 그렇습니다.",
+        "(() => {",
+        "  const COURSES = [",
+        "    { id: 1, name: '리액트 입문' },",
+        "    { id: 2, name: 'CSS 레이아웃' },",
+        "    { id: 3, name: '자바스크립트 기초' },",
+        "    { id: 4, name: '리액트 심화' },",
+        "  ];",
+        "",
+        "  const json = (data) => new Response(JSON.stringify(data), {",
+        "    status: 200,",
+        "    statusText: 'OK',",
+        "    headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "",
+        "  window.fetch = (url) => new Promise((resolve) => {",
+        "    const key = String(url);",
+        "    const at = key.indexOf('?q=');",
+        "    const q = at >= 0 ? decodeURIComponent(key.slice(at + 3)) : null;",
+        "    const delay = q === null ? 60 : (q.length <= 1 ? 400 : 40);",
+        "    setTimeout(() => {",
+        "      if (q === null) { resolve(json(COURSES)); return; }",
+        "      resolve(json(COURSES.filter((c) => c.name.includes(q))));",
+        "    }, delay);",
+        "  });",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
+          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }",
+          ".again { margin-top: 6px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\n\nfunction Search({ query }) {\n  const [found, setFound] = useState(null);\n\n  useEffect(() => {\n\n    setFound(null);\n    fetch('/api/search?q=' + encodeURIComponent(query))\n      .then((res) => res.json())\n      .then((list) => {\n\n        setFound(list);\n      });\n\n  }, [query]);\n\n  if (found === null) {\n    return <p className=\"state\">찾는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{query} · {found.length}개</p>\n      {found.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n    </div>\n  );\n}\n\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst yieldTask = () => new Promise((done) => {\n  const channel = new MessageChannel();\n  channel.port1.onmessage = () => done();\n  channel.port2.postMessage(0);\n});\n\n// '리' 를 치고 곧바로 '리액트 심' 까지 친 상황을 흉내 냅니다\n(async () => {\n  root.render(<Search query=\"리\" />);\n  await yieldTask();\n  await yieldTask();\n  await yieldTask();\n  root.render(<Search query=\"리액트 심\" />);\n})();\n"
+    },
+    {
+      "kind": "run",
+      "title": "다음 · 정리하면",
+      "brief": [
+        "달라진 것은 효과 안의 세 자리뿐입니다. 맨 위의 ignore, 응답을 받았을 때의 검사, 그리고 정리 함수입니다.",
+        "실행해서 앞 단계와 견줘 보세요. '리액트 심 · 1개' 가 나온 뒤로 바뀌지 않습니다.",
+        "'리' 의 응답은 여전히 도착합니다. 요청이 취소된 것이 아닙니다. 도착했는데 그 효과의 ignore 가 이미 참이라 상태를 건드리지 않고 돌아간 것입니다.",
+        "t4-14 에서 타이머를 끄던 자리와 같은 자리입니다. 도구는 같고 푸는 문제가 다릅니다."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
+        "// 검색어가 짧을수록 오래 걸립니다. 실제 서버도 대개 그렇습니다.",
+        "(() => {",
+        "  const COURSES = [",
+        "    { id: 1, name: '리액트 입문' },",
+        "    { id: 2, name: 'CSS 레이아웃' },",
+        "    { id: 3, name: '자바스크립트 기초' },",
+        "    { id: 4, name: '리액트 심화' },",
+        "  ];",
+        "",
+        "  const json = (data) => new Response(JSON.stringify(data), {",
+        "    status: 200,",
+        "    statusText: 'OK',",
+        "    headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "",
+        "  window.fetch = (url) => new Promise((resolve) => {",
+        "    const key = String(url);",
+        "    const at = key.indexOf('?q=');",
+        "    const q = at >= 0 ? decodeURIComponent(key.slice(at + 3)) : null;",
+        "    const delay = q === null ? 60 : (q.length <= 1 ? 400 : 40);",
+        "    setTimeout(() => {",
+        "      if (q === null) { resolve(json(COURSES)); return; }",
+        "      resolve(json(COURSES.filter((c) => c.name.includes(q))));",
+        "    }, delay);",
+        "  });",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
+          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }",
+          ".again { margin-top: 6px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\n\nfunction Search({ query }) {\n  const [found, setFound] = useState(null);\n\n  useEffect(() => {\n    let ignore = false;\n    setFound(null);\n    fetch('/api/search?q=' + encodeURIComponent(query))\n      .then((res) => res.json())\n      .then((list) => {\n        if (ignore) return;\n        setFound(list);\n      });\n\n    return () => {\n      ignore = true;\n    };\n  }, [query]);\n\n  if (found === null) {\n    return <p className=\"state\">찾는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{query} · {found.length}개</p>\n      {found.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n    </div>\n  );\n}\n\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst yieldTask = () => new Promise((done) => {\n  const channel = new MessageChannel();\n  channel.port1.onmessage = () => done();\n  channel.port2.postMessage(0);\n});\n\n// '리' 를 치고 곧바로 '리액트 심' 까지 친 상황을 흉내 냅니다\n(async () => {\n  root.render(<Search query=\"리\" />);\n  await yieldTask();\n  await yieldTask();\n  await yieldTask();\n  root.render(<Search query=\"리액트 심\" />);\n})();\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "어디에 두느냐",
+      "brief": [
+        "정리 있는 코드에서 아래 셋을 해 보세요. 매번 되돌리고 다시 실행해야 합니다.",
+        "① let ignore = false 를 컴포넌트 밖으로 옮겨 보세요. 파일 맨 위에 두면 됩니다. 이번에는 '찾는 중…' 에서 멈춥니다. 값이 하나뿐이라 첫 효과의 정리가 그것을 참으로 바꾸고, 그 뒤로는 어떤 응답도 반영되지 않습니다. 효과마다 따로 있어야 한다는 것이 이 뜻입니다.",
+        "② 되돌린 뒤 정리 함수 안을 ignore = true 대신 setFound(null) 로 바꿔 보세요. 화면이 '찾는 중…' 에서 멈춥니다. 정리는 '이번 효과가 남긴 것을 거두는 일' 이지 화면을 되돌리는 일이 아닙니다.",
+        "③ 되돌린 뒤 if (ignore) return 줄만 지워 보세요. 정리 함수는 그대로인데 결과는 정리하지 않은 것과 같아집니다. 표시를 남기는 것과 그 표시를 보는 것이 둘 다 있어야 합니다."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
+        "// 검색어가 짧을수록 오래 걸립니다. 실제 서버도 대개 그렇습니다.",
+        "(() => {",
+        "  const COURSES = [",
+        "    { id: 1, name: '리액트 입문' },",
+        "    { id: 2, name: 'CSS 레이아웃' },",
+        "    { id: 3, name: '자바스크립트 기초' },",
+        "    { id: 4, name: '리액트 심화' },",
+        "  ];",
+        "",
+        "  const json = (data) => new Response(JSON.stringify(data), {",
+        "    status: 200,",
+        "    statusText: 'OK',",
+        "    headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "",
+        "  window.fetch = (url) => new Promise((resolve) => {",
+        "    const key = String(url);",
+        "    const at = key.indexOf('?q=');",
+        "    const q = at >= 0 ? decodeURIComponent(key.slice(at + 3)) : null;",
+        "    const delay = q === null ? 60 : (q.length <= 1 ? 400 : 40);",
+        "    setTimeout(() => {",
+        "      if (q === null) { resolve(json(COURSES)); return; }",
+        "      resolve(json(COURSES.filter((c) => c.name.includes(q))));",
+        "    }, delay);",
+        "  });",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
+          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }",
+          ".again { margin-top: 6px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\n\nfunction Search({ query }) {\n  const [found, setFound] = useState(null);\n\n  useEffect(() => {\n    let ignore = false;\n    setFound(null);\n    fetch('/api/search?q=' + encodeURIComponent(query))\n      .then((res) => res.json())\n      .then((list) => {\n        if (ignore) return;\n        setFound(list);\n      });\n\n    return () => {\n      ignore = true;\n    };\n  }, [query]);\n\n  if (found === null) {\n    return <p className=\"state\">찾는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{query} · {found.length}개</p>\n      {found.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n    </div>\n  );\n}\n\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst yieldTask = () => new Promise((done) => {\n  const channel = new MessageChannel();\n  channel.port1.onmessage = () => done();\n  channel.port2.postMessage(0);\n});\n\n// '리' 를 치고 곧바로 '리액트 심' 까지 친 상황을 흉내 냅니다\n(async () => {\n  root.render(<Search query=\"리\" />);\n  await yieldTask();\n  await yieldTask();\n  await yieldTask();\n  root.render(<Search query=\"리액트 심\" />);\n})();\n"
+    },
+    {
+      "kind": "fill",
+      "title": "정리 함수 채우기",
+      "brief": [
+        "표시할 값과 그것을 보는 자리는 돼 있고 정리 함수가 비어 있습니다.",
+        "null 자리를 채워 이 효과가 끝날 때 ignore 를 참으로 바꾸는 함수를 돌려주세요.",
+        "return () => { ignore = true; }; 형태입니다.",
+        "이 단계의 Search 는 검색어를 props 로 받습니다. 검사기가 두 검색어를 연달아 넣어 늦게 온 응답이 덮는지 확인합니다. 아래 race 와 waitQuiet 는 그대로 두세요.",
+        "채우지 않고 실행하면 나중에 친 검색어의 결과가 옛 결과에 덮입니다."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
+        "// 검색어가 짧을수록 오래 걸립니다. 실제 서버도 대개 그렇습니다.",
+        "(() => {",
+        "  const COURSES = [",
+        "    { id: 1, name: '리액트 입문' },",
+        "    { id: 2, name: 'CSS 레이아웃' },",
+        "    { id: 3, name: '자바스크립트 기초' },",
+        "    { id: 4, name: '리액트 심화' },",
+        "  ];",
+        "",
+        "  const json = (data) => new Response(JSON.stringify(data), {",
+        "    status: 200,",
+        "    statusText: 'OK',",
+        "    headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "",
+        "  window.fetch = (url) => new Promise((resolve) => {",
+        "    const key = String(url);",
+        "    const at = key.indexOf('?q=');",
+        "    const q = at >= 0 ? decodeURIComponent(key.slice(at + 3)) : null;",
+        "    const delay = q === null ? 60 : (q.length <= 1 ? 400 : 40);",
+        "    setTimeout(() => {",
+        "      if (q === null) { resolve(json(COURSES)); return; }",
+        "      resolve(json(COURSES.filter((c) => c.name.includes(q))));",
+        "    }, delay);",
+        "  });",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
+          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }",
+          ".again { margin-top: 6px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\n\nfunction Search({ query }) {\n  const [found, setFound] = useState(null);\n\n  useEffect(() => {\n    let ignore = false;\n    setFound(null);\n    fetch('/api/search?q=' + encodeURIComponent(query))\n      .then((res) => res.json())\n      .then((list) => {\n        if (ignore) return;\n        setFound(list);\n      });\n\n    null; // ← 여기를 채우세요\n  }, [query]);\n\n  if (found === null) {\n    return <p className=\"state\">찾는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{query} · {found.length}개</p>\n      {found.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n    </div>\n  );\n}\n\n// 아래 넷은 그대로 두세요. 검사기가 race 를 부릅니다\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst yieldTask = () => new Promise((done) => {\n  const channel = new MessageChannel();\n  channel.port1.onmessage = () => done();\n  channel.port2.postMessage(0);\n});\n\nfunction waitQuiet() {\n  const el = document.querySelector('#root');\n  return new Promise((resolve) => {\n    let last = null;\n    let same = 0;\n    let tries = 0;\n    const tick = () => {\n      const now = el.textContent;\n      same = now === last ? same + 1 : 0;\n      last = now;\n      tries += 1;\n      if ((same >= 2 && !now.includes('찾는 중')) || tries > 40) resolve(now);\n      else setTimeout(tick, 50);\n    };\n    tick();\n  });\n}\n\nasync function race(first, second) {\n  root.render(<Search query={first} />);\n  await yieldTask();\n  await yieldTask();\n  await yieldTask();\n  root.render(<Search query={second} />);\n  return waitQuiet();\n}\n\nrace('리', '리액트 심');\n",
+      "entry": "race",
+      "solutionCode": "const { useState, useEffect } = React;\n\nfunction Search({ query }) {\n  const [found, setFound] = useState(null);\n\n  useEffect(() => {\n    let ignore = false;\n    setFound(null);\n    fetch('/api/search?q=' + encodeURIComponent(query))\n      .then((res) => res.json())\n      .then((list) => {\n        if (ignore) return;\n        setFound(list);\n      });\n\n    return () => {\n      ignore = true;\n    };\n  }, [query]);\n\n  if (found === null) {\n    return <p className=\"state\">찾는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{query} · {found.length}개</p>\n      {found.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n    </div>\n  );\n}\n\n// 아래 넷은 그대로 두세요. 검사기가 race 를 부릅니다\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst yieldTask = () => new Promise((done) => {\n  const channel = new MessageChannel();\n  channel.port1.onmessage = () => done();\n  channel.port2.postMessage(0);\n});\n\nfunction waitQuiet() {\n  const el = document.querySelector('#root');\n  return new Promise((resolve) => {\n    let last = null;\n    let same = 0;\n    let tries = 0;\n    const tick = () => {\n      const now = el.textContent;\n      same = now === last ? same + 1 : 0;\n      last = now;\n      tries += 1;\n      if ((same >= 2 && !now.includes('찾는 중')) || tries > 40) resolve(now);\n      else setTimeout(tick, 50);\n    };\n    tick();\n  });\n}\n\nasync function race(first, second) {\n  root.render(<Search query={first} />);\n  await yieldTask();\n  await yieldTask();\n  await yieldTask();\n  root.render(<Search query={second} />);\n  return waitQuiet();\n}\n\nrace('리', '리액트 심');\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "나중에 친 검색어의 결과가 남습니다",
+          "args": [
+            "리",
+            "리액트 심"
+          ],
+          "expected": "리액트 심 · 1개리액트 심화"
+        },
+        {
+          "type": "value",
+          "label": "반대로 쳐도 마지막 것이 남습니다",
+          "args": [
+            "리액트 심",
+            "리"
+          ],
+          "expected": "리 · 2개리액트 입문리액트 심화"
+        },
+        {
+          "type": "dom",
+          "label": "화면에는 마지막 결과만",
+          "select": ".course",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "덮이지 않는 검색 만들기",
+      "brief": [
+        "검색어로 코스를 찾는 Search 를 만들어 주세요. 검색어가 빠르게 바뀌어도 마지막 검색어의 결과만 화면에 남아야 합니다.",
+        "Search 는 검색어를 props 로 받습니다. function Search({ query }) 형태입니다.",
+        "상태는 찾은 목록 하나이고 처음 값은 null 입니다.",
+        "효과 안에서 목록을 null 로 되돌린 뒤 '/api/search?q=' + encodeURIComponent(query) 를 가져와 상태에 넣으세요. 의존성 배열은 [query] 입니다.",
+        "효과마다 표시를 하나 두고, 응답이 왔을 때 그 표시가 참이면 상태를 건드리지 말고 돌아가세요. 정리 함수에서 그 표시를 참으로 바꿉니다.",
+        "목록이 null 이면 state 클래스로 '찾는 중…' 만 보여 주세요. 아니면 state 로 '리 · 2개' 형태를 보여 주고 코스마다 course 클래스로 이름을 보여 주세요. 줄마다 key 가 필요합니다.",
+        "아래 root 와 yieldTask 와 waitQuiet 와 race 는 그대로 두세요. 검사기가 race 를 부릅니다."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
+        "// 검색어가 짧을수록 오래 걸립니다. 실제 서버도 대개 그렇습니다.",
+        "(() => {",
+        "  const COURSES = [",
+        "    { id: 1, name: '리액트 입문' },",
+        "    { id: 2, name: 'CSS 레이아웃' },",
+        "    { id: 3, name: '자바스크립트 기초' },",
+        "    { id: 4, name: '리액트 심화' },",
+        "  ];",
+        "",
+        "  const json = (data) => new Response(JSON.stringify(data), {",
+        "    status: 200,",
+        "    statusText: 'OK',",
+        "    headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "",
+        "  window.fetch = (url) => new Promise((resolve) => {",
+        "    const key = String(url);",
+        "    const at = key.indexOf('?q=');",
+        "    const q = at >= 0 ? decodeURIComponent(key.slice(at + 3)) : null;",
+        "    const delay = q === null ? 60 : (q.length <= 1 ? 400 : 40);",
+        "    setTimeout(() => {",
+        "      if (q === null) { resolve(json(COURSES)); return; }",
+        "      resolve(json(COURSES.filter((c) => c.name.includes(q))));",
+        "    }, delay);",
+        "  });",
+        "})();"
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
+          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }",
+          ".again { margin-top: 6px; }"
+        ]
+      },
+      "code": "const { useState, useEffect } = React;\n\n// Search 를 여기에 작성하세요\n\n// 아래 넷은 그대로 두세요. 검사기가 race 를 부릅니다\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst yieldTask = () => new Promise((done) => {\n  const channel = new MessageChannel();\n  channel.port1.onmessage = () => done();\n  channel.port2.postMessage(0);\n});\n\nfunction waitQuiet() {\n  const el = document.querySelector('#root');\n  return new Promise((resolve) => {\n    let last = null;\n    let same = 0;\n    let tries = 0;\n    const tick = () => {\n      const now = el.textContent;\n      same = now === last ? same + 1 : 0;\n      last = now;\n      tries += 1;\n      if ((same >= 2 && !now.includes('찾는 중')) || tries > 40) resolve(now);\n      else setTimeout(tick, 50);\n    };\n    tick();\n  });\n}\n\nasync function race(first, second) {\n  root.render(<Search query={first} />);\n  await yieldTask();\n  await yieldTask();\n  await yieldTask();\n  root.render(<Search query={second} />);\n  return waitQuiet();\n}\n\nrace('리', '리액트 심');\n",
+      "entry": "race",
+      "solutionCode": "const { useState, useEffect } = React;\n\nfunction Search({ query }) {\n  const [found, setFound] = useState(null);\n\n  useEffect(() => {\n    let ignore = false;\n    setFound(null);\n    fetch('/api/search?q=' + encodeURIComponent(query))\n      .then((res) => res.json())\n      .then((list) => {\n        if (ignore) return;\n        setFound(list);\n      });\n\n    return () => {\n      ignore = true;\n    };\n  }, [query]);\n\n  if (found === null) {\n    return <p className=\"state\">찾는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{query} · {found.length}개</p>\n      {found.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n    </div>\n  );\n}\n\n// 아래 넷은 그대로 두세요. 검사기가 race 를 부릅니다\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst yieldTask = () => new Promise((done) => {\n  const channel = new MessageChannel();\n  channel.port1.onmessage = () => done();\n  channel.port2.postMessage(0);\n});\n\nfunction waitQuiet() {\n  const el = document.querySelector('#root');\n  return new Promise((resolve) => {\n    let last = null;\n    let same = 0;\n    let tries = 0;\n    const tick = () => {\n      const now = el.textContent;\n      same = now === last ? same + 1 : 0;\n      last = now;\n      tries += 1;\n      if ((same >= 2 && !now.includes('찾는 중')) || tries > 40) resolve(now);\n      else setTimeout(tick, 50);\n    };\n    tick();\n  });\n}\n\nasync function race(first, second) {\n  root.render(<Search query={first} />);\n  await yieldTask();\n  await yieldTask();\n  await yieldTask();\n  root.render(<Search query={second} />);\n  return waitQuiet();\n}\n\nrace('리', '리액트 심');\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "나중에 친 검색어의 결과가 남습니다",
+          "args": [
+            "리",
+            "리액트 심"
+          ],
+          "expected": "리액트 심 · 1개리액트 심화"
+        },
+        {
+          "type": "value",
+          "label": "반대로 쳐도 마지막 것이 남습니다",
+          "args": [
+            "리액트 심",
+            "리"
+          ],
+          "expected": "리 · 2개리액트 입문리액트 심화"
+        },
+        {
+          "type": "dom",
+          "label": "화면에는 마지막 결과만",
+          "select": ".course",
+          "count": 2
+        }
+      ]
+    }
+  ]
+}
