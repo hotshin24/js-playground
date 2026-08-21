@@ -1525,3 +1525,54 @@ t6-10[4] solution 실패 · pass=1/4 fail=3
 **검사로 강제하지 못한 것** — `t6-03` write 의 "참거짓 상태를 따로 두지 마세요" 는 결과가 같아 통과한다. F-010 선례대로 지문에 밝혔다.
 
 **T6 이 T7 에 넘기는 것** — 이 트랙 내내 함수 컴포넌트만 썼고 `this` 도 `class` 도 나오지 않았다. `t6-14` read 마지막이 그 사실을 짚고, T7 이 React 로 가는 길목이 아니라 남의 코드를 읽기 위한 선택 트랙이라는 것까지 밝힌다.
+
+### T7 착수 전 실측 — 실행 프레임의 `this` (2026-08-21)
+
+**실행 프레임은 sloppy mode 다.** 사용자 코드가 classic script 로 주입되므로 `'use strict'` 가 없다.
+
+```
+최상위 this === window       true
+최상위 this === globalThis   true
+함수 안 this (그냥 호출)      window        ← sloppy
+typeof module / exports      undefined undefined
+```
+
+**호출 방식별 `this`**
+
+```
+① 그냥 부르면            window
+② 메서드로 부르면         그 객체
+③ 떼어 내어 부르면        window          ← 실무와 다르다. 아래 참조
+④ call 로 넘기면          넘긴 객체
+⑤ apply 로 넘기면         넘긴 객체
+⑥ bind 한 뒤             고정됨 · 다시 call 해도 바뀌지 않는다
+⑦ 화살표를 메서드로 두면   window (렉시컬)
+⑧ new 로 부르면           새 인스턴스
+⑨ new 없이 부르면         window 를 더럽힌다 (window.tag 가 생겼다)
+```
+
+**실무와 어긋나는 지점은 하나다.** 실무의 React 코드는 ES 모듈이고 모듈은 언제나 strict 다. strict 에서 ③은 `window` 가 아니라 **`undefined`** 다. "메서드를 떼어 내 넘겼더니 `Cannot read properties of undefined`" 가 실무에서 보는 증상인데, 이 프레임에서는 조용히 `window` 가 들어와 다른 증상이 난다.
+
+**학습자가 직접 실무 조건을 만들 수 있다.** 코드 맨 위에 `'use strict'` 한 줄이면 된다.
+
+```
+'use strict' 안 · 그냥 부르면      undefined
+'use strict' 안 · 떼어 내어 부르면  undefined
+```
+
+**`class` 본문은 언제나 strict 다.** 프레임이 sloppy 여도 그렇다.
+
+```
+class 메서드를 떼어 내어 부르면   TypeError: Cannot read properties of undefined (reading 'v')
+```
+
+그래서 **`class` 를 다루는 레슨(`t7-07`~`t7-09`)은 왜곡이 없다.** 함수와 객체를 다루는 앞쪽 레슨만 이 차이를 지문에서 밝히면 된다.
+
+**프로토타입**
+
+```
+Object.getPrototypeOf(box) === Box.prototype              true
+Object.getPrototypeOf(Box.prototype) === Object.prototype true
+box.hasOwnProperty === Object.prototype.hasOwnProperty    true   ← 물려받은 것
+class 게터 · 정적 메서드 · 인스턴스 메서드                  전부 정상
+```
