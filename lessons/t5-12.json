@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 2,
+  "id": "t5-12",
+  "track": "T5",
+  "order": 12,
+  "runtime": "js",
+  "title": "하나가 실패해도",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "전부가 아니어도 될 때",
+      "brief": [
+        "앞 레슨의 Promise.all 은 전부 있어야 할 때 쓰는 것이었습니다. 하나가 실패하면 성공한 것까지 버려집니다.",
+        "그런데 일부만 성공해도 되는 경우가 있습니다. 세 곳에서 공지를 모아 보여 주는데 한 곳이 죽어 있다면, 나머지 두 곳의 공지는 보여 주는 편이 낫습니다. 전부 아니면 아무것도 아닌 것보다 낫습니다.",
+        "Promise.allSettled 가 그 자리입니다. 이름 그대로 '전부 결말이 날 때까지' 기다립니다. 성공이든 실패든 다 끝나면 결과를 돌려주고, 절대 거부하지 않습니다. 그래서 이것 자체는 try 로 감쌀 필요가 없습니다.",
+        "돌려주는 것은 배열이고 길이는 넣은 개수와 같습니다. 순서도 넣은 순서를 따릅니다. 다만 항목의 모양이 다릅니다. 값이 그대로 오는 것이 아니라 결말을 설명하는 객체가 옵니다.",
+        "성공한 항목은 { status: 'fulfilled', value: 결과값 } 입니다. 실패한 항목은 { status: 'rejected', reason: 에러 } 입니다. 성공한 항목에는 reason 이 아예 없고 실패한 항목에는 value 가 없습니다. 그래서 값을 꺼내기 전에 status 를 먼저 봐야 합니다.",
+        "reason 에 들어 있는 것은 문자열이 아니라 Error 객체입니다. 사람이 읽을 문구가 필요하면 reason.message 를 꺼내세요. 우리가 던진 Error 든 fetch 가 거부한 TypeError 든 같은 자리에 담깁니다.",
+        "성공한 것만 고르는 형태는 이렇습니다. results.filter((r) => r.status === 'fulfilled').map((r) => r.value) 입니다. T1 에서 배운 filter 와 map 그대로입니다.",
+        "고르는 기준은 하나입니다. 하나라도 없으면 화면이 의미가 없으면 all 을 쓰고, 일부만 있어도 보여 줄 수 있으면 allSettled 를 씁니다. 그리고 allSettled 를 쓸 때는 실패한 것을 조용히 버리지 마세요. 몇 개가 실패했는지는 화면이든 콘솔이든 어딘가에 남겨야 합니다."
+      ]
+    },
+    {
+      "kind": "fill",
+      "title": "성공한 것만 고르는 줄 채우기",
+      "brief": [
+        "세 주소를 allSettled 로 기다리는 것은 돼 있고, 결과에서 성공한 값만 고르는 자리가 비어 있습니다.",
+        "null 자리를 채워 status 가 'fulfilled' 인 항목만 남기고 그 value 만 뽑은 배열을 만들어 주세요.",
+        "filter 와 map 을 이어 쓰면 됩니다.",
+        "채우지 않고 실행하면 null 의 length 를 읽으려다 실패합니다."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
+        "(() => {",
+        "  const COURSES = [",
+        "    { id: 1, name: '리액트 입문', hours: 8 },",
+        "    { id: 2, name: 'CSS 레이아웃', hours: 6 },",
+        "    { id: 3, name: '자바스크립트 기초', hours: 12 },",
+        "  ];",
+        "",
+        "  const json = (data, status, statusText) => new Response(JSON.stringify(data), {",
+        "    status,",
+        "    statusText,",
+        "    headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "",
+        "  window.fetch = (url) => new Promise((resolve, reject) => {",
+        "    const key = String(url);",
+        "    setTimeout(() => {",
+        "      if (key === '/api/down') { reject(new TypeError('Failed to fetch')); return; }",
+        "      if (key === '/api/courses') { resolve(json(COURSES, 200, 'OK')); return; }",
+        "      if (key === '/api/none') { resolve(json([], 200, 'OK')); return; }",
+        "      if (key === '/api/broken') { resolve(json({ message: '서버가 잠시 멈췄습니다' }, 500, 'Internal Server Error')); return; }",
+        "      resolve(new Response('<!doctype html><h1>Not Found</h1>', {",
+        "        status: 404,",
+        "        statusText: 'Not Found',",
+        "        headers: { 'Content-Type': 'text/html' },",
+        "      }));",
+        "    }, 60);",
+        "  });",
+        "})();"
+      ],
+      "code": "// 이 함수는 그대로 두세요\nasync function count(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  const list = await res.json();\n  return list.length;\n}\n\nasync function collect() {\n  const results = await Promise.allSettled([\n    count('/api/courses'),\n    count('/api/broken'),\n    count('/api/none'),\n  ]);\n\n  const values = null; // ← 여기를 채우세요\n\n  return { 성공: values.length, 값: values, 실패: results.length - values.length };\n}\n",
+      "entry": "collect",
+      "solutionCode": "// 이 함수는 그대로 두세요\nasync function count(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  const list = await res.json();\n  return list.length;\n}\n\nasync function collect() {\n  const results = await Promise.allSettled([\n    count('/api/courses'),\n    count('/api/broken'),\n    count('/api/none'),\n  ]);\n\n  const values = results\n    .filter((r) => r.status === 'fulfilled')\n    .map((r) => r.value);\n\n  return { 성공: values.length, 값: values, 실패: results.length - values.length };\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "성공한 둘만 남습니다",
+          "args": [],
+          "expected": {
+            "성공": 2,
+            "값": [
+              3,
+              0
+            ],
+            "실패": 1
+          }
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "되는 것만 모으기",
+      "brief": [
+        "주소 목록을 받아 되는 것만 모으는 collect 를 만들어 주세요.",
+        "count 는 주어져 있습니다. 모든 주소를 한꺼번에 보내고 전부 결말이 날 때까지 기다리세요. 하나가 실패해도 나머지를 버리면 안 됩니다.",
+        "돌려줄 것은 { counts: 성공한 개수들의 배열, errors: 실패한 이유들의 배열 } 입니다.",
+        "counts 와 errors 모두 넣은 주소 순서를 따릅니다. errors 에는 Error 객체가 아니라 message 글자를 담으세요.",
+        "실패한 것을 조용히 버리지 않는 것이 이 단계의 핵심입니다. 몇 개가 왜 실패했는지가 남아야 합니다.",
+        "빈 목록을 받으면 { counts: [], errors: [] } 입니다."
+      ],
+      "env": [
+        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
+        "(() => {",
+        "  const COURSES = [",
+        "    { id: 1, name: '리액트 입문', hours: 8 },",
+        "    { id: 2, name: 'CSS 레이아웃', hours: 6 },",
+        "    { id: 3, name: '자바스크립트 기초', hours: 12 },",
+        "  ];",
+        "",
+        "  const json = (data, status, statusText) => new Response(JSON.stringify(data), {",
+        "    status,",
+        "    statusText,",
+        "    headers: { 'Content-Type': 'application/json' },",
+        "  });",
+        "",
+        "  window.fetch = (url) => new Promise((resolve, reject) => {",
+        "    const key = String(url);",
+        "    setTimeout(() => {",
+        "      if (key === '/api/down') { reject(new TypeError('Failed to fetch')); return; }",
+        "      if (key === '/api/courses') { resolve(json(COURSES, 200, 'OK')); return; }",
+        "      if (key === '/api/none') { resolve(json([], 200, 'OK')); return; }",
+        "      if (key === '/api/broken') { resolve(json({ message: '서버가 잠시 멈췄습니다' }, 500, 'Internal Server Error')); return; }",
+        "      resolve(new Response('<!doctype html><h1>Not Found</h1>', {",
+        "        status: 404,",
+        "        statusText: 'Not Found',",
+        "        headers: { 'Content-Type': 'text/html' },",
+        "      }));",
+        "    }, 60);",
+        "  });",
+        "})();"
+      ],
+      "code": "// 이 함수는 그대로 두세요\nasync function count(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  const list = await res.json();\n  return list.length;\n}\n\n// collect 를 여기에 작성하세요\n",
+      "entry": "collect",
+      "solutionCode": "// 이 함수는 그대로 두세요\nasync function count(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  const list = await res.json();\n  return list.length;\n}\n\nasync function collect(urls) {\n  const results = await Promise.allSettled(urls.map((url) => count(url)));\n\n  return {\n    counts: results.filter((r) => r.status === 'fulfilled').map((r) => r.value),\n    errors: results.filter((r) => r.status === 'rejected').map((r) => r.reason.message),\n  };\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "둘 다 성공",
+          "args": [
+            [
+              "/api/courses",
+              "/api/none"
+            ]
+          ],
+          "expected": {
+            "counts": [
+              3,
+              0
+            ],
+            "errors": []
+          }
+        },
+        {
+          "type": "value",
+          "label": "하나가 실패해도 나머지가 남습니다",
+          "args": [
+            [
+              "/api/courses",
+              "/api/broken"
+            ]
+          ],
+          "expected": {
+            "counts": [
+              3
+            ],
+            "errors": [
+              "불러오지 못했습니다 (500)"
+            ]
+          }
+        },
+        {
+          "type": "value",
+          "label": "두 종류의 실패",
+          "args": [
+            [
+              "/api/down",
+              "/api/broken"
+            ]
+          ],
+          "expected": {
+            "counts": [],
+            "errors": [
+              "Failed to fetch",
+              "불러오지 못했습니다 (500)"
+            ]
+          }
+        },
+        {
+          "type": "value",
+          "label": "빈 목록",
+          "args": [
+            []
+          ],
+          "expected": {
+            "counts": [],
+            "errors": []
+          }
+        }
+      ]
+    }
+  ]
+}
