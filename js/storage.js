@@ -1,5 +1,7 @@
+import { storageKey } from './curriculum.js';
+
 // 단일 키에 전체 상태를 담는다. F-017(export/import)이 통째 직렬화를 요구하기 때문이다.
-const KEY = 'js-playground:v1';
+const KEY = storageKey;
 const SCHEMA_VERSION = 1;
 // 저장 개정 번호. 레슨이 다른 번호로 옮겨 가면 옛 저장분이 남의 레슨에 붙는다.
 // 2: T1 재분할로 t1-* 저장분을 한 번 비웠다.

@@ -64,6 +64,15 @@ body {
 .lesson-menu:hover { background: var(--c-surface-alt); }
 .lesson-menu__hint { color: var(--c-text-muted); font-size: 0.8rem; font-weight: 400; }
 
+.preview-badge {
+  padding: var(--sp-1) var(--sp-3);
+  border: 1px solid var(--c-accent);
+  border-radius: var(--r-pill);
+  color: var(--c-accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
 .theme-toggle {
   margin-left: auto;
   padding: var(--sp-2) var(--sp-3);
