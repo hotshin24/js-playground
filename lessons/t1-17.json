@@ -24,7 +24,8 @@
           ]
         },
         "setTimeout 안에서 stock 을 12 로 바꿉니다. 그런데 그 아래 줄은 0 을 찍습니다. 맡긴 일이 아직 실행되지 않았기 때문입니다.",
-        "0.1초 뒤에 stock 은 12 가 됩니다. 다만 그때는 이 줄이 이미 지나간 뒤입니다. 시간이 걸리는 일의 결과를 다음 줄에서 그냥 읽을 수 없다는 것이, 여기서부터 다루는 문제입니다."
+        "0.1초 뒤에 stock 은 12 가 됩니다. 다만 그때는 이 줄이 이미 지나간 뒤입니다. 시간이 걸리는 일의 결과를 다음 줄에서 그냥 읽을 수 없다는 것이, 여기서부터 다루는 문제입니다.",
+        "그래서 필요한 것이 '다 되면 알려 주는 물건' 입니다. 자바스크립트에는 그런 물건이 있고 이름이 프로미스(Promise — 지금은 값이 없지만 나중에 준다는 약속)입니다. new Promise 로 만들고, 다 됐을 때 resolve 를 불러 값을 실어 보냅니다. 이 레슨은 그 약속을 만드는 데까지 갑니다. 만들어진 약속을 받아 쓰는 문법은 뒤 트랙에서 다룹니다."
       ]
     },
     {
@@ -39,31 +40,41 @@
     },
     {
       "kind": "tweak",
-      "title": "0초로 맡겨 보기",
+      "title": "0초로 맡겨도 · 두 개를 맡겨도",
       "brief": [
-        "200 을 0 으로 바꾸고 실행해 보세요. 순서가 바뀔 것 같지만 그대로입니다. 여전히 '맡긴 일'이 마지막입니다.",
-        "0 은 '기다리지 말고 해 달라'는 뜻이지 '지금 당장'이라는 뜻이 아닙니다. 맡긴 일은 시간과 상관없이 지금 줄들이 전부 끝난 뒤에 처리됩니다.",
-        "여기서 확인할 것은 하나입니다. 순서를 가르는 것은 기다리는 시간이 아니라 맡겼는지 여부입니다."
+        "200 을 0 으로 바꾸고 실행해 보세요. 순서가 바뀔 것 같지만 그대로입니다. 0 은 '기다리지 말고 해 달라'는 뜻이지 '지금 당장'이라는 뜻이 아닙니다. 맡긴 일은 시간과 상관없이 지금 줄들이 전부 끝난 뒤에 처리됩니다.",
+        "200 으로 되돌린 뒤 setTimeout 덩어리를 하나 더 추가해 보세요. 안에서 '두 번째 맡긴 일'을 찍고 시간은 100 으로 둡니다. 실행하면 100 짜리가 먼저 찍힙니다. 코드에서는 뒤에 적었는데도 그렇습니다.",
+        "둘을 함께 보면 규칙이 갈립니다. 맡긴 일과 안 맡긴 일 사이에서는 맡겼는지 여부가 순서를 정하고, 맡긴 일들끼리는 적은 순서가 아니라 시간이 짧은 쪽이 먼저입니다."
       ],
       "code": "console.log('첫째 줄');\n\nsetTimeout(() => {\n  console.log('맡긴 일');\n}, 200);\n\nconsole.log('셋째 줄');\n"
     },
     {
-      "kind": "tweak",
-      "title": "두 개를 맡겨 보기",
+      "kind": "run",
+      "title": "약속을 만들어 보기",
       "brief": [
-        "setTimeout 덩어리를 하나 더 추가해 보세요. 안에서 '두 번째 맡긴 일'을 찍고, 시간은 100 으로 둡니다. 원래 있던 것은 200 으로 되돌립니다.",
-        "실행하면 100 짜리가 먼저 찍힙니다. 코드에서는 뒤에 적었는데도 그렇습니다.",
-        "앞 단계에서는 맡긴 일과 안 맡긴 일의 순서를 봤습니다. 여기서는 맡긴 일들끼리의 순서를 봅니다. 그들 사이에서는 적은 순서가 아니라 시간이 짧은 쪽이 먼저입니다."
+        "new Promise 로 약속을 하나 만듭니다. 괄호 안에 넘긴 함수가 약속의 몸통이고, 그 함수가 받는 resolve 를 부르면 약속이 끝납니다.",
+        "실행 버튼을 눌러 보세요. 네 줄이 이 순서로 나옵니다 — 약속을 만듭니다 / 안쪽은 지금 바로 실행됩니다 / object / 0.1초 뒤에 resolve 를 부릅니다.",
+        "둘째 줄이 요점입니다. 약속 안쪽은 나중이 아니라 지금 바로 실행됩니다. 나중인 것은 resolve 를 부르는 시점입니다. 그리고 셋째 줄에서 보듯 promise 는 그 사이에 이미 돌아와 있습니다 — 값은 아직 없지만 물건은 있습니다."
       ],
-      "code": "console.log('첫째 줄');\n\nsetTimeout(() => {\n  console.log('맡긴 일');\n}, 200);\n\nconsole.log('셋째 줄');\n"
+      "code": "console.log('약속을 만듭니다');\n\nconst promise = new Promise((resolve) => {\n  console.log('안쪽은 지금 바로 실행됩니다');\n\n  setTimeout(() => {\n    console.log('0.1초 뒤에 resolve 를 부릅니다');\n    resolve(42);\n  }, 100);\n});\n\nconsole.log(typeof promise);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "약속을 들여다보기",
+      "brief": [
+        "console.log(typeof promise); 를 console.log(promise); 로 바꿔 보세요. Promise {} 가 찍힙니다. 42 가 아닙니다. 약속은 값을 담을 상자이지 값이 아닙니다.",
+        "resolve(42) 를 resolve(99) 로 바꿔 보세요. 화면이 달라지지 않습니다. 실은 값은 받는 쪽이 있어야 드러납니다.",
+        "이 레슨에서 받는 쪽은 검사기입니다. 다음 단계에서 여러분이 만든 약속을 검사기가 기다렸다가 값을 꺼내 봅니다. 약속을 받아 쓰는 문법은 뒤 트랙에서 다룹니다."
+      ],
+      "code": "console.log('약속을 만듭니다');\n\nconst promise = new Promise((resolve) => {\n  console.log('안쪽은 지금 바로 실행됩니다');\n\n  setTimeout(() => {\n    console.log('0.1초 뒤에 resolve 를 부릅니다');\n    resolve(42);\n  }, 100);\n});\n\nconsole.log(typeof promise);\n"
     },
     {
       "kind": "fill",
       "title": "끝났다고 알리기",
       "brief": [
-        "Promise 는 '지금은 값이 없지만 나중에 준다'는 약속입니다. 안에서 받은 resolve 를 부르면 그 약속이 끝나고, 부를 때 넣은 값이 결과가 됩니다.",
+        "앞 단계에서 본 모양 그대로입니다. 0.1초 뒤에 resolve 를 부르는 약속을 돌려줍니다. 실을 값만 비어 있습니다.",
         "null 자리에 숫자 42 를 넣어 보세요. 0.1초 뒤에 42 로 끝나는 약속이 됩니다.",
-        "채우지 않고 실행하면 약속이 null 로 끝나 실제값이 null 로 나옵니다."
+        "채우지 않고 실행하면 약속이 null 로 끝나 실제값이 null 로 나옵니다. 검사기가 약속을 기다렸다가 값을 꺼내 보기 때문에, 약속이 끝났다는 것이 여기서 처음 눈에 보입니다."
       ],
       "code": "function delayedValue() {\n  return new Promise((resolve) => {\n    setTimeout(() => {\n      resolve(null); // ← 여기를 채우세요\n    }, 100);\n  });\n}\n",
       "entry": "delayedValue",
@@ -84,13 +95,13 @@
       "kind": "write",
       "title": "기다렸다가 결과 돌려주기",
       "brief": [
-        "당장 값을 낼 수 없는 일이 있습니다. 그럴 때 함수는 값 대신 Promise를 돌려주고, 받는 쪽은 그것이 끝나기를 기다립니다.",
-        "totalAfterDelay 함수를 완성해 보세요. ms 밀리초만큼 기다린 뒤 prices의 합계로 완료되는 Promise를 반환합니다. 합계 숫자를 그대로 반환하면 안 되고, 기다린 다음에 그 숫자로 완료되는 Promise여야 합니다.",
-        "prices에는 숫자뿐 아니라 숫자처럼 생긴 문자열이 섞여 들어옵니다. 더하기 전에 숫자로 바꿔 주세요."
+        "당장 값을 낼 수 없는 일이 있습니다. 그럴 때 함수는 값 대신 약속을 돌려주고, 받는 쪽은 그것이 끝나기를 기다립니다.",
+        "totalAfterDelay 를 완성해 보세요. ms 밀리초만큼 기다린 뒤 prices 의 합계로 완료되는 약속을 돌려줍니다. 합계 숫자를 그대로 돌려주면 안 됩니다 — 기다린 다음에 그 숫자로 완료되는 약속이어야 합니다.",
+        "위의 check 는 그대로 두세요. 돌려받은 것이 약속인지 먼저 확인합니다. 값을 그대로 돌려주면 검사가 그 자리에서 갈립니다."
       ],
-      "code": "function totalAfterDelay(prices, ms) {\n  // 여기를 채우세요\n}\n",
-      "entry": "totalAfterDelay",
-      "solutionCode": "function totalAfterDelay(prices, ms) {\n  return new Promise((resolve) => {\n    setTimeout(() => {\n      let total = 0;\n\n      for (const price of prices) {\n        total += Number(price);\n      }\n\n      resolve(total);\n    }, ms);\n  });\n}\n",
+      "code": "// 아래 함수는 그대로 두세요. 검사기가 부릅니다\nfunction check(prices, ms) {\n  const result = totalAfterDelay(prices, ms);\n\n  if (typeof result !== 'object') {\n    return '약속이 아니라 값을 그대로 돌려줬습니다';\n  }\n\n  return result;\n}\n\nfunction totalAfterDelay(prices, ms) {\n  // 여기를 채우세요\n}\n",
+      "entry": "check",
+      "solutionCode": "// 아래 함수는 그대로 두세요. 검사기가 부릅니다\nfunction check(prices, ms) {\n  const result = totalAfterDelay(prices, ms);\n\n  if (typeof result !== 'object') {\n    return '약속이 아니라 값을 그대로 돌려줬습니다';\n  }\n\n  return result;\n}\n\nfunction totalAfterDelay(prices, ms) {\n  return new Promise((resolve) => {\n    setTimeout(() => {\n      let total = 0;\n\n      for (const price of prices) {\n        total = total + price;\n      }\n\n      resolve(total);\n    }, ms);\n  });\n}\n",
       "asserts": [
         {
           "type": "value",
@@ -115,20 +126,21 @@
         },
         {
           "type": "value",
-          "label": "숫자 문자열은 숫자로 바꿔 더합니다 — 안 바꾸면 문자열이 이어 붙습니다",
+          "label": "지연이 0이어도 약속이어야 합니다",
           "args": [
             [
-              "10",
-              "20"
+              5,
+              7,
+              9
             ],
-            5
+            0
           ],
-          "expected": 30
+          "expected": 21
         }
       ],
       "hints": [
         "합계를 구하는 것은 t1-12 에서 했습니다. 이 단계에서 새로운 것은 그 숫자를 곧바로 돌려주지 않고 기다린 뒤에 내놓는다는 것입니다.",
-        "숫자처럼 생긴 문자열이 섞여 있습니다. 더하기 전에 바꾸지 않으면 숫자가 커지는 대신 글자가 이어 붙습니다."
+        "resolve 를 어디서 부르는지가 요점입니다. setTimeout 이 끝난 뒤라야 합계가 나옵니다 — 밖에서 부르면 기다린 의미가 없습니다."
       ]
     }
   ]
