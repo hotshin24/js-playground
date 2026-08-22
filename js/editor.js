@@ -33,7 +33,7 @@ const buildHighlight = (HighlightStyle, t) =>
 
 function buildCodeMirror([stateMod, viewMod, cmdMod, langMod, jsMod, hlMod], { parent, doc, onChange }) {
   const { EditorState } = stateMod;
-  const { EditorView, keymap, lineNumbers } = viewMod;
+  const { EditorView, keymap, lineNumbers, highlightActiveLine } = viewMod;
   const { defaultKeymap, history, historyKeymap, indentMore, indentLess } = cmdMod;
   const { indentOnInput, bracketMatching, syntaxHighlighting, HighlightStyle } = langMod;
   const { javascript } = jsMod;
@@ -70,6 +70,8 @@ function buildCodeMirror([stateMod, viewMod, cmdMod, langMod, jsMod, hlMod], { p
   const base = [
     escapeAwareTab, // defaultKeymap 보다 먼저 와야 Tab 을 가로챈다
     lineNumbers(),
+    // 커서가 어느 줄에 있는지 알려 주는 두 번째 단서다. 캐럿 하나로는 놓치기 쉽다.
+    highlightActiveLine(),
     history(),
     bracketMatching(),
     indentOnInput(),

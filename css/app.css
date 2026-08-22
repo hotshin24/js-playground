@@ -200,7 +200,17 @@ body {
 .editor-host .cm-editor { max-height: 60vh; background: var(--c-bg); }
 .editor-host .cm-scroller { font: 13.5px/1.6 var(--f-mono); }
 .editor-host .cm-gutters { border: 0; background: var(--c-bg); color: var(--c-text-muted); }
-.editor-host .cm-activeLine, .editor-host .cm-activeLineGutter { background: var(--c-surface); }
+
+/* CodeMirror 의 기본 테마가 caret-color 를 검정으로 둔다. 어두운 화면에서는
+   배경과 1.21 로 붙어 커서가 보이지 않는다(실측). 글자와 같은 색으로 세운다. */
+.editor-host .cm-content { caret-color: var(--c-text-strong); }
+
+/* 선택 영역은 브라우저 기본값에 맡기고 있었다. 값을 읽을 수도 없고 테마에 따라
+   달라진다. 편집기 배경과 3:1 이상 갈리는 토큰은 accent 뿐이다(실측). */
+.editor-host .cm-content ::selection { background: var(--c-accent); color: var(--c-on-accent); }
+
+/* surface 는 배경과 1.07 이라 보이지 않았다. surface-alt 로 올린다. */
+.editor-host .cm-activeLine, .editor-host .cm-activeLineGutter { background: var(--c-surface-alt); }
 
 .code-input {
   display: block;
