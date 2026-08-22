@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 2,
+  "id": "t1-01",
+  "track": "T1",
+  "order": 1,
+  "runtime": "js",
+  "title": "JavaScript 값의 종류 한눈에 보기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "자료형은 값의 종류입니다",
+      "brief": [
+        "자료형(data type)은 값의 종류를 뜻합니다. 값의 종류에 따라 할 수 있는 일이 달라집니다. 숫자는 더할 수 있고, 문자열은 글자 수를 셀 수 있습니다.",
+        "JavaScript의 자료형은 크게 원시 타입과 객체 타입으로 나뉩니다. 원시 타입에는 string, number, boolean, undefined, null, symbol, bigint가 있습니다. 객체 타입에는 객체, 배열, 함수 등이 있습니다.",
+        { "code": ["const name = '민수';       // string", "const price = 12000;      // number", "const soldOut = false;    // boolean", "const product = { name: '민수' }; // object"] },
+        "지금 이 이름을 모두 외울 필요는 없습니다. 이번 트랙에서 값을 하나씩 실행해 보며 차이를 확인합니다.",
+        "원시값과 객체의 중요한 차이는 T3에서 복사와 참조를 배울 때 자세히 다룹니다. 여기서는 '값의 종류가 하나뿐은 아니다'라는 점만 이해하면 됩니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "typeof로 종류 확인하기",
+      "brief": [
+        "typeof를 값 앞에 쓰면 자료형을 나타내는 문자열이 나옵니다.",
+        "실행하면 string, number, boolean, object가 차례로 출력됩니다. 마지막 값은 중괄호로 만든 객체입니다."
+      ],
+      "code": "console.log(typeof '민수');\nconsole.log(typeof 12000);\nconsole.log(typeof false);\nconsole.log(typeof { name: '민수' });\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "값을 바꾸면 결과도 바뀝니다",
+      "brief": [
+        "첫째 줄의 '민수'를 42로 바꾸고 실행해 보세요. 결과가 string에서 number로 바뀝니다.",
+        "따옴표를 붙인 '42'는 문자열이고, 따옴표가 없는 42는 숫자입니다. 사람이 보기에 비슷해도 JavaScript는 서로 다른 종류의 값으로 처리합니다.",
+        "typeof는 변수를 검사하는 전용 명령이 아닙니다. 지금처럼 값에 직접 사용할 수도 있습니다."
+      ],
+      "code": "console.log(typeof '민수');\nconsole.log(typeof 12000);\nconsole.log(typeof false);\nconsole.log(typeof { name: '민수' });\n"
+    }
+  ]
+}
