@@ -692,6 +692,24 @@
       "track": "T8",
       "order": 4,
       "title": "경로와 확장자"
+    },
+    {
+      "id": "t8-05",
+      "track": "T8",
+      "order": 5,
+      "title": "컴포넌트를 파일로"
+    },
+    {
+      "id": "t8-06",
+      "track": "T8",
+      "order": 6,
+      "title": "나누는 기준"
+    },
+    {
+      "id": "t8-07",
+      "track": "T8",
+      "order": 7,
+      "title": "배럴 파일"
     }
   ]
 }
