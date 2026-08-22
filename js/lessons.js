@@ -8,11 +8,24 @@ const fail = (message) => {
   throw new Error(message);
 };
 
+/**
+ * 지문 문단은 문자열이거나 코드 블록 객체다.
+ * 코드는 줄 배열로 적는다 — scaffold·env 와 같은 관례이고, JSON 안에서 \n 이스케이프를 없앤다.
+ * 기존 113레슨의 문단 2341개는 전부 문자열이라 해석이 달라지지 않는다.
+ */
+const isBriefPart = (p) =>
+  typeof p === 'string' ||
+  (Boolean(p) && typeof p === 'object' && (Array.isArray(p.code) || typeof p.code === 'string'));
+
 const checkBrief = (brief, where) => {
-  if (!Array.isArray(brief) || brief.some((p) => typeof p !== 'string')) {
-    fail(where + ' 의 brief 는 문자열 문단의 배열이어야 합니다');
+  if (!Array.isArray(brief) || brief.some((p) => !isBriefPart(p))) {
+    fail(where + ' 의 brief 는 문자열 또는 { code } 문단의 배열이어야 합니다');
   }
 };
+
+// 코드 블록의 줄 배열을 한 덩어리로 잇는다. 그리는 쪽은 문자열만 보면 된다.
+const normalizeBrief = (brief) =>
+  brief.map((p) => (typeof p === 'string' ? p : { code: joinLines(p.code) }));
 
 const checkAsserts = (step, where) => {
   const asserts = step.asserts || [];
@@ -85,7 +98,7 @@ const normalizeStep = (step, i) => {
   return {
     kind: step.kind,
     title: step.title || '',
-    brief: step.brief,
+    brief: normalizeBrief(step.brief),
     code: typeof step.code === 'string' ? step.code : '',
     files: files,
     // 힌트는 최대 둘이다. 셋째는 대개 정답을 쪼갠 것이고, 그럴 바에 정답 보기를 여는 편이 정직하다.

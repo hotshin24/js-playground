@@ -8,10 +8,18 @@ export function createBrief({ titleEl, bodyEl }) {
   const render = (step) => {
     titleEl.textContent = step.title || labelOf(step.kind);
     bodyEl.replaceChildren(
-      ...step.brief.map((text) => {
-        const p = document.createElement('p');
-        p.textContent = text;
-        return p;
+      ...step.brief.map((part) => {
+        if (typeof part === 'string') {
+          const p = document.createElement('p');
+          p.textContent = part;
+          return p;
+        }
+        // 코드는 들여쓰기를 지키고 제 안에서 스크롤한다. 산문처럼 접으면 모양이 무너진다.
+        const pre = document.createElement('pre');
+        pre.className = 'prose__code';
+        pre.tabIndex = 0;
+        pre.textContent = part.code;
+        return pre;
       })
     );
   };

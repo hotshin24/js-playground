@@ -498,3 +498,20 @@ body {
   max-height: 40vh;
   overflow: auto;
 }
+
+/* 지문 안의 코드 블록. read 단계는 CodeMirror 를 받지 않으므로 구문 강조가 없다 —
+   강조를 붙이려면 편집기를 끌어와야 하고 그러면 콜드 로드 1,799ms(F-007)가
+   도구의 첫 화면으로 옮겨 온다. 등폭 글꼴과 배경으로 코드임을 알린다. */
+.prose__code {
+  margin: 0 0 1.25em;
+  padding: var(--sp-4);
+  border-radius: var(--r-sm);
+  background: var(--c-surface-alt);
+  color: var(--c-text-strong);
+  font: 13.5px/1.7 var(--f-mono);
+  /* 산문은 낱말을 끊어서라도 접고(.prose p) 코드는 들여쓰기를 지킨 채 제 안에서 스크롤한다.
+     문서 전체 가로 스크롤로 번지지 않게 하는 것이 요점이다. */
+  white-space: pre;
+  overflow-x: auto;
+}
+.prose__code:last-child { margin-bottom: 0; }
