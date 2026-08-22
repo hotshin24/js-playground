@@ -10,14 +10,33 @@
       "title": "흩어진 값을 하나로 묶기",
       "brief": [
         "상품 하나를 다루려면 이름, 가격, 재고가 함께 필요합니다. 변수를 셋으로 나눠 두면 상품이 둘이 되는 순간 여섯 개가 되고, 어느 이름이 어느 가격과 짝인지 코드만 봐서는 알 수 없습니다.",
-        "객체(object — 이름표가 붙은 값들의 묶음)는 그 값들을 하나로 묶습니다. 중괄호 안에 이름표와 값을 콜론으로 짝지어 쉼표로 나열합니다.",
+        "객체(object — 이름표가 붙은 값들의 묶음)는 그 값들을 하나로 묶습니다. 중괄호 안에 이름표와 값을 콜론으로 짝지어 쉼표로 나열하고, 꺼낼 때는 점을 찍고 이름표를 적습니다.",
         {
           "code": [
-            "const product = { name: '셔츠', price: 39000 };",
+            "const product = { name: '셔츠', price: 39000, stock: 3 };",
             "",
-            "console.log(product.price);",
+            "console.log(product.name);   // 셔츠",
             "",
-            "// 39000"
+            "const label = product.name + ' ' + product.price + '원';",
+            "console.log(label);          // 셔츠 39000원",
+            "",
+            "const total = product.price * product.stock;",
+            "console.log(total);          // 117000"
+          ]
+        },
+        "꺼낸 값은 보통 그대로 쓰지 않고 다른 것과 엮습니다. 화면에 보여줄 글자로 잇거나, 다른 값과 계산합니다. 묶어 두면 product 하나만 넘겨도 그 안의 것을 모두 쓸 수 있습니다.",
+        "이름표는 적힌 그대로 써야 합니다. price 와 Price 는 다른 이름입니다.",
+        {
+          "code": [
+            "const product = { name: '셔츠', price: 39000, stock: 3 };",
+            "",
+            "console.log(product.name);   // 셔츠",
+            "",
+            "const label = product.name + ' ' + product.price + '원';",
+            "console.log(label);          // 셔츠 39000원",
+            "",
+            "const total = product.price * product.stock;",
+            "console.log(total);          // 117000"
           ]
         },
         "꺼낼 때는 점을 찍고 이름표를 적습니다. 이름표는 적힌 그대로 써야 합니다 — price 와 Price 는 다른 이름입니다.",
