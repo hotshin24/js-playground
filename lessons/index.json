@@ -674,6 +674,24 @@
       "track": "T8",
       "order": 1,
       "title": "나누면 보이지 않는다"
+    },
+    {
+      "id": "t8-02",
+      "track": "T8",
+      "order": 2,
+      "title": "이름을 맞추는 법"
+    },
+    {
+      "id": "t8-03",
+      "track": "T8",
+      "order": 3,
+      "title": "default 와 이름"
+    },
+    {
+      "id": "t8-04",
+      "track": "T8",
+      "order": 4,
+      "title": "경로와 확장자"
     }
   ]
 }
