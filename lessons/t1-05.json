@@ -51,25 +51,28 @@
     },
     {
       "kind": "fill",
-      "title": "두 번째 값 꺼내기",
+      "title": "목록을 한 줄로 요약하기",
       "brief": [
-        "null 자리에 names의 두 번째 값을 꺼내는 표현을 넣어 보세요.",
-        "번호가 0부터 시작한다는 점을 생각하면 두 번째의 번호가 무엇인지 정해집니다.",
-        "채우지 않고 실행하면 실제값이 null로 나옵니다."
+        "목록을 요약합니다. 몇 개인지와, 이름들을 하나로 이어 붙인 글자 둘이 필요합니다.",
+        "null 자리에 count 와 joined 두 이름표를 가진 객체를 넣어 보세요. 이어 붙일 때 사이에 넣을 구분자는 ' / ' 입니다.",
+        "채우지 않고 실행하면 실제값이 null 로 나옵니다."
       ],
-      "code": "const names = ['셔츠', '모자', '양말'];\n\nconst second = null; // ← 여기를 채우세요\n\nfunction getSecond() {\n  return second;\n}\n",
-      "entry": "getSecond",
-      "solutionCode": "const names = ['셔츠', '모자', '양말'];\n\nconst second = names[1];\n\nfunction getSecond() {\n  return second;\n}\n",
+      "code": "const names = ['셔츠', '모자', '양말'];\n\nconst summary = null; // ← 여기를 채우세요\n\nfunction getSummary() {\n  return summary;\n}\n",
+      "entry": "getSummary",
+      "solutionCode": "const names = ['셔츠', '모자', '양말'];\n\nconst summary = { count: names.length, joined: names.join(' / ') };\n\nfunction getSummary() {\n  return summary;\n}\n",
       "asserts": [
         {
           "type": "value",
-          "label": "두 번째 값은 '모자'입니다",
+          "label": "개수와 이어 붙인 글자",
           "args": [],
-          "expected": "모자"
+          "expected": {
+            "count": 3,
+            "joined": "셔츠 / 모자 / 양말"
+          }
         }
       ],
       "hints": [
-        "몇 번째인지와 번호가 한 칸 어긋납니다. 첫 번째가 0 이면 두 번째는 무엇인지 세어 보세요."
+        "개수를 세는 것과 이어 붙이는 것은 배열이 각각 따로 가지고 있습니다. 하나는 괄호 없이 쓰고, 다른 하나는 괄호 안에 구분자를 넣어 부릅니다."
       ]
     },
     {

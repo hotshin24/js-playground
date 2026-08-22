@@ -63,25 +63,25 @@
     },
     {
       "kind": "fill",
-      "title": "짧게 쓰는 갈림길",
+      "title": "먼저 볼 갈래 정하기",
       "brief": [
-        "갈래가 둘뿐이고 값 하나만 고르면 될 때는 삼항 연산자로 한 줄에 쓸 수 있습니다. 조건 ? 참일_때 : 거짓일_때 형태입니다.",
-        "null 자리에 삼항 연산자를 넣어 보세요. stock이 0보다 크면 '있음', 아니면 '없음'이 되어야 합니다.",
-        "if로 쓴 것과 결과는 같습니다. 값 하나를 고르는 자리에서만 짧게 쓰는 표현입니다."
+        "포인트가 5000 이상이면 VIP, 1000 이상이면 일반, 그 아래는 신규입니다. 첫 갈래의 조건만 비어 있습니다.",
+        "null 자리에 point 가 5000 이상인지 묻는 비교를 넣어 보세요.",
+        "채우지 않고 실행하면 '일반' 이 나옵니다. null 은 거짓이라 첫 갈래를 건너뛰기 때문입니다. 8000 은 두 조건 모두에 맞으니, 어느 갈래를 먼저 보느냐가 답을 정합니다."
       ],
-      "code": "const stock = 3;\n\nconst label = null; // ← 여기를 채우세요\n\nfunction getLabel() {\n  return label;\n}\n",
-      "entry": "getLabel",
-      "solutionCode": "const stock = 3;\n\nconst label = stock > 0 ? '있음' : '없음';\n\nfunction getLabel() {\n  return label;\n}\n",
+      "code": "const point = 8000;\n\nfunction getGrade() {\n  if (null) { // ← 여기를 채우세요\n    return 'VIP';\n  } else if (point >= 1000) {\n    return '일반';\n  } else {\n    return '신규';\n  }\n}\n",
+      "entry": "getGrade",
+      "solutionCode": "const point = 8000;\n\nfunction getGrade() {\n  if (point >= 5000) {\n    return 'VIP';\n  } else if (point >= 1000) {\n    return '일반';\n  } else {\n    return '신규';\n  }\n}\n",
       "asserts": [
         {
           "type": "value",
-          "label": "재고가 3이면 '있음'",
+          "label": "8000점은 VIP 입니다",
           "args": [],
-          "expected": "있음"
+          "expected": "VIP"
         }
       ],
       "hints": [
-        "삼항 연산자는 물음표 앞이 조건, 콜론 앞뒤가 두 갈래입니다. 지금 자리에 필요한 것은 문장이 아니라 값 하나를 고르는 식입니다."
+        "위에서부터 확인하다가 처음 참인 곳으로 들어가고 나머지는 건너뜁니다. 8000 은 1000 이상이기도 합니다. 지금 '일반' 이 나온다면 첫 갈래가 거짓이었다는 뜻입니다."
       ]
     },
     {

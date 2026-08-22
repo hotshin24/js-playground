@@ -60,25 +60,28 @@
     },
     {
       "kind": "fill",
-      "title": "1씩 올리기",
+      "title": "돌려줄 함수 만들기",
       "brief": [
-        "makeCounter의 뼈대는 다 있습니다. 돌려주는 함수 안에서 current를 1 올리는 부분만 비어 있습니다.",
-        "null 자리에 지금 current보다 1 큰 값을 넣어 보세요. 그 값이 다시 current가 되고, 다음 줄에서 돌려집니다.",
-        "채우지 않고 실행하면 실제값이 null로 나옵니다."
+        "makeCounter 는 카운터를 만들어 돌려줍니다. 돌려줄 함수의 속이 비어 있습니다.",
+        "null 자리를 채워, 부를 때마다 current 를 1 올리고 그 값을 돌려주는 함수로 만들어 보세요. 여러 줄이 필요하면 중괄호를 씌우고 return 을 적습니다.",
+        "채우지 않고 실행하면 두 번 다 null 이 나옵니다. 10 으로 만들어 두 번 불렀으니 11 과 12 가 나와야 합니다."
       ],
-      "code": "const makeCounter = (start) => {\n  let current = start;\n\n  return () => {\n    current = null; // ← 여기를 채우세요\n    return current;\n  };\n};\n\nfunction getFirst() {\n  const counter = makeCounter(10);\n\n  return counter();\n}\n",
+      "code": "const makeCounter = (start) => {\n  let current = start;\n\n  return () => null; // ← 여기를 채우세요\n};\n\nfunction getFirst() {\n  const counter = makeCounter(10);\n\n  return [counter(), counter()];\n}\n",
       "entry": "getFirst",
-      "solutionCode": "const makeCounter = (start) => {\n  let current = start;\n\n  return () => {\n    current = current + 1;\n    return current;\n  };\n};\n\nfunction getFirst() {\n  const counter = makeCounter(10);\n\n  return counter();\n}\n",
+      "solutionCode": "const makeCounter = (start) => {\n  let current = start;\n\n  return () => {\n    current = current + 1;\n    return current;\n  };\n};\n\nfunction getFirst() {\n  const counter = makeCounter(10);\n\n  return [counter(), counter()];\n}\n",
       "asserts": [
         {
           "type": "value",
-          "label": "10에서 시작한 카운터의 첫 값은 11입니다",
+          "label": "두 번 부르면 11, 12 입니다",
           "args": [],
-          "expected": 11
+          "expected": [
+            11,
+            12
+          ]
         }
       ],
       "hints": [
-        "current 를 올리는 것과 올린 값을 돌려주는 것은 다른 일입니다. 이 자리에서 만들어야 하는 것은 '지금 current 보다 1 큰 값' 하나입니다."
+        "current 는 이 함수 밖에 있지만 안에서 그대로 쓸 수 있습니다. 두 번째가 12 가 되려면 첫 호출이 바꿔 놓은 값이 그대로 남아 있어야 합니다."
       ]
     },
     {

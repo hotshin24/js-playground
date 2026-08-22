@@ -50,25 +50,28 @@
     },
     {
       "kind": "fill",
-      "title": "묶음에서 값 꺼내기",
+      "title": "골라서 새로 묶기",
       "brief": [
-        "null 자리에 product의 가격을 꺼내는 표현을 넣어 보세요. 점을 찍으면 됩니다.",
-        "이름표는 위 객체에 적힌 그대로 써야 합니다. 대소문자가 다르면 다른 이름입니다.",
-        "채우지 않고 실행하면 실제값이 null로 나옵니다."
+        "화면에 쓸 것은 이름과 가격뿐입니다. 재고는 빼고 둘만 담은 새 객체를 만들어야 합니다.",
+        "null 자리에 name 과 price 두 이름표를 가진 객체를 넣어 보세요. 값은 product 에서 꺼내 옵니다.",
+        "채우지 않고 실행하면 실제값이 null 로 나옵니다."
       ],
-      "code": "const product = {\n  name: '모자',\n  price: 19000,\n  stock: 7,\n};\n\nconst price = null; // ← 여기를 채우세요\n\nfunction getPrice() {\n  return price;\n}\n",
-      "entry": "getPrice",
-      "solutionCode": "const product = {\n  name: '모자',\n  price: 19000,\n  stock: 7,\n};\n\nconst price = product.price;\n\nfunction getPrice() {\n  return price;\n}\n",
+      "code": "const product = {\n  name: '모자',\n  price: 19000,\n  stock: 7,\n};\n\nconst card = null; // ← 여기를 채우세요\n\nfunction getCard() {\n  return card;\n}\n",
+      "entry": "getCard",
+      "solutionCode": "const product = {\n  name: '모자',\n  price: 19000,\n  stock: 7,\n};\n\nconst card = { name: product.name, price: product.price };\n\nfunction getCard() {\n  return card;\n}\n",
       "asserts": [
         {
           "type": "value",
-          "label": "모자의 가격은 19000입니다",
+          "label": "이름과 가격만 담깁니다",
           "args": [],
-          "expected": 19000
+          "expected": {
+            "name": "모자",
+            "price": 19000
+          }
         }
       ],
       "hints": [
-        "점을 찍는 것까지는 지문이 말했습니다. 남은 것은 이름표를 정확히 옮겨 적는 일입니다. 위 객체를 보고 대소문자까지 그대로인지 대조해 보세요."
+        "꺼내는 것과 묶는 것을 한 줄에서 같이 합니다. 중괄호를 열고 이름표를 적은 뒤, 그 값 자리에 product 에서 점을 찍어 꺼낸 것을 놓으세요."
       ]
     },
     {

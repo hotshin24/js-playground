@@ -49,13 +49,13 @@
     },
     {
       "kind": "fill",
-      "title": "꺼내는 통로 만들기",
+      "title": "내보낼 통로 만들기",
       "brief": [
-        "counter 의 add 는 완성돼 있고 get 만 비어 있습니다. get 은 지금까지 센 값을 돌려줘야 합니다.",
-        "null 자리에 안쪽 변수 이름을 넣어 보세요. 즉시실행함수 안이므로 그 이름을 그대로 쓸 수 있습니다.",
-        "채우지 않고 실행하면 실제값이 null 로 나옵니다."
+        "즉시실행함수 안에 count 가 있고, 밖으로 내보낼 객체가 비어 있습니다. add 는 아무 일도 하지 않고 get 은 null 만 돌려줍니다.",
+        "돌려주는 객체를 채워 보세요. add 는 count 를 1 올리고, get 은 지금까지 센 값을 돌려줘야 합니다. 두 함수 모두 안쪽의 count 를 그대로 쓸 수 있습니다.",
+        "채우지 않고 실행하면 두 번 불러도 null 이 나옵니다."
       ],
-      "code": "const counter = (() => {\n  let count = 0;\n\n  return {\n    add: () => {\n      count = count + 1;\n    },\n    get: () => null, // ← 여기를 채우세요\n  };\n})();\n\nfunction getCount() {\n  counter.add();\n  counter.add();\n\n  return counter.get();\n}\n",
+      "code": "const counter = (() => {\n  let count = 0;\n\n  return { add: () => {}, get: () => null }; // ← 여기를 채우세요\n})();\n\nfunction getCount() {\n  counter.add();\n  counter.add();\n\n  return counter.get();\n}\n",
       "entry": "getCount",
       "solutionCode": "const counter = (() => {\n  let count = 0;\n\n  return {\n    add: () => {\n      count = count + 1;\n    },\n    get: () => count,\n  };\n})();\n\nfunction getCount() {\n  counter.add();\n  counter.add();\n\n  return counter.get();\n}\n",
       "asserts": [
@@ -67,7 +67,7 @@
         }
       ],
       "hints": [
-        "즉시실행함수 안이므로 바깥에서 못 보는 이름을 여기서는 그대로 쓸 수 있습니다. 위에서 add 가 무엇을 올리고 있는지 보세요."
+        "밖에서는 count 라는 이름이 보이지 않지만 이 안에서는 보입니다. add 가 바꿔 놓은 값을 get 이 그대로 읽으면 됩니다 — 둘이 같은 count 를 봅니다."
       ]
     },
     {

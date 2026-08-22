@@ -50,25 +50,25 @@
     },
     {
       "kind": "fill",
-      "title": "가격 자리 채우기",
+      "title": "항목 한 줄 만들기",
       "brief": [
-        "라벨의 가격 자리가 비어 있습니다. 백틱 안이므로 ${ } 안에 이름을 적으면 그 값이 들어갑니다.",
-        "null 자리에 price 를 넣어 보세요.",
-        "채우지 않고 실행하면 '셔츠 - null원' 이 나옵니다."
+        "목록의 항목 하나를 마크업 문자열로 만듭니다. <li class=\"item\">셔츠 - 39000원</li> 형태여야 합니다.",
+        "null 자리에 백틱으로 감싼 글자를 넣어 보세요. 이름과 가격 자리만 ${ } 로 채웁니다. 공백과 하이픈은 적힌 그대로여야 합니다.",
+        "채우지 않고 실행하면 실제값이 null 로 나옵니다."
       ],
-      "code": "const name = '셔츠';\nconst price = 39000;\n\nconst label = `${name} - ${null}원`; // ← null 자리를 채우세요\n\nfunction getLabel() {\n  return label;\n}\n",
-      "entry": "getLabel",
-      "solutionCode": "const name = '셔츠';\nconst price = 39000;\n\nconst label = `${name} - ${price}원`;\n\nfunction getLabel() {\n  return label;\n}\n",
+      "code": "const product = { name: '셔츠', price: 39000 };\n\nconst line = null; // ← 여기를 채우세요\n\nfunction getLine() {\n  return line;\n}\n",
+      "entry": "getLine",
+      "solutionCode": "const product = { name: '셔츠', price: 39000 };\n\nconst line = `<li class=\"item\">${product.name} - ${product.price}원</li>`;\n\nfunction getLine() {\n  return line;\n}\n",
       "asserts": [
         {
           "type": "value",
-          "label": "'셔츠 - 39000원' 이 만들어집니다",
+          "label": "항목 한 줄이 그대로 만들어집니다",
           "args": [],
-          "expected": "셔츠 - 39000원"
+          "expected": "<li class=\"item\">셔츠 - 39000원</li>"
         }
       ],
       "hints": [
-        "백틱 안에서 값을 넣는 자리는 달러와 중괄호입니다. 그 안에는 이름을 그대로 적습니다."
+        "바깥만 백틱으로 바꾸면 됩니다. 백틱 안에서는 큰따옴표를 따로 감쌀 필요가 없어서 class=\"item\" 을 적힌 그대로 둘 수 있습니다."
       ]
     },
     {
