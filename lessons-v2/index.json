@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "tracks": [
+    { "id": "T0", "title": "실행과 값" },
+    { "id": "T1", "title": "자료형과 연산" },
+    { "id": "T2", "title": "조건 · 반복 · 함수 · 스코프" },
+    { "id": "T3", "title": "객체 · 배열 · 참조" },
+    { "id": "T4", "title": "브라우저 JavaScript와 비동기" },
+    { "id": "T5", "title": "React의 출발점" },
+    { "id": "T6", "title": "상태와 입력" },
+    { "id": "T7", "title": "라이프 사이클과 효과" },
+    { "id": "T8", "title": "복잡한 상태와 데이터 공급" },
+    { "id": "T9", "title": "렌더링 최적화와 저장" }
+  ],
+  "lessons": [
+    { "id": "t0-01", "track": "T0", "order": 1, "title": "코드는 어떤 순서로 실행될까요" },
+    { "id": "t0-02", "track": "T0", "order": 2, "title": "값을 출력해 확인하기" },
+    { "id": "t0-03", "track": "T0", "order": 3, "title": "값에 이름 붙이기" },
+    { "id": "t0-04", "track": "T0", "order": 4, "title": "읽을 수 있는 이름 짓기" },
+    { "id": "t0-05", "track": "T0", "order": 5, "title": "오류 메시지에서 멈춘 자리 찾기" },
+    { "id": "t0-06", "track": "T0", "order": 6, "title": "입력을 받아 결과 반환하기" }
+  ]
+}
