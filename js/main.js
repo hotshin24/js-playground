@@ -16,7 +16,6 @@ import { firstUnfinishedStep } from './lesson-status.js';
 
 const el = (id) => document.querySelector('#' + id);
 
-
 const theme = createTheme({ button: el('theme-toggle'), labelEl: el('theme-toggle-label') });
 const runButton = el('run');
 const resetButton = el('reset');
@@ -35,7 +34,7 @@ const progress = createProgress({
   onChanged: () => refreshNav(),
 });
 
-// 캐시된 옛 앱이 새 레슨 데이터를 읽으면 학습자는 자기 코드를 의심하게 된다.
+// 캐시된 옛 앱이 새 레슨 데이터를 읽으면 학습자가 자기 코드를 의심한다.
 // 자동 새로고침은 하지 않는다 — 작업 중인 코드가 저장 타이밍과 겹치면 잃는다.
 checkBuild().then((s) => s && progress.notify('stale'));
 
