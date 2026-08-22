@@ -32,6 +32,7 @@ export function createRunner({ mount, onEvent }) {
   let doneSeen = false;
   let pingSeen = false;
   let loadSeen = false;
+  let filesMode = false;
 
   // load 는 부모가 직접 받는 신호라 자식 스레드가 막혀도 도착한다.
   // 자식이 보내는 ping 과 달리 블로킹에 갇히지 않는 유일한 관측점이다.
@@ -87,7 +88,7 @@ export function createRunner({ mount, onEvent }) {
       return;
     }
 
-    const out = toEvent(msg, lineOffset);
+    const out = toEvent(msg, lineOffset, filesMode);
     if (!out) return;
     // done 은 경과 시간을 러너만 알고 있어 여기서 채운다
     if (out.type === 'done') {
@@ -102,9 +103,7 @@ export function createRunner({ mount, onEvent }) {
 
   const start = (code, options) => {
     const { assertScript = '', scaffold, mount: target = mount, preview = false, react = '', env = '', payload = null } = options;
-    doneSeen = false;
-    pingSeen = false;
-    loadSeen = false;
+    doneSeen = pingSeen = loadSeen = false;
     // 프레임이 아예 뜨지 않는 경우(프렐류드 미실행)도 이 시드 덕분에 같은 경로로 잡힌다
     lastPingAt = performance.now();
 
@@ -113,6 +112,7 @@ export function createRunner({ mount, onEvent }) {
     frame.addEventListener('load', handleLoad);
     // allow-same-origin 을 절대 넣지 않는다. 넣는 순간 부모 DOM/스토리지가 열린다.
     frame.setAttribute('sandbox', 'allow-scripts');
+    filesMode = Boolean(payload);
     if (payload) {
       // 사용자 코드가 문서에 인라인으로 들어가지 않는다. 줄 번호가 이미 파일 기준이라 보정하지 않는다.
       lineOffset = 0;
