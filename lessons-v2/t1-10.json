@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 2,
+  "id": "t1-10",
+  "track": "T1",
+  "order": 10,
+  "runtime": "js",
+  "title": "계산하고 변수에 다시 저장하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "산술 연산자와 대입 연산자는 역할이 다릅니다",
+      "brief": [
+        "+, -, *, /, %는 숫자를 계산하는 산술 연산자입니다. =는 오른쪽 값을 왼쪽 변수에 저장하는 대입 연산자입니다.",
+        { "code": ["let total = 10000;", "total = total + 3000;"] },
+        "둘째 줄은 기존 total에 3000을 더한 뒤 그 결과를 total에 다시 저장합니다. =는 '양쪽이 같다'는 뜻이 아닙니다.",
+        "total += 3000은 total = total + 3000을 줄여 쓴 복합 대입입니다. -=, *=, /=도 같은 방식으로 동작합니다.",
+        "변수 값을 다시 저장해야 하므로 total은 const가 아니라 let으로 선언합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "복합 대입 결과 따라가기",
+      "brief": [
+        "total은 10000에서 시작합니다. 3000을 더하면 13000, 1000을 빼면 12000, 2를 곱하면 24000이 됩니다.",
+        "각 줄이 끝난 뒤 total에 어떤 값이 남는지 순서대로 따라가 보세요."
+      ],
+      "code": "let total = 10000;\n\ntotal += 3000;\nconsole.log(total);\n\ntotal -= 1000;\nconsole.log(total);\n\ntotal *= 2;\nconsole.log(total);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "나머지 연산 사용하기",
+      "brief": [
+        "맨 아래에 console.log(total % 7);을 추가해 보세요. 24000을 7로 나눈 나머지 4가 출력됩니다.",
+        "첫 줄의 let을 const로 바꾸면 total += 3000에서 오류가 납니다. 복합 대입도 변수에 새 값을 다시 할당하는 동작이기 때문입니다.",
+        "계산 결과를 새 변수에만 담는다면 const를 쓸 수 있습니다. 기존 변수를 계속 바꾸어야 할 때만 let을 사용하세요."
+      ],
+      "code": "let total = 10000;\n\ntotal += 3000;\nconsole.log(total);\n\ntotal -= 1000;\nconsole.log(total);\n\ntotal *= 2;\nconsole.log(total);\n"
+    }
+  ]
+}

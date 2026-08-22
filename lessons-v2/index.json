@@ -23,6 +23,11 @@
     { "id": "t1-02", "track": "T1", "order": 2, "title": "문자열로 글자 다루기" },
     { "id": "t1-03", "track": "T1", "order": 3, "title": "숫자와 특별한 숫자 결과 이해하기" },
     { "id": "t1-04", "track": "T1", "order": 4, "title": "참과 거짓으로 상태 나타내기" },
-    { "id": "t1-05", "track": "T1", "order": 5, "title": "undefined와 null 구분하기" }
+    { "id": "t1-05", "track": "T1", "order": 5, "title": "undefined와 null 구분하기" },
+    { "id": "t1-06", "track": "T1", "order": 6, "title": "Symbol과 BigInt는 언제 쓸까요" },
+    { "id": "t1-07", "track": "T1", "order": 7, "title": "변수에 다른 종류의 값 넣기" },
+    { "id": "t1-08", "track": "T1", "order": 8, "title": "원하는 자료형으로 직접 바꾸기" },
+    { "id": "t1-09", "track": "T1", "order": 9, "title": "JavaScript가 자동으로 자료형을 바꿀 때" },
+    { "id": "t1-10", "track": "T1", "order": 10, "title": "계산하고 변수에 다시 저장하기" }
   ]
 }
