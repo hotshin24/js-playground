@@ -4,15 +4,16 @@ import { createLayout } from './layout.js';
 import { createBrowse } from './browse.js';
 import { createPreview } from './preview.js';
 import { createFileTabs } from './file-tabs.js';
+import { createAssist } from './assist.js';
+import { createStepView } from './step-view.js';
 import { createStepControls } from './step-controls.js';
 import { createBrief } from './brief.js';
 import { createTheme } from './theme.js';
 import { createProgress } from './progress.js';
-import { loadIndex, loadLesson } from './lessons.js';
+import { loadIndex } from './lessons.js';
 import { checkBuild } from './build-info.js';
 import { policyOf, labelOf } from './steps.js';
-import { setLastLesson, readLastPosition, setLessonMeta, readLessons } from './storage.js';
-import { firstUnfinishedStep } from './lesson-status.js';
+import { readLastPosition } from './storage.js';
 
 const el = (id) => document.querySelector('#' + id);
 
@@ -22,10 +23,6 @@ const resetButton = el('reset');
 const nextButton = el('next-step');
 
 let index = { tracks: [], lessons: [] };
-let lesson = null;
-let stepIndex = 0;
-let step = null;
-let ran = false;
 
 const progress = createProgress({
   noticeEl: el('notice'),
@@ -56,6 +53,7 @@ const session = createSession({
   summaryEl: el('assert-summary'),
   onAllPassed: () => progress.complete({ ran: true, changed: true, allPassed: true }),
   onFileError: (name) => tabs.markError(name),
+  onChecked: (allPassed) => assist.recordResult(allPassed),
   onTimeout: () => {
     progress.discard();
     progress.notify('discarded');
@@ -73,6 +71,15 @@ const workspace = createWorkspace({
     if (!editable) progress.flush();
     progress.editorChanged(editable, mode);
   },
+});
+
+// 정답을 보고 통과한 것과 스스로 푼 것을 진행률에서 갈라 두되, 화면에는 표시하지 않는다.
+// PRD §7.1 의 '정답 보기 사용 비율' 은 이 기록으로만 계산된다.
+const assist = createAssist({
+  hintButton: el('hint'),
+  solutionButton: el('solution'),
+  panelEl: el('assist'),
+  onReveal: () => progress.markRevealed(),
 });
 
 const tabs = createFileTabs({
@@ -93,58 +100,21 @@ const browse = createBrowse({
   closeButton: el('overlay-close'),
   labelOf,
   onLesson: (id) => {
-    if (!lesson || id !== lesson.id) openLesson(id);
+    const { lesson } = view.current();
+    if (!lesson || id !== lesson.id) view.openLesson(id);
   },
   onStep: (next) => {
-    if (next !== stepIndex) showStep(next);
+    if (next !== view.current().stepIndex) view.showStep(next);
   },
 });
 
-const refreshNav = () =>
+const refreshNav = () => {
+  const { lesson, stepIndex } = view.current();
   browse.refresh({ index, lesson, stepIndex, isStepDone: progress.isStepDone });
-
-const showStep = (next) => {
-  progress.flush();
-  stepIndex = next;
-  step = lesson.steps[next];
-  ran = false;
-  progress.setContext(lesson.id, next, step);
-
-  el('main').className = 'layout layout--' + step.kind;
-  brief.render(step);
-  el('main').classList.toggle('layout--with-preview', preview.reset(step, layout.isEditable()));
-  session.clear();
-  nextButton.hidden = next >= lesson.steps.length - 1;
-
-  // 탭은 applyPolicy 가 붙였다 뗀다. 편집 가능 여부에 따라 존재 자체가 갈리기 때문이다.
-  if (step.files) workspace.setFiles(progress.resolveFiles(step));
-  else workspace.setCode(progress.resolveCode(step));
-  setLastLesson(lesson.id, next);
-  refreshNav();
-
-  // read 단계는 에디터를 만들지 않는다. CodeMirror 를 받지 않아 첫 화면이 즉시 뜬다.
-  const editable = policyOf(step.kind).editor && layout.isEditable();
-  if (editable) workspace.mount();
-  else workspace.unmount(layout.isEditable() ? 'step' : 'narrow');
-  applyPolicy(editable);
-};
-
-const openLesson = async (id, from) => {
-  lesson = await loadLesson(id);
-  el('lesson-title').textContent = lesson.title;
-  // 단계 구성이 바뀌면 그 레슨 저장분만 조용히 버려진다
-  setLessonMeta(id, lesson.steps.length, lesson.steps.map((s) => s.kind).join('-'));
-  // 레슨을 고르면 첫 미완료 단계로 보낸다. 새 저장 필드 없이 완료 기록으로 계산된다.
-  const start = from === undefined ? firstUnfinishedStep(readLessons()[id], lesson.steps.length) : from;
-  showStep(Math.min(start, lesson.steps.length - 1));
-};
-
-const goNext = () => {
-  progress.complete({ ran, changed: true, allPassed: false }); // read 의 유일한 완료 신호
-  if (stepIndex < lesson.steps.length - 1) showStep(stepIndex + 1);
 };
 
 const handleKeydown = (e) => {
+  const { step } = view.current();
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && step && policyOf(step.kind).run) {
     e.preventDefault();
     run();
@@ -155,6 +125,7 @@ const layout = createLayout({
   root: el('main'),
   toggleButton: el('brief-toggle'),
   onEditableChange: (editable) => {
+    const { step } = view.current();
     if (step && policyOf(step.kind).editor && editable) workspace.mount();
     else workspace.unmount(editable ? 'step' : 'narrow');
   },
@@ -163,10 +134,18 @@ const layout = createLayout({
 // layout 뒤에 세운다 — 조작부가 layout 을 즉시 받아 쥔다.
 const controls = createStepControls({
   runButton, resetButton, tabs, workspace, session, progress, preview, layout,
-  current: () => ({ lesson, step }),
-  onRan: () => { ran = true; },
+  current: () => view.current(),
+  onRan: () => view.markRan(),
 });
 const { applyPolicy, run, reset } = controls;
+
+const view = createStepView({
+  mainEl: el('main'), titleEl: el('lesson-title'), nextButton,
+  deps: { progress, assist, brief, preview, session, workspace, layout },
+  applyPolicy,
+  onChanged: () => refreshNav(),
+});
+const { showStep, openLesson, goNext } = view;
 
 runButton.addEventListener('click', run);
 resetButton.addEventListener('click', reset);
