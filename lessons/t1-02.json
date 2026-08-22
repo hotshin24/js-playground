@@ -46,7 +46,15 @@
       "entry": "getLabel",
       "solutionCode": "const stock = 3;\n\nconst label = stock > 0 ? '있음' : '없음';\n\nfunction getLabel() {\n  return label;\n}\n",
       "asserts": [
-        { "type": "value", "label": "재고가 3이면 '있음'", "args": [], "expected": "있음" }
+        {
+          "type": "value",
+          "label": "재고가 3이면 '있음'",
+          "args": [],
+          "expected": "있음"
+        }
+      ],
+      "hints": [
+        "삼항 연산자는 물음표 앞이 조건, 콜론 앞뒤가 두 갈래입니다. 지금 자리에 필요한 것은 문장이 아니라 값 하나를 고르는 식입니다."
       ]
     },
     {
@@ -61,9 +69,34 @@
       "entry": "stockLabel",
       "solutionCode": "function stockLabel(stock) {\n  if (stock === 0) {\n    return '품절';\n  } else if (stock < 10) {\n    return '재고 부족';\n  } else {\n    return '충분';\n  }\n}\n",
       "asserts": [
-        { "type": "value", "label": "0이면 품절", "args": [0], "expected": "품절" },
-        { "type": "value", "label": "9는 아직 부족 — 경계값", "args": [9], "expected": "재고 부족" },
-        { "type": "value", "label": "10부터 충분 — 경계값", "args": [10], "expected": "충분" }
+        {
+          "type": "value",
+          "label": "0이면 품절",
+          "args": [
+            0
+          ],
+          "expected": "품절"
+        },
+        {
+          "type": "value",
+          "label": "9는 아직 부족 — 경계값",
+          "args": [
+            9
+          ],
+          "expected": "재고 부족"
+        },
+        {
+          "type": "value",
+          "label": "10부터 충분 — 경계값",
+          "args": [
+            10
+          ],
+          "expected": "충분"
+        }
+      ],
+      "hints": [
+        "갈래가 셋이면 조건도 셋일 필요는 없습니다. 위에서부터 확인된다는 것을 쓰면 두 번째 조건은 '9 이하' 를 다시 적지 않아도 됩니다.",
+        "각 갈래가 글자를 돌려주고 있는지 보세요. 조건 안에서 값을 만들기만 하고 밖으로 내보내지 않으면 아무것도 나오지 않습니다."
       ]
     }
   ]

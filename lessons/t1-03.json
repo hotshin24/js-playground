@@ -46,7 +46,15 @@
       "entry": "getPrice",
       "solutionCode": "const product = {\n  name: '모자',\n  price: 19000,\n  stock: 7,\n};\n\nconst price = product.price;\n\nfunction getPrice() {\n  return price;\n}\n",
       "asserts": [
-        { "type": "value", "label": "모자의 가격은 19000입니다", "args": [], "expected": 19000 }
+        {
+          "type": "value",
+          "label": "모자의 가격은 19000입니다",
+          "args": [],
+          "expected": 19000
+        }
+      ],
+      "hints": [
+        "점을 찍는 것까지는 지문이 말했습니다. 남은 것은 이름표를 정확히 옮겨 적는 일입니다. 위 객체를 보고 대소문자까지 그대로인지 대조해 보세요."
       ]
     },
     {
@@ -64,21 +72,56 @@
         {
           "type": "value",
           "label": "필요한 것만 담깁니다 — memo는 빠져야 합니다",
-          "args": [{ "name": "셔츠", "price": 39000, "stock": 3, "memo": "내부용" }],
-          "expected": { "name": "셔츠", "price": 39000, "hasStock": true }
+          "args": [
+            {
+              "name": "셔츠",
+              "price": 39000,
+              "stock": 3,
+              "memo": "내부용"
+            }
+          ],
+          "expected": {
+            "name": "셔츠",
+            "price": 39000,
+            "hasStock": true
+          }
         },
         {
           "type": "value",
           "label": "재고가 0이면 hasStock은 거짓입니다 — 경계값",
-          "args": [{ "name": "모자", "price": 19000, "stock": 0 }],
-          "expected": { "name": "모자", "price": 19000, "hasStock": false }
+          "args": [
+            {
+              "name": "모자",
+              "price": 19000,
+              "stock": 0
+            }
+          ],
+          "expected": {
+            "name": "모자",
+            "price": 19000,
+            "hasStock": false
+          }
         },
         {
           "type": "value",
           "label": "가격이 0이어도 그대로 옮깁니다",
-          "args": [{ "name": "사은품", "price": 0, "stock": 5 }],
-          "expected": { "name": "사은품", "price": 0, "hasStock": true }
+          "args": [
+            {
+              "name": "사은품",
+              "price": 0,
+              "stock": 5
+            }
+          ],
+          "expected": {
+            "name": "사은품",
+            "price": 0,
+            "hasStock": true
+          }
         }
+      ],
+      "hints": [
+        "받은 객체를 고치는 것이 아니라 새 객체를 만들어 돌려주는 일입니다. 중괄호를 열고 필요한 세 가지만 적으면 나머지는 저절로 빠집니다.",
+        "hasStock 은 재고 숫자가 아니라 참·거짓입니다. t1-01 에서 본 비교가 그 자리에 그대로 들어갑니다."
       ]
     }
   ]

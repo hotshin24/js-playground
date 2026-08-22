@@ -26,7 +26,15 @@
       "entry": "getResult",
       "solutionCode": "const triple = function (n) {\n  return n * 3;\n};\n\nconst result = triple(5);\n\nfunction getResult() {\n  return result;\n}\n",
       "asserts": [
-        { "type": "value", "label": "5의 3배는 15입니다", "args": [], "expected": 15 }
+        {
+          "type": "value",
+          "label": "5의 3배는 15입니다",
+          "args": [],
+          "expected": 15
+        }
+      ],
+      "hints": [
+        "변수에 담겼을 뿐 함수입니다. 이름 뒤에 괄호가 없으면 부른 것이 아니라 함수 자체를 가리킨 것입니다."
       ]
     },
     {
@@ -41,9 +49,37 @@
       "entry": "finalPrice",
       "solutionCode": "function finalPrice(price, discount) {\n  if (discount === 0) {\n    return price;\n  }\n\n  if (discount > price) {\n    return 0;\n  }\n\n  return price - discount;\n}\n",
       "asserts": [
-        { "type": "value", "label": "39000원에서 5000원을 빼면 34000원", "args": [39000, 5000], "expected": 34000 },
-        { "type": "value", "label": "할인이 0이면 가격 그대로", "args": [39000, 0], "expected": 39000 },
-        { "type": "value", "label": "할인이 가격보다 크면 0 — 음수가 되면 안 됩니다", "args": [5000, 8000], "expected": 0 }
+        {
+          "type": "value",
+          "label": "39000원에서 5000원을 빼면 34000원",
+          "args": [
+            39000,
+            5000
+          ],
+          "expected": 34000
+        },
+        {
+          "type": "value",
+          "label": "할인이 0이면 가격 그대로",
+          "args": [
+            39000,
+            0
+          ],
+          "expected": 39000
+        },
+        {
+          "type": "value",
+          "label": "할인이 가격보다 크면 0 — 음수가 되면 안 됩니다",
+          "args": [
+            5000,
+            8000
+          ],
+          "expected": 0
+        }
+      ],
+      "hints": [
+        "할인이 0 인 경우를 함수 앞쪽에서 먼저 처리하고 돌아가면 뒤 계산이 단순해집니다. read 에서 본 '먼저 빠져나오기' 가 그 자리입니다.",
+        "빼고 나서 음수가 되는 경우가 남습니다. 뺀 값을 그대로 돌려주기 전에 한 번 걸러야 합니다."
       ]
     }
   ]

@@ -46,7 +46,15 @@
       "entry": "getStock",
       "solutionCode": "const product = { name: '모자', price: 19000 };\n\nconst { stock = 0 } = product;\n\nfunction getStock() {\n  return stock;\n}\n",
       "asserts": [
-        { "type": "value", "label": "재고가 없으면 기본값 0이 담깁니다", "args": [], "expected": 0 }
+        {
+          "type": "value",
+          "label": "재고가 없으면 기본값 0이 담깁니다",
+          "args": [],
+          "expected": 0
+        }
+      ],
+      "hints": [
+        "기본값은 그 이름이 없을 때만 쓰입니다. 여기서는 숫자 하나를 적으면 됩니다."
       ]
     },
     {
@@ -61,9 +69,51 @@
       "entry": "orderLine",
       "solutionCode": "function orderLine(item) {\n  const { name, count = 1 } = item;\n\n  return { name, count };\n}\n",
       "asserts": [
-        { "type": "value", "label": "수량이 있으면 그대로 옮깁니다", "args": [{ "name": "셔츠", "count": 3 }], "expected": { "name": "셔츠", "count": 3 } },
-        { "type": "value", "label": "수량이 없으면 1로 봅니다", "args": [{ "name": "모자" }], "expected": { "name": "모자", "count": 1 } },
-        { "type": "value", "label": "0은 없는 것이 아닙니다 — 기본값이 나서지 않습니다", "args": [{ "name": "양말", "count": 0 }], "expected": { "name": "양말", "count": 0 } }
+        {
+          "type": "value",
+          "label": "수량이 있으면 그대로 옮깁니다",
+          "args": [
+            {
+              "name": "셔츠",
+              "count": 3
+            }
+          ],
+          "expected": {
+            "name": "셔츠",
+            "count": 3
+          }
+        },
+        {
+          "type": "value",
+          "label": "수량이 없으면 1로 봅니다",
+          "args": [
+            {
+              "name": "모자"
+            }
+          ],
+          "expected": {
+            "name": "모자",
+            "count": 1
+          }
+        },
+        {
+          "type": "value",
+          "label": "0은 없는 것이 아닙니다 — 기본값이 나서지 않습니다",
+          "args": [
+            {
+              "name": "양말",
+              "count": 0
+            }
+          ],
+          "expected": {
+            "name": "양말",
+            "count": 0
+          }
+        }
+      ],
+      "hints": [
+        "구조 분해에 기본값을 붙이면 조건문 없이 끝납니다. 등호 하나로 적는 그 모양이 read 에 있습니다.",
+        "0 이 들어오는 경우를 확인해 보세요. 기본값은 값이 없을 때만 나서야 하고, 0 은 있는 값입니다. || 로 처리하면 여기서 어긋납니다."
       ]
     }
   ]

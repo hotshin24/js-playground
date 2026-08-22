@@ -46,7 +46,15 @@
       "entry": "getAnswer",
       "solutionCode": "const price = 12000;\n\nconst isExpensive = price > 5000;\n\nfunction getAnswer() {\n  return isExpensive;\n}\n",
       "asserts": [
-        { "type": "value", "label": "12000은 5000보다 큽니다", "args": [], "expected": true }
+        {
+          "type": "value",
+          "label": "12000은 5000보다 큽니다",
+          "args": [],
+          "expected": true
+        }
+      ],
+      "hints": [
+        "비교 기호를 쓰면 그 자리에 참 또는 거짓이 남습니다. 지금 null 자리에 값을 하나 적으려 하고 있다면, 적어야 할 것은 값이 아니라 비교 그 자체입니다."
       ]
     },
     {
@@ -61,9 +69,34 @@
       "entry": "isExpensive",
       "solutionCode": "function isExpensive(price) {\n  return price > 50000;\n}\n",
       "asserts": [
-        { "type": "value", "label": "60000원은 비쌉니다", "args": [60000], "expected": true },
-        { "type": "value", "label": "딱 50000원은 비싸지 않습니다 — 경계값", "args": [50000], "expected": false },
-        { "type": "value", "label": "0원도 비싸지 않습니다", "args": [0], "expected": false }
+        {
+          "type": "value",
+          "label": "60000원은 비쌉니다",
+          "args": [
+            60000
+          ],
+          "expected": true
+        },
+        {
+          "type": "value",
+          "label": "딱 50000원은 비싸지 않습니다 — 경계값",
+          "args": [
+            50000
+          ],
+          "expected": false
+        },
+        {
+          "type": "value",
+          "label": "0원도 비싸지 않습니다",
+          "args": [
+            0
+          ],
+          "expected": false
+        }
+      ],
+      "hints": [
+        "read 에서 본 대로 비교는 그 자체가 참·거짓입니다. if 로 갈라 true 와 false 를 각각 돌려주고 있다면 한 줄로 줄일 수 있습니다.",
+        "5만 원 딱 그 값이 어느 쪽에 들어가야 하는지 지문을 다시 보세요. 기호 하나가 그것을 정합니다."
       ]
     }
   ]

@@ -46,7 +46,15 @@
       "entry": "getTotal",
       "solutionCode": "const prices = [1000, 2000, 3000];\n\nconst total = prices.reduce((sum, price) => sum + price, 0);\n\nfunction getTotal() {\n  return total;\n}\n",
       "asserts": [
-        { "type": "value", "label": "1000 + 2000 + 3000 은 6000입니다", "args": [], "expected": 6000 }
+        {
+          "type": "value",
+          "label": "1000 + 2000 + 3000 은 6000입니다",
+          "args": [],
+          "expected": 6000
+        }
+      ],
+      "hints": [
+        "여기 적은 값이 다음 번의 sum 이 됩니다. 지금 sum 을 쓰지 않으면 앞에서 쌓은 것이 사라지고 마지막 값만 남습니다."
       ]
     },
     {
@@ -64,16 +72,53 @@
         {
           "type": "value",
           "label": "세 상품의 가격을 더합니다",
-          "args": [[{ "name": "셔츠", "price": 39000 }, { "name": "모자", "price": 19000 }, { "name": "양말", "price": 5000 }]],
+          "args": [
+            [
+              {
+                "name": "셔츠",
+                "price": 39000
+              },
+              {
+                "name": "모자",
+                "price": 19000
+              },
+              {
+                "name": "양말",
+                "price": 5000
+              }
+            ]
+          ],
           "expected": 63000
         },
-        { "type": "value", "label": "빈 장바구니는 0입니다 — 시작값이 그대로 결과가 됩니다", "args": [[]], "expected": 0 },
+        {
+          "type": "value",
+          "label": "빈 장바구니는 0입니다 — 시작값이 그대로 결과가 됩니다",
+          "args": [
+            []
+          ],
+          "expected": 0
+        },
         {
           "type": "value",
           "label": "0원 상품이 섞여도 합계는 그대로입니다",
-          "args": [[{ "name": "사은품", "price": 0 }, { "name": "셔츠", "price": 39000 }]],
+          "args": [
+            [
+              {
+                "name": "사은품",
+                "price": 0
+              },
+              {
+                "name": "셔츠",
+                "price": 39000
+              }
+            ]
+          ],
           "expected": 39000
         }
+      ],
+      "hints": [
+        "각 상품은 객체이고 쌓아야 하는 것은 그 안의 price 입니다. 객체를 그대로 더하고 있지 않은지 보세요.",
+        "빈 배열이 들어왔을 때 무엇이 나오는지는 시작값이 정합니다. reduce 의 두 번째 인자 자리입니다."
       ]
     }
   ]

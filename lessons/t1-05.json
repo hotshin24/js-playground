@@ -46,7 +46,15 @@
       "entry": "getSecond",
       "solutionCode": "const names = ['셔츠', '모자', '양말'];\n\nconst second = names[1];\n\nfunction getSecond() {\n  return second;\n}\n",
       "asserts": [
-        { "type": "value", "label": "두 번째 값은 '모자'입니다", "args": [], "expected": "모자" }
+        {
+          "type": "value",
+          "label": "두 번째 값은 '모자'입니다",
+          "args": [],
+          "expected": "모자"
+        }
+      ],
+      "hints": [
+        "몇 번째인지와 번호가 한 칸 어긋납니다. 첫 번째가 0 이면 두 번째는 무엇인지 세어 보세요."
       ]
     },
     {
@@ -61,9 +69,48 @@
       "entry": "summary",
       "solutionCode": "function summary(names) {\n  return {\n    count: names.length,\n    joined: names.join(', '),\n  };\n}\n",
       "asserts": [
-        { "type": "value", "label": "둘이면 사이에 구분자가 들어갑니다", "args": [["셔츠", "모자"]], "expected": { "count": 2, "joined": "셔츠, 모자" } },
-        { "type": "value", "label": "하나뿐이면 구분자가 붙지 않습니다", "args": [["양말"]], "expected": { "count": 1, "joined": "양말" } },
-        { "type": "value", "label": "빈 목록이면 빈 글자가 됩니다", "args": [[]], "expected": { "count": 0, "joined": "" } }
+        {
+          "type": "value",
+          "label": "둘이면 사이에 구분자가 들어갑니다",
+          "args": [
+            [
+              "셔츠",
+              "모자"
+            ]
+          ],
+          "expected": {
+            "count": 2,
+            "joined": "셔츠, 모자"
+          }
+        },
+        {
+          "type": "value",
+          "label": "하나뿐이면 구분자가 붙지 않습니다",
+          "args": [
+            [
+              "양말"
+            ]
+          ],
+          "expected": {
+            "count": 1,
+            "joined": "양말"
+          }
+        },
+        {
+          "type": "value",
+          "label": "빈 목록이면 빈 글자가 됩니다",
+          "args": [
+            []
+          ],
+          "expected": {
+            "count": 0,
+            "joined": ""
+          }
+        }
+      ],
+      "hints": [
+        "개수는 배열이 스스로 알고 있습니다. 직접 세지 않아도 되는 이름이 하나 있습니다.",
+        "이어 붙이는 것도 배열이 해 줍니다. 구분자를 넘길 수 있고, 값이 하나뿐이거나 없을 때 어떻게 되는지는 직접 넣어 확인해 보세요."
       ]
     }
   ]

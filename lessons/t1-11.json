@@ -26,7 +26,18 @@
       "entry": "getExpensive",
       "solutionCode": "const prices = [1000, 3000, 5000];\n\nconst expensive = prices.filter((price) => price > 2000);\n\nfunction getExpensive() {\n  return expensive;\n}\n",
       "asserts": [
-        { "type": "value", "label": "2000보다 큰 값만 남습니다", "args": [], "expected": [3000, 5000] }
+        {
+          "type": "value",
+          "label": "2000보다 큰 값만 남습니다",
+          "args": [],
+          "expected": [
+            3000,
+            5000
+          ]
+        }
+      ],
+      "hints": [
+        "filter 는 참·거짓을 봅니다. 여기 적어야 하는 것은 남길 값이 아니라 '남길지 말지' 를 묻는 비교입니다."
       ]
     },
     {
@@ -44,21 +55,72 @@
         {
           "type": "value",
           "label": "품절만 빠집니다",
-          "args": [[{ "name": "셔츠", "stock": 3 }, { "name": "모자", "stock": 0 }, { "name": "양말", "stock": 5 }]],
-          "expected": [{ "name": "셔츠", "stock": 3 }, { "name": "양말", "stock": 5 }]
+          "args": [
+            [
+              {
+                "name": "셔츠",
+                "stock": 3
+              },
+              {
+                "name": "모자",
+                "stock": 0
+              },
+              {
+                "name": "양말",
+                "stock": 5
+              }
+            ]
+          ],
+          "expected": [
+            {
+              "name": "셔츠",
+              "stock": 3
+            },
+            {
+              "name": "양말",
+              "stock": 5
+            }
+          ]
         },
         {
           "type": "value",
           "label": "전부 품절이면 빈 배열이 됩니다",
-          "args": [[{ "name": "모자", "stock": 0 }, { "name": "바지", "stock": 0 }]],
+          "args": [
+            [
+              {
+                "name": "모자",
+                "stock": 0
+              },
+              {
+                "name": "바지",
+                "stock": 0
+              }
+            ]
+          ],
           "expected": []
         },
         {
           "type": "value",
           "label": "전부 재고가 있으면 그대로 남습니다",
-          "args": [[{ "name": "셔츠", "stock": 1 }]],
-          "expected": [{ "name": "셔츠", "stock": 1 }]
+          "args": [
+            [
+              {
+                "name": "셔츠",
+                "stock": 1
+              }
+            ]
+          ],
+          "expected": [
+            {
+              "name": "셔츠",
+              "stock": 1
+            }
+          ]
         }
+      ],
+      "hints": [
+        "각 상품은 객체입니다. 조건에서 볼 것은 객체 자체가 아니라 그 안의 숫자 하나입니다. t1-03 의 점이 필요합니다.",
+        "남길 때는 객체를 통째로 둡니다. filter 는 값을 바꾸지 않으므로 조건만 맞으면 원래 것이 그대로 남습니다."
       ]
     }
   ]
