@@ -2290,3 +2290,43 @@ T8 만(7레슨)     회귀 60초 · starter 50초
 ```
 
 **규칙: 엔진 코드가 바뀌면 전수, 레슨만 바뀌면 그 트랙만 돌린다.** T5·T6 의 느린 실행은 T8 레슨을 더한다고 달라지지 않는다.
+
+### T8 검증 로그 (2026-08-22)
+
+레슨을 쓰기 전과 후에 지문이 주장하는 것을 전부 실측했다.
+
+**묶음 A — 문법과 경로**
+
+```
+as 로 이름 바꾸기 / * as 네임스페이스 / export { x as y }        전부 통과
+default 를 entry:'default' 로 검사 / default+named 동시           전부 통과
+내놓지 않은 것은 * as 상자에도 없다   ["double","triple"] · secret = undefined
+default 가 둘                          utils.js 3행 Identifier '.default' has already been declared
+확장자 뺌                              "확장자가 빠졌습니다" (전용 문구를 새로 갈랐다)
+'./' 뺌 / 상위 폴더 / 하위 폴더        각각 다른 문구
+없는 이름을 import                     main.js 1행 does not provide an export named 'murmur'
+```
+
+`t8-03` 의 지문에 처음 `'A module can only have one default export'` 라고 적었는데 **실제와 달랐다.** 문구도 줄 번호도 틀렸다. 실측대로 고쳤다.
+
+**묶음 B — React 컴포넌트 분리**
+
+```
+Card.js 에 훅만 넣고 구조 분해 줄 없음   Card.js 2행 useState is not defined
+그 줄을 더하면                           정상
+Head 를 파일로 옮기면(바깥 변수 참조)    Head.js 4행 course is not defined
+배럴에서 하나만 가져와도                 평가됨: CartContext.js / Badge.js / Header.js / Row.js
+직접 가져오면                            평가됨: CartContext.js
+```
+
+**묶음 C — 순환과 TDZ**
+
+```
+함수 안에서 읽는 순환      김하늘 — [VIP] 1200원, [VIP] 3400원   (정상)
+최상위로 꺼내면            order.js 3행 Cannot access 'customer' before initialization
+data.js 로 풀고 최상위 읽기 정상 (화살표가 한 방향이 됐다)
+write starter              tax.js 3행 Cannot access 'BASE' before initialization · 검사 실패
+write solution             2건 통과
+```
+
+**작업 중 만든 결함 하나.** `t8-05` 의 마지막 단계를 처음에는 "`main.js` 의 `Row` 를 `Row.js` 로 옮겨라" 로 썼는데 **starter 가 그대로 통과했다.** 옮기기 전후의 DOM 이 같아 검사로 갈릴 수 없다 — F-010 과 같은 성질이다. 빈 `Row.js` 를 채우는 과제로 바꿨다. 같은 날 만든 starter 전수 확인이 잡았다.
