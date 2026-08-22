@@ -1,0 +1,62 @@
+# 임시 검증용. main 을 덮지 않고 브랜치를 /preview/ 아래에 함께 올린다.
+# Pages 는 저장소당 사이트가 하나뿐이라 브랜치를 따로 배포할 수 없다.
+# 그래서 루트에는 main 을 그대로 두고 하위 경로만 더한다.
+# 병합 전에 이 파일을 지운다 — main 에 남을 것이 아니다.
+name: Preview deploy (branch under /preview)
+
+on:
+  push:
+    branches: [feat/m4-module-runner]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: main 체크아웃 (루트가 된다)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: site
+
+      - name: 브랜치 체크아웃 (/preview 가 된다)
+        uses: actions/checkout@v4
+        with:
+          path: branch
+
+      - name: 합치고 버전 주입
+        run: |
+          MAIN_SHA=$(git -C site rev-parse HEAD)
+          BR_SHA=$(git -C branch rev-parse HEAD)
+          STAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          # 루트는 main 그대로다. 버전도 main 의 것을 넣어 살아 있는 사이트의 뜻이 바뀌지 않게 한다.
+          printf '{"commit":"%s","ref":"main","builtAt":"%s"}\n' "$MAIN_SHA" "$STAMP" > site/version.json
+          printf "export const BUILD = '%s';\n" "$MAIN_SHA" > site/js/version.js
+
+          rm -rf branch/.git branch/.github
+          mkdir -p site/preview
+          cp -R branch/. site/preview/
+          printf '{"commit":"%s","ref":"preview","builtAt":"%s"}\n' "$BR_SHA" "$STAMP" > site/preview/version.json
+          printf "export const BUILD = '%s';\n" "$BR_SHA" > site/preview/js/version.js
+
+          echo "루트 main=$MAIN_SHA · preview=$BR_SHA"
+          ls site/preview/lessons/t8-0*.json
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
