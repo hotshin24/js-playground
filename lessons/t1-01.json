@@ -53,6 +53,26 @@
       "code": "console.log(typeof 12000);\nconsole.log(typeof '셔츠');\nconsole.log(typeof true);\n"
     },
     {
+      "kind": "run",
+      "title": "비교해서 불리언 만들기",
+      "brief": [
+        "불리언은 true나 false를 직접 적어서 만들 수도 있지만, 실제 코드에서는 두 값을 비교한 결과로 자주 만듭니다.",
+        "크다는 >, 작다는 <, 같다는 ===로 비교합니다. 비교식(comparison expression — 두 값을 비교해 true나 false를 만드는 식)은 언제나 불리언 값 하나가 됩니다.",
+        "실행해 보세요. 첫 비교는 참, 둘째와 셋째 비교는 거짓입니다. 마지막 줄은 세 결과의 타입이 모두 boolean인지 확인합니다."
+      ],
+      "code": "const price = 12000;\n\nconst over5000 = price > 5000;\nconst under5000 = price < 5000;\nconst exactly5000 = price === 5000;\n\nconsole.log(over5000);\nconsole.log(under5000);\nconsole.log(exactly5000);\nconsole.log(typeof over5000, typeof under5000, typeof exactly5000);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "경계값 비교하기",
+      "brief": [
+        "price를 5000으로 바꾸고 실행해 보세요. > 5000은 false이고 === 5000은 true가 됩니다.",
+        ">를 >=로 바꾸면 5000도 true가 됩니다. >=는 크거나 같다는 비교입니다. 반대로 <=는 작거나 같다는 비교입니다.",
+        "문제에서 '초과'라고 하면 >, '이상'이라고 하면 >=를 씁니다. 경계에 있는 값 하나를 직접 넣어 보는 습관이 비교식의 실수를 줄입니다."
+      ],
+      "code": "const price = 12000;\n\nconsole.log(price > 5000);\nconsole.log(price === 5000);\n"
+    },
+    {
       "kind": "fill",
       "title": "참과 거짓 만들기",
       "brief": [

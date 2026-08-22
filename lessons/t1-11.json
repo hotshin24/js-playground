@@ -29,6 +29,26 @@
       ]
     },
     {
+      "kind": "run",
+      "title": "조건이 참인 값만 남기기",
+      "brief": [
+        "완성된 filter를 먼저 실행합니다. prices의 값이 하나씩 price에 들어가고, price >= 3000 비교가 참인지 거짓인지 정합니다.",
+        "실행해 보세요. 원본 prices는 네 개 그대로이고 filtered에는 3000과 5000 두 개만 남습니다.",
+        "콜백이 반환한 true 자체가 배열에 들어가는 것이 아닙니다. true를 만든 원래 값 3000과 5000이 들어갑니다. 마지막 두 출력의 차이를 확인하세요."
+      ],
+      "code": "const prices = [1000, 3000, 5000, 800];\n\nconst filtered = prices.filter((price) => price >= 3000);\nconst decisions = prices.map((price) => price >= 3000);\n\nconsole.log(prices);\nconsole.log(filtered);\nconsole.log(decisions);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "경계와 반환값 바꿔 보기",
+      "brief": [
+        "먼저 >= 3000을 > 3000으로 바꾸고 실행해 보세요. 3000이 빠집니다. 비교 기호 하나가 경계값을 어느 쪽에 넣을지 정합니다.",
+        "되돌린 뒤 filter의 콜백을 (price) => false로 바꿔 보세요. 모든 값에서 거짓을 반환하므로 빈 배열이 됩니다. 이번에는 true로 바꾸면 네 값이 모두 남습니다.",
+        "이 과정에서 기억할 것은 하나입니다. filter의 콜백은 남길 값을 만드는 곳이 아니라, 원래 값을 남길지 말지를 참·거짓으로 답하는 곳입니다."
+      ],
+      "code": "const prices = [1000, 3000, 5000, 800];\n\nconst filtered = prices.filter((price) => price >= 3000);\n\nconsole.log(filtered);\n"
+    },
+    {
       "kind": "fill",
       "title": "조건 채우기",
       "brief": [
