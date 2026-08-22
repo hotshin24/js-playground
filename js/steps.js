@@ -10,23 +10,27 @@ const POLICY = {
   run: { editor: true, result: false, run: true },
   tweak: { editor: true, result: false, run: true },
   fill: { editor: true, result: true, run: true },
+  wrap: { editor: true, result: true, run: true },
   write: { editor: true, result: true, run: true },
 };
 
-// read/run/tweak/fill/write 는 레슨 JSON 안에서만 쓰는 이름이다.
+// read/run/tweak/fill/wrap/write 는 레슨 JSON 안에서만 쓰는 이름이다.
 // 화면에는 우리말만 보인다 — 아무것도 모르는 상태로 시작하는 학습자에게
-// 영어 단어 다섯 개가 먼저 보이면 그것부터 장벽이 된다.
+// 영어 단어 여섯 개가 먼저 보이면 그것부터 장벽이 된다.
 const LABEL = {
   read: '읽기',
   run: '실행',
   tweak: '바꾸기',
   fill: '채우기',
+  wrap: '감싸기',
   write: '쓰기',
 };
 
 export const policyOf = (kind) => POLICY[kind] || POLICY.write;
 export const labelOf = (kind) => LABEL[kind] || kind;
-export const isChecked = (kind) => kind === 'fill' || kind === 'write';
+// 통과·실패가 있는 단계. wrap 은 fill 과 write 사이에서 같은 검사 화면을 쓴다.
+const CHECKED = new Set(['fill', 'wrap', 'write']);
+export const isChecked = (kind) => CHECKED.has(kind);
 
 /**
  * 완료 판정. 관문이 아니라 기록이다 — 이동은 언제나 자유롭다.

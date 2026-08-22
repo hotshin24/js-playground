@@ -75,6 +75,56 @@
       ]
     },
     {
+      "kind": "wrap",
+      "title": "어떤 상품에도 통하게",
+      "brief": [
+        "앞 단계에서 쓴 구조 분해가 그대로 함수 안에 들어가 있습니다. 다만 아직 product 라는 정해진 상품만 봅니다.",
+        "함수가 받는 값의 이름은 item 입니다. 표시된 줄을 지우고, 구조 분해의 등호 오른쪽을 item 으로 바꿔 보세요.",
+        "검사는 세 건입니다. 고치지 않고 실행하면 첫 건만 통과합니다. 기본값이 나서는 경우와 그렇지 않은 경우가 함께 들어옵니다."
+      ],
+      "code": "function stockOf(item) {\n  const product = { name: '모자', price: 19000 }; // ← 이 줄을 지우고 item 을 쓰세요\n\n  const { stock = 0 } = product;\n\n  return stock;\n}\n",
+      "entry": "stockOf",
+      "solutionCode": "function stockOf(item) {\n  const { stock = 0 } = item;\n\n  return stock;\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "stock 이 없으면 기본값 0",
+          "args": [
+            {
+              "name": "모자",
+              "price": 19000
+            }
+          ],
+          "expected": 0
+        },
+        {
+          "type": "value",
+          "label": "stock 이 있으면 그 값",
+          "args": [
+            {
+              "name": "셔츠",
+              "stock": 7
+            }
+          ],
+          "expected": 7
+        },
+        {
+          "type": "value",
+          "label": "stock 이 12 인 상품",
+          "args": [
+            {
+              "name": "코트",
+              "stock": 12
+            }
+          ],
+          "expected": 12
+        }
+      ],
+      "hints": [
+        "구조 분해는 등호 오른쪽에 적힌 묶음에서 꺼냅니다. 지금은 함수가 받은 값이 아니라 위에 적어 둔 상품에서 꺼내고 있습니다."
+      ]
+    },
+    {
       "kind": "write",
       "title": "주문 한 줄 만들기",
       "brief": [

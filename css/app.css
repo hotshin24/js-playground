@@ -155,13 +155,13 @@ body {
     grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
     grid-template-areas: 'brief editor' 'brief result';
   }
-  :is(.layout--fill, .layout--write) {
+  :is(.layout--fill, .layout--wrap, .layout--write) {
     grid-template-columns: minmax(0, 24rem) minmax(0, 1fr) minmax(0, 22rem);
     grid-template-areas: 'brief editor result';
   }
-  :is(.layout--run, .layout--tweak, .layout--fill, .layout--write) .pane--brief { grid-area: brief; grid-column: auto; }
-  :is(.layout--run, .layout--tweak, .layout--fill, .layout--write) .pane--editor { grid-area: editor; }
-  :is(.layout--run, .layout--tweak, .layout--fill, .layout--write) .pane--result { grid-area: result; }
+  :is(.layout--run, .layout--tweak, .layout--fill, .layout--wrap, .layout--write) .pane--brief { grid-area: brief; grid-column: auto; }
+  :is(.layout--run, .layout--tweak, .layout--fill, .layout--wrap, .layout--write) .pane--editor { grid-area: editor; }
+  :is(.layout--run, .layout--tweak, .layout--fill, .layout--wrap, .layout--write) .pane--result { grid-area: result; }
   .button--toggle { display: none; }
   .layout--brief-collapsed .pane--brief { display: block; }
 }

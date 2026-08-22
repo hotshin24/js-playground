@@ -76,6 +76,62 @@
       ]
     },
     {
+      "kind": "wrap",
+      "title": "어떤 목록에도 통하게",
+      "brief": [
+        "앞 단계에서 만든 식이 그대로 함수 안에 들어가 있습니다. 다만 아직 names 라는 정해진 목록만 봅니다. 밖에서 어떤 목록을 넣어도 같은 일을 하게 만들어야 합니다.",
+        "함수가 받는 값의 이름은 list 입니다. 표시된 줄을 지우고, 본문에서 names 라고 쓴 곳을 list 로 바꿔 보세요. 그 밖에는 고칠 것이 없습니다.",
+        "검사는 세 건입니다. 고치지 않고 실행하면 첫 건만 통과하고 둘은 실패합니다. 정해진 값 하나로는 한 경우밖에 맞지 않는다는 뜻입니다."
+      ],
+      "code": "function summarize(list) {\n  const names = ['셔츠', '모자', '양말']; // ← 이 줄을 지우고 list 를 쓰세요\n\n  return { count: names.length, joined: names.join(' / ') };\n}\n",
+      "entry": "summarize",
+      "solutionCode": "function summarize(list) {\n  return { count: list.length, joined: list.join(' / ') };\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "세 개짜리 목록",
+          "args": [
+            [
+              "셔츠",
+              "모자",
+              "양말"
+            ]
+          ],
+          "expected": {
+            "count": 3,
+            "joined": "셔츠 / 모자 / 양말"
+          }
+        },
+        {
+          "type": "value",
+          "label": "하나짜리 목록 — 구분자가 붙지 않습니다",
+          "args": [
+            [
+              "모자"
+            ]
+          ],
+          "expected": {
+            "count": 1,
+            "joined": "모자"
+          }
+        },
+        {
+          "type": "value",
+          "label": "빈 목록 — 경계값",
+          "args": [
+            []
+          ],
+          "expected": {
+            "count": 0,
+            "joined": ""
+          }
+        }
+      ],
+      "hints": [
+        "함수가 받은 값은 괄호 안에 적힌 이름으로 부릅니다. 지금 본문은 그 이름을 한 번도 쓰지 않고 위에 적어 둔 목록만 보고 있습니다."
+      ]
+    },
+    {
       "kind": "write",
       "title": "목록을 요약하는 함수",
       "brief": [

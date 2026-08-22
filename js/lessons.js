@@ -1,8 +1,8 @@
 const RUNTIMES = ['js', 'react'];
 const IDENTIFIER = /^[A-Za-z_$][\w$]*$/;
 const LESSON_FIELDS = ['schemaVersion', 'id', 'title'];
-const STEP_KINDS = ['read', 'run', 'tweak', 'fill', 'write'];
-const CHECKED_KINDS = ['fill', 'write'];
+const STEP_KINDS = ['read', 'run', 'tweak', 'fill', 'wrap', 'write'];
+const CHECKED_KINDS = ['fill', 'wrap', 'write'];
 
 const fail = (message) => {
   throw new Error(message);
