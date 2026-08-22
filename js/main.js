@@ -36,8 +36,8 @@ const progress = createProgress({
 });
 
 // 캐시된 옛 앱이 새 레슨 데이터를 읽으면 학습자는 자기 코드를 의심하게 된다.
-// 자동으로 새로고침하지는 않는다 — 작업 중인 코드가 저장 타이밍과 겹치면 잃는다.
-checkBuild().then((stale) => { if (stale) progress.notify('stale'); });
+// 자동 새로고침은 하지 않는다 — 작업 중인 코드가 저장 타이밍과 겹치면 잃는다.
+checkBuild().then((s) => s && progress.notify('stale'));
 
 const brief = createBrief({ titleEl: el('step-title'), bodyEl: el('lesson-brief') });
 
