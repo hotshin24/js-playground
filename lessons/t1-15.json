@@ -33,7 +33,7 @@
       "title": "끼워 넣어 보기",
       "brief": [
         "아래는 세 가지를 보여줍니다. 이름과 가격을 끼운 글자, 계산식을 끼운 글자, 그리고 따옴표로 감싼 글자입니다.",
-        "실행 버튼을 눌러 보세요. 마지막 줄만 ${name} 이 그대로 찍힙니다.",
+        "실행 버튼을 눌러 보세요. 마지막 줄만 ${name} 이 그대로 출력됩니다.",
         "백틱과 따옴표의 차이가 여기서 드러납니다."
       ],
       "code": "const name = '셔츠';\nconst price = 39000;\n\nconst line = `${name} - ${price}원`;\n\nconsole.log(line);\nconsole.log(`재고 ${3 + 2}개`);\nconsole.log('${name} 은 그대로');\n"
