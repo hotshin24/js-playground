@@ -32,6 +32,10 @@
     {
       "id": "T7",
       "title": "JS 심화"
+    },
+    {
+      "id": "T8",
+      "title": "모듈 · 파일 분리"
     }
   ],
   "lessons": [
@@ -664,6 +668,54 @@
       "track": "T7",
       "order": 9,
       "title": "붙어 있는 것들"
+    },
+    {
+      "id": "t8-01",
+      "track": "T8",
+      "order": 1,
+      "title": "나누면 보이지 않는다"
+    },
+    {
+      "id": "t8-02",
+      "track": "T8",
+      "order": 2,
+      "title": "이름을 맞추는 법"
+    },
+    {
+      "id": "t8-03",
+      "track": "T8",
+      "order": 3,
+      "title": "default 와 이름"
+    },
+    {
+      "id": "t8-04",
+      "track": "T8",
+      "order": 4,
+      "title": "경로와 확장자"
+    },
+    {
+      "id": "t8-05",
+      "track": "T8",
+      "order": 5,
+      "title": "컴포넌트를 파일로"
+    },
+    {
+      "id": "t8-06",
+      "track": "T8",
+      "order": 6,
+      "title": "나누는 기준"
+    },
+    {
+      "id": "t8-07",
+      "track": "T8",
+      "order": 7,
+      "title": "배럴 파일"
+    },
+    {
+      "id": "t8-08",
+      "track": "T8",
+      "order": 8,
+      "title": "서로를 부를 때"
     }
   ]
 }

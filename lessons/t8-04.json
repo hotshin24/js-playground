@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 2,
+  "id": "t8-04",
+  "track": "T8",
+  "order": 4,
+  "title": "경로와 확장자",
+  "runtime": "js",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "점 하나와 .js 세 글자",
+      "brief": [
+        "지금까지 './utils.js' 라고 적어 왔습니다. 두 부분으로 나눠 보겠습니다.",
+        "앞의 './' 는 '지금 이 파일과 같은 폴더' 라는 뜻입니다. 이것을 빼고 'utils.js' 라고만 적으면 브라우저는 전혀 다른 것으로 읽습니다 — 파일이 아니라 패키지 이름으로 봅니다. lodash 나 react 처럼 설치해서 쓰는 것들이 그렇게 적힙니다. 그래서 같은 폴더의 파일이라도 './' 를 반드시 붙여야 합니다.",
+        "뒤의 '.js' 는 확장자입니다. 빼면 안 됩니다. 브라우저는 './utils' 를 보고 './utils.js' 를 대신 찾아 주지 않습니다. 적힌 그대로 요청하고 없으면 실패합니다.",
+        "이 부분에서 헷갈리기 쉬운 이유가 있습니다. 웹팩이나 Vite 같은 빌드 도구를 쓰면 확장자를 생략해도 알아서 찾아 줍니다. 그래서 './utils' 로 적힌 코드를 자주 보게 됩니다. 그것은 도구가 해 주는 일이고, 브라우저가 직접 모듈을 읽을 때는 해당하지 않습니다.",
+        "실무에서는 폴더도 나눕니다. components 폴더, utils 폴더를 만들고 '../components/Card.js' 처럼 위아래로 오가는 경로를 씁니다. '..' 는 한 단계 위 폴더라는 뜻입니다.",
+        "다만 이 도구에서는 그것을 해 볼 수 없습니다. 여기서 여는 파일들은 폴더 없이 나란히 놓입니다. 그래서 './이름.js' 한 가지 모양만 받고, '../' 도 '/' 도 패키지 이름도 거부합니다. 왜 그런지는 다음 단계에서 직접 눌러 보며 밝히겠습니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "옳게 적은 모양",
+      "brief": [
+        "실행해 보세요. 통과하는 모양은 하나입니다 — './파일이름.js'.",
+        "세 파일이 서로를 부르고 있습니다. main.js 가 price.js 를, price.js 가 tax.js 를 부릅니다. 세 파일 모두 같은 자리에 나란히 있습니다.",
+        "다음 단계에서 이 줄을 하나씩 틀리게 고쳐 보겠습니다."
+      ],
+      "files": [
+        {
+          "name": "main.js",
+          "entry": true,
+          "code": [
+            "import { withTax } from './price.js';",
+            "",
+            "console.log(withTax(10000));",
+            ""
+          ]
+        },
+        {
+          "name": "price.js",
+          "code": [
+            "import { RATE } from './tax.js';",
+            "",
+            "export const withTax = (amount) => Math.round(amount * (1 + RATE));",
+            ""
+          ]
+        },
+        {
+          "name": "tax.js",
+          "code": [
+            "export const RATE = 0.1;",
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "tweak",
+      "title": "네 가지로 틀려 보세요",
+      "brief": [
+        "main.js 의 첫 줄을 차례로 고쳐 실행해 보세요. 네 번 모두 다른 말이 돌아옵니다.",
+        "하나. './price' — 확장자를 뺍니다. '확장자가 빠졌습니다. 브라우저는 .js 를 대신 붙여 주지 않습니다.'",
+        "둘. 'price.js' — './' 를 뺍니다. '외부 패키지를 쓸 수 없고, 같은 폴더의 파일도 ./ 를 붙여야 합니다.'",
+        "셋. '../price.js' — 위 폴더로 올라갑니다. '상위 폴더를 불러오려 합니다. 이 레슨의 파일은 모두 같은 폴더에 있습니다.'",
+        "넷. './lib/price.js' — 하위 폴더를 만듭니다. '하위 폴더가 없고 모든 파일이 같은 폴더에 있습니다.'",
+        "셋째와 넷째는 이 도구의 제약입니다. 실무에서는 둘 다 정상이고 매일 쓰는 모양입니다. 여기서 안 되는 이유는 실행 틀 때문입니다 — 이 도구는 여러분이 쓴 파일을 브라우저 메모리 안에 이름표만 붙여 올려놓고 돌립니다. 진짜 폴더가 있는 것이 아니라서 '위' 도 '아래' 도 존재하지 않습니다.",
+        "가짜 fetch 를 썼을 때와 같은 종류의 제약입니다. 문법은 실무와 똑같이 쓰되, 이 도구가 흉내 낼 수 없는 부분은 흉내 내지 않고 밝힙니다.",
+        "확인했으면 첫 줄을 './price.js' 로 되돌려 주세요."
+      ],
+      "files": [
+        {
+          "name": "main.js",
+          "entry": true,
+          "code": [
+            "import { withTax } from './price.js';",
+            "",
+            "console.log(withTax(10000));",
+            ""
+          ]
+        },
+        {
+          "name": "price.js",
+          "readOnly": true,
+          "code": [
+            "import { RATE } from './tax.js';",
+            "",
+            "export const withTax = (amount) => Math.round(amount * (1 + RATE));",
+            ""
+          ]
+        },
+        {
+          "name": "tax.js",
+          "readOnly": true,
+          "code": [
+            "export const RATE = 0.1;",
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "fill",
+      "title": "세 파일을 이어 주세요",
+      "brief": [
+        "import 줄 두 개가 비어 있습니다. 채워서 세 파일을 이어 주세요.",
+        "shipping.js 는 tax.js 의 RATE 가 필요하고, main.js 는 shipping.js 의 quote 가 필요합니다. 세 파일 모두 같은 자리에 있습니다.",
+        "quote(20000) 은 배송비 3000 을 더하고 세금을 붙여 25,300 을 돌려줍니다."
+      ],
+      "files": [
+        {
+          "name": "main.js",
+          "entry": true,
+          "code": [
+            "// shipping.js 에서 quote 를 가져오세요",
+            "",
+            "export function priceOf(amount) {",
+            "  return quote(amount);",
+            "}",
+            ""
+          ],
+          "solutionCode": [
+            "import { quote } from './shipping.js';",
+            "",
+            "export function priceOf(amount) {",
+            "  return quote(amount);",
+            "}",
+            ""
+          ]
+        },
+        {
+          "name": "shipping.js",
+          "code": [
+            "// tax.js 에서 RATE 를 가져오세요",
+            "",
+            "export const quote = (amount) => Math.round((amount + 3000) * (1 + RATE));",
+            ""
+          ],
+          "solutionCode": [
+            "import { RATE } from './tax.js';",
+            "",
+            "export const quote = (amount) => Math.round((amount + 3000) * (1 + RATE));",
+            ""
+          ]
+        },
+        {
+          "name": "tax.js",
+          "readOnly": true,
+          "code": [
+            "export const RATE = 0.1;",
+            ""
+          ]
+        }
+      ],
+      "entry": "priceOf",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "20000 → 25300",
+          "args": [
+            20000
+          ],
+          "expected": 25300
+        },
+        {
+          "type": "value",
+          "label": "0 → 3300",
+          "args": [
+            0
+          ],
+          "expected": 3300
+        }
+      ]
+    }
+  ]
+}

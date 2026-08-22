@@ -413,3 +413,51 @@ body {
 /* 실행 iframe 은 화면에 필요 없지만 display:none 이면 접근성 트리 처리가 애매해 오프스크린으로 둔다 */
 .sandbox-host { position: absolute; width: 0; height: 0; overflow: hidden; }
 .sandbox-host iframe { border: 0; }
+
+/* ── 파일 탭 (files[] 단계에서만 DOM 에 존재한다) ───────────────────── */
+.file-tabs { margin: var(--sp-3) 0 0; }
+
+/* 줄바꿈하지 않는다. 탭 줄 높이가 흔들리면 아래 편집기가 밀린다. */
+.file-tabs__list {
+  display: flex;
+  gap: var(--sp-2);
+  overflow-x: auto;
+  padding-bottom: var(--sp-2);
+}
+
+.file-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex: 0 0 auto;
+  padding: var(--sp-2) var(--sp-4);
+  border: 0;
+  border-radius: var(--r-sm);
+  background: var(--c-surface-alt);
+  color: var(--c-text-muted);
+  font: inherit;
+  font-size: 0.9rem;
+  font-family: var(--f-mono);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+.file-tab:hover { background: var(--c-border); }
+.file-tab--on { background: var(--c-accent-weak); color: var(--c-text-strong); }
+.file-tab--error { color: var(--c-text-error); }
+.file-tab__mark { font-size: 0.8em; line-height: 1; }
+
+.file-tabs__note:not(:empty) {
+  margin: 0 0 var(--sp-3);
+  color: var(--c-text-muted);
+  font-size: 0.85rem;
+}
+
+/* 편집기가 없는 구간(<768)에서는 파일을 세로로 잇는다. 이름이 경계가 된다. */
+.readonly-code__name {
+  display: block;
+  margin-bottom: var(--sp-2);
+  color: var(--c-text-muted);
+  font-weight: 600;
+}
+.readonly-code__name:not(:first-child) { margin-top: var(--sp-4); }

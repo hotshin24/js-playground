@@ -3,13 +3,15 @@ import { createWorkspace } from './workspace.js';
 import { createLayout } from './layout.js';
 import { createBrowse } from './browse.js';
 import { createPreview } from './preview.js';
+import { createFileTabs } from './file-tabs.js';
+import { createStepControls } from './step-controls.js';
 import { createBrief } from './brief.js';
 import { createTheme } from './theme.js';
-import { createProgress, NOTICE } from './progress.js';
+import { createProgress } from './progress.js';
 import { loadIndex, loadLesson } from './lessons.js';
-import { buildAssertScript } from './validator.js';
-import { policyOf, labelOf, isChecked } from './steps.js';
-import { setLastLesson, readLastPosition, setLessonMeta, readLessons, firstUnfinishedStep } from './storage.js';
+import { policyOf, labelOf } from './steps.js';
+import { setLastLesson, readLastPosition, setLessonMeta, readLessons } from './storage.js';
+import { firstUnfinishedStep } from './lesson-status.js';
 
 const el = (id) => document.querySelector('#' + id);
 
@@ -27,6 +29,7 @@ let ran = false;
 const progress = createProgress({
   noticeEl: el('notice'),
   getCode: () => workspace.getCode(),
+  getFiles: () => workspace.getFiles(),
   onChanged: () => refreshNav(),
 });
 
@@ -47,9 +50,10 @@ const session = createSession({
   listEl: el('asserts'),
   summaryEl: el('assert-summary'),
   onAllPassed: () => progress.complete({ ran: true, changed: true, allPassed: true }),
+  onFileError: (name) => tabs.markError(name),
   onTimeout: () => {
     progress.discard();
-    progress.notify(NOTICE.discarded);
+    progress.notify('discarded');
   },
 });
 
@@ -57,11 +61,22 @@ const workspace = createWorkspace({
   hostEl: el('editor-host'),
   readonlyEl: el('readonly-code'),
   onChange: () => progress.schedule(),
-  onFallback: () => progress.notify(NOTICE.fallback),
-  onReadonly: () => progress.notify(NOTICE.readonly),
-  onEditableChange: (editable) => {
+  onFallback: () => progress.notify('fallback'),
+  onReadonly: () => progress.notify('readonly'),
+  onEditableChange: (editable, mode) => {
     applyPolicy(editable);
     if (!editable) progress.flush();
+    progress.editorChanged(editable, mode);
+  },
+});
+
+const tabs = createFileTabs({
+  anchorEl: el('editor-host'),
+  panelEl: el('editor-host'),
+  onSelect: (name) => {
+    workspace.select(name);
+    tabs.select(name);
+    applyPolicy(layout.isEditable());
   },
 });
 
@@ -83,37 +98,6 @@ const browse = createBrowse({
 const refreshNav = () =>
   browse.refresh({ index, lesson, stepIndex, isStepDone: progress.isStepDone });
 
-const applyPolicy = (editable) => {
-  runButton.hidden = !policyOf(step ? step.kind : 'write').run;
-  // 고칠 수 있는 곳이면 되돌릴 수도 있어야 한다. 무한 루프를 넣고 빠져나올 길이 없으면 안 된다.
-  resetButton.hidden = !editable;
-  runButton.disabled = !editable;
-  resetButton.disabled = !editable;
-};
-
-const run = () => {
-  ran = true;
-  const changed = progress.isCurrentCodeChanged();
-  const react = lesson.runtime === 'react';
-  session.run(workspace.getCode(), {
-    assertScript: buildAssertScript(step, { react }),
-    total: (step.asserts || []).filter((spec) => spec.type === 'value' || spec.type === 'dom').length,
-    scaffold: step.scaffold,
-    env: step.env,
-    preview: preview.isOn(step, layout.isEditable()),
-    runtime: lesson.runtime,
-  });
-  // 검사가 없는 단계는 실행 자체가 완료 신호다
-  if (!isChecked(step.kind)) progress.complete({ ran: true, changed, allPassed: false });
-};
-
-const reset = () => {
-  progress.reset();
-  workspace.setCode(step.code);
-  workspace.focus();
-  session.setStatus('예제 코드로 되돌렸습니다');
-};
-
 const showStep = (next) => {
   progress.flush();
   stepIndex = next;
@@ -127,7 +111,9 @@ const showStep = (next) => {
   session.clear();
   nextButton.hidden = next >= lesson.steps.length - 1;
 
-  workspace.setCode(progress.resolveCode(step));
+  // 탭은 applyPolicy 가 붙였다 뗀다. 편집 가능 여부에 따라 존재 자체가 갈리기 때문이다.
+  if (step.files) workspace.setFiles(progress.resolveFiles(step));
+  else workspace.setCode(progress.resolveCode(step));
   setLastLesson(lesson.id, next);
   refreshNav();
 
@@ -168,6 +154,14 @@ const layout = createLayout({
     else workspace.unmount(editable ? 'step' : 'narrow');
   },
 });
+
+// layout 뒤에 세운다 — 조작부가 layout 을 즉시 받아 쥔다.
+const controls = createStepControls({
+  runButton, resetButton, tabs, workspace, session, progress, preview, layout,
+  current: () => ({ lesson, step }),
+  onRan: () => { ran = true; },
+});
+const { applyPolicy, run, reset } = controls;
 
 runButton.addEventListener('click', run);
 resetButton.addEventListener('click', reset);

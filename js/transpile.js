@@ -41,18 +41,19 @@ const normalizeError = (err) => {
  *
  * retainLines 는 줄 번호를 지키는 유일한 장치다. 빼면 runner 의
  * `lineno - offsetOf(head)` 산술이 통째로 어긋난다(PRD §6.3).
- * sourceType 을 script 로 두는 이유는 실제로 classic script 로 넣기 때문이다.
+ * sourceType 기본이 script 인 이유는 실제로 classic script 로 넣기 때문이다.
  * 최상위 const 는 전역 렉시컬 환경에 남아 뒤따르는 assert 스크립트가 이름으로 찾을 수 있다.
+ * files[] 단계는 module 로 넘긴다 — import/export 는 그대로 통과하고 줄 수도 그대로다(실측).
  *
  * @throws {{ message, line, col, frame }} 변환 실패. 프레임 밖이라 window.onerror 가 잡지 못한다.
  */
-export const transpile = async (code) => {
+export const transpile = async (code, { sourceType = 'script' } = {}) => {
   const engine = await loadBabel();
   try {
     return engine.transform(code, {
       presets: [['react', { runtime: 'classic' }]],
       retainLines: true,
-      sourceType: 'script',
+      sourceType: sourceType,
       compact: false,
       babelrc: false,
       configFile: false,

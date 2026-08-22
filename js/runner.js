@@ -1,8 +1,7 @@
-import { buildHead, buildTail, offsetOf, escapeScriptEnd } from './frame-doc.js';
-
-// 이 두 모듈은 정적 import 하지 않는다. 정적으로 걸면 T1·T2 에서도 요청이 나가
-// F-007 의 요청 수가 늘어난다. React 레슨에서만 처음 받는다.
-const REACT_MODULES = () => Promise.all([import('./transpile.js'), import('./react-runtime.js')]);
+import { buildHead, buildTail, buildModuleDoc, offsetOf, escapeScriptEnd } from './frame-doc.js';
+import { planOrMessage, toPayload } from './module-graph.js';
+import { toEvent } from './frame-events.js';
+import { prepareReact, prepareFiles, PREPARE_FAILED } from './react-prepare.js';
 
 // 마지막 ping 이후 이 시간이 지나면 프레임이 멈춘 것으로 본다
 export const WATCHDOG_TIMEOUT_MS = 3000;
@@ -33,6 +32,7 @@ export function createRunner({ mount, onEvent }) {
   let doneSeen = false;
   let pingSeen = false;
   let loadSeen = false;
+  let filesMode = false;
 
   // load 는 부모가 직접 받는 신호라 자식 스레드가 막혀도 도착한다.
   // 자식이 보내는 ping 과 달리 블로킹에 갇히지 않는 유일한 관측점이다.
@@ -88,43 +88,22 @@ export function createRunner({ mount, onEvent }) {
       return;
     }
 
-    if (msg.type === 'done') {
+    const out = toEvent(msg, lineOffset, filesMode);
+    if (!out) return;
+    // done 은 경과 시간을 러너만 알고 있어 여기서 채운다
+    if (out.type === 'done') {
       doneSeen = true;
-      onEvent({ type: 'done', ms: Math.round(performance.now() - startedAt) });
-      return;
+      out.ms = Math.round(performance.now() - startedAt);
     }
-
-    if (msg.type === 'error') {
-      const line = msg.line > lineOffset ? msg.line - lineOffset : null;
-      onEvent({ type: 'error', message: msg.message, line, col: line ? msg.col || null : null });
-      return;
-    }
-
-    if (msg.type === 'console') {
-      onEvent({ type: 'console', level: msg.level, args: msg.args });
-      return;
-    }
-
-    if (msg.type === 'assert') {
-      onEvent({
-        type: 'assert',
-        index: msg.index,
-        status: msg.status,
-        label: msg.label,
-        expected: msg.expected,
-        actual: msg.actual,
-        message: msg.message,
-      });
-    }
+    onEvent(out);
   };
 
   window.addEventListener('message', handleMessage);
   document.addEventListener('visibilitychange', handleVisibility);
 
-  const start = (code, { assertScript = '', scaffold, mount: target = mount, preview = false, react = '', env = '' }) => {
-    doneSeen = false;
-    pingSeen = false;
-    loadSeen = false;
+  const start = (code, options) => {
+    const { assertScript = '', scaffold, mount: target = mount, preview = false, react = '', env = '', payload = null } = options;
+    doneSeen = pingSeen = loadSeen = false;
     // 프레임이 아예 뜨지 않는 경우(프렐류드 미실행)도 이 시드 덕분에 같은 경로로 잡힌다
     lastPingAt = performance.now();
 
@@ -133,9 +112,16 @@ export function createRunner({ mount, onEvent }) {
     frame.addEventListener('load', handleLoad);
     // allow-same-origin 을 절대 넣지 않는다. 넣는 순간 부모 DOM/스토리지가 열린다.
     frame.setAttribute('sandbox', 'allow-scripts');
-    const head = buildHead(scaffold, preview, react, env);
-    lineOffset = offsetOf(head);
-    frame.srcdoc = head + escapeScriptEnd(code) + buildTail(assertScript);
+    filesMode = Boolean(payload);
+    if (payload) {
+      // 사용자 코드가 문서에 인라인으로 들어가지 않는다. 줄 번호가 이미 파일 기준이라 보정하지 않는다.
+      lineOffset = 0;
+      frame.srcdoc = buildModuleDoc(scaffold, preview, env, payload, react);
+    } else {
+      const head = buildHead(scaffold, preview, react, env);
+      lineOffset = offsetOf(head);
+      frame.srcdoc = head + escapeScriptEnd(code) + buildTail(assertScript);
+    }
 
     startedAt = performance.now();
     // srcdoc 를 먼저 넣고 붙인다. 순서를 바꾸면 초기 about:blank 로드가
@@ -158,36 +144,48 @@ export function createRunner({ mount, onEvent }) {
     onEvent({ type: 'done', ms: Math.round(performance.now() - startedFrom), started: false });
   };
 
+  /**
+   * files[] 단계. 그래프를 세운 뒤 프레임에 넘긴다.
+   * 세우기에 실패하면(없는 파일·순환 등) 프레임을 띄우지 않고 그 자리에서 마감한다.
+   */
+  const startModules = (options, gen) => {
+    const began = performance.now();
+    prepareFiles(options.files, options.runtime === 'react')
+      .then(({ react, files }) => {
+        if (gen !== generation) return;
+        const plan = planOrMessage(files);
+        // 프레임을 띄우기 전이라 가리킬 줄이 없다. 0 을 주면 결과 패널이 1행으로 읽는다.
+        if (!plan.ok) return void failBeforeStart({ message: plan.message, line: null, col: null }, began);
+        start('', { ...options, react, payload: toPayload(plan, options) });
+      })
+      .catch((info) => {
+        if (gen !== generation) return;
+        failBeforeStart(info && info.message ? info : PREPARE_FAILED, began);
+      });
+  };
+
   const run = (code, options = {}) => {
     teardown(); // 실행마다 프레임 재생성 → 상태 초기화
 
     const gen = ++generation;
+    if (options.files) {
+      startModules(options, gen);
+      return;
+    }
     if (options.runtime !== 'react') {
       start(code, options);
       return;
     }
 
-    // React 레슨만 여기로 온다. Babel 과 React 는 이 시점에 처음 받는다.
     const began = performance.now();
-    REACT_MODULES()
-      .then(([tp, rt]) =>
-        Promise.all([
-          rt.loadReact().catch(() => { throw rt.LOAD_FAILED; }),
-          tp.transpile(code).catch((err) => { throw err && err.message ? err : tp.LOAD_FAILED; }),
-        ])
-      )
-      .then(([react, source]) => {
+    prepareReact(code)
+      .then(({ react, source }) => {
         if (gen !== generation) return;
         start(source, { ...options, react });
       })
       .catch((info) => {
         if (gen !== generation) return;
-        failBeforeStart(
-          info && info.message
-            ? info
-            : { message: 'JSX 변환기를 불러오지 못했습니다. 네트워크를 확인하고 다시 실행해 주세요.', blocked: true },
-          began
-        );
+        failBeforeStart(info && info.message ? info : PREPARE_FAILED, began);
       });
   };
 

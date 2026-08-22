@@ -1,5 +1,6 @@
 import { PRELUDE } from './sandbox-prelude.js';
-import { ASSERT_RUNTIME } from './validator.js';
+import { ASSERT_RUNTIME } from './assert-runtime.js';
+import { MODULE_LOADER } from './module-loader.js';
 
 // 사용자 코드와 scaffold 안의 </script> 는 HTML 파서를 먼저 끊어버린다
 export const escapeScriptEnd = (code) => code.replace(/<\/(script)/gi, '<\\/$1');
@@ -38,7 +39,7 @@ const BASE_STYLE = [
  * classic inline script 는 파싱 위치에서 동기 실행되므로 앞선 마크업은 이미 DOM 에 있다.
  * 그래서 사용자 코드의 querySelector 가 동작한다.
  */
-export const buildHead = ({ html = '', css = '' } = {}, withStyle, react = '', env = '') =>
+const buildPrologue = ({ html = '', css = '' } = {}, withStyle, react = '', env = '') =>
   '<!doctype html>\n<html>\n<head>\n<meta charset="utf-8">\n' +
   (withStyle ? '<style>\n' + themeStyle() + BASE_STYLE + '\n<\/style>\n' : '') +
   (css ? '<style>\n' + css + '\n<\/style>\n' : '') +
@@ -49,14 +50,33 @@ export const buildHead = ({ html = '', css = '' } = {}, withStyle, react = '', e
   // 사용자 코드 앞이라 학습자가 부를 때는 이미 준비돼 있다. 없으면 아무것도 넣지 않는다.
   (env ? '<script>' + escapeScriptEnd(env) + '<\/script>\n' : '') +
   // React 는 사용자 코드보다 앞에 놓는다. 여기서 늘어난 줄 수는 offsetOf 가 그대로 센다.
-  (react ? '<script>' + escapeScriptEnd(react) + '<\/script>\n' : '') +
-  '<script>\n';
+  (react ? '<script>' + escapeScriptEnd(react) + '<\/script>\n' : '');
+
+export const buildHead = (scaffold, withStyle, react = '', env = '') =>
+  buildPrologue(scaffold, withStyle, react, env) + '<script>\n';
+
+const DONE_SCRIPT = '<script>Promise.resolve(window.__assertsPromise).then(() => window.__done());<\/script>\n';
+const CLOSE = '</body>\n</html>';
 
 export const buildTail = (assertScript) =>
   '\n<\/script>\n' +
   (assertScript ? '<script>' + assertScript + '<\/script>\n' : '') +
-  '<script>Promise.resolve(window.__assertsPromise).then(() => window.__done());<\/script>\n' +
-  '</body>\n</html>';
+  DONE_SCRIPT +
+  CLOSE;
+
+/**
+ * files[] 단계의 문서. 사용자 코드가 인라인으로 들어가지 않고 프레임 안에서 blob 이 된다.
+ * 그래서 줄 번호가 이미 파일 기준이고 offsetOf 보정이 필요 없다.
+ * assert 는 로더가 모듈 적재 뒤에 돌리므로 별도 assert script 를 두지 않는다.
+ * React 는 classic script 로 먼저 들어간다. 모듈 스코프에서 전역으로 보인다(실측).
+ */
+export const buildModuleDoc = (scaffold, withStyle, env, payload, react = '') =>
+  buildPrologue(scaffold, withStyle, react, env) +
+  '<script>' + MODULE_LOADER + '<\/script>\n' +
+  // JSON 안의 '<' 는 HTML 파서를 끊을 수 있어 이스케이프한다
+  '<script>window.__pgStart(' + JSON.stringify(payload).replace(/</g, '\\u003c') + ');<\/script>\n' +
+  DONE_SCRIPT +
+  CLOSE;
 
 // window.onerror 의 lineno 는 srcdoc 문서 기준이다. 사용자 코드 1행 앞의 줄 수를 세어 빼준다.
 // scaffold 가 레슨마다 다르므로 상수로 둘 수 없다. 실행 시점에 센다.
