@@ -16,7 +16,7 @@ const TIMEOUT_TEXT = {
  * @param {{ mount, logEl, statusEl, listEl, summaryEl, onAllPassed: () => void }} options
  */
 export function createSession({ mount, previewMount, logEl, statusEl, listEl, summaryEl,
-  onAllPassed, onPreview, onTimeout, onFileError = () => {} }) {
+  onAllPassed, onPreview, onTimeout, onFileError = () => {}, onChecked = () => {} }) {
   const panel = createConsolePanel({ logEl, statusEl });
   const results = createResultPanel({ listEl, summaryEl });
 
@@ -39,6 +39,7 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
     // 구문 에러가 나면 사용자 코드 스크립트만 죽고 assert 스크립트는 그대로 돈다.
     // error 가 assert 보다 먼저 도착하는 점으로 진짜 원인을 가려낸다.
     if (errorSeen && !filesMode) {
+      onChecked(false);
       results.clear();
       results.setSummary(
         blockedSeen ? '실행 준비가 되지 않아 검사하지 못했습니다.' : '코드에 에러가 있어 검사하지 못했습니다.',
@@ -46,7 +47,10 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
       );
       return;
     }
-    if (results.render(assertEvents, assertTotal) === assertTotal) onAllPassed();
+    const passed = results.render(assertEvents, assertTotal);
+    // 막힌 횟수를 세는 쪽이 있다. 통과든 실패든 한 번의 판정이 끝났음을 알린다.
+    onChecked(passed === assertTotal);
+    if (passed === assertTotal) onAllPassed();
   };
 
   const runner = createRunner({

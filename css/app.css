@@ -475,3 +475,26 @@ body {
   font-weight: 600;
 }
 .readonly-code__name:not(:first-child) { margin-top: var(--sp-4); }
+
+/* ── 힌트와 정답 보기 ───────────────────────────────────────────── */
+.assist:not([hidden]) {
+  margin-top: var(--sp-4);
+  padding: var(--sp-4);
+  border-radius: var(--r-sm);
+  background: var(--c-surface-alt);
+}
+.assist__hint { margin: 0 0 var(--sp-3); color: var(--c-text-strong); font-size: 0.9rem; }
+.assist__hint:last-child { margin-bottom: 0; }
+.assist__label { margin: 0 0 var(--sp-2); color: var(--c-text-strong); font-size: 0.85rem; }
+.assist__code {
+  margin: 0;
+  padding: var(--sp-3);
+  border-radius: var(--r-sm);
+  background: var(--c-bg);
+  color: var(--c-text-strong);
+  font: 13px/1.6 var(--f-mono);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  max-height: 40vh;
+  overflow: auto;
+}

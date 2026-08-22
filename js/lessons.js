@@ -88,6 +88,8 @@ const normalizeStep = (step, i) => {
     brief: step.brief,
     code: typeof step.code === 'string' ? step.code : '',
     files: files,
+    // 힌트는 최대 둘이다. 셋째는 대개 정답을 쪼갠 것이고, 그럴 바에 정답 보기를 여는 편이 정직하다.
+    hints: (step.hints || []).slice(0, 2),
     entry: step.entry || '',
     solutionCode: step.solutionCode || '',
     asserts: step.asserts || [],
