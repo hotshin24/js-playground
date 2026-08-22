@@ -39,7 +39,7 @@ const joinLines = (value) => (Array.isArray(value) ? value.join('\n') : typeof v
 
 /**
  * files[] 는 여러 파일로 이루어진 단계다. 배열 순서가 곧 탭 순서라 순서 필드를 따로 두지 않는다.
- * 지정자 해석·순환 검사는 실행 시점에 module-graph 가 한다.
+ * 지정자 해석은 실행 시점에 module-graph 가 한다.
  * 여기서는 실행해 보지 않아도 아는 것(이름 규칙 · entry 개수)만 잡는다.
  */
 const normalizeFiles = (files, where) => {
@@ -154,10 +154,6 @@ export function validateLesson(lesson, expectedId) {
   // 기본값이 'js' 라 기존 레슨 파일은 한 글자도 고칠 필요가 없다.
   const runtime = lesson.runtime === undefined ? 'js' : lesson.runtime;
   if (!RUNTIMES.includes(runtime)) fail('runtime 은 ' + RUNTIMES.join('/') + ' 중 하나여야 합니다: ' + runtime);
-  // 실측하지 않은 조합이다. 필요해지면 그때 재고 연다.
-  if (runtime === 'react' && steps.some((step) => step.files)) {
-    fail('runtime: react 와 files 를 함께 쓸 수 없습니다');
-  }
 
   return { id: lesson.id, track: lesson.track, order: lesson.order, title: lesson.title, runtime, steps };
 }

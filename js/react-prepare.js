@@ -22,3 +22,33 @@ export function prepareReact(code) {
     )
     .then(([react, source]) => ({ react: react, source: source }));
 }
+
+/**
+ * files[] 단계의 React 준비. 파일마다 JSX 를 변환한다.
+ * sourceType 을 module 로 넘겨도 import/export 는 그대로 통과하고 retainLines 가 줄 수를 지킨다(실측).
+ * React 는 classic script 로 먼저 들어가므로 모듈 스코프에서 전역으로 보인다(실측).
+ *
+ * @returns {Promise<{ react: string, files: Array }>} js 레슨은 받은 것을 그대로 돌려준다.
+ */
+export function prepareFiles(files, isReact) {
+  if (!isReact) return Promise.resolve({ react: '', files: files });
+  return REACT_MODULES()
+    .then(([tp, rt]) =>
+      Promise.all([
+        rt.loadReact().catch(() => { throw rt.LOAD_FAILED; }),
+        Promise.all(
+          files.map((file) =>
+            tp
+              .transpile(file.code, { sourceType: 'module' })
+              .then((code) => ({ ...file, code: code }))
+              // 어느 파일에서 났는지 밝히지 않으면 파일이 셋일 때 찾을 수가 없다
+              .catch((err) => {
+                if (!err || !err.message) throw tp.LOAD_FAILED;
+                throw { ...err, message: file.name + ' — ' + err.message };
+              })
+          )
+        ),
+      ])
+    )
+    .then(([react, out]) => ({ react: react, files: out }));
+}

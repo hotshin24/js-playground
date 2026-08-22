@@ -68,9 +68,10 @@ export const buildTail = (assertScript) =>
  * files[] 단계의 문서. 사용자 코드가 인라인으로 들어가지 않고 프레임 안에서 blob 이 된다.
  * 그래서 줄 번호가 이미 파일 기준이고 offsetOf 보정이 필요 없다.
  * assert 는 로더가 모듈 적재 뒤에 돌리므로 별도 assert script 를 두지 않는다.
+ * React 는 classic script 로 먼저 들어간다. 모듈 스코프에서 전역으로 보인다(실측).
  */
-export const buildModuleDoc = (scaffold, withStyle, env, payload) =>
-  buildPrologue(scaffold, withStyle, '', env) +
+export const buildModuleDoc = (scaffold, withStyle, env, payload, react = '') =>
+  buildPrologue(scaffold, withStyle, react, env) +
   '<script>' + MODULE_LOADER + '<\/script>\n' +
   // JSON 안의 '<' 는 HTML 파서를 끊을 수 있어 이스케이프한다
   '<script>window.__pgStart(' + JSON.stringify(payload).replace(/</g, '\\u003c') + ');<\/script>\n' +

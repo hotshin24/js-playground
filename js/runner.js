@@ -1,7 +1,7 @@
 import { buildHead, buildTail, buildModuleDoc, offsetOf, escapeScriptEnd } from './frame-doc.js';
-import { planModules, toPayload } from './module-graph.js';
+import { planOrMessage, toPayload } from './module-graph.js';
 import { toEvent } from './frame-events.js';
-import { prepareReact, PREPARE_FAILED } from './react-prepare.js';
+import { prepareReact, prepareFiles, PREPARE_FAILED } from './react-prepare.js';
 
 // 마지막 ping 이후 이 시간이 지나면 프레임이 멈춘 것으로 본다
 export const WATCHDOG_TIMEOUT_MS = 3000;
@@ -116,7 +116,7 @@ export function createRunner({ mount, onEvent }) {
     if (payload) {
       // 사용자 코드가 문서에 인라인으로 들어가지 않는다. 줄 번호가 이미 파일 기준이라 보정하지 않는다.
       lineOffset = 0;
-      frame.srcdoc = buildModuleDoc(scaffold, preview, env, payload);
+      frame.srcdoc = buildModuleDoc(scaffold, preview, env, payload, react);
     } else {
       const head = buildHead(scaffold, preview, react, env);
       lineOffset = offsetOf(head);
@@ -148,21 +148,20 @@ export function createRunner({ mount, onEvent }) {
    * files[] 단계. 그래프를 세운 뒤 프레임에 넘긴다.
    * 세우기에 실패하면(없는 파일·순환 등) 프레임을 띄우지 않고 그 자리에서 마감한다.
    */
-  const startModules = (options) => {
+  const startModules = (options, gen) => {
     const began = performance.now();
-    let plan;
-    try {
-      plan = planModules(options.files);
-    } catch (err) {
-      // 레슨 데이터의 잘못이다. 학습자가 고칠 수 없으므로 그대로 드러낸다.
-      plan = { ok: false, message: err.message };
-    }
-    if (!plan.ok) {
-      // 프레임을 띄우기 전이라 가리킬 줄이 없다. 0 을 주면 결과 패널이 1행으로 읽는다.
-      failBeforeStart({ message: plan.message, line: null, col: null }, began);
-      return;
-    }
-    start('', { ...options, payload: toPayload(plan, options) });
+    prepareFiles(options.files, options.runtime === 'react')
+      .then(({ react, files }) => {
+        if (gen !== generation) return;
+        const plan = planOrMessage(files);
+        // 프레임을 띄우기 전이라 가리킬 줄이 없다. 0 을 주면 결과 패널이 1행으로 읽는다.
+        if (!plan.ok) return void failBeforeStart({ message: plan.message, line: null, col: null }, began);
+        start('', { ...options, react, payload: toPayload(plan, options) });
+      })
+      .catch((info) => {
+        if (gen !== generation) return;
+        failBeforeStart(info && info.message ? info : PREPARE_FAILED, began);
+      });
   };
 
   const run = (code, options = {}) => {
@@ -170,7 +169,7 @@ export function createRunner({ mount, onEvent }) {
 
     const gen = ++generation;
     if (options.files) {
-      startModules(options);
+      startModules(options, gen);
       return;
     }
     if (options.runtime !== 'react') {

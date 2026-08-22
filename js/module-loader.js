@@ -1,8 +1,8 @@
-import { MOD_TOKEN } from './module-graph.js';
-
 /**
- * 프레임 안에서 파일들을 blob 으로 만들고 진입 모듈을 붙이는 로더.
+ * 프레임 안에서 파일들을 blob 으로 만들고 이름 → URL 의 import map 을 심은 뒤 진입 모듈을 붙인다.
  * 부모가 아니라 여기서 URL 을 만드는 이유는 blob 이 만든 문서의 출처에 묶이기 때문이다.
+ * URL 을 코드에 박지 않고 import map 에 맡기는 이유는 순환이다 — blob 의 내용은 만드는 순간
+ * 굳고 URL 은 그전에 알 수 없어, 서로를 부르는 두 파일을 만들 수조차 없다.
  *
  * 진입 함수를 못 찾는 경우를 한 문구로 뭉개지 않는다. 학습자가 고칠 곳이 경우마다 다르다 —
  * 파일이 안 열린 것 / 아무것도 안 내보낸 것 / 이름이 다른 것 / default 로 내보낸 것.
@@ -12,7 +12,6 @@ import { MOD_TOKEN } from './module-graph.js';
 export const MODULE_LOADER = `
 (() => {
   const rt = window.__pgRuntime;
-  const TOKEN = '${MOD_TOKEN}';
 
   const KIND = {
     number: '숫자', string: '문자열', boolean: '참/거짓',
@@ -21,18 +20,20 @@ export const MODULE_LOADER = `
   const listOf = (names) => names.join(', ');
 
   window.__pgStart = (payload) => {
-    // 의존이 먼저 오도록 세워져 있다. 앞선 파일의 URL 이 이미 있으므로 그 자리표시자를 바꿔 끼운다.
+    // 이름이 먼저 정해져 있으므로 순서가 의미를 잃는다. 그대로 만들어 표에 올린다.
     const urls = {};
     const names = {};
     payload.files.forEach((file) => {
-      let src = file.code;
-      Object.keys(urls).forEach((dep) => {
-        src = src.split(TOKEN + dep + '__').join(urls[dep]);
-      });
-      const url = URL.createObjectURL(new Blob([src], { type: 'text/javascript' }));
+      const url = URL.createObjectURL(new Blob([file.code], { type: 'text/javascript' }));
       urls[file.name] = url;
       names[url] = file.name;
     });
+
+    // 모듈이 하나라도 뜨기 전에 심어야 한다. 뜬 뒤에는 늦다.
+    const map = document.createElement('script');
+    map.type = 'importmap';
+    map.textContent = JSON.stringify({ imports: urls });
+    document.head.appendChild(map);
     // 오류의 filename 과 본문에 blob URL 이 그대로 실린다. 학습자에게는 파일 이름으로 보여야 한다.
     rt.setFiles(names);
 
@@ -103,7 +104,7 @@ export const MODULE_LOADER = `
       }
       const ns = window.__pgEntry;
       const target = ns && check ? ns[check] : undefined;
-      Promise.resolve(window.__runAsserts(payload.specs || [], target, false, problem && problem.message))
+      Promise.resolve(window.__runAsserts(payload.specs || [], target, Boolean(payload.react), problem && problem.message))
         .then(release, release);
     };
 
@@ -111,7 +112,8 @@ export const MODULE_LOADER = `
     window.__pgModuleReady = () => finish(null);
 
     const boot = URL.createObjectURL(new Blob([
-      'import * as ns from ' + JSON.stringify(urls[entryFile]) + ';\\n' +
+      // 진입 파일도 이름으로 부른다. import map 이 풀어 준다.
+      'import * as ns from ' + JSON.stringify(entryFile) + ';\\n' +
       'window.__pgEntry = ns;\\n' +
       'window.__pgModuleReady();\\n',
     ], { type: 'text/javascript' }));
