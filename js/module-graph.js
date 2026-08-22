@@ -50,10 +50,16 @@ const resolveSpec = (spec, names, from) => {
     return { message: from + ' 가 ' + JSON.stringify(spec) + ' 를 불러오려 합니다. 이 레슨에서는 외부 패키지를 쓸 수 없고, 같은 폴더의 파일도 ' + JSON.stringify('./파일이름.js') + ' 처럼 앞에 ' + JSON.stringify('./') + ' 를 붙여야 합니다.' };
   }
   const name = spec.slice(2);
-  if (!names.includes(name)) {
-    return { message: from + ' 가 ' + JSON.stringify(spec) + ' 를 불러오려 하지만 그런 파일이 없습니다. 지금 있는 파일은 ' + listOf(names) + ' 입니다.' };
+  if (names.includes(name)) return { name: name };
+
+  // 아래 셋은 모두 '그런 파일이 없다' 지만 고칠 곳이 다르다.
+  if (names.includes(name + '.js')) {
+    return { message: from + ' 의 ' + JSON.stringify(spec) + ' 에 확장자가 빠졌습니다. 브라우저는 ' + JSON.stringify('.js') + ' 를 대신 붙여 주지 않습니다. ' + JSON.stringify(spec + '.js') + ' 라고 적어 주세요.' };
   }
-  return { name: name };
+  if (name.includes('/')) {
+    return { message: from + ' 가 ' + JSON.stringify(spec) + ' 를 불러오려 합니다. 이 레슨에는 하위 폴더가 없고 모든 파일이 같은 폴더에 있습니다. 지금 있는 파일은 ' + listOf(names) + ' 입니다.' };
+  }
+  return { message: from + ' 가 ' + JSON.stringify(spec) + ' 를 불러오려 하지만 그런 파일이 없습니다. 지금 있는 파일은 ' + listOf(names) + ' 입니다.' };
 };
 
 /** 레슨 데이터 자체의 잘못. 학습자가 고칠 수 없으므로 던진다. */
