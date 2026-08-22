@@ -26,75 +26,104 @@
           ]
         },
         "typeof 로 물으면 function 이 나옵니다. number 나 string 과 나란한 종류라는 뜻입니다. 값이니까 alias 에 다시 담을 수 있고, 담은 뒤에도 그대로 동작합니다. 함수가 복사된 것이 아니라 같은 함수를 두 이름이 가리키고 있습니다.",
-        "함수가 값이라는 사실이 왜 중요한지는 뒤에서 드러납니다. 값이니까 다른 함수에 넘길 수도 있고, 함수가 함수를 만들어 돌려줄 수도 있습니다. 지금은 담을 수 있다는 것만 확인하면 됩니다."
+        "값이니까 조건에 따라 다른 함수를 담아 둘 수도 있습니다. 이 레슨은 거기까지 갑니다. 다른 함수에게 넘기는 것과 함수가 함수를 만들어 돌려주는 것은 뒤에서 다룹니다."
       ]
     },
     {
-      "kind": "fill",
-      "title": "담아 두고 불러 보기",
+      "kind": "run",
+      "title": "둘 중 하나를 담아 보기",
       "brief": [
-        "triple은 3배로 만드는 함수를 담은 변수입니다. null 자리에 triple에 5를 넣어 부른 결과를 넣어 보세요.",
-        "변수에 담겼을 뿐 부르는 방법은 지금까지와 같습니다. 이름 뒤에 괄호를 붙이고 값을 넣습니다.",
-        "채우지 않고 실행하면 실제값이 null로 나옵니다."
+        "아래에는 함수가 둘 있습니다. 그리고 조건에 따라 둘 중 하나를 rule 에 담습니다.",
+        "실행 버튼을 눌러 보세요. 5000 과 function 이 나옵니다. isSale 이 참이라 half 가 담겼습니다.",
+        "삼항 연산자의 두 갈래가 숫자나 글자가 아니라 함수입니다. 값을 고르듯 함수를 골랐습니다. 그 뒤로 rule 은 그냥 부르면 됩니다 — 어느 것이 담겼는지 부르는 쪽은 신경 쓰지 않습니다."
       ],
-      "code": "const triple = function (n) {\n  return n * 3;\n};\n\nconst result = null; // ← 여기를 채우세요\n\nfunction getResult() {\n  return result;\n}\n",
-      "entry": "getResult",
-      "solutionCode": "const triple = function (n) {\n  return n * 3;\n};\n\nconst result = triple(5);\n\nfunction getResult() {\n  return result;\n}\n",
+      "code": "const half = function (price) {\n  return price / 2;\n};\n\nconst keep = function (price) {\n  return price;\n};\n\nconst isSale = true;\nconst rule = isSale ? half : keep;\n\nconsole.log(rule(10000));\nconsole.log(typeof rule);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "괄호를 붙여 보기",
+      "brief": [
+        "isSale 을 false 로 바꾸고 실행해 보세요. 10000 이 나옵니다. 담긴 함수가 달라졌을 뿐 부르는 줄은 한 글자도 고치지 않았습니다.",
+        "이번에는 half 를 half(10000) 으로 바꿔 보세요. Uncaught TypeError: rule is not a function 이 나옵니다. rule 에 담긴 것이 함수가 아니라 5000 이라는 숫자여서 부를 수 없습니다.",
+        "괄호를 붙이면 그 자리에서 부르는 것이고, 붙이지 않으면 함수 그 자체입니다. 이 레슨에서 가장 자주 틀리는 곳입니다."
+      ],
+      "code": "const half = function (price) {\n  return price / 2;\n};\n\nconst keep = function (price) {\n  return price;\n};\n\nconst isSale = true;\nconst rule = isSale ? half : keep;\n\nconsole.log(rule(10000));\nconsole.log(typeof rule);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "함수 하나 담기",
+      "brief": [
+        "함수 둘이 준비돼 있습니다. rule 에 그중 하나를 담아야 합니다. 담을 것은 천원 할인 쪽입니다.",
+        "null 자리에 thousandOff 를 넣어 보세요. 괄호를 붙이지 않습니다 — 지금 필요한 것은 부른 결과가 아니라 함수 자체입니다.",
+        "채우지 않고 실행하면 실제값이 null 로 나옵니다. rule 이 함수가 아니면 아래 함수가 그대로 null 을 돌려주기 때문입니다."
+      ],
+      "code": "const half = function (price) {\n  return price / 2;\n};\n\nconst thousandOff = function (price) {\n  return price - 1000;\n};\n\nconst rule = null; // ← 여기를 채우세요\n\nfunction getPrice() {\n  if (typeof rule !== 'function') {\n    return null;\n  }\n\n  return rule(10000);\n}\n",
+      "entry": "getPrice",
+      "solutionCode": "const half = function (price) {\n  return price / 2;\n};\n\nconst thousandOff = function (price) {\n  return price - 1000;\n};\n\nconst rule = thousandOff;\n\nfunction getPrice() {\n  if (typeof rule !== 'function') {\n    return null;\n  }\n\n  return rule(10000);\n}\n",
       "asserts": [
         {
           "type": "value",
-          "label": "5의 3배는 15입니다",
+          "label": "10000 에서 천원을 뺍니다",
           "args": [],
-          "expected": 15
+          "expected": 9000
         }
       ],
       "hints": [
-        "변수에 담겼을 뿐 함수입니다. 이름 뒤에 괄호가 없으면 부른 것이 아니라 함수 자체를 가리킨 것입니다."
+        "괄호를 붙이면 그 자리에서 부르는 것이고, 이름만 적으면 함수를 가리키는 것입니다. rule 은 아래에서 부를 것이므로 지금은 가리키기만 하면 됩니다."
       ]
     },
     {
       "kind": "write",
-      "title": "할인가를 계산하는 함수",
+      "title": "할인 방식을 골라 주는 함수",
       "brief": [
-        "finalPrice 함수를 완성해 보세요. 가격과 할인 금액을 받아 최종 가격을 반환합니다. 값을 두 개 받는 함수입니다.",
-        "할인이 0이면 계산할 것이 없으니 받은 가격을 그대로 돌려주세요. return을 만나면 함수는 그 자리에서 끝나므로, 이런 경우를 앞에서 먼저 처리하고 빠져나올 수 있습니다.",
-        "할인이 가격보다 크면 최종 가격은 0입니다. 음수가 나오면 안 됩니다."
+        "할인 방식이 셋입니다. half 는 반값, thousandOff 는 천원 빼기, 그 밖의 이름은 정가 그대로입니다.",
+        "chooseRule 을 완성해 보세요. 이름을 받아 그 이름에 맞는 함수를 돌려줍니다. 값을 계산해서 돌려주는 것이 아니라 함수를 돌려주는 것입니다.",
+        "위의 applyRule 은 그대로 두세요. 돌려받은 것이 함수인지 확인한 뒤에 부릅니다. 함수가 아니면 검사가 그 자리에서 갈립니다."
       ],
-      "code": "function finalPrice(price, discount) {\n  // 여기를 채우세요\n}\n",
-      "entry": "finalPrice",
-      "solutionCode": "function finalPrice(price, discount) {\n  if (discount === 0) {\n    return price;\n  }\n\n  if (discount > price) {\n    return 0;\n  }\n\n  return price - discount;\n}\n",
+      "code": "// 아래 함수는 그대로 두세요. 검사기가 부릅니다\nfunction applyRule(kind, price) {\n  const rule = chooseRule(kind);\n\n  if (typeof rule !== 'function') {\n    return 'chooseRule 이 함수를 돌려주지 않았습니다';\n  }\n\n  return rule(price);\n}\n\nfunction chooseRule(kind) {\n  // 여기를 채우세요\n}\n",
+      "entry": "applyRule",
+      "solutionCode": "// 아래 함수는 그대로 두세요. 검사기가 부릅니다\nfunction applyRule(kind, price) {\n  const rule = chooseRule(kind);\n\n  if (typeof rule !== 'function') {\n    return 'chooseRule 이 함수를 돌려주지 않았습니다';\n  }\n\n  return rule(price);\n}\n\nfunction chooseRule(kind) {\n  const half = function (price) {\n    return price / 2;\n  };\n\n  const thousandOff = function (price) {\n    return price - 1000;\n  };\n\n  const keep = function (price) {\n    return price;\n  };\n\n  if (kind === 'half') {\n    return half;\n  }\n\n  if (kind === 'thousandOff') {\n    return thousandOff;\n  }\n\n  return keep;\n}\n",
       "asserts": [
         {
           "type": "value",
-          "label": "39000원에서 5000원을 빼면 34000원",
+          "label": "half 는 반값",
           "args": [
-            39000,
-            5000
+            "half",
+            10000
           ],
-          "expected": 34000
+          "expected": 5000
         },
         {
           "type": "value",
-          "label": "할인이 0이면 가격 그대로",
+          "label": "thousandOff 는 천원 빼기",
           "args": [
-            39000,
-            0
+            "thousandOff",
+            10000
           ],
-          "expected": 39000
+          "expected": 9000
         },
         {
           "type": "value",
-          "label": "할인이 가격보다 크면 0 — 음수가 되면 안 됩니다",
+          "label": "모르는 이름은 정가 그대로",
           "args": [
-            5000,
-            8000
+            "none",
+            10000
           ],
-          "expected": 0
+          "expected": 10000
+        },
+        {
+          "type": "value",
+          "label": "다른 가격에도 통합니다",
+          "args": [
+            "half",
+            3000
+          ],
+          "expected": 1500
         }
       ],
       "hints": [
-        "할인이 0 인 경우를 함수 앞쪽에서 먼저 처리하고 돌아가면 뒤 계산이 단순해집니다. read 에서 본 '먼저 빠져나오기' 가 그 자리입니다.",
-        "빼고 나서 음수가 되는 경우가 남습니다. 뺀 값을 그대로 돌려주기 전에 한 번 걸러야 합니다."
+        "돌려줄 함수 셋을 먼저 만들어 두고, 그다음에 이름을 보고 고르세요. 고른 뒤에는 이름만 적어 돌려줍니다 — 괄호를 붙이면 그 자리에서 불려 숫자가 돌아갑니다.",
+        "모르는 이름이 들어올 수도 있습니다. 어느 갈래에도 걸리지 않았을 때 무엇을 돌려줄지 정해 두어야 applyRule 이 함수를 받습니다."
       ]
     }
   ]
