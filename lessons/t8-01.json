@@ -1,0 +1,310 @@
+{
+  "schemaVersion": 2,
+  "id": "t8-01",
+  "track": "T8",
+  "order": 1,
+  "title": "나누면 보이지 않는다",
+  "runtime": "js",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "파일 두 개, 줄 하나로 잇기",
+      "brief": [
+        "지금까지 모든 레슨은 파일 하나 안에서 끝났습니다. 실무의 코드는 그렇지 않습니다. 함수 하나가 파일 하나이고, 값과 도구는 여러 파일에 흩어져 있습니다.",
+        "그것을 잇는 것이 export 와 import 입니다. 이 레슨은 파일 두 개로 시작합니다. utils.js 에는 export const double = (n) => n * 2; 한 줄이 있고, main.js 는 그것을 가져다 씁니다.",
+        "가져오는 줄은 import { double } from './utils.js'; 입니다. 중괄호 안이 가져올 이름이고, from 뒤가 어느 파일에서 가져올지입니다. './utils.js' 의 점 하나는 '같은 폴더' 라는 뜻이고 .js 까지 적어야 합니다.",
+        "내놓는 쪽은 이름 앞에 export 를 붙이는 것이 전부입니다. 여기서 중요한 것이 하나 있습니다. 파일 안에서 만든 이름은 기본적으로 그 파일 밖으로 나가지 않습니다. export 를 붙인 것만 나갑니다. 붙이지 않으면 그 값은 그 파일 안에만 있습니다.",
+        "그래서 이 레슨의 제목이 '나누면 보이지 않는다' 입니다. 나누는 순간 서로가 서로를 못 보게 되고, export 와 import 가 그 사이에 다리를 놓습니다.",
+        "다음 단계부터 코드 위에 파일 탭이 생깁니다. 탭을 눌러 파일을 오갈 수 있고, 실행은 한 번이면 두 파일이 함께 돕니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "이어진 것을 확인합니다",
+      "brief": [
+        "실행해 보세요. 콘솔에 [2, 4, 6] 이 찍힙니다.",
+        "파일이 둘인데 실행은 한 번입니다. 진입 파일은 main.js 이고, main.js 가 utils.js 를 불러오면 utils.js 가 먼저 평가된 뒤 main.js 가 이어집니다. 순서를 여러분이 정하지 않아도 import 가 정해 줍니다.",
+        "위쪽 탭으로 utils.js 를 열어 볼 수 있습니다. 이 단계에서는 두 파일 다 고칠 수 있습니다."
+      ],
+      "files": [
+        {
+          "name": "main.js",
+          "entry": true,
+          "code": [
+            "import { double } from './utils.js';",
+            "",
+            "export function doubleAll(numbers) {",
+            "  return numbers.map(double);",
+            "}",
+            "",
+            "console.log(doubleAll([1, 2, 3]));",
+            ""
+          ]
+        },
+        {
+          "name": "utils.js",
+          "code": [
+            "export const double = (n) => n * 2;",
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "tweak",
+      "title": "export 를 떼어 보세요",
+      "brief": [
+        "main.js 의 doubleAll 앞에서 export 를 지우고 실행해 보세요. function doubleAll(numbers) { 만 남기면 됩니다.",
+        "검사기가 이렇게 말합니다 — 'main.js 가 아무것도 내보내지 않았습니다.'",
+        "코드가 틀린 것이 아닙니다. doubleAll 은 멀쩡히 만들어졌고 console.log 도 그대로 찍힙니다. 다만 파일 밖에서 그 이름을 볼 수 없을 뿐입니다. 검사기도 밖에 있는 사람이라 볼 수 없습니다.",
+        "확인했으면 export 를 다시 붙여 주세요."
+      ],
+      "files": [
+        {
+          "name": "main.js",
+          "entry": true,
+          "code": [
+            "import { double } from './utils.js';",
+            "",
+            "export function doubleAll(numbers) {",
+            "  return numbers.map(double);",
+            "}",
+            "",
+            "console.log(doubleAll([1, 2, 3]));",
+            ""
+          ]
+        },
+        {
+          "name": "utils.js",
+          "readOnly": true,
+          "code": [
+            "export const double = (n) => n * 2;",
+            ""
+          ]
+        }
+      ],
+      "entry": "doubleAll",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "[1, 2, 3] → [2, 4, 6]",
+          "args": [
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          "expected": [
+            2,
+            4,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "tweak",
+      "title": "이름이 다를 때와 default 로 내놓을 때",
+      "brief": [
+        "이번에는 두 가지를 차례로 해 보세요. 각각 검사기가 다르게 말합니다.",
+        "하나. 이름을 doubleAII 처럼 살짝 바꿔 보세요. 검사기가 'doubleAll 을(를) 내보내지 않았습니다. 지금 내보내고 있는 것은 …' 이라며 실제로 내보낸 이름을 알려 줍니다. 오타를 찾는 데 이 목록이 쓸모 있습니다.",
+        "둘. 이름을 되돌린 다음 export function doubleAll 을 export default function doubleAll 로 바꿔 보세요. 'export default 로 내보냈습니다' 라고 말합니다. default 는 다음 레슨에서 제대로 다룹니다. 지금은 이름 있는 export 와 다른 것이라는 것만 봐 두세요.",
+        "세 문구는 모두 '못 찾았다' 지만 고칠 곳이 다릅니다. 안 붙였으면 붙이고, 이름이 다르면 맞추고, default 면 이름 있는 export 로 바꿉니다. 마지막에는 원래대로 돌려놓고 통과시켜 주세요."
+      ],
+      "files": [
+        {
+          "name": "main.js",
+          "entry": true,
+          "code": [
+            "import { double } from './utils.js';",
+            "",
+            "export function doubleAll(numbers) {",
+            "  return numbers.map(double);",
+            "}",
+            "",
+            "console.log(doubleAll([1, 2, 3]));",
+            ""
+          ]
+        },
+        {
+          "name": "utils.js",
+          "readOnly": true,
+          "code": [
+            "export const double = (n) => n * 2;",
+            ""
+          ]
+        }
+      ],
+      "entry": "doubleAll",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "[1, 2, 3] → [2, 4, 6]",
+          "args": [
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          "expected": [
+            2,
+            4,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "fill",
+      "title": "다리를 놓아 주세요",
+      "brief": [
+        "utils.js 에 half 가 준비돼 있습니다. 읽기 전용이니 그대로 두세요.",
+        "main.js 의 빈 곳 두 군데를 채워 halveAll 을 완성해 주세요. 첫 줄에서 half 를 가져오고, halveAll 을 밖에서 볼 수 있게 내놓아야 합니다.",
+        "가져오는 이름은 중괄호 안에 적습니다. 내놓는 것은 앞에 한 단어를 붙이면 됩니다."
+      ],
+      "files": [
+        {
+          "name": "main.js",
+          "entry": true,
+          "code": [
+            "// 여기서 half 를 가져오세요",
+            "",
+            "function halveAll(numbers) {",
+            "  return numbers.map(half);",
+            "}",
+            ""
+          ],
+          "solutionCode": [
+            "import { half } from './utils.js';",
+            "",
+            "export function halveAll(numbers) {",
+            "  return numbers.map(half);",
+            "}",
+            ""
+          ]
+        },
+        {
+          "name": "utils.js",
+          "readOnly": true,
+          "code": [
+            "export const half = (n) => n / 2;",
+            ""
+          ]
+        }
+      ],
+      "entry": "halveAll",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "[2, 4, 6] → [1, 2, 3]",
+          "args": [
+            [
+              2,
+              4,
+              6
+            ]
+          ],
+          "expected": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "type": "value",
+          "label": "[1] → [0.5]",
+          "args": [
+            [
+              1
+            ]
+          ],
+          "expected": [
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "두 파일을 직접 나눠 보세요",
+      "brief": [
+        "이번에는 두 파일 다 비어 있습니다.",
+        "utils.js 에 upper 를 만들어 내놓아 주세요. 문자열을 받아 대문자로 바꿔 돌려줍니다. 대문자로 바꾸는 것은 toUpperCase() 입니다.",
+        "main.js 에서 upper 를 가져와 upperAll 을 만들어 내놓아 주세요. 문자열 배열을 받아 전부 대문자로 바꾼 새 배열을 돌려줍니다.",
+        "어느 파일에 무엇을 둘지는 정해져 있습니다. 한 글자짜리 도구는 utils.js 에, 그것을 쓰는 쪽은 main.js 에 둡니다. 무엇을 어느 파일에 둘 것인가는 t8-06 에서 따로 다룹니다."
+      ],
+      "files": [
+        {
+          "name": "main.js",
+          "entry": true,
+          "code": [
+            "// utils.js 에서 upper 를 가져오세요",
+            "",
+            "// upperAll 을 만들어 내놓으세요",
+            ""
+          ],
+          "solutionCode": [
+            "import { upper } from './utils.js';",
+            "",
+            "export function upperAll(words) {",
+            "  return words.map(upper);",
+            "}",
+            ""
+          ]
+        },
+        {
+          "name": "utils.js",
+          "code": [
+            "// upper 를 만들어 내놓으세요",
+            ""
+          ],
+          "solutionCode": [
+            "export const upper = (word) => word.toUpperCase();",
+            ""
+          ]
+        }
+      ],
+      "entry": "upperAll",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "['a', 'b'] → ['A', 'B']",
+          "args": [
+            [
+              "a",
+              "b"
+            ]
+          ],
+          "expected": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "type": "value",
+          "label": "['hi', 'there'] → ['HI', 'THERE']",
+          "args": [
+            [
+              "hi",
+              "there"
+            ]
+          ],
+          "expected": [
+            "HI",
+            "THERE"
+          ]
+        },
+        {
+          "type": "value",
+          "label": "빈 배열은 빈 배열",
+          "args": [
+            []
+          ],
+          "expected": []
+        }
+      ]
+    }
+  ]
+}
