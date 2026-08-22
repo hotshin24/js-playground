@@ -24,7 +24,7 @@ export function createStepView({ mainEl, titleEl, nextButton, deps, applyPolicy,
     step = lesson.steps[next];
     ran = false;
     progress.setContext(lesson.id, next, step);
-    assist.setContext(lesson.id, next, step);
+    assist.setContext(lesson.id, next, step, lesson.steps);
 
     mainEl.className = 'layout layout--' + step.kind;
     brief.render(step);

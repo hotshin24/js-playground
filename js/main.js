@@ -76,6 +76,7 @@ const workspace = createWorkspace({
 // 정답을 보고 통과한 것과 스스로 푼 것을 진행률에서 갈라 두되, 화면에는 표시하지 않는다.
 // PRD §7.1 의 '정답 보기 사용 비율' 은 이 기록으로만 계산된다.
 const assist = createAssist({
+  referenceButton: el('reference'),
   hintButton: el('hint'),
   solutionButton: el('solution'),
   panelEl: el('assist'),
