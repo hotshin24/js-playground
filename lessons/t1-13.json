@@ -20,10 +20,14 @@
             "const { nick, city } = user;",
             "",
             "console.log(nick + ' / ' + city);             // 수민 / 서울",
-            "console.log(nick.length);                     // 2"
+            "console.log(nick.length);                     // 2",
+            "",
+            "const small = { nick, city };",
+            "console.log(small);   // {nick: \"수민\", city: \"서울\"}"
           ]
         },
         "두 줄이 같은 값을 만듭니다. 다만 아래쪽에는 user. 가 없습니다. 꺼낼 값이 둘일 때는 차이가 작지만, 다섯이 되면 그 앞부분을 다섯 번 적어야 합니다. 꺼낸 뒤에는 보통 값이라 nick.length 처럼 바로 이어 쓸 수 있습니다.",
+        "마지막 두 줄은 반대 방향입니다. 꺼내 둔 값으로 새 객체를 만드는데 { nick: nick, city: city } 라고 적지 않았습니다. 이름표와 담을 값의 이름이 같으면 한 번만 적어도 됩니다. 단축 속성명(shorthand)이라고 하며, 구조 분해로 꺼낸 값을 다시 묶을 때 거의 항상 이 모양이 됩니다.",
         "중괄호 안에 적는 것은 꺼낼 이름표입니다. 객체에 없는 이름을 적으면 undefined가 담깁니다. 그럴 때 쓸 값을 미리 정해 둘 수 있는데, name = '이름 없음' 처럼 등호를 붙이면 됩니다."
       ]
     },

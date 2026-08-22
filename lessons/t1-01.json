@@ -17,16 +17,19 @@
             "const price = 12000;",
             "const label = '12000';",
             "",
-            "console.log(typeof price);         // number",
-            "console.log(typeof label);         // string",
+            "console.log(typeof price);            // number",
+            "console.log(typeof label);            // string",
+            "console.log(price + 1);               // 12001",
+            "console.log(label + 1);               // 120001",
+            "console.log(typeof (label + 1));      // string",
             "",
-            "console.log(price + 1);            // 12001",
-            "console.log(label + 1);            // 120001",
-            "console.log(typeof (label + 1));   // string"
+            "console.log(price > 10000);           // true",
+            "console.log(typeof (price > 10000));  // boolean"
           ]
         },
         "price 와 label 은 화면에 똑같이 12000 으로 보이지만 종류가 다릅니다. 그래서 1을 더했을 때 하나는 12001 이 되고 다른 하나는 120001 이 됩니다. 숫자에 1을 더하면 계산이지만, 글자에 1을 더하면 뒤에 붙이기입니다.",
-        "마지막 줄을 봐 주세요. 120001 도 화면에는 숫자처럼 보입니다. 눈으로는 구분할 수 없고 typeof 로 물어야 알 수 있습니다. 종류를 확인하는 습관이 필요한 이유입니다."
+        "마지막 줄을 봐 주세요. 120001 도 화면에는 숫자처럼 보입니다. 눈으로는 구분할 수 없고 typeof 로 물어야 알 수 있습니다. 종류를 확인하는 습관이 필요한 이유입니다.",
+        "마지막 두 줄은 종류를 확인하는 것이 아니라 값을 비교합니다. 크다·작다·같다를 물으면 그 답이 true 나 false 로 나오고, 그 답의 종류가 불리언입니다. 불리언은 우리가 직접 적기보다 이렇게 비교의 결과로 만들어 쓰는 일이 훨씬 많습니다."
       ]
     },
     {

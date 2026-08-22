@@ -34,21 +34,21 @@
       "kind": "run",
       "title": "한 바퀴 돌려 보기",
       "brief": [
-        "아래는 값 세 개를 하나씩 꺼내 찍습니다. 콘솔에 세 줄이 나옵니다.",
-        "실행 버튼을 눌러 보세요. n이라는 이름은 우리가 정한 것입니다. 다른 이름을 써도 됩니다.",
-        "지금까지 값을 담을 때 쓴 const는 한 번 정하면 바꿀 수 없습니다. 다음 단계에서는 값을 계속 더해 나가야 해서, 바꿀 수 있는 이름이 필요합니다. 그때는 const 대신 let을 씁니다."
+        "아래는 값 세 개를 하나씩 꺼내 찍으면서, 동시에 몇 번 돌았는지를 셉니다.",
+        "실행 버튼을 눌러 보세요. 10, 20, 30 이 차례로 나오고 마지막에 3 이 나옵니다. 마지막 3 은 배열에서 꺼낸 값이 아니라 반복이 돌아간 횟수입니다.",
+        "count 만 const 가 아니라 let 입니다. const 는 한 번 정하면 바꿀 수 없는데 count 는 돌 때마다 달라져야 하기 때문입니다. count = count + 1 은 '지금 count 에 1을 더한 값을 다시 count 로 삼는다'는 뜻입니다. 이렇게 값을 이어서 쌓아 나가는 것이 반복문의 나머지 절반입니다."
       ],
-      "code": "const numbers = [10, 20, 30];\n\nfor (const n of numbers) {\n  console.log(n);\n}\n"
+      "code": "const numbers = [10, 20, 30];\n\nlet count = 0;\n\nfor (const n of numbers) {\n  console.log(n);\n  count = count + 1;\n}\n\nconsole.log(count);\n"
     },
     {
       "kind": "tweak",
       "title": "값을 더해 보기",
       "brief": [
-        "배열에 값을 하나 더 넣고 실행해 보세요. 줄 수가 따라서 늘어납니다. 코드는 한 글자도 고치지 않았는데 반복 횟수가 달라집니다.",
-        "배열을 []로 비우고 실행해 보세요. 아무것도 찍히지 않습니다. 한 번도 돌지 않은 것입니다.",
-        "console.log(n); 을 console.log(n * 2); 로 바꿔 보세요. 꺼낸 값을 그대로 쓰지 않고 계산에 넣을 수 있습니다."
+        "배열에 값을 하나 더 넣고 실행해 보세요. 찍히는 줄도 늘고 마지막 숫자도 함께 늘어납니다. 코드는 한 글자도 고치지 않았는데 반복 횟수가 달라집니다.",
+        "배열을 [] 로 비우고 실행해 보세요. 아무것도 찍히지 않고 마지막 줄만 0 입니다. 한 번도 돌지 않은 것입니다.",
+        "count = count + 1 을 count = 1 로 바꿔 보세요. 세 번 돌았는데도 마지막이 1 입니다. 쌓는 것과 덮어쓰는 것의 차이가 여기 있습니다. 쌓으려면 지금 값을 재료로 써야 합니다."
       ],
-      "code": "const numbers = [10, 20, 30];\n\nfor (const n of numbers) {\n  console.log(n);\n}\n"
+      "code": "const numbers = [10, 20, 30];\n\nlet count = 0;\n\nfor (const n of numbers) {\n  console.log(n);\n  count = count + 1;\n}\n\nconsole.log(count);\n"
     },
     {
       "kind": "fill",
