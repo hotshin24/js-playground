@@ -323,7 +323,9 @@ body {
 .log-line { padding: 2px var(--sp-2); }
 .log-line--error { color: var(--c-text-error); }
 .log-line--warn { color: var(--c-text-warn); }
-.log-line--system { color: var(--c-text-muted); background: var(--c-surface-alt); border-radius: var(--r-sm); }
+/* muted 를 surface-alt 위에 올리면 대비가 3.99(어둡게)·4.37(밝게)로 미달한다.
+   워치독 강제 종료 안내가 나오는 줄이라 잘 읽혀야 한다. strong 은 11.74·13.59 다. */
+.log-line--system { color: var(--c-text-strong); background: var(--c-surface-alt); border-radius: var(--r-sm); }
 
 /* ---------- 레슨 목록 오버레이 ---------- */
 .overlay {
@@ -434,7 +436,9 @@ body {
   border: 0;
   border-radius: var(--r-sm);
   background: var(--c-surface-alt);
-  color: var(--c-text-muted);
+  /* muted 를 surface-alt 위에 올리면 3.99(어둡게)·4.37(밝게)로 미달한다.
+     활성·비활성 구분은 배경색과 aria-selected 가 이미 지고 있다. */
+  color: var(--c-text-strong);
   font: inherit;
   font-size: 0.9rem;
   font-family: var(--f-mono);
