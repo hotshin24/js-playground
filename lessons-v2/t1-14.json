@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 2,
+  "id": "t1-14",
+  "track": "T1",
+  "order": 14,
+  "runtime": "js",
+  "title": "truthy와 falsy 이해하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "불리언이 아닌 값도 조건에서 판단됩니다",
+      "brief": [
+        "JavaScript는 조건이 필요한 자리에서 값을 true 또는 false처럼 판단합니다. true처럼 판단하는 값을 truthy, false처럼 판단하는 값을 falsy라고 합니다.",
+        "대표적인 falsy 값은 false, 0, 빈 문자열 '', null, undefined, NaN입니다.",
+        { "code": ["Boolean(0);       // false", "Boolean('');      // false", "Boolean('안녕');  // true", "Boolean(42);      // true"] },
+        "'false'와 '0'은 글자가 들어 있는 문자열이므로 truthy입니다. 문자열 안의 단어 뜻이나 숫자 모양으로 판단하지 않습니다.",
+        "빈 배열 []과 빈 객체 {}도 truthy입니다. 비어 보인다는 이유로 falsy라고 생각하면 안 됩니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "Boolean으로 판단 결과 확인하기",
+      "brief": [
+        "각 값을 Boolean으로 바꿔 조건에서 어떻게 판단되는지 확인합니다.",
+        "빈 문자열과 공백 한 칸인 문자열은 다릅니다. 공백도 글자이므로 ' '는 truthy입니다."
+      ],
+      "code": "console.log(Boolean(0));\nconsole.log(Boolean(''));\nconsole.log(Boolean(null));\nconsole.log(Boolean(undefined));\nconsole.log(Boolean(NaN));\nconsole.log(Boolean(' '));\nconsole.log(Boolean([]));\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "비슷해 보이는 값 비교하기",
+      "brief": [
+        "Boolean(' ')의 공백을 지워 빈 문자열로 만들면 결과가 false로 바뀝니다.",
+        "Boolean(0)을 Boolean('0')으로 바꾸면 true가 됩니다. 숫자 0은 falsy지만 글자가 들어 있는 문자열은 truthy입니다.",
+        "truthy와 falsy는 값을 없거나 있다고 판정하는 규칙이 아닙니다. JavaScript가 조건에서 사용하는 변환 규칙입니다."
+      ],
+      "code": "console.log(Boolean(0));\nconsole.log(Boolean(''));\nconsole.log(Boolean(null));\nconsole.log(Boolean(undefined));\nconsole.log(Boolean(NaN));\nconsole.log(Boolean(' '));\nconsole.log(Boolean([]));\n"
+    }
+  ]
+}
