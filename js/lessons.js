@@ -1,4 +1,5 @@
-import { lessonRoot } from './curriculum.js';
+import { isV2Preview, lessonRoot } from './curriculum.js';
+const fetchOptions = isV2Preview ? { cache: 'no-store' } : undefined;
 
 const RUNTIMES = ['js', 'react'];
 const IDENTIFIER = /^[A-Za-z_$][\w$]*$/;
@@ -49,7 +50,6 @@ const checkAsserts = (step, where) => {
   }
 };
 
-// scaffold 는 줄 배열로 적는다. JSON 안에서 \n 이스케이프를 없애기 위해서다.
 const joinLines = (value) => (Array.isArray(value) ? value.join('\n') : typeof value === 'string' ? value : '');
 
 /**
@@ -181,7 +181,7 @@ export function validateLesson(lesson, expectedId) {
  * @returns {Promise<{tracks: Array<{id, title}>, lessons: Array<{id, track, order, title}>}>}
  */
 export async function loadIndex() {
-  const res = await fetch(lessonRoot + '/index.json');
+  const res = await fetch(lessonRoot + '/index.json', fetchOptions);
   if (!res.ok) fail('레슨 목록을 불러오지 못했습니다 (' + res.status + ')');
   const data = await res.json();
   if (data.schemaVersion !== 1) fail('지원하지 않는 목록 schemaVersion: ' + data.schemaVersion);
@@ -194,7 +194,7 @@ export async function loadIndex() {
  * @returns {Promise<object>} 정규화된 레슨
  */
 export async function loadLesson(id) {
-  const res = await fetch(lessonRoot + '/' + id + '.json');
+  const res = await fetch(lessonRoot + '/' + id + '.json', fetchOptions);
   if (!res.ok) fail('레슨 파일을 불러오지 못했습니다: ' + id + '.json (' + res.status + ')');
   return validateLesson(await res.json(), id);
 }
