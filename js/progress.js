@@ -3,12 +3,17 @@ import { hashText, readStep, saveStep, saveStepFiles, clearStep, clearStepFile }
 
 const SAVE_DELAY_MS = 600;
 
+// 단계와 무관한 안내. 페이지를 다시 열기 전에는 사실이 바뀌지 않으므로
+// 단계를 옮겨도 지우지 않는다.
+const STICKY = ['stale'];
+
 export const NOTICE = {
   fallback: '편집기를 불러오지 못해 기본 입력창으로 대체했습니다. 구문 강조가 없지만 실행과 검사는 그대로 동작합니다.',
   saveFailed: '진행 상황을 저장하지 못했습니다. 학습은 그대로 계속할 수 있습니다.',
   readonly: '화면이 좁아 읽기 전용입니다. 768px 이상에서 편집하고 실행할 수 있습니다.',
   codeChanged: '이 단계의 예제 코드가 바뀌었습니다. 되돌리기를 누르면 새 코드로 시작합니다.',
   discarded: '강제 종료된 코드는 저장하지 않았습니다. 다시 열면 예제 코드로 시작합니다.',
+  stale: '도구가 새 버전으로 바뀌었습니다. 지금 열려 있는 화면은 이전 버전이라 일부 레슨이 열리지 않을 수 있습니다. 여러분의 코드 문제가 아닙니다. 새로고침해 주세요 (⌘⇧R 또는 Ctrl+Shift+R).',
 };
 
 /**
@@ -87,9 +92,11 @@ export function createProgress({ noticeEl, getCode, getFiles, onChanged }) {
 
   const setContext = (lessonId, stepIndex, step) => {
     discarded = false;
-    // 단계가 바뀌면 앞 단계의 사정을 말하던 안내는 전부 무효다.
-    current = '';
-    noticeEl.textContent = '';
+    // 단계가 바뀌면 앞 단계의 사정을 말하던 안내는 무효다. 붙박이는 남긴다.
+    if (!STICKY.includes(current)) {
+      current = '';
+      noticeEl.textContent = '';
+    }
     ctx = {
       lessonId,
       stepIndex,

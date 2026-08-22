@@ -9,11 +9,13 @@ import { createBrief } from './brief.js';
 import { createTheme } from './theme.js';
 import { createProgress } from './progress.js';
 import { loadIndex, loadLesson } from './lessons.js';
+import { checkBuild } from './build-info.js';
 import { policyOf, labelOf } from './steps.js';
 import { setLastLesson, readLastPosition, setLessonMeta, readLessons } from './storage.js';
 import { firstUnfinishedStep } from './lesson-status.js';
 
 const el = (id) => document.querySelector('#' + id);
+
 
 const theme = createTheme({ button: el('theme-toggle'), labelEl: el('theme-toggle-label') });
 const runButton = el('run');
@@ -32,6 +34,10 @@ const progress = createProgress({
   getFiles: () => workspace.getFiles(),
   onChanged: () => refreshNav(),
 });
+
+// 캐시된 옛 앱이 새 레슨 데이터를 읽으면 학습자는 자기 코드를 의심하게 된다.
+// 자동으로 새로고침하지는 않는다 — 작업 중인 코드가 저장 타이밍과 겹치면 잃는다.
+checkBuild().then((stale) => { if (stale) progress.notify('stale'); });
 
 const brief = createBrief({ titleEl: el('step-title'), bodyEl: el('lesson-brief') });
 
