@@ -11,6 +11,21 @@
       "brief": [
         "지금까지 함수는 function 이름(...) { ... } 형태로 만들었습니다. 그런데 함수는 숫자나 글자와 마찬가지로 값입니다. 값이라면 변수에 담을 수 있습니다.",
         "const triple = function (n) { return n * 3; }; 이렇게 쓰면 이름 없는 함수를 만들어 triple이라는 변수에 담은 것입니다. 부를 때는 똑같이 triple(5)라고 씁니다.",
+        {
+          "code": [
+            "const add = function (a, b) {",
+            "  return a + b;",
+            "};",
+            "",
+            "console.log(add(3, 4));     // 7",
+            "console.log(typeof add);    // function",
+            "",
+            "const alias = add;",
+            "",
+            "console.log(alias(3, 4));   // 7"
+          ]
+        },
+        "typeof 로 물으면 function 이 나옵니다. number 나 string 과 나란한 종류라는 뜻입니다. 값이니까 alias 에 다시 담을 수 있고, 담은 뒤에도 그대로 동작합니다. 함수가 복사된 것이 아니라 같은 함수를 두 이름이 가리키고 있습니다.",
         "함수가 값이라는 사실이 왜 중요한지는 뒤에서 드러납니다. 값이니까 다른 함수에 넘길 수도 있고, 함수가 함수를 만들어 돌려줄 수도 있습니다. 지금은 담을 수 있다는 것만 확인하면 됩니다."
       ]
     },

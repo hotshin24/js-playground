@@ -11,6 +11,19 @@
       "brief": [
         "객체에서 값을 꺼낼 때 지금까지는 점을 찍었습니다. 한 함수 안에서 같은 객체의 값을 여러 번 쓰면 product.name, product.price처럼 앞부분이 계속 반복됩니다.",
         "구조 분해(destructuring — 묶음에서 값을 꺼내 각각 이름을 붙이는 표기)는 그 반복을 없앱니다. const { name, price } = product; 라고 쓰면 product.name이 name에, product.price가 price에 담깁니다.",
+        {
+          "code": [
+            "const user = { id: 7, nick: '수민', city: '서울' };",
+            "",
+            "console.log(user.nick + ' / ' + user.city);   // 수민 / 서울",
+            "",
+            "const { nick, city } = user;",
+            "",
+            "console.log(nick + ' / ' + city);             // 수민 / 서울",
+            "console.log(nick.length);                     // 2"
+          ]
+        },
+        "두 줄이 같은 값을 만듭니다. 다만 아래쪽에는 user. 가 없습니다. 꺼낼 값이 둘일 때는 차이가 작지만, 다섯이 되면 그 앞부분을 다섯 번 적어야 합니다. 꺼낸 뒤에는 보통 값이라 nick.length 처럼 바로 이어 쓸 수 있습니다.",
         "중괄호 안에 적는 것은 꺼낼 이름표입니다. 객체에 없는 이름을 적으면 undefined가 담깁니다. 그럴 때 쓸 값을 미리 정해 둘 수 있는데, name = '이름 없음' 처럼 등호를 붙이면 됩니다."
       ]
     },
