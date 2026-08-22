@@ -75,6 +75,68 @@
       ]
     },
     {
+      "kind": "wrap",
+      "title": "어떤 상품에도 통하게",
+      "brief": [
+        "앞 단계에서 만든 새 객체가 그대로 함수 안에 들어가 있습니다. 다만 아직 정해진 상품 하나만 봅니다.",
+        "함수가 받는 값의 이름은 item 입니다. 표시된 줄을 지우고, 본문에서 product 라고 쓴 곳을 item 으로 바꿔 보세요.",
+        "검사는 세 건입니다. 고치지 않고 실행하면 첫 건만 통과합니다. 재고가 0인 상품과 쓸데없는 필드가 섞인 상품이 함께 들어옵니다."
+      ],
+      "code": "function toCard(item) {\n  const product = { name: '모자', price: 19000, stock: 7 }; // ← 이 줄을 지우고 item 을 쓰세요\n\n  return { name: product.name, price: product.price };\n}\n",
+      "entry": "toCard",
+      "solutionCode": "function toCard(item) {\n  return { name: item.name, price: item.price };\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "이름과 가격만 남습니다",
+          "args": [
+            {
+              "name": "모자",
+              "price": 19000,
+              "stock": 7
+            }
+          ],
+          "expected": {
+            "name": "모자",
+            "price": 19000
+          }
+        },
+        {
+          "type": "value",
+          "label": "재고가 0이어도 상관없습니다",
+          "args": [
+            {
+              "name": "셔츠",
+              "price": 39000,
+              "stock": 0
+            }
+          ],
+          "expected": {
+            "name": "셔츠",
+            "price": 39000
+          }
+        },
+        {
+          "type": "value",
+          "label": "모르는 필드는 버립니다",
+          "args": [
+            {
+              "name": "양말",
+              "price": 4000,
+              "memo": "내부용"
+            }
+          ],
+          "expected": {
+            "name": "양말",
+            "price": 4000
+          }
+        }
+      ],
+      "hints": [
+        "고칠 곳이 두 군데입니다. 점 왼쪽에 적힌 이름이 함수가 받은 값이어야 합니다."
+      ]
+    },
+    {
       "kind": "write",
       "title": "화면에 쓸 것만 골라 묶기",
       "brief": [

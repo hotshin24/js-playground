@@ -72,6 +72,56 @@
       ]
     },
     {
+      "kind": "wrap",
+      "title": "어떤 항목에도 통하게",
+      "brief": [
+        "앞 단계에서 만든 항목 한 줄이 그대로 함수 안에 들어가 있습니다. 다만 아직 정해진 상품 하나만 봅니다.",
+        "함수가 받는 값의 이름은 item 입니다. 표시된 줄을 지우고, 백틱 안에서 product 라고 쓴 곳을 item 으로 바꿔 보세요. 태그와 공백은 손대지 않습니다.",
+        "검사는 세 건입니다. 고치지 않고 실행하면 첫 건만 통과합니다. 여기서 완성한 함수가 다음 단계에서 map 안에 들어갑니다."
+      ],
+      "code": "function itemLine(item) {\n  const product = { name: '셔츠', price: 39000 }; // ← 이 줄을 지우고 item 을 쓰세요\n\n  return `<li class=\"item\">${product.name} - ${product.price}원</li>`;\n}\n",
+      "entry": "itemLine",
+      "solutionCode": "function itemLine(item) {\n  return `<li class=\"item\">${item.name} - ${item.price}원</li>`;\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "셔츠 항목",
+          "args": [
+            {
+              "name": "셔츠",
+              "price": 39000
+            }
+          ],
+          "expected": "<li class=\"item\">셔츠 - 39000원</li>"
+        },
+        {
+          "type": "value",
+          "label": "모자 항목",
+          "args": [
+            {
+              "name": "모자",
+              "price": 19000
+            }
+          ],
+          "expected": "<li class=\"item\">모자 - 19000원</li>"
+        },
+        {
+          "type": "value",
+          "label": "가격이 네 자리인 항목",
+          "args": [
+            {
+              "name": "양말",
+              "price": 4000
+            }
+          ],
+          "expected": "<li class=\"item\">양말 - 4000원</li>"
+        }
+      ],
+      "hints": [
+        "고칠 곳은 ${ } 안 두 군데입니다. 백틱 밖의 태그와 하이픈은 글자 그대로라 손댈 것이 없습니다."
+      ]
+    },
+    {
       "kind": "write",
       "title": "데이터에서 HTML 문자열 만들기",
       "brief": [

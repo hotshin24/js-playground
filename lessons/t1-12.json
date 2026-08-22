@@ -71,6 +71,54 @@
       ]
     },
     {
+      "kind": "wrap",
+      "title": "어떤 배열에도 통하게",
+      "brief": [
+        "앞 단계에서 채운 reduce 가 그대로 함수 안에 들어가 있습니다. 다만 아직 정해진 배열 하나만 접습니다.",
+        "함수가 받는 값의 이름은 list 입니다. 표시된 줄을 지우고, reduce 를 부르는 대상을 list 로 바꿔 보세요. 콜백과 시작값은 그대로 둡니다.",
+        "검사는 세 건입니다. 고치지 않고 실행하면 첫 건만 통과합니다. 빈 배열도 들어오는데, 그때는 시작값이 그대로 결과가 됩니다."
+      ],
+      "code": "function totalOf(list) {\n  const prices = [1000, 2000, 3000]; // ← 이 줄을 지우고 list 를 쓰세요\n\n  return prices.reduce((sum, price) => sum + price, 0);\n}\n",
+      "entry": "totalOf",
+      "solutionCode": "function totalOf(list) {\n  return list.reduce((sum, price) => sum + price, 0);\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "1000 + 2000 + 3000",
+          "args": [
+            [
+              1000,
+              2000,
+              3000
+            ]
+          ],
+          "expected": 6000
+        },
+        {
+          "type": "value",
+          "label": "다른 값이 들어와도 합계",
+          "args": [
+            [
+              5,
+              7
+            ]
+          ],
+          "expected": 12
+        },
+        {
+          "type": "value",
+          "label": "빈 배열 — 시작값이 그대로 결과",
+          "args": [
+            []
+          ],
+          "expected": 0
+        }
+      ],
+      "hints": [
+        "reduce 를 부르는 대상이 바뀌어야 합니다. 콜백의 sum 과 price 는 reduce 가 넣어 주는 이름이라 고칠 필요가 없습니다."
+      ]
+    },
+    {
       "kind": "write",
       "title": "장바구니 합계를 내는 함수",
       "brief": [

@@ -85,6 +85,47 @@
       ]
     },
     {
+      "kind": "wrap",
+      "title": "어떤 점수에도 통하게",
+      "brief": [
+        "앞 단계에서 채운 갈림길이 그대로 함수 안에 들어가 있습니다. 다만 아직 8000 이라는 정해진 점수만 봅니다.",
+        "함수가 받는 값의 이름은 value 입니다. 표시된 줄을 지우고, 두 조건에서 point 라고 쓴 곳을 value 로 바꿔 보세요. 갈래 순서는 그대로 둡니다.",
+        "검사는 세 건입니다. 고치지 않고 실행하면 첫 건만 통과합니다. 세 갈래를 하나씩 밟는 값들이 들어옵니다."
+      ],
+      "code": "function gradeOf(value) {\n  const point = 8000; // ← 이 줄을 지우고 value 를 쓰세요\n\n  if (point >= 5000) {\n    return 'VIP';\n  } else if (point >= 1000) {\n    return '일반';\n  } else {\n    return '신규';\n  }\n}\n",
+      "entry": "gradeOf",
+      "solutionCode": "function gradeOf(value) {\n  if (value >= 5000) {\n    return 'VIP';\n  } else if (value >= 1000) {\n    return '일반';\n  } else {\n    return '신규';\n  }\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "8000 은 VIP",
+          "args": [
+            8000
+          ],
+          "expected": "VIP"
+        },
+        {
+          "type": "value",
+          "label": "3000 은 일반",
+          "args": [
+            3000
+          ],
+          "expected": "일반"
+        },
+        {
+          "type": "value",
+          "label": "500 은 신규",
+          "args": [
+            500
+          ],
+          "expected": "신규"
+        }
+      ],
+      "hints": [
+        "고칠 곳이 두 군데입니다. 두 조건 모두 함수가 받은 값을 봐야 합니다. 하나만 고치면 갈래 하나가 여전히 8000 을 봅니다."
+      ]
+    },
+    {
       "kind": "write",
       "title": "재고 상태를 판정하는 함수",
       "brief": [
