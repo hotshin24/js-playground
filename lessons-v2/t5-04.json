@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t5-04", "track": "T5", "order": 4, "runtime": "react",
+  "title": "JSX를 하나의 부모로 묶기",
+  "steps": [
+    {
+      "kind": "read", "title": "컴포넌트는 하나의 JSX 값만 반환합니다",
+      "brief": [
+        "return 뒤에 같은 단계의 JSX 요소를 나란히 두 개 쓸 수는 없습니다. 함수는 반환값 하나를 돌려줘야 하기 때문입니다.",
+        "여러 요소를 div나 section 같은 부모 요소 하나로 감싸면 하나의 JSX 값이 됩니다.",
+        { "code": ["return (", "  <section>", "    <h2>상품</h2>", "    <p>설명</p>", "  </section>", ");"] },
+        "화면에 불필요한 HTML 요소를 추가하고 싶지 않다면 Fragment를 사용합니다. 짧은 문법은 <>...</>입니다.",
+        "JSX 태그는 반드시 닫아야 합니다. 자식이 없는 태그는 <img />처럼 스스로 닫는 형태를 사용합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "Fragment로 형제 요소 묶기",
+      "brief": ["ProductInfo는 h2와 p를 Fragment 하나로 묶어 반환합니다.", "실제 DOM에는 Fragment용 태그가 생기지 않고 h2와 p가 root 안에 바로 표시됩니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "function ProductInfo() {\n  return (\n    <>\n      <h2>파란 셔츠</h2>\n      <p>39,000원</p>\n    </>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductInfo />);\n"
+    },
+    {
+      "kind": "tweak", "title": "Fragment를 실제 요소로 바꿔 보기",
+      "brief": ["<>와 </>를 <section>과 </section>으로 바꾸고 개발자 도구나 출력 화면에서 구조를 비교해 보세요.", "section은 실제 DOM 요소가 되고 Fragment는 DOM 요소를 추가하지 않습니다.", "단순히 문법 오류를 피하려고 항상 div를 추가하지 말고, 화면 구조상 의미 있는 부모가 필요한지 판단하세요."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "function ProductInfo() {\n  return (\n    <>\n      <h2>파란 셔츠</h2>\n      <p>39,000원</p>\n    </>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductInfo />);\n"
+    }
+  ]
+}

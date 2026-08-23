@@ -82,6 +82,11 @@
     { "id": "t4-12", "track": "T4", "order": 12, "title": "async와 await로 Promise 기다리기" },
     { "id": "t4-13", "track": "T4", "order": 13, "title": "throw와 try/catch로 오류 처리하기" },
     { "id": "t4-14", "track": "T4", "order": 14, "title": "fetch로 JSON 응답 받아 사용하기" },
-    { "id": "t4-15", "track": "T4", "order": 15, "title": "여러 Promise를 함께 기다리기" }
+    { "id": "t4-15", "track": "T4", "order": 15, "title": "여러 Promise를 함께 기다리기" },
+    { "id": "t4-16", "track": "T4", "order": 16, "title": "Web Storage에 브라우저 데이터 저장하기" },
+    { "id": "t5-01", "track": "T5", "order": 1, "title": "React가 화면을 만드는 방식 이해하기" },
+    { "id": "t5-02", "track": "T5", "order": 2, "title": "root를 만들고 React 화면 렌더링하기" },
+    { "id": "t5-03", "track": "T5", "order": 3, "title": "JSX를 JavaScript 값으로 다루기" },
+    { "id": "t5-04", "track": "T5", "order": 4, "title": "JSX를 하나의 부모로 묶기" }
   ]
 }

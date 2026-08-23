@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t5-02", "track": "T5", "order": 2, "runtime": "react",
+  "title": "root를 만들고 React 화면 렌더링하기",
+  "steps": [
+    {
+      "kind": "read", "title": "HTML의 진입점과 React 화면을 연결합니다",
+      "brief": [
+        "React 화면을 시작하려면 먼저 HTML에 비어 있는 요소를 준비합니다: <div id=\"root\"></div>.",
+        "document.querySelector('#root')로 그 요소를 찾고 ReactDOM.createRoot에 전달하면 React가 관리할 root가 만들어집니다.",
+        { "code": ["const container = document.querySelector('#root');", "const root = ReactDOM.createRoot(container);", "root.render(<App />);"] },
+        "render는 어떤 React 화면을 root에 표시할지 정합니다. <App />은 App 컴포넌트를 사용한다는 JSX입니다.",
+        "createRoot는 같은 HTML 요소에 한 번만 호출하고, 이후 화면 갱신은 같은 root를 사용합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "세 단계를 나눠 확인하기",
+      "brief": ["container는 실제 div DOM 요소이고 root는 React가 화면을 관리하는 객체입니다.", "root.render(<App />)를 호출한 뒤 App이 반환한 화면이 div 안에 나타납니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "function App() {\n  return <h2>React 시작</h2>;\n}\n\nconst container = document.querySelector('#root');\nconst root = ReactDOM.createRoot(container);\nroot.render(<App />);\n"
+    },
+    {
+      "kind": "tweak", "title": "잘못된 진입점 확인하기",
+      "brief": ["선택자를 '#app'으로 바꾸면 HTML에 해당 요소가 없어 container가 null이 되고 root를 만들 수 없습니다.", "HTML의 id도 app으로 함께 바꾸면 다시 실행됩니다. JavaScript 선택자와 HTML 진입점이 일치해야 합니다.", "render에 <App /> 대신 <h2>직접 작성한 JSX</h2>를 전달할 수도 있지만, 화면이 커지면 컴포넌트로 나누는 편이 읽기 쉽습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "function App() {\n  return <h2>React 시작</h2>;\n}\n\nconst container = document.querySelector('#root');\nconst root = ReactDOM.createRoot(container);\nroot.render(<App />);\n"
+    }
+  ]
+}
