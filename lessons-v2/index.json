@@ -53,6 +53,11 @@
     { "id": "t3-01", "track": "T3", "order": 1, "title": "객체로 관련 있는 값 묶기" },
     { "id": "t3-02", "track": "T3", "order": 2, "title": "객체의 프로퍼티 읽고 바꾸기" },
     { "id": "t3-03", "track": "T3", "order": 3, "title": "메서드와 this로 객체 자신의 값 사용하기" },
-    { "id": "t3-04", "track": "T3", "order": 4, "title": "배열로 값의 순서 저장하기" }
+    { "id": "t3-04", "track": "T3", "order": 4, "title": "배열로 값의 순서 저장하기" },
+    { "id": "t3-05", "track": "T3", "order": 5, "title": "원시값을 복사하면 서로 영향을 주지 않습니다" },
+    { "id": "t3-06", "track": "T3", "order": 6, "title": "객체를 할당하면 같은 객체를 가리킵니다" },
+    { "id": "t3-07", "track": "T3", "order": 7, "title": "전개 연산자로 새 객체 만들기" },
+    { "id": "t3-08", "track": "T3", "order": 8, "title": "구조 분해로 필요한 값 꺼내기" },
+    { "id": "t3-09", "track": "T3", "order": 9, "title": "rest와 spread 구분하기" }
   ]
 }
