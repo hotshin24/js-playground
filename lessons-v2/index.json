@@ -43,6 +43,11 @@
     { "id": "t2-07", "track": "T2", "order": 7, "title": "반복되는 코드에 함수로 이름 붙이기" },
     { "id": "t2-08", "track": "T2", "order": 8, "title": "함수를 선언하고 필요한 때 호출하기" },
     { "id": "t2-09", "track": "T2", "order": 9, "title": "매개변수로 호출할 때마다 다른 값 받기" },
-    { "id": "t2-10", "track": "T2", "order": 10, "title": "return으로 함수의 결과 돌려주기" }
+    { "id": "t2-10", "track": "T2", "order": 10, "title": "return으로 함수의 결과 돌려주기" },
+    { "id": "t2-11", "track": "T2", "order": 11, "title": "함수를 값으로 변수에 담기" },
+    { "id": "t2-12", "track": "T2", "order": 12, "title": "콜백 함수 전달하고 호출하기" },
+    { "id": "t2-13", "track": "T2", "order": 13, "title": "화살표 함수의 생략 규칙 읽기" },
+    { "id": "t2-14", "track": "T2", "order": 14, "title": "중첩 함수가 바깥 값을 기억하는 이유" },
+    { "id": "t2-15", "track": "T2", "order": 15, "title": "변수를 사용할 수 있는 범위 이해하기" }
   ]
 }

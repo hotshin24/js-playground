@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 2, "id": "t2-11", "track": "T2", "order": 11, "runtime": "js",
+  "title": "함수를 값으로 변수에 담기",
+  "steps": [
+    {
+      "kind": "read", "title": "함수 표현식은 함수를 만들어 변수에 저장합니다",
+      "brief": [
+        "JavaScript에서 함수는 값입니다. 숫자나 문자열처럼 변수에 저장할 수 있습니다.",
+        { "code": ["const add = function (a, b) {", "  return a + b;", "};", "", "add(2, 3);"] },
+        "function (a, b) { ... } 부분이 함수 값이고, 그 값을 add에 할당했습니다. 이런 형태를 함수 표현식이라고 합니다.",
+        "add는 함수 자체를 가리키고 add()는 함수를 호출합니다. const로 선언한 변수 add를 다른 값으로 다시 바꿀 수는 없습니다.",
+        "함수 선언과 함수 표현식은 모두 함수를 만들지만 선언되는 방식과 사용할 수 있는 시점에 차이가 있습니다. 그 차이는 T2-16에서 확인합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "함수 값과 호출 결과 구분하기",
+      "brief": ["typeof multiply는 function입니다. multiply 자체를 출력한 결과와 multiply(3, 4)의 반환값을 비교하세요.", "괄호가 있을 때만 함수 안의 곱셈이 실행됩니다."],
+      "code": "const multiply = function (a, b) {\n  return a * b;\n};\n\nconsole.log(typeof multiply);\nconsole.log(multiply);\nconsole.log(multiply(3, 4));\n"
+    },
+    {
+      "kind": "tweak", "title": "함수 값을 다른 변수에도 담기",
+      "brief": ["const calculate = multiply;를 추가한 뒤 calculate(5, 2)를 출력해 보세요. 같은 함수 값이므로 10을 반환합니다.", "calculate = multiply()라고 쓰면 함수를 호출한 결과를 저장합니다. 함수 자체를 전달하려면 괄호를 붙이지 않습니다.", "이 차이를 이해해야 다음 레슨에서 함수를 콜백으로 전달할 수 있습니다."],
+      "code": "const multiply = function (a, b) {\n  return a * b;\n};\n\nconsole.log(typeof multiply);\nconsole.log(multiply);\nconsole.log(multiply(3, 4));\n"
+    }
+  ]
+}

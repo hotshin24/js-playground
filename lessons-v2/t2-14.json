@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 2, "id": "t2-14", "track": "T2", "order": 14, "runtime": "js",
+  "title": "중첩 함수가 바깥 값을 기억하는 이유",
+  "steps": [
+    {
+      "kind": "read", "title": "안쪽 함수는 바깥 함수의 변수를 사용할 수 있습니다",
+      "brief": [
+        "함수 안에서도 함수를 만들 수 있습니다. 안쪽 함수는 자신이 만들어진 바깥 함수의 변수에 접근할 수 있습니다.",
+        { "code": ["function makeGreeter(name) {", "  function greet() {", "    return '안녕, ' + name;", "  }", "  return greet;", "}"] },
+        "makeGreeter가 greet 함수를 반환한 뒤에도 greet는 바깥 매개변수 name을 사용할 수 있습니다.",
+        "함수가 자신이 만들어질 때의 바깥 변수를 계속 사용할 수 있는 성질을 클로저라고 합니다.",
+        "클로저는 특별한 새 문법이 아닙니다. 함수와 스코프가 함께 작동해서 생기는 동작입니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "각 함수가 기억한 값 확인하기",
+      "brief": ["makeGreeter('민수')가 만든 greetMinsu는 민수를 기억합니다. greetJisu는 지수를 따로 기억합니다.", "두 함수는 같은 greet 코드를 사용하지만 만들어질 때 받은 name이 다릅니다."],
+      "code": "function makeGreeter(name) {\n  function greet() {\n    return '안녕, ' + name;\n  }\n\n  return greet;\n}\n\nconst greetMinsu = makeGreeter('민수');\nconst greetJisu = makeGreeter('지수');\n\nconsole.log(greetMinsu());\nconsole.log(greetJisu());\n"
+    },
+    {
+      "kind": "tweak", "title": "바깥 함수 호출과 안쪽 함수 호출 구분하기",
+      "brief": ["console.log(greetMinsu);를 추가하면 문자열이 아니라 함수 자체가 출력됩니다. greetMinsu()라고 호출해야 기억한 이름을 사용합니다.", "makeGreeter 안의 return greet를 return greet()로 바꾸면 안쪽 함수의 결과 문자열을 바로 반환합니다. 이후 greetMinsu()는 문자열을 함수처럼 호출하려 해서 오류가 납니다.", "함수를 반환할 때는 괄호 없이 함수 값을 반환합니다."],
+      "code": "function makeGreeter(name) {\n  function greet() {\n    return '안녕, ' + name;\n  }\n\n  return greet;\n}\n\nconst greetMinsu = makeGreeter('민수');\nconst greetJisu = makeGreeter('지수');\n\nconsole.log(greetMinsu());\nconsole.log(greetJisu());\n"
+    }
+  ]
+}
