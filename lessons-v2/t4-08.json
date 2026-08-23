@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t4-08", "track": "T4", "order": 8, "runtime": "js",
+  "title": "폼 제출을 JavaScript로 처리하기",
+  "steps": [
+    {
+      "kind": "read", "title": "submit 이벤트는 form에서 처리합니다",
+      "brief": [
+        "폼에서 제출 버튼을 누르거나 입력창에서 Enter를 누르면 form의 submit 이벤트가 발생합니다.",
+        "브라우저는 기본적으로 폼을 제출한 뒤 페이지를 이동하거나 새로고침합니다. JavaScript로 처리하려면 event.preventDefault()로 이 기본 동작을 막습니다.",
+        { "code": ["form.addEventListener('submit', (event) => {", "  event.preventDefault();", "});"] },
+        "클릭만 처리하는 대신 submit을 사용하면 버튼 클릭과 Enter 제출을 같은 코드로 처리할 수 있습니다.",
+        "입력값을 확인한 뒤 화면에 반영하고, 필요하면 form.reset()으로 입력 요소를 초기화할 수 있습니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "제출한 상품 이름 목록에 추가하기",
+      "brief": ["상품 이름을 적고 추가 버튼을 누르면 페이지 이동 없이 목록에 li가 추가됩니다.", "빈 문자열이면 추가하지 않습니다. trim은 문자열 앞뒤의 공백을 제거합니다."],
+      "scaffold": { "html": ["<form id=\"form\">", "  <input id=\"product\" aria-label=\"상품 이름\">", "  <button type=\"submit\">추가</button>", "</form>", "<ul id=\"list\"></ul>"], "css": ["form { display: flex; gap: 6px; }", "input, button { padding: 8px; }"] },
+      "code": "const form = document.querySelector('#form');\nconst productInput = document.querySelector('#product');\nconst list = document.querySelector('#list');\n\nform.addEventListener('submit', (event) => {\n  event.preventDefault();\n\n  const name = productInput.value.trim();\n  if (name === '') return;\n\n  const item = document.createElement('li');\n  item.textContent = name;\n  list.append(item);\n  form.reset();\n});\n"
+    },
+    {
+      "kind": "tweak", "title": "기본 동작을 다시 허용해 보기",
+      "brief": ["event.preventDefault()를 지우고 제출하면 실행 화면이 다시 로드되어 추가한 항목이 사라질 수 있습니다.", "버튼의 type을 button으로 바꾸면 폼 제출 자체가 발생하지 않습니다. 폼 제출 버튼에는 type=submit을 사용합니다.", "입력 검사는 빈 값만 확인했습니다. 길이나 허용 문자를 검사하려면 목록에 추가하기 전에 조건을 더해야 합니다."],
+      "scaffold": { "html": ["<form id=\"form\">", "  <input id=\"product\" aria-label=\"상품 이름\">", "  <button type=\"submit\">추가</button>", "</form>", "<ul id=\"list\"></ul>"], "css": ["form { display: flex; gap: 6px; }", "input, button { padding: 8px; }"] },
+      "code": "const form = document.querySelector('#form');\nconst productInput = document.querySelector('#product');\nconst list = document.querySelector('#list');\n\nform.addEventListener('submit', (event) => {\n  event.preventDefault();\n\n  const name = productInput.value.trim();\n  if (name === '') return;\n\n  const item = document.createElement('li');\n  item.textContent = name;\n  list.append(item);\n  form.reset();\n});\n"
+    }
+  ]
+}

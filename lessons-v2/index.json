@@ -72,6 +72,11 @@
     { "id": "t4-02", "track": "T4", "order": 2, "title": "요소의 글자·클래스·속성 바꾸기" },
     { "id": "t4-03", "track": "T4", "order": 3, "title": "새 HTML 요소 만들어 추가하기" },
     { "id": "t4-04", "track": "T4", "order": 4, "title": "이벤트가 발생했을 때 함수 실행하기" },
-    { "id": "t4-05", "track": "T4", "order": 5, "title": "이벤트 객체에서 발생한 요소 확인하기" }
+    { "id": "t4-05", "track": "T4", "order": 5, "title": "이벤트 객체에서 발생한 요소 확인하기" },
+    { "id": "t4-06", "track": "T4", "order": 6, "title": "부모 요소에서 여러 자식의 이벤트 처리하기" },
+    { "id": "t4-07", "track": "T4", "order": 7, "title": "input과 change 이벤트로 입력값 읽기" },
+    { "id": "t4-08", "track": "T4", "order": 8, "title": "폼 제출을 JavaScript로 처리하기" },
+    { "id": "t4-09", "track": "T4", "order": 9, "title": "동기 코드와 비동기 코드의 실행 순서" },
+    { "id": "t4-10", "track": "T4", "order": 10, "title": "Promise의 세 가지 상태 이해하기" }
   ]
 }

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t4-07", "track": "T4", "order": 7, "runtime": "js",
+  "title": "input과 change 이벤트로 입력값 읽기",
+  "steps": [
+    {
+      "kind": "read", "title": "value에는 사용자가 입력한 문자열이 들어 있습니다",
+      "brief": [
+        "input 요소의 현재 입력값은 value 프로퍼티로 읽습니다. 숫자 입력창이어도 value는 기본적으로 문자열입니다.",
+        "input 이벤트는 글자가 입력될 때마다 발생합니다. change 이벤트는 값 변경을 마치고 입력 요소에서 벗어나는 등 변경이 확정될 때 발생합니다.",
+        { "code": ["input.addEventListener('input', (event) => {", "  console.log(event.currentTarget.value);", "});"] },
+        "리스너를 input에 직접 등록했으므로 currentTarget.value로 해당 입력값을 읽을 수 있습니다.",
+        "입력값으로 계산하려면 Number(value)로 명시적으로 숫자로 바꾸고 NaN인지 확인해야 합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "입력하는 즉시 화면에 표시하기",
+      "brief": ["입력창에 글자를 적을 때마다 미리보기 내용이 바뀝니다.", "입력값이 빈 문자열이면 null 병합이 아니라 ||를 사용해 안내 문구를 표시합니다. 이 화면에서는 빈 문자열을 실제 이름으로 유지할 필요가 없기 때문입니다."],
+      "scaffold": { "html": ["<label>상품 이름 <input id=\"name\" type=\"text\"></label>", "<p>미리보기: <strong id=\"preview\">이름을 입력하세요</strong></p>"], "css": ["label { display: grid; gap: 6px; max-width: 260px; }", "input { padding: 8px; }"] },
+      "code": "const nameInput = document.querySelector('#name');\nconst preview = document.querySelector('#preview');\n\nnameInput.addEventListener('input', (event) => {\n  const value = event.currentTarget.value;\n  preview.textContent = value || '이름을 입력하세요';\n});\n"
+    },
+    {
+      "kind": "tweak", "title": "input을 change로 바꿔 보기",
+      "brief": ["이벤트 이름 'input'을 'change'로 바꾸고 글자를 입력해 보세요. 입력 중에는 화면이 바뀌지 않고 입력창 밖으로 이동할 때 반영됩니다.", "실시간 검색이나 글자 수 표시는 input, 선택을 마친 뒤 한 번 처리해도 되는 경우는 change가 알맞습니다.", "type=number로 바꿔도 value는 문자열입니다. typeof value를 출력해 확인해 보세요."],
+      "scaffold": { "html": ["<label>상품 이름 <input id=\"name\" type=\"text\"></label>", "<p>미리보기: <strong id=\"preview\">이름을 입력하세요</strong></p>"], "css": ["label { display: grid; gap: 6px; max-width: 260px; }", "input { padding: 8px; }"] },
+      "code": "const nameInput = document.querySelector('#name');\nconst preview = document.querySelector('#preview');\n\nnameInput.addEventListener('input', (event) => {\n  const value = event.currentTarget.value;\n  preview.textContent = value || '이름을 입력하세요';\n});\n"
+    }
+  ]
+}
