@@ -94,6 +94,14 @@
 
   <div id="sandbox-host" class="sandbox-host" aria-hidden="true"></div>
 
+  <script>
+    // 정식 과정으로 통합된 뒤에도 남아 있는 미리보기 링크를 기본 주소로 정리한다.
+    const currentUrl = new URL(location.href);
+    if (currentUrl.searchParams.has('curriculum')) {
+      currentUrl.searchParams.delete('curriculum');
+      history.replaceState(null, '', currentUrl.pathname + currentUrl.search + currentUrl.hash);
+    }
+  </script>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>
