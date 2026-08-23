@@ -23,6 +23,18 @@
       "brief": ["정리 함수의 clearInterval(timerId)을 지우고 Timer를 숨기면 정리 로그 뒤에도 tick이 계속 출력됩니다.", "다시 표시하면 새 interval까지 추가되어 tick이 더 자주 출력될 수 있습니다.", "실습 뒤에는 clearInterval 줄을 반드시 되돌려 중복 타이머를 남기지 마세요."],
       "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 7px 9px; }"] },
       "code": "const { useEffect, useState } = React;\n\nfunction Timer() {\n  useEffect(() => {\n    console.log('타이머 시작');\n    const timerId = setInterval(() => console.log('tick'), 1000);\n\n    return () => {\n      console.log('타이머 정리');\n      clearInterval(timerId);\n    };\n  }, []);\n\n  return <p>타이머 실행 중</p>;\n}\n\nfunction App() {\n  const [visible, setVisible] = useState(true);\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setVisible(!visible)}>{visible ? '숨기기' : '표시하기'}</button>\n      {visible && <Timer />}\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "fill", "title": "언마운트 때 실행할 정리 함수 반환하기",
+      "brief": ["Notice가 사라질 때 #cleanup의 글자가 '정리 완료'가 되도록 null을 정리 함수로 바꾸세요.", "effect가 반환하는 값은 나중에 React가 호출할 함수여야 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>", "<p id=\"cleanup\">정리 전</p>"], "css": [] },
+      "code": "const { useEffect, useState } = React;\n\nfunction Notice() {\n  useEffect(() => {\n    return null; // 정리 함수를 반환하세요\n  }, []);\n  return <p id=\"notice\">알림 표시 중</p>;\n}\n\nfunction App() {\n  const [visible, setVisible] = useState(true);\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setVisible(false)}>알림 닫기</button>\n      {visible && <Notice />}\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
+      "solutionCode": "const { useEffect, useState } = React;\n\nfunction Notice() {\n  useEffect(() => {\n    return () => {\n      document.querySelector('#cleanup').textContent = '정리 완료';\n    };\n  }, []);\n  return <p id=\"notice\">알림 표시 중</p>;\n}\n\nfunction App() {\n  const [visible, setVisible] = useState(true);\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setVisible(false)}>알림 닫기</button>\n      {visible && <Notice />}\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
+      "asserts": [
+        { "type": "dom", "label": "처음에는 알림이 보임", "select": "#notice", "count": 1 },
+        { "type": "dom", "label": "닫으면 cleanup이 실행됨", "actions": [{ "action": "click", "selector": "button" }], "select": "#cleanup", "text": ["정리 완료"] }
+      ],
+      "hints": ["return () => { ... }; 형태로 함수를 반환하세요.", "함수 안에서 #cleanup의 textContent를 '정리 완료'로 바꾸세요."]
     }
   ]
 }

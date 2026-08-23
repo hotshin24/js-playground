@@ -23,6 +23,18 @@
       "brief": ["useWindowWidth 이름을 getWindowWidth로 바꾸면 내부에서 훅을 사용한다는 사실이 이름에 드러나지 않고 훅 검사 규칙도 올바르게 적용하기 어렵습니다.", "use로 시작하도록 되돌리세요. 커스텀 훅도 컴포넌트와 마찬가지로 최상위에서 호출합니다.", "두 컴포넌트가 반드시 하나의 width state를 공유해야 한다면 훅을 각각 호출하는 대신 공통 부모나 Context에서 한 번 소유하는 방법을 고려합니다."],
       "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
       "code": "const { useEffect, useState } = React;\n\nfunction useWindowWidth() {\n  const [width, setWidth] = useState(window.innerWidth);\n\n  useEffect(() => {\n    function handleResize() { setWidth(window.innerWidth); }\n    window.addEventListener('resize', handleResize);\n    return () => window.removeEventListener('resize', handleResize);\n  }, []);\n\n  return width;\n}\n\nfunction WidthText() {\n  const width = useWindowWidth();\n  return <p>너비: {width}px</p>;\n}\n\nfunction WidthCategory() {\n  const width = useWindowWidth();\n  return <p>{width < 500 ? '좁은 화면' : '넓은 화면'}</p>;\n}\n\nfunction App() { return <><WidthText /><WidthCategory /></>; }\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "write", "title": "증감 로직을 커스텀 훅으로 묶기",
+      "brief": ["useCounter 훅을 작성해 count와 increase를 객체로 반환하세요. count는 0에서 시작하고 increase는 이전 count에 1을 더합니다.", "Counter 컴포넌트는 완성되어 있습니다. UI가 아니라 state 변경 로직만 훅으로 묶습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useState } = React;\n\n// useCounter를 작성하세요\n\nfunction Counter() {\n  const { count, increase } = useCounter();\n  return <button type=\"button\" onClick={increase}>숫자: {count}</button>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n",
+      "solutionCode": "const { useState } = React;\n\nfunction useCounter() {\n  const [count, setCount] = useState(0);\n  function increase() {\n    setCount((previous) => previous + 1);\n  }\n  return { count, increase };\n}\n\nfunction Counter() {\n  const { count, increase } = useCounter();\n  return <button type=\"button\" onClick={increase}>숫자: {count}</button>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n",
+      "asserts": [
+        { "type": "dom", "label": "처음 count는 0", "select": "button", "text": ["숫자: 0"] },
+        { "type": "dom", "label": "훅의 increase로 1 증가", "actions": [{ "action": "click", "selector": "button" }], "select": "button", "text": ["숫자: 1"] }
+      ],
+      "hints": ["function useCounter() 안에서 useState(0)을 호출하세요.", "count와 increase를 return { count, increase }로 반환하세요."]
     }
   ]
 }

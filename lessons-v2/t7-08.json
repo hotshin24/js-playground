@@ -23,6 +23,18 @@
       "brief": ["fullName을 state로 만들고 effect에서 갱신하려면 state 하나, effect 하나, 의존성 두 개가 추가됩니다.", "기존 코드는 한 줄 계산만으로 같은 결과를 만들고 추가 렌더도 필요 없습니다.", "코드가 실행되는 위치를 정할 때 '외부 시스템과 동기화하는가?'를 먼저 물으세요. 아니라면 effect가 필요하지 않을 가능성이 큽니다."],
       "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input { margin-right: 6px; padding: 7px; }"] },
       "code": "const { useState } = React;\n\nfunction NameForm() {\n  const [firstName, setFirstName] = useState('');\n  const [lastName, setLastName] = useState('');\n  const fullName = (firstName + ' ' + lastName).trim();\n\n  return (\n    <main>\n      <input value={firstName} onChange={(event) => setFirstName(event.currentTarget.value)} placeholder=\"이름\" />\n      <input value={lastName} onChange={(event) => setLastName(event.currentTarget.value)} placeholder=\"성\" />\n      <p>전체 이름: {fullName || '입력 전'}</p>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<NameForm />);\n"
+    },
+    {
+      "kind": "fill", "title": "effect 없이 필터 결과 계산하기",
+      "brief": ["products와 query로 filtered를 바로 계산하세요. 별도 state나 effect를 추가하지 않습니다.", "filter와 includes를 사용해 입력 문자열을 포함하는 상품만 남기세요."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useState } = React;\nconst products = ['셔츠', '모자', '신발'];\n\nfunction Search() {\n  const [query, setQuery] = useState('');\n  const filtered = products; // 이 줄을 바꾸세요\n\n  return (\n    <main>\n      <input value={query} onChange={(event) => setQuery(event.currentTarget.value)} />\n      <ul>{filtered.map((name) => <li key={name}>{name}</li>)}</ul>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Search />);\n",
+      "solutionCode": "const { useState } = React;\nconst products = ['셔츠', '모자', '신발'];\n\nfunction Search() {\n  const [query, setQuery] = useState('');\n  const filtered = products.filter((name) => name.includes(query));\n\n  return (\n    <main>\n      <input value={query} onChange={(event) => setQuery(event.currentTarget.value)} />\n      <ul>{filtered.map((name) => <li key={name}>{name}</li>)}</ul>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Search />);\n",
+      "asserts": [
+        { "type": "dom", "label": "처음에는 상품 세 개", "select": "li", "count": 3 },
+        { "type": "dom", "label": "모를 입력하면 모자만 남음", "actions": [{ "action": "fill", "selector": "input", "value": "모" }], "select": "li", "text": ["모자"] }
+      ],
+      "hints": ["products.filter(...)의 결과를 filtered에 담으세요.", "콜백은 name.includes(query)를 반환합니다."]
     }
   ]
 }
