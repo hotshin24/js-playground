@@ -23,6 +23,18 @@
       "brief": ["useState(() => { ... })를 없애고, localStorage 읽기 코드를 Settings 함수 본문으로 옮겨 보세요.", "버튼을 누를 때마다 콘솔 문장이 다시 출력됩니다. state가 바뀌어 컴포넌트 함수가 다시 실행되기 때문입니다.", "코드를 원래대로 되돌리고, 첫 state를 만드는 작업과 매 렌더의 작업이 어떻게 다른지 자신의 말로 설명해 보세요."],
       "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin-right: 6px; padding: 7px 9px; }"] },
       "code": "const { useState } = React;\nconst storageKey = 'lesson-demo:settings';\nconst defaultSettings = { theme: 'light', fontSize: 16 };\n\nfunction Settings() {\n  const [settings, setSettings] = useState(() => {\n    console.log('저장소를 읽었습니다.');\n    const saved = localStorage.getItem(storageKey);\n    return saved ? JSON.parse(saved) : defaultSettings;\n  });\n\n  return (\n    <section>\n      <p>테마: {settings.theme} / 글자: {settings.fontSize}px</p>\n      <button type=\"button\" onClick={() => setSettings({ ...settings, theme: settings.theme === 'light' ? 'dark' : 'light' })}>테마 바꾸기</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Settings />);\n"
+    },
+    {
+      "kind": "fill", "title": "초기화 함수에서 저장 문자열 복원하기",
+      "brief": ["localStorage에 저장된 JSON 문자열을 읽어 첫 settings 객체로 반환하세요. null 두 곳을 바꿉니다.", "저장값이 없으면 defaultSettings를 사용합니다. 검사용 저장소에는 dark와 18px이 들어 있습니다."],
+      "env": ["localStorage.setItem('lesson-demo:audit-settings', JSON.stringify({ theme: 'dark', fontSize: 18 }));"],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useState } = React;\nconst key = 'lesson-demo:audit-settings';\nconst defaultSettings = { theme: 'light', fontSize: 16 };\nfunction Settings() {\n  const [settings] = useState(() => {\n    const saved = localStorage.getItem(key);\n    return saved ? null : null;\n  });\n  return <p id=\"settings\">{settings.theme} / {settings.fontSize}px</p>;\n}\nReactDOM.createRoot(document.querySelector('#root')).render(<Settings />);\n",
+      "solutionCode": "const { useState } = React;\nconst key = 'lesson-demo:audit-settings';\nconst defaultSettings = { theme: 'light', fontSize: 16 };\nfunction Settings() {\n  const [settings] = useState(() => {\n    const saved = localStorage.getItem(key);\n    return saved ? JSON.parse(saved) : defaultSettings;\n  });\n  return <p id=\"settings\">{settings.theme} / {settings.fontSize}px</p>;\n}\nReactDOM.createRoot(document.querySelector('#root')).render(<Settings />);\n",
+      "asserts": [
+        { "type": "dom", "label": "저장된 객체로 첫 화면을 만듦", "select": "#settings", "text": ["dark / 18px"] }
+      ],
+      "hints": ["저장 문자열이 있으면 JSON.parse(saved)를 반환하세요.", "없을 때는 defaultSettings를 반환하세요."]
     }
   ]
 }

@@ -23,6 +23,18 @@
       "brief": ["console.log를 초기화 함수, 컴포넌트 본문, effect에 각각 하나씩 추가하세요.", "처음 열었을 때와 버튼을 눌렀을 때 출력 순서를 비교하세요. 초기화 함수는 첫 state를 만들고, 컴포넌트 함수는 화면을 계산하며, effect는 렌더 뒤 저장소를 맞춥니다.", "마지막으로 답해 보세요. localStorage가 없다면 이 예제에 effect가 필요한가요? 외부 시스템과 맞출 대상이 없으므로 필요하지 않습니다."],
       "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin-right: 6px; padding: 7px 9px; }"] },
       "code": "const { useEffect, useState } = React;\nconst storageKey = 'lesson-demo:settings';\nconst defaultSettings = { theme: 'light', fontSize: 16 };\n\nfunction Settings() {\n  const [settings, setSettings] = useState(() => {\n    console.log('1. 첫 state 만들기');\n    const saved = localStorage.getItem(storageKey);\n    return saved ? JSON.parse(saved) : defaultSettings;\n  });\n\n  console.log('2. 화면 계산하기');\n\n  useEffect(() => {\n    console.log('3. 저장소와 맞추기');\n    localStorage.setItem(storageKey, JSON.stringify(settings));\n  }, [settings]);\n\n  return (\n    <section>\n      <p>테마: {settings.theme} / 글자: {settings.fontSize}px</p>\n      <button type=\"button\" onClick={() => setSettings(current => ({ ...current, theme: current.theme === 'light' ? 'dark' : 'light' }))}>테마</button>\n      <button type=\"button\" onClick={() => setSettings(current => ({ ...current, fontSize: current.fontSize + 1 }))}>글자 키우기</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Settings />);\n"
+    },
+    {
+      "kind": "fill", "title": "state 변경 뒤 localStorage에 자동 저장하기",
+      "brief": ["effect의 null을 settings 객체를 JSON 문자열로 저장하는 코드로 바꾸세요.", "버튼으로 테마를 바꾸면 effect가 새 settings를 저장하고 확인 문구도 dark로 바뀝니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>", "<p id=\"stored\">저장 전</p>"], "css": [] },
+      "code": "const { useEffect, useState } = React;\nconst key = 'lesson-demo:auto-settings';\nfunction Settings() {\n  const [settings, setSettings] = useState({ theme: 'light' });\n  useEffect(() => {\n    null; // 저장 코드를 작성하세요\n    const saved = JSON.parse(localStorage.getItem(key));\n    document.querySelector('#stored').textContent = saved.theme;\n  }, [settings]);\n  return <button type=\"button\" onClick={() => setSettings({ theme: 'dark' })}>어둡게</button>;\n}\nReactDOM.createRoot(document.querySelector('#root')).render(<Settings />);\n",
+      "solutionCode": "const { useEffect, useState } = React;\nconst key = 'lesson-demo:auto-settings';\nfunction Settings() {\n  const [settings, setSettings] = useState({ theme: 'light' });\n  useEffect(() => {\n    localStorage.setItem(key, JSON.stringify(settings));\n    const saved = JSON.parse(localStorage.getItem(key));\n    document.querySelector('#stored').textContent = saved.theme;\n  }, [settings]);\n  return <button type=\"button\" onClick={() => setSettings({ theme: 'dark' })}>어둡게</button>;\n}\nReactDOM.createRoot(document.querySelector('#root')).render(<Settings />);\n",
+      "asserts": [
+        { "type": "dom", "label": "첫 settings를 저장함", "select": "#stored", "text": ["light"] },
+        { "type": "dom", "label": "변경된 settings를 다시 저장함", "actions": [{ "action": "click", "selector": "button" }], "select": "#stored", "text": ["dark"] }
+      ],
+      "hints": ["localStorage.setItem(key, ...)을 사용하세요.", "객체 settings는 JSON.stringify(settings)로 문자열로 바꿉니다."]
     }
   ]
 }

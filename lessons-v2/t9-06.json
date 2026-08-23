@@ -23,6 +23,17 @@
       "brief": ["handleBuy 안에서 name을 출력하도록 바꾸면 name이 의존성에 필요합니다. 빈 배열을 유지하면 함수는 처음 렌더의 빈 name을 계속 기억합니다.", "의존성 배열을 [name]으로 바꾸면 최신 이름을 출력하지만 name 변경 때 함수 참조도 바뀌어 BuyButton이 다시 렌더됩니다.", "정확한 결과가 최적화보다 우선입니다. 의존성을 빼서 참조를 고정하지 마세요."],
       "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input, button { margin-right: 6px; padding: 7px 9px; }"] },
       "code": "const { memo, useCallback, useState } = React;\n\nconst BuyButton = memo(function BuyButton({ onBuy }) {\n  console.log('BuyButton 렌더');\n  return <button type=\"button\" onClick={onBuy}>구매</button>;\n});\n\nfunction App() {\n  const [name, setName] = useState('');\n  const handleBuy = useCallback(() => { console.log('구매'); }, []);\n\n  return (\n    <main>\n      <input value={name} onChange={(event) => setName(event.currentTarget.value)} placeholder=\"이름\" />\n      <BuyButton onBuy={handleBuy} />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "fill", "title": "콜백이 읽는 state를 의존성에 넣기",
+      "brief": ["handleSave는 name을 읽습니다. useCallback의 의존성 배열을 고쳐 입력한 최신 이름이 저장 결과에 표시되게 하세요.", "함수 참조를 고정하려고 의존성을 빼면 오래된 state를 기억하는 버그가 생깁니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useCallback, useState } = React;\nfunction App() {\n  const [name, setName] = useState('');\n  const handleSave = useCallback(() => {\n    document.querySelector('#saved').textContent = name;\n  }, [null]);\n  return (\n    <main>\n      <input value={name} onChange={(event) => setName(event.currentTarget.value)} />\n      <button type=\"button\" onClick={handleSave}>저장</button>\n      <p id=\"saved\">저장 전</p>\n    </main>\n  );\n}\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
+      "solutionCode": "const { useCallback, useState } = React;\nfunction App() {\n  const [name, setName] = useState('');\n  const handleSave = useCallback(() => {\n    document.querySelector('#saved').textContent = name;\n  }, [name]);\n  return (\n    <main>\n      <input value={name} onChange={(event) => setName(event.currentTarget.value)} />\n      <button type=\"button\" onClick={handleSave}>저장</button>\n      <p id=\"saved\">저장 전</p>\n    </main>\n  );\n}\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
+      "asserts": [
+        { "type": "dom", "label": "입력 뒤 저장하면 최신 이름을 사용함", "actions": [{ "action": "fill", "selector": "input", "value": "민수" }, { "action": "click", "selector": "button" }], "select": "#saved", "text": ["민수"] }
+      ],
+      "hints": ["콜백 안에서 렌더마다 달라지는 값은 name입니다.", "의존성 배열을 [name]으로 바꾸세요."]
     }
   ]
 }
