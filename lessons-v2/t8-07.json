@@ -23,6 +23,17 @@
       "brief": ["App에서 ThemeContext.Provider를 제거하고 <Page />만 반환하면 ThemeText는 createContext에 넣은 기본값 light를 읽습니다.", "Provider의 value를 'blue'로 바꾸면 소비 컴포넌트가 blue를 읽습니다.", "Context를 읽는 컴포넌트가 어느 Provider 안에 있는지 계층을 확인해야 합니다."],
       "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".dark { padding: 12px; background: #222; color: white; }"] },
       "code": "const { createContext, useContext } = React;\nconst ThemeContext = createContext('light');\n\nfunction ThemeText() {\n  const theme = useContext(ThemeContext);\n  return <p>현재 테마: {theme}</p>;\n}\nfunction Section() { return <ThemeText />; }\nfunction Page() { return <section className=\"dark\"><Section /></section>; }\n\nfunction App() {\n  return (\n    <ThemeContext.Provider value=\"dark\">\n      <Page />\n    </ThemeContext.Provider>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "fill", "title": "Provider가 공급한 값 읽기",
+      "brief": ["ThemeText의 null을 useContext 호출로 바꿔 Provider가 공급한 dark를 읽으세요.", "ThemeText는 App의 깊은 자식이지만 중간 컴포넌트에서 theme props를 전달하지 않습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { createContext, useContext } = React;\nconst ThemeContext = createContext('light');\n\nfunction ThemeText() {\n  const theme = null;\n  return <p id=\"theme\">현재 테마: {theme}</p>;\n}\nfunction Middle() { return <ThemeText />; }\nfunction App() {\n  return <ThemeContext.Provider value=\"dark\"><Middle /></ThemeContext.Provider>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
+      "solutionCode": "const { createContext, useContext } = React;\nconst ThemeContext = createContext('light');\n\nfunction ThemeText() {\n  const theme = useContext(ThemeContext);\n  return <p id=\"theme\">현재 테마: {theme}</p>;\n}\nfunction Middle() { return <ThemeText />; }\nfunction App() {\n  return <ThemeContext.Provider value=\"dark\"><Middle /></ThemeContext.Provider>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
+      "asserts": [
+        { "type": "dom", "label": "가장 가까운 Provider의 값을 읽음", "select": "#theme", "text": ["현재 테마: dark"] }
+      ],
+      "hints": ["Context를 읽는 훅은 useContext입니다.", "useContext(ThemeContext)의 결과를 theme에 담으세요."]
     }
   ]
 }

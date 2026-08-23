@@ -23,6 +23,18 @@
       "brief": ["증가 버튼의 type을 'add'로 바꾸면 reducer에 해당 조건이 없어 현재 state를 그대로 반환합니다.", "버튼을 다시 동작시키려면 action의 type과 reducer가 확인하는 문자열을 맞춰야 합니다.", "action type은 JavaScript 예약어가 아니라 개발자가 정하는 문자열이므로 오타를 주의해야 합니다."],
       "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin-right: 6px; padding: 7px 9px; }"] },
       "code": "const { useReducer } = React;\n\nfunction quantityReducer(state, action) {\n  if (action.type === 'increase') return state + 1;\n  if (action.type === 'decrease') return Math.max(0, state - 1);\n  if (action.type === 'reset') return 0;\n  return state;\n}\n\nfunction Quantity() {\n  const [quantity, dispatch] = useReducer(quantityReducer, 0);\n\n  return (\n    <section>\n      <p>수량: {quantity}</p>\n      <button type=\"button\" onClick={() => dispatch({ type: 'increase' })}>증가</button>\n      <button type=\"button\" onClick={() => dispatch({ type: 'decrease' })}>감소</button>\n      <button type=\"button\" onClick={() => dispatch({ type: 'reset' })}>초기화</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Quantity />);\n"
+    },
+    {
+      "kind": "fill", "title": "버튼에서 action 보내기",
+      "brief": ["버튼을 누르면 reducer의 increase 조건이 실행되도록 dispatch의 null을 action 객체로 바꾸세요.", "계산식은 버튼에 쓰지 않고 무슨 일이 일어났는지를 type 문자열로 알립니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useReducer } = React;\n\nfunction reducer(state, action) {\n  if (action.type === 'increase') return state + 1;\n  return state;\n}\n\nfunction Counter() {\n  const [count, dispatch] = useReducer(reducer, 0);\n  return <button type=\"button\" onClick={() => dispatch(null)}>숫자: {count}</button>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n",
+      "solutionCode": "const { useReducer } = React;\n\nfunction reducer(state, action) {\n  if (action.type === 'increase') return state + 1;\n  return state;\n}\n\nfunction Counter() {\n  const [count, dispatch] = useReducer(reducer, 0);\n  return <button type=\"button\" onClick={() => dispatch({ type: 'increase' })}>숫자: {count}</button>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n",
+      "asserts": [
+        { "type": "dom", "label": "처음 값은 0", "select": "button", "text": ["숫자: 0"] },
+        { "type": "dom", "label": "action을 보내면 1 증가", "actions": [{ "action": "click", "selector": "button" }], "select": "button", "text": ["숫자: 1"] }
+      ],
+      "hints": ["dispatch에는 객체를 전달합니다.", "reducer가 확인하는 type은 increase입니다."]
     }
   ]
 }
