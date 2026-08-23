@@ -15,14 +15,16 @@ const seen = new Set();
 const complain = (message) => errors.push(message);
 const sameValue = (actual, expected) => JSON.stringify(actual) === JSON.stringify(expected);
 
-const runValueChecks = (code, entry, specs) => {
+const runValueChecks = async (code, entry, specs) => {
   const context = vm.createContext({ console: { log() {}, error() {}, warn() {} } });
   vm.runInContext(`${code}\n;globalThis.__auditEntry = ${entry};`, context, { timeout: 1000 });
-  return specs.map((spec) => {
+  const results = [];
+  for (const spec of specs) {
     const args = structuredClone(spec.args || []);
-    const actual = context.__auditEntry(...args);
-    return sameValue(actual, spec.expected);
-  });
+    const actual = await context.__auditEntry(...args);
+    results.push(sameValue(actual, spec.expected));
+  }
+  return results;
 };
 
 for (const item of index.lessons) {
@@ -63,13 +65,13 @@ for (const item of index.lessons) {
       const valueSpecs = step.asserts.filter((spec) => spec.type === 'value');
       if (lesson.runtime === 'js' && !step.files && valueSpecs.length) {
         try {
-          const solution = runValueChecks(step.solutionCode, step.entry, valueSpecs);
+          const solution = await runValueChecks(step.solutionCode, step.entry, valueSpecs);
           if (solution.some((passed) => !passed)) complain(`${item.id}: 정답 코드가 value 검사를 통과하지 못함`);
         } catch (error) {
           complain(`${item.id}: 정답 코드 실행 오류: ${error.message}`);
         }
         try {
-          const starter = runValueChecks(step.code, step.entry, valueSpecs);
+          const starter = await runValueChecks(step.code, step.entry, valueSpecs);
           if (starter.every(Boolean)) complain(`${item.id}: 시작 코드가 모든 value 검사를 통과함`);
         } catch {
           // write 단계처럼 함수가 아직 없는 시작 코드는 의도된 실패다.

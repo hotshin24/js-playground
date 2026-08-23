@@ -23,6 +23,17 @@
       "brief": ["event.preventDefault()를 지우고 제출하면 실행 화면이 다시 로드되어 추가한 항목이 사라질 수 있습니다.", "버튼의 type을 button으로 바꾸면 폼 제출 자체가 발생하지 않습니다. 폼 제출 버튼에는 type=submit을 사용합니다.", "입력 검사는 빈 값만 확인했습니다. 길이나 허용 문자를 검사하려면 목록에 추가하기 전에 조건을 더해야 합니다."],
       "scaffold": { "html": ["<form id=\"form\">", "  <input id=\"product\" aria-label=\"상품 이름\">", "  <button type=\"submit\">추가</button>", "</form>", "<ul id=\"list\"></ul>"], "css": ["form { display: flex; gap: 6px; }", "input, button { padding: 8px; }"] },
       "code": "const form = document.querySelector('#form');\nconst productInput = document.querySelector('#product');\nconst list = document.querySelector('#list');\n\nform.addEventListener('submit', (event) => {\n  event.preventDefault();\n\n  const name = productInput.value.trim();\n  if (name === '') return;\n\n  const item = document.createElement('li');\n  item.textContent = name;\n  list.append(item);\n  form.reset();\n});\n"
+    },
+    {
+      "kind": "write", "title": "폼 제출로 목록에 이름 추가하기",
+      "brief": ["폼의 submit 이벤트를 처리해 입력값을 li로 만들고 list에 추가하세요. 페이지가 다시 로드되지 않도록 기본 동작을 막아야 합니다.", "바로 앞의 완성 예제와 같은 순서로 작성합니다. 이번 검사에서는 '모자'를 입력한 뒤 제출합니다."],
+      "scaffold": { "html": ["<form id=\"form\">", "  <input id=\"product\" aria-label=\"상품 이름\">", "  <button id=\"submit\" type=\"submit\">추가</button>", "</form>", "<ul id=\"list\"></ul>"], "css": ["form { display: flex; gap: 6px; }"] },
+      "code": "const form = document.querySelector('#form');\nconst productInput = document.querySelector('#product');\nconst list = document.querySelector('#list');\n\n// submit 이벤트 처리 코드를 작성하세요\n",
+      "solutionCode": "const form = document.querySelector('#form');\nconst productInput = document.querySelector('#product');\nconst list = document.querySelector('#list');\n\nform.addEventListener('submit', (event) => {\n  event.preventDefault();\n  const item = document.createElement('li');\n  item.textContent = productInput.value;\n  list.append(item);\n});\n",
+      "asserts": [
+        { "type": "dom", "label": "입력한 상품이 목록에 추가됨", "actions": [{ "action": "fill", "selector": "#product", "value": "모자" }, { "action": "click", "selector": "#submit" }], "select": "#list li", "text": ["모자"] }
+      ],
+      "hints": ["form.addEventListener('submit', (event) => { ... })로 시작하세요.", "콜백 안에서 preventDefault, createElement, textContent, append 순서로 작성하세요."]
     }
   ]
 }

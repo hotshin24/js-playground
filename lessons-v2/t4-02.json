@@ -23,6 +23,18 @@
       "brief": ["title.textContent를 '재입고'로 바꾸고 sold-out 클래스를 remove로 삭제해 보세요.", "buyButton.removeAttribute('disabled')를 사용하면 버튼이 다시 활성화됩니다.", "속성 이름을 문자열로 쓰므로 'disabled'의 철자가 HTML 속성과 맞아야 합니다."],
       "scaffold": { "html": ["<article id=\"card\" class=\"card\">", "  <h2 id=\"title\">파란 셔츠</h2>", "  <button id=\"buy\" type=\"button\">구매</button>", "</article>"], "css": [".card { padding: 16px; border: 1px solid var(--c-border); border-radius: 10px; }", ".sold-out { opacity: 0.55; }"] },
       "code": "const card = document.querySelector('#card');\nconst title = document.querySelector('#title');\nconst buyButton = document.querySelector('#buy');\n\ntitle.textContent = '품절';\ncard.classList.add('sold-out');\nbuyButton.setAttribute('disabled', '');\n"
+    },
+    {
+      "kind": "fill", "title": "선택한 요소의 글자와 클래스 바꾸기",
+      "brief": ["두 null을 바꿔 제목에는 '재입고'를 표시하고 카드에는 available 클래스를 추가하세요.", "요소를 찾는 코드는 완성되어 있습니다. textContent 할당과 classList.add 호출만 작성합니다."],
+      "scaffold": { "html": ["<article id=\"card\" class=\"card\">", "  <h2 id=\"title\">품절</h2>", "</article>"], "css": [".available { border: 2px solid #2f9e44; }"] },
+      "code": "const card = document.querySelector('#card');\nconst title = document.querySelector('#title');\n\ntitle.textContent = null;\ncard.classList.add(null);\n",
+      "solutionCode": "const card = document.querySelector('#card');\nconst title = document.querySelector('#title');\n\ntitle.textContent = '재입고';\ncard.classList.add('available');\n",
+      "asserts": [
+        { "type": "dom", "label": "제목이 재입고로 바뀜", "select": "#title", "text": ["재입고"] },
+        { "type": "dom", "label": "available 클래스가 추가됨", "select": ".card.available", "count": 1 }
+      ],
+      "hints": ["textContent에는 화면에 표시할 문자열을 할당합니다.", "classList.add에는 점 없이 클래스 이름만 문자열로 전달합니다."]
     }
   ]
 }

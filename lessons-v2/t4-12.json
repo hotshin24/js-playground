@@ -21,6 +21,17 @@
       "kind": "tweak", "title": "await를 지웠을 때 비교하기",
       "brief": ["const price = await requestPrice();에서 await를 지우면 price에는 숫자가 아니라 Promise 객체가 들어갑니다.", "price + 3000은 원하는 숫자 덧셈이 되지 않습니다. Promise의 결과가 필요한 줄에서는 await로 완료를 기다려야 합니다.", "loadPrice()의 반환값도 Promise이므로 바깥에서는 then을 사용하거나 또 다른 async 함수 안에서 await해야 합니다."],
       "code": "function requestPrice() {\n  return new Promise((resolve) => {\n    setTimeout(() => resolve(12000), 500);\n  });\n}\n\nasync function loadPrice() {\n  console.log('기다림 시작');\n  const price = await requestPrice();\n  console.log('가격: ' + price);\n  return price + 3000;\n}\n\nloadPrice().then((total) => console.log('합계: ' + total));\nconsole.log('호출 다음');\n"
+    },
+    {
+      "kind": "fill", "title": "Promise 결과를 기다려 배송비 더하기",
+      "brief": ["loadTotal은 requestPrice가 돌려준 Promise의 결과를 기다린 뒤 배송비 3000을 더해 반환해야 합니다.", "두 null을 각각 async와 await가 들어갈 자리로 바꾸세요."],
+      "code": "function requestPrice() {\n  return Promise.resolve(12000);\n}\n\nnull function loadTotal() {\n  const price = null requestPrice();\n  return price + 3000;\n}\n",
+      "entry": "loadTotal",
+      "solutionCode": "function requestPrice() {\n  return Promise.resolve(12000);\n}\n\nasync function loadTotal() {\n  const price = await requestPrice();\n  return price + 3000;\n}\n",
+      "asserts": [
+        { "type": "value", "label": "가격을 기다린 뒤 배송비를 더함", "args": [], "expected": 15000 }
+      ],
+      "hints": ["function 앞에는 async를 붙입니다.", "requestPrice() 앞에는 await를 붙입니다."]
     }
   ]
 }
