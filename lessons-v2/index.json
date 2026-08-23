@@ -87,6 +87,11 @@
     { "id": "t5-01", "track": "T5", "order": 1, "title": "React가 화면을 만드는 방식 이해하기" },
     { "id": "t5-02", "track": "T5", "order": 2, "title": "root를 만들고 React 화면 렌더링하기" },
     { "id": "t5-03", "track": "T5", "order": 3, "title": "JSX를 JavaScript 값으로 다루기" },
-    { "id": "t5-04", "track": "T5", "order": 4, "title": "JSX를 하나의 부모로 묶기" }
+    { "id": "t5-04", "track": "T5", "order": 4, "title": "JSX를 하나의 부모로 묶기" },
+    { "id": "t5-05", "track": "T5", "order": 5, "title": "JSX에서 className과 htmlFor 사용하기" },
+    { "id": "t5-06", "track": "T5", "order": 6, "title": "JSX 중괄호 안에 JavaScript 값 넣기" },
+    { "id": "t5-07", "track": "T5", "order": 7, "title": "조건에 따라 다른 JSX 보여 주기" },
+    { "id": "t5-08", "track": "T5", "order": 8, "title": "className과 style 객체로 JSX 꾸미기" },
+    { "id": "t5-09", "track": "T5", "order": 9, "title": "함수 컴포넌트로 화면 조각 만들기" }
   ]
 }

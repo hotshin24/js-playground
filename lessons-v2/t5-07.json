@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t5-07", "track": "T5", "order": 7, "runtime": "react",
+  "title": "조건에 따라 다른 JSX 보여 주기",
+  "steps": [
+    {
+      "kind": "read", "title": "삼항 연산자와 &&로 화면을 고릅니다",
+      "brief": [
+        "조건에 따라 두 화면 중 하나를 고를 때는 삼항 조건 연산자를 사용할 수 있습니다.",
+        { "code": ["{soldOut ? <p>품절</p> : <button>구매</button>}"] },
+        "조건이 true일 때만 무언가를 표시하고 false일 때는 아무것도 표시하지 않으려면 &&를 사용할 수 있습니다.",
+        { "code": ["{isNew && <span>신상품</span>}"] },
+        "&& 왼쪽에 숫자를 바로 쓰면 0이 화면에 표시될 수 있습니다. count && <p>...</p> 대신 count > 0 && <p>...</p>처럼 불리언 조건을 명확히 만드세요."
+      ]
+    },
+    {
+      "kind": "run", "title": "품절 여부와 신상품 표시하기",
+      "brief": ["soldOut이 false이므로 구매 버튼이 표시됩니다. isNew가 true이므로 신상품 표시도 나타납니다.", "두 조건은 각각 다른 화면 결정을 담당합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".tag { margin-left: 8px; padding: 2px 6px; background: var(--c-accent-weak); border-radius: 999px; }"] },
+      "code": "function Product() {\n  const soldOut = false;\n  const isNew = true;\n\n  return (\n    <article>\n      <h2>파란 셔츠 {isNew && <span className=\"tag\">신상품</span>}</h2>\n      {soldOut ? <p>품절</p> : <button type=\"button\">구매</button>}\n    </article>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Product />);\n"
+    },
+    {
+      "kind": "tweak", "title": "조건을 하나씩 바꿔 보기",
+      "brief": ["soldOut을 true로 바꾸면 구매 버튼 대신 품절 문구가 표시됩니다.", "isNew를 false로 바꾸면 신상품 span은 렌더링되지 않습니다.", "const count = 0을 만들고 {count && <p>장바구니</p>}를 추가하면 0이 보입니다. 조건을 count > 0으로 고쳐 차이를 확인하세요."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".tag { margin-left: 8px; padding: 2px 6px; background: var(--c-accent-weak); border-radius: 999px; }"] },
+      "code": "function Product() {\n  const soldOut = false;\n  const isNew = true;\n\n  return (\n    <article>\n      <h2>파란 셔츠 {isNew && <span className=\"tag\">신상품</span>}</h2>\n      {soldOut ? <p>품절</p> : <button type=\"button\">구매</button>}\n    </article>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Product />);\n"
+    }
+  ]
+}

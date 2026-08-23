@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t5-06", "track": "T5", "order": 6, "runtime": "react",
+  "title": "JSX 중괄호 안에 JavaScript 값 넣기",
+  "steps": [
+    {
+      "kind": "read", "title": "중괄호는 JSX에서 JavaScript로 들어가는 자리입니다",
+      "brief": [
+        "JSX 태그 안에서 JavaScript 값을 사용하려면 중괄호로 감쌉니다.",
+        { "code": ["const name = '셔츠';", "const price = 39000;", "return <p>{name}: {price + 3000}원</p>;"] },
+        "중괄호 안에는 변수뿐 아니라 계산식, 함수 호출, 삼항 조건 연산자처럼 값이 되는 식을 쓸 수 있습니다.",
+        "if, for, const 선언처럼 값 하나가 되지 않는 문장은 JSX 중괄호 안에 직접 쓸 수 없습니다.",
+        "문자열과 숫자는 화면에 표시됩니다. true, false, null, undefined는 JSX에서 화면에 글자로 표시되지 않습니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "변수와 계산 결과 표시하기",
+      "brief": ["name과 price는 JSX 중괄호를 통해 화면에 들어갑니다. total은 JavaScript에서 계산한 숫자입니다.", "soldOut은 false이므로 중괄호 자리에 아무 글자도 표시되지 않습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "function ProductInfo() {\n  const name = '파란 셔츠';\n  const price = 39000;\n  const shippingFee = 3000;\n  const soldOut = false;\n\n  return (\n    <section>\n      <h2>{name}</h2>\n      <p>합계: {price + shippingFee}원</p>\n      <p>{soldOut}</p>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductInfo />);\n"
+    },
+    {
+      "kind": "tweak", "title": "중괄호와 문자열 비교하기",
+      "brief": ["{name}을 name으로 바꾸면 변수의 값이 아니라 글자 name이 그대로 표시됩니다.", "{price + shippingFee}를 {'price + shippingFee'}로 바꾸면 계산하지 않고 식 모양의 문자열을 표시합니다.", "JSX에서 JavaScript 값을 계산해 넣을 때만 중괄호를 사용합니다. 이미 따옴표 안에 쓴 내용은 문자열입니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "function ProductInfo() {\n  const name = '파란 셔츠';\n  const price = 39000;\n  const shippingFee = 3000;\n  const soldOut = false;\n\n  return (\n    <section>\n      <h2>{name}</h2>\n      <p>합계: {price + shippingFee}원</p>\n      <p>{soldOut}</p>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductInfo />);\n"
+    }
+  ]
+}
