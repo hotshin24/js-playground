@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t9-09", "track": "T9", "order": 9, "runtime": "react",
+  "title": "useState 초기화 함수로 저장된 값 복원하기",
+  "steps": [
+    {
+      "kind": "read", "title": "첫 렌더에 필요한 값은 초기화 함수에서 읽습니다",
+      "brief": [
+        "useState에는 값뿐 아니라 함수도 전달할 수 있습니다. 이 함수를 초기화 함수라고 하며, 컴포넌트가 처음 나타날 때 한 번 실행되어 첫 state를 정합니다.",
+        { "code": ["const [settings, setSettings] = useState(() => {", "  const saved = localStorage.getItem(storageKey);", "  return saved ? JSON.parse(saved) : defaultSettings;", "});"] },
+        "저장된 문자열이 있으면 JSON.parse로 객체를 복원하고, 없으면 기본 설정을 사용합니다.",
+        "localStorage 읽기를 컴포넌트 본문의 일반 코드에 두면 다시 렌더링될 때마다 반복됩니다. 초기화 함수에 두면 첫 state를 만들 때만 읽습니다.",
+        "초기화 함수는 React가 호출합니다. 우리가 직접 괄호를 붙여 실행하지 않습니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "저장된 설정으로 첫 화면 시작하기",
+      "brief": ["T9-08에서 저장한 값이 있다면 그 설정으로 시작합니다. 저장된 값이 없다면 밝은 테마와 16px로 시작합니다.", "초기화 함수가 실행되는 횟수도 콘솔에서 확인합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { useState } = React;\nconst storageKey = 'lesson-demo:settings';\nconst defaultSettings = { theme: 'light', fontSize: 16 };\n\nfunction Settings() {\n  const [settings, setSettings] = useState(() => {\n    console.log('저장소를 읽었습니다.');\n    const saved = localStorage.getItem(storageKey);\n    return saved ? JSON.parse(saved) : defaultSettings;\n  });\n\n  return (\n    <section>\n      <p>테마: {settings.theme} / 글자: {settings.fontSize}px</p>\n      <button type=\"button\" onClick={() => setSettings({ ...settings, theme: settings.theme === 'light' ? 'dark' : 'light' })}>테마 바꾸기</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Settings />);\n"
+    },
+    {
+      "kind": "tweak", "title": "일반 초기값과 초기화 함수 비교하기",
+      "brief": ["useState(() => { ... })를 없애고, localStorage 읽기 코드를 Settings 함수 본문으로 옮겨 보세요.", "버튼을 누를 때마다 콘솔 문장이 다시 출력됩니다. state가 바뀌어 컴포넌트 함수가 다시 실행되기 때문입니다.", "코드를 원래대로 되돌리고, 첫 state를 만드는 작업과 매 렌더의 작업이 어떻게 다른지 자신의 말로 설명해 보세요."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { useState } = React;\nconst storageKey = 'lesson-demo:settings';\nconst defaultSettings = { theme: 'light', fontSize: 16 };\n\nfunction Settings() {\n  const [settings, setSettings] = useState(() => {\n    console.log('저장소를 읽었습니다.');\n    const saved = localStorage.getItem(storageKey);\n    return saved ? JSON.parse(saved) : defaultSettings;\n  });\n\n  return (\n    <section>\n      <p>테마: {settings.theme} / 글자: {settings.fontSize}px</p>\n      <button type=\"button\" onClick={() => setSettings({ ...settings, theme: settings.theme === 'light' ? 'dark' : 'light' })}>테마 바꾸기</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Settings />);\n"
+    }
+  ]
+}
