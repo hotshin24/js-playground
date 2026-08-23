@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t4-02", "track": "T4", "order": 2, "runtime": "js",
+  "title": "요소의 글자·클래스·속성 바꾸기",
+  "steps": [
+    {
+      "kind": "read", "title": "선택한 DOM 요소의 프로퍼티와 메서드를 사용합니다",
+      "brief": [
+        "textContent에 문자열을 할당하면 요소 안의 글자가 바뀝니다.",
+        "classList.add는 클래스를 추가하고 remove는 삭제합니다. toggle은 클래스가 없으면 추가하고 있으면 삭제합니다.",
+        { "code": ["title.textContent = '판매 완료';", "card.classList.add('sold-out');"] },
+        "setAttribute(name, value)는 HTML 속성을 설정합니다. getAttribute(name)은 현재 속성값을 읽습니다.",
+        "화면을 바꾸려면 먼저 요소를 선택하고, 그 요소의 어떤 부분을 바꿀지 정해야 합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "품절 상태를 화면에 표시하기",
+      "brief": ["제목 글자가 품절로 바뀌고 card에 sold-out 클래스가 추가됩니다.", "버튼의 disabled 속성이 설정되어 버튼을 누를 수 없게 됩니다."],
+      "scaffold": { "html": ["<article id=\"card\" class=\"card\">", "  <h2 id=\"title\">파란 셔츠</h2>", "  <button id=\"buy\" type=\"button\">구매</button>", "</article>"], "css": [".card { padding: 16px; border: 1px solid var(--c-border); border-radius: 10px; }", ".sold-out { opacity: 0.55; }"] },
+      "code": "const card = document.querySelector('#card');\nconst title = document.querySelector('#title');\nconst buyButton = document.querySelector('#buy');\n\ntitle.textContent = '품절';\ncard.classList.add('sold-out');\nbuyButton.setAttribute('disabled', '');\n"
+    },
+    {
+      "kind": "tweak", "title": "변경을 하나씩 되돌리기",
+      "brief": ["title.textContent를 '재입고'로 바꾸고 sold-out 클래스를 remove로 삭제해 보세요.", "buyButton.removeAttribute('disabled')를 사용하면 버튼이 다시 활성화됩니다.", "속성 이름을 문자열로 쓰므로 'disabled'의 철자가 HTML 속성과 맞아야 합니다."],
+      "scaffold": { "html": ["<article id=\"card\" class=\"card\">", "  <h2 id=\"title\">파란 셔츠</h2>", "  <button id=\"buy\" type=\"button\">구매</button>", "</article>"], "css": [".card { padding: 16px; border: 1px solid var(--c-border); border-radius: 10px; }", ".sold-out { opacity: 0.55; }"] },
+      "code": "const card = document.querySelector('#card');\nconst title = document.querySelector('#title');\nconst buyButton = document.querySelector('#buy');\n\ntitle.textContent = '품절';\ncard.classList.add('sold-out');\nbuyButton.setAttribute('disabled', '');\n"
+    }
+  ]
+}

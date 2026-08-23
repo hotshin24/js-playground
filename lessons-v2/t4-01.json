@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t4-01", "track": "T4", "order": 1, "runtime": "js",
+  "title": "DOM에서 HTML 요소 찾기",
+  "steps": [
+    {
+      "kind": "read", "title": "브라우저는 HTML을 객체로 만들어 제공합니다",
+      "brief": [
+        "브라우저는 HTML 문서를 JavaScript가 다룰 수 있는 객체 구조로 만듭니다. 이를 DOM(Document Object Model)이라고 합니다.",
+        "document는 현재 HTML 문서를 나타내는 객체입니다. document.querySelector는 CSS 선택자와 일치하는 첫 번째 요소를 찾습니다.",
+        { "code": ["const title = document.querySelector('#title');", "const button = document.querySelector('.buy-button');"] },
+        "#title은 id가 title인 요소를, .buy-button은 class가 buy-button인 첫 요소를 찾습니다.",
+        "일치하는 요소가 없으면 null을 반환합니다. null에 textContent 같은 프로퍼티를 사용하면 오류가 나므로 선택자가 HTML과 맞는지 확인해야 합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "선택한 요소 확인하기",
+      "brief": ["querySelector로 제목과 가격 요소를 찾습니다. 요소 자체와 요소 안의 글자가 콘솔에 출력됩니다.", "JavaScript가 실행되는 시점에 HTML 요소가 이미 만들어져 있으므로 선택할 수 있습니다."],
+      "scaffold": { "html": ["<article class=\"product\">", "  <h2 id=\"title\">파란 셔츠</h2>", "  <p class=\"price\">39,000원</p>", "</article>"], "css": [".product { padding: 16px; border: 1px solid var(--c-border); border-radius: 10px; }"] },
+      "code": "const title = document.querySelector('#title');\nconst price = document.querySelector('.price');\n\nconsole.log(title);\nconsole.log(title.textContent);\nconsole.log(price.textContent);\n"
+    },
+    {
+      "kind": "tweak", "title": "선택자가 맞지 않을 때 확인하기",
+      "brief": ["'#title'을 '#product-title'로 바꾸면 title은 null이 됩니다. 다음 title.textContent 줄에서 오류가 납니다.", "HTML의 id를 product-title로 함께 바꾸면 다시 선택됩니다. 선택자와 HTML 이름은 정확히 일치해야 합니다.", "여러 요소를 모두 선택하는 querySelectorAll은 배열 순회를 배운 뒤 T4의 이벤트 위임 과정에서 함께 사용합니다."],
+      "scaffold": { "html": ["<article class=\"product\">", "  <h2 id=\"title\">파란 셔츠</h2>", "  <p class=\"price\">39,000원</p>", "</article>"], "css": [".product { padding: 16px; border: 1px solid var(--c-border); border-radius: 10px; }"] },
+      "code": "const title = document.querySelector('#title');\nconst price = document.querySelector('.price');\n\nconsole.log(title);\nconsole.log(title.textContent);\nconsole.log(price.textContent);\n"
+    }
+  ]
+}
