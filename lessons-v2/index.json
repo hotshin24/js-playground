@@ -58,6 +58,11 @@
     { "id": "t3-06", "track": "T3", "order": 6, "title": "객체를 할당하면 같은 객체를 가리킵니다" },
     { "id": "t3-07", "track": "T3", "order": 7, "title": "전개 연산자로 새 객체 만들기" },
     { "id": "t3-08", "track": "T3", "order": 8, "title": "구조 분해로 필요한 값 꺼내기" },
-    { "id": "t3-09", "track": "T3", "order": 9, "title": "rest와 spread 구분하기" }
+    { "id": "t3-09", "track": "T3", "order": 9, "title": "rest와 spread 구분하기" },
+    { "id": "t3-10", "track": "T3", "order": 10, "title": "배열의 앞뒤에 값 추가하고 삭제하기" },
+    { "id": "t3-11", "track": "T3", "order": 11, "title": "forEach로 배열의 모든 값 사용하기" },
+    { "id": "t3-12", "track": "T3", "order": 12, "title": "map으로 같은 길이의 새 배열 만들기" },
+    { "id": "t3-13", "track": "T3", "order": 13, "title": "find와 findIndex로 원하는 값 찾기" },
+    { "id": "t3-14", "track": "T3", "order": 14, "title": "filter로 조건에 맞는 값만 남기기" }
   ]
 }
