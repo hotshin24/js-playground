@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t6-10", "track": "T6", "order": 10, "runtime": "react",
+  "title": "배열 state를 새 배열로 갱신하기",
+  "steps": [
+    {
+      "kind": "read", "title": "추가·변경·삭제마다 새 배열을 만듭니다",
+      "brief": [
+        "배열 state도 원본을 직접 변경하지 않고 새 배열을 만들어 설정 함수에 전달합니다.",
+        "추가는 [...previous, newItem], 변경은 map, 삭제는 filter를 사용할 수 있습니다.",
+        { "code": ["setItems((previous) => [...previous, newItem]);", "setItems((previous) => previous.filter((item) => item.id !== targetId));"] },
+        "push와 splice는 원본 배열을 바꾸므로 state 갱신에 직접 사용하지 않습니다.",
+        "map으로 객체 항목을 바꿀 때도 해당 객체를 전개해 새 객체를 만듭니다. 배열과 바뀐 객체 모두 새 참조가 됩니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "추가와 삭제로 새 배열 만들기",
+      "brief": ["추가 버튼은 이전 배열을 펼치고 새 상품을 끝에 넣습니다. 삭제 버튼은 filter로 해당 id가 아닌 항목만 남깁니다.", "목록 렌더링에는 앞 레슨에서 배운 map과 key를 사용합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin: 3px; padding: 6px 9px; }"] },
+      "code": "const { useState } = React;\n\nfunction ProductList() {\n  const [products, setProducts] = useState([\n    { id: 1, name: '셔츠' },\n    { id: 2, name: '모자' },\n  ]);\n\n  function addShoes() {\n    setProducts((previous) => [...previous, { id: 3, name: '신발' }]);\n  }\n\n  function removeProduct(targetId) {\n    setProducts((previous) => previous.filter((product) => product.id !== targetId));\n  }\n\n  return (\n    <section>\n      <button type=\"button\" onClick={addShoes}>신발 추가</button>\n      <ul>{products.map((product) => (\n        <li key={product.id}>{product.name} <button type=\"button\" onClick={() => removeProduct(product.id)}>삭제</button></li>\n      ))}</ul>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductList />);\n"
+    },
+    {
+      "kind": "tweak", "title": "push로 원본을 바꿔 보기",
+      "brief": ["addShoes를 products.push({ id: 3, name: '신발' }); setProducts(products);로 바꾸면 같은 배열 참조를 전달해 화면이 갱신되지 않을 수 있습니다.", "다시 전개 연산자로 새 배열을 만드는 코드로 되돌리세요.", "현재는 같은 id 3을 여러 번 추가할 수 있습니다. 실제 데이터에서는 각 항목에 중복되지 않는 id를 만들어야 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin: 3px; padding: 6px 9px; }"] },
+      "code": "const { useState } = React;\n\nfunction ProductList() {\n  const [products, setProducts] = useState([\n    { id: 1, name: '셔츠' },\n    { id: 2, name: '모자' },\n  ]);\n\n  function addShoes() {\n    setProducts((previous) => [...previous, { id: 3, name: '신발' }]);\n  }\n\n  function removeProduct(targetId) {\n    setProducts((previous) => previous.filter((product) => product.id !== targetId));\n  }\n\n  return (\n    <section>\n      <button type=\"button\" onClick={addShoes}>신발 추가</button>\n      <ul>{products.map((product) => (\n        <li key={product.id}>{product.name} <button type=\"button\" onClick={() => removeProduct(product.id)}>삭제</button></li>\n      ))}</ul>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductList />);\n"
+    }
+  ]
+}

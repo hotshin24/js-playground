@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t5-16", "track": "T5", "order": 16, "runtime": "react",
+  "title": "배열을 JSX 목록으로 렌더링하기",
+  "steps": [
+    {
+      "kind": "read", "title": "map이 반환한 JSX 배열을 화면에 표시합니다",
+      "brief": [
+        "T3에서 map은 원본과 같은 길이의 새 배열을 만든다고 배웠습니다. React에서는 각 데이터를 JSX로 바꿔 목록을 만듭니다.",
+        { "code": ["products.map((product) => (", "  <li key={product.id}>{product.name}</li>", "))"] },
+        "map의 콜백이 상품마다 li JSX를 하나 반환하므로 결과는 JSX 값이 든 배열입니다. React는 이 배열을 순서대로 화면에 표시합니다.",
+        "목록의 각 JSX에는 같은 목록 안에서 고유하고 데이터가 유지되는 key가 필요합니다. React는 key로 이전 항목과 다음 항목을 연결합니다.",
+        "배열 인덱스는 삽입·삭제·정렬 때 같은 데이터의 번호가 바뀔 수 있습니다. 데이터에 id가 있다면 id를 key로 사용합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "상품 객체를 li JSX로 바꾸기",
+      "brief": ["products의 세 객체가 map을 거쳐 세 li가 됩니다. 각 객체의 id는 key로, name은 화면 글자로 사용됩니다.", "key는 React가 내부에서 사용하는 정보라 ProductRow 같은 자식 컴포넌트의 props로 자동 전달되지는 않습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".list { display: grid; gap: 6px; padding-left: 20px; }"] },
+      "code": "const products = [\n  { id: 'shirt', name: '셔츠' },\n  { id: 'hat', name: '모자' },\n  { id: 'shoes', name: '신발' },\n];\n\nfunction ProductList() {\n  return (\n    <ul className=\"list\">\n      {products.map((product) => (\n        <li key={product.id}>{product.name}</li>\n      ))}\n    </ul>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductList />);\n"
+    },
+    {
+      "kind": "tweak", "title": "key를 지워 경고 확인하기",
+      "brief": ["li의 key를 지우고 실행하면 목록 항목마다 고유한 key가 필요하다는 React 경고가 콘솔에 나타납니다.", "key={product.name}도 현재 데이터에서는 가능하지만 이름이 중복될 수 있다면 안전하지 않습니다.", "key는 화면에 표시할 순번이 아니라 데이터 항목의 정체성을 나타내는 값이어야 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".list { display: grid; gap: 6px; padding-left: 20px; }"] },
+      "code": "const products = [\n  { id: 'shirt', name: '셔츠' },\n  { id: 'hat', name: '모자' },\n  { id: 'shoes', name: '신발' },\n];\n\nfunction ProductList() {\n  return (\n    <ul className=\"list\">\n      {products.map((product) => (\n        <li key={product.id}>{product.name}</li>\n      ))}\n    </ul>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductList />);\n"
+    }
+  ]
+}

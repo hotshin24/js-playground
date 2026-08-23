@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t6-12", "track": "T6", "order": 12, "runtime": "react",
+  "title": "공유할 state를 공통 부모로 올리기",
+  "steps": [
+    {
+      "kind": "read", "title": "같은 값이 필요한 형제는 부모 state를 함께 사용합니다",
+      "brief": [
+        "서로 다른 두 컴포넌트가 같은 값에 맞춰 움직여야 한다면 state를 가장 가까운 공통 부모에 둡니다. 이를 상태 끌어올리기라고 합니다.",
+        "부모는 state 값을 두 자식에게 props로 전달하고, 값을 바꿀 자식에게 설정 함수나 이벤트 처리 함수를 전달합니다.",
+        { "code": ["<NameInput name={name} onNameChange={setName} />", "<NamePreview name={name} />"] },
+        "두 자식이 각자 name state를 가지면 서로 다른 값이 될 수 있습니다. 부모의 하나의 state를 공유하면 기준이 하나가 됩니다.",
+        "state를 무조건 최상위까지 올리는 것이 아니라 그 값을 함께 사용하는 컴포넌트들의 가장 가까운 공통 부모까지만 올립니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "입력과 미리보기가 부모 state 공유하기",
+      "brief": ["App이 name state를 소유합니다. NameInput은 값을 바꾸는 함수를 받고 NamePreview는 현재 값을 받습니다.", "입력할 때 부모가 다시 렌더링되고 두 자식이 같은 새 name을 전달받습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input { padding: 8px; }"] },
+      "code": "const { useState } = React;\n\nfunction NameInput({ name, onNameChange }) {\n  return <input value={name} onChange={(event) => onNameChange(event.currentTarget.value)} />;\n}\n\nfunction NamePreview({ name }) {\n  return <p>미리보기: {name || '이름 없음'}</p>;\n}\n\nfunction App() {\n  const [name, setName] = useState('');\n\n  return (\n    <main>\n      <NameInput name={name} onNameChange={setName} />\n      <NamePreview name={name} />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "tweak", "title": "자식마다 state를 따로 만들어 보기",
+      "brief": ["NamePreview 안에 별도의 name state를 만들면 NameInput의 변경과 연결되지 않습니다.", "공유해야 할 값은 한 곳에서만 소유하고 필요한 자식에게 내려보내세요.", "props 전달 단계가 지나치게 깊어지는 문제는 T8의 Context에서 다룹니다. 지금은 가장 가까운 공통 부모가 기준입니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input { padding: 8px; }"] },
+      "code": "const { useState } = React;\n\nfunction NameInput({ name, onNameChange }) {\n  return <input value={name} onChange={(event) => onNameChange(event.currentTarget.value)} />;\n}\n\nfunction NamePreview({ name }) {\n  return <p>미리보기: {name || '이름 없음'}</p>;\n}\n\nfunction App() {\n  const [name, setName] = useState('');\n\n  return (\n    <main>\n      <NameInput name={name} onNameChange={setName} />\n      <NamePreview name={name} />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    }
+  ]
+}
