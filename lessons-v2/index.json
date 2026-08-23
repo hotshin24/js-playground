@@ -128,6 +128,11 @@
     { "id": "t7-11", "track": "T7", "order": 11, "title": "커스텀 훅으로 state와 effect 재사용하기" },
     { "id": "t8-01", "track": "T8", "order": 1, "title": "여러 state 변경 규칙이 흩어질 때의 문제" },
     { "id": "t8-02", "track": "T8", "order": 2, "title": "reducer 함수로 다음 state 계산하기" },
-    { "id": "t8-03", "track": "T8", "order": 3, "title": "useReducer와 dispatch로 action 보내기" }
+    { "id": "t8-03", "track": "T8", "order": 3, "title": "useReducer와 dispatch로 action 보내기" },
+    { "id": "t8-04", "track": "T8", "order": 4, "title": "action의 type과 payload 설계하기" },
+    { "id": "t8-05", "track": "T8", "order": 5, "title": "useState와 useReducer 중 알맞은 도구 고르기" },
+    { "id": "t8-06", "track": "T8", "order": 6, "title": "props drilling이 생기는 구조 확인하기" },
+    { "id": "t8-07", "track": "T8", "order": 7, "title": "Context로 깊은 자식에게 값 공급하기" },
+    { "id": "t8-08", "track": "T8", "order": 8, "title": "Context로 state와 변경 함수 함께 공급하기" }
   ]
 }

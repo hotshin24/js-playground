@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t8-05", "track": "T8", "order": 5, "runtime": "react",
+  "title": "useState와 useReducer 중 알맞은 도구 고르기",
+  "steps": [
+    {
+      "kind": "read", "title": "상태 모양보다 변경 규칙을 기준으로 판단합니다",
+      "brief": [
+        "단순한 불리언, 입력 문자열, 독립적인 숫자처럼 변경 규칙이 간단하면 useState가 읽기 쉽습니다.",
+        "여러 이벤트가 같은 복잡한 객체를 바꾸거나 변경 규칙을 한곳에서 검토해야 하면 useReducer가 도움이 됩니다.",
+        { "code": ["간단한 열림 상태 → useState", "여러 action으로 바뀌는 주문 상태 → useReducer"] },
+        "useReducer가 성능을 자동으로 높이거나 state를 불변으로 만들어 주지는 않습니다. reducer에서도 객체와 배열은 새 값으로 반환해야 합니다.",
+        "처음부터 reducer를 쓰기보다 useState 코드의 전환 로직이 흩어져 읽기 어려워질 때 옮겨도 됩니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "간단한 state와 전환 state 나란히 보기",
+      "brief": ["패널 열림은 true와 false만 바뀌므로 useState로 충분합니다.", "주문 상태는 pay, ship, reset이라는 사건별 규칙을 reducer 한곳에서 관리합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { useReducer, useState } = React;\n\nfunction orderReducer(state, action) {\n  if (action.type === 'pay' && state === 'ready') return 'paid';\n  if (action.type === 'ship' && state === 'paid') return 'shipping';\n  if (action.type === 'reset') return 'ready';\n  return state;\n}\n\nfunction App() {\n  const [open, setOpen] = useState(false);\n  const [order, dispatch] = useReducer(orderReducer, 'ready');\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setOpen(!open)}>패널 {open ? '닫기' : '열기'}</button>\n      <button type=\"button\" onClick={() => dispatch({ type: 'pay' })}>결제</button>\n      <button type=\"button\" onClick={() => dispatch({ type: 'ship' })}>배송</button>\n      <button type=\"button\" onClick={() => dispatch({ type: 'reset' })}>초기화</button>\n      <p>패널: {String(open)} / 주문: {order}</p>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "tweak", "title": "잘못된 순서의 action 보내 보기",
+      "brief": ["ready 상태에서 배송 버튼을 먼저 눌러도 reducer 조건이 맞지 않아 상태가 유지됩니다.", "이처럼 이전 상태에 따라 허용되는 전환이 다르면 reducer에 규칙을 모으는 이점이 큽니다.", "반면 open을 reducer로 옮기면 코드만 길어질 수 있습니다. 복잡성에 맞는 도구를 고르세요."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { useReducer, useState } = React;\n\nfunction orderReducer(state, action) {\n  if (action.type === 'pay' && state === 'ready') return 'paid';\n  if (action.type === 'ship' && state === 'paid') return 'shipping';\n  if (action.type === 'reset') return 'ready';\n  return state;\n}\n\nfunction App() {\n  const [open, setOpen] = useState(false);\n  const [order, dispatch] = useReducer(orderReducer, 'ready');\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setOpen(!open)}>패널 {open ? '닫기' : '열기'}</button>\n      <button type=\"button\" onClick={() => dispatch({ type: 'pay' })}>결제</button>\n      <button type=\"button\" onClick={() => dispatch({ type: 'ship' })}>배송</button>\n      <button type=\"button\" onClick={() => dispatch({ type: 'reset' })}>초기화</button>\n      <p>패널: {String(open)} / 주문: {order}</p>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    }
+  ]
+}
