@@ -31,7 +31,7 @@
       "code": "const form = document.querySelector('#form');\nconst productInput = document.querySelector('#product');\nconst list = document.querySelector('#list');\n\n// submit 이벤트 처리 코드를 작성하세요\n",
       "solutionCode": "const form = document.querySelector('#form');\nconst productInput = document.querySelector('#product');\nconst list = document.querySelector('#list');\n\nform.addEventListener('submit', (event) => {\n  event.preventDefault();\n  const item = document.createElement('li');\n  item.textContent = productInput.value;\n  list.append(item);\n});\n",
       "asserts": [
-        { "type": "dom", "label": "입력한 상품이 목록에 추가됨", "actions": [{ "action": "fill", "selector": "#product", "value": "모자" }, { "action": "click", "selector": "#submit" }], "select": "#list li", "text": ["모자"] }
+        { "type": "dom", "label": "입력한 상품이 목록에 추가됨", "actions": [{ "action": "fill", "selector": "#product", "value": "모자" }, { "action": "submit", "selector": "#form" }], "select": "#list li", "text": ["모자"] }
       ],
       "hints": ["form.addEventListener('submit', (event) => { ... })로 시작하세요.", "콜백 안에서 preventDefault, createElement, textContent, append 순서로 작성하세요."]
     }

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>새 커리큘럼 브라우저 감사</title>
+  <style>
+    body { margin: 24px; font: 15px/1.6 system-ui, sans-serif; color: #202124; }
+    h1 { margin-bottom: 8px; }
+    #status { font-weight: 700; }
+    #failures { color: #b42318; white-space: pre-wrap; }
+    #mount { position: fixed; left: -10000px; width: 800px; height: 600px; }
+  </style>
+</head>
+<body>
+  <h1>새 커리큘럼 브라우저 감사</h1>
+  <p id="status">검사 준비 중…</p>
+  <p id="summary"></p>
+  <pre id="failures"></pre>
+  <div id="mount" aria-hidden="true"></div>
+  <script type="module" src="js/browser-audit.js?v=2"></script>
+</body>
+</html>

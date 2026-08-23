@@ -107,6 +107,7 @@ const normalizeStep = (step, i) => {
     hints: (step.hints || []).slice(0, 2),
     entry: step.entry || '',
     solutionCode: step.solutionCode || '',
+    expectedError: step.expectedError || '',
     asserts: step.asserts || [],
     // env 는 무대가 아니라 환경이다. 미리보기 판정(preview.isOn)은 scaffold.html 만 본다.
     env: joinLines(step.env),

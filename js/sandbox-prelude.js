@@ -15,6 +15,32 @@ export const PRELUDE = `
     parent.postMessage(msg, '*');
   };
 
+  // sandbox="allow-scripts" 프레임은 opaque origin 이라 브라우저의 Web Storage 접근이 차단된다.
+  // allow-same-origin 을 추가하면 학습자 코드가 부모 페이지에 접근할 수 있으므로 권한을 넓히지 않는다.
+  // 대신 실행 프레임 안에서만 유지되는 Storage 호환 객체를 제공한다.
+  const createMemoryStorage = () => {
+    const values = Object.create(null);
+    return {
+      get length() { return Object.keys(values).length; },
+      key(index) { return Object.keys(values)[index] ?? null; },
+      getItem(key) {
+        const name = String(key);
+        return Object.prototype.hasOwnProperty.call(values, name) ? values[name] : null;
+      },
+      setItem(key, value) { values[String(key)] = String(value); },
+      removeItem(key) { delete values[String(key)]; },
+      clear() { Object.keys(values).forEach((key) => delete values[key]); },
+    };
+  };
+
+  for (const name of ['localStorage', 'sessionStorage']) {
+    try {
+      window[name].length;
+    } catch {
+      Object.defineProperty(window, name, { value: createMemoryStorage(), configurable: true });
+    }
+  }
+
   // 구조화 복제로는 함수/DOM 노드가 못 넘어가고 순환 참조도 깨진다. 여기서 미리 문자열화한다.
   const fmt = (value, depth, seen) => {
     if (value === null) return 'null';

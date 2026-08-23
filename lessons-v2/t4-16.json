@@ -14,7 +14,7 @@
     },
     {
       "kind": "run", "title": "선택 횟수 저장하고 다시 읽기",
-      "brief": ["저장 버튼을 누르면 현재 count를 문자열로 localStorage에 저장합니다. 실행 화면을 다시 실행해도 같은 저장 공간이 유지되면 값을 읽을 수 있습니다.", "getItem 결과를 Number로 바꿔 계산에 사용합니다. 저장된 값이 없으면 ??로 '0'을 선택합니다."],
+      "brief": ["저장 버튼을 누르면 현재 count를 문자열로 localStorage에 저장합니다. 이 플레이그라운드는 보안을 위해 실행할 때마다 실습용 저장소를 새로 만들지만, 실제 웹사이트의 localStorage는 브라우저를 닫았다 열어도 값이 남습니다.", "getItem 결과를 Number로 바꿔 계산에 사용합니다. 저장된 값이 없으면 ??로 '0'을 선택합니다."],
       "scaffold": { "html": ["<p>저장된 횟수: <strong id=\"count\">0</strong></p>", "<button id=\"save\" type=\"button\">1 증가해 저장</button>", "<button id=\"clear\" type=\"button\">삭제</button>"], "css": ["button { margin-right: 6px; padding: 8px 10px; }"] },
       "code": "const key = 'lesson-demo:count';\nconst countText = document.querySelector('#count');\nconst saveButton = document.querySelector('#save');\nconst clearButton = document.querySelector('#clear');\n\nlet count = Number(localStorage.getItem(key) ?? '0');\ncountText.textContent = count;\n\nsaveButton.addEventListener('click', () => {\n  count += 1;\n  localStorage.setItem(key, String(count));\n  countText.textContent = count;\n});\n\nclearButton.addEventListener('click', () => {\n  localStorage.removeItem(key);\n  count = 0;\n  countText.textContent = count;\n});\n"
     },

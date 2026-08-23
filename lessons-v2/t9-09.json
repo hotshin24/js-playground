@@ -14,7 +14,7 @@
     },
     {
       "kind": "run", "title": "저장된 설정으로 첫 화면 시작하기",
-      "brief": ["T9-08에서 저장한 값이 있다면 그 설정으로 시작합니다. 저장된 값이 없다면 밝은 테마와 16px로 시작합니다.", "초기화 함수가 실행되는 횟수도 콘솔에서 확인합니다."],
+      "brief": ["저장된 설정이 있다면 그 값으로 시작하고, 없다면 밝은 테마와 16px로 시작합니다. 플레이그라운드의 실습용 저장소는 실행할 때마다 새로 만들어지므로 이 예제는 기본 설정으로 시작합니다.", "초기화 함수가 실행되는 횟수도 콘솔에서 확인합니다."],
       "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin-right: 6px; padding: 7px 9px; }"] },
       "code": "const { useState } = React;\nconst storageKey = 'lesson-demo:settings';\nconst defaultSettings = { theme: 'light', fontSize: 16 };\n\nfunction Settings() {\n  const [settings, setSettings] = useState(() => {\n    console.log('저장소를 읽었습니다.');\n    const saved = localStorage.getItem(storageKey);\n    return saved ? JSON.parse(saved) : defaultSettings;\n  });\n\n  return (\n    <section>\n      <p>테마: {settings.theme} / 글자: {settings.fontSize}px</p>\n      <button type=\"button\" onClick={() => setSettings({ ...settings, theme: settings.theme === 'light' ? 'dark' : 'light' })}>테마 바꾸기</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Settings />);\n"
     },

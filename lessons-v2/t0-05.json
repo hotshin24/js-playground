@@ -24,6 +24,7 @@
         "실행하면 첫 줄의 시작만 출력되고 둘째 줄에서 멈춥니다.",
         "메시지의 productPrice is not defined는 productPrice라는 이름이 정의되지 않았다는 뜻입니다. 실제 선언은 productprice이므로 대소문자 오타입니다."
       ],
+      "expectedError": "ReferenceError",
       "code": "console.log('시작');\n\nconst productprice = 39000;\nconsole.log(productPrice);\n\nconsole.log('끝');\n"
     },
     {

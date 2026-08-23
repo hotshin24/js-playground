@@ -59,6 +59,9 @@ export const ASSERT_RUNTIME = `
 
       if (step.action === 'click') {
         target.click();
+      } else if (step.action === 'submit') {
+        if (target.tagName !== 'FORM') throw new Error('submit 동작의 대상은 form이어야 합니다');
+        target.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
       } else if (step.action === 'fill') {
         setNativeValue(target, step.value);
         target.dispatchEvent(new Event('input', { bubbles: true }));
