@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t6-05", "track": "T6", "order": 5, "runtime": "react",
+  "title": "훅을 컴포넌트 최상위에서 호출하기",
+  "steps": [
+    {
+      "kind": "read", "title": "React는 훅 호출 순서로 state를 구분합니다",
+      "brief": [
+        "useState처럼 이름이 use로 시작하는 React 함수를 훅이라고 합니다.",
+        "훅은 컴포넌트 함수의 최상위에서 호출해야 합니다. if, for, 중첩 함수 안에서 호출하면 안 됩니다.",
+        { "code": ["function Form() {", "  const [name, setName] = useState('');", "  const [price, setPrice] = useState(0);", "}"] },
+        "React는 렌더마다 훅이 호출된 순서를 이용해 첫 state와 둘째 state를 연결합니다. 조건에 따라 호출이 빠지면 순서가 달라질 수 있습니다.",
+        "훅은 React 함수 컴포넌트나 뒤에서 배울 커스텀 훅 안에서만 호출합니다. 일반 함수나 이벤트 처리 함수 안에서 새로 호출하지 않습니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "두 state의 호출 순서 유지하기",
+      "brief": ["name과 count의 useState는 매 렌더에서 같은 순서로 호출됩니다.", "버튼을 눌러 count가 바뀌어도 name state는 자신의 자리를 유지합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
+      "code": "const { useState } = React;\n\nfunction Profile() {\n  const [name] = useState('민수');\n  const [count, setCount] = useState(0);\n\n  return (\n    <section>\n      <p>{name}: {count}</p>\n      <button type=\"button\" onClick={() => setCount(count + 1)}>증가</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Profile />);\n"
+    },
+    {
+      "kind": "tweak", "title": "조건문 안으로 훅 옮겨 보기",
+      "brief": ["두 useState 줄 아래에 if (count > 0) { useState('추가'); }를 넣어 보세요. 첫 클릭 뒤 호출되는 훅 개수가 달라져 오류가 납니다.", "조건에 따라 state 값을 사용할지 결정할 수는 있지만 useState 호출 자체는 항상 최상위에서 실행해야 합니다.", "훅을 쓰는 줄은 컴포넌트 위쪽에 나란히 두면 규칙을 확인하기 쉽습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
+      "code": "const { useState } = React;\n\nfunction Profile() {\n  const [name] = useState('민수');\n  const [count, setCount] = useState(0);\n\n  return (\n    <section>\n      <p>{name}: {count}</p>\n      <button type=\"button\" onClick={() => setCount(count + 1)}>증가</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Profile />);\n"
+    }
+  ]
+}

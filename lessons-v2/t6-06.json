@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t6-06", "track": "T6", "order": 6, "runtime": "react",
+  "title": "이벤트에서 state를 바꾸고 다시 렌더링하기",
+  "steps": [
+    {
+      "kind": "read", "title": "사용자 행동부터 새 화면까지 순서가 있습니다",
+      "brief": [
+        "React의 화면 갱신은 네 단계로 따라갈 수 있습니다. 사용자가 이벤트를 일으키고, 처리 함수가 state 설정 함수를 호출하고, React가 컴포넌트를 다시 렌더링하고, 새 JSX를 DOM에 반영합니다.",
+        { "code": ["클릭", "→ handleClick 실행", "→ setCount 호출", "→ Counter 다시 렌더링", "→ 새 count가 화면에 반영"] },
+        "설정 함수를 호출하는 즉시 DOM을 직접 고치는 것이 아닙니다. React가 다음 렌더 결과를 계산한 뒤 필요한 DOM 변경을 처리합니다.",
+        "컴포넌트 함수 본문에 console.log를 두면 렌더될 때마다 실행됩니다. 이벤트 처리 함수의 로그와 구분해 보면 흐름을 확인할 수 있습니다.",
+        "렌더는 화면을 계산하는 과정이므로 그 안에서 state를 다시 설정하면 렌더가 반복될 수 있습니다. state 변경은 이벤트 같은 명확한 계기에서 수행합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "이벤트와 렌더 로그 구분하기",
+      "brief": ["처음에는 렌더 로그만 출력됩니다. 버튼을 누르면 이벤트 로그가 나온 뒤 새 state로 렌더 로그가 다시 나옵니다.", "화면 문구는 새 렌더가 끝난 뒤 선택으로 바뀝니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
+      "code": "const { useState } = React;\n\nfunction Choice() {\n  const [selected, setSelected] = useState(false);\n  console.log('렌더:', selected);\n\n  function handleClick() {\n    console.log('이벤트 처리');\n    setSelected(true);\n  }\n\n  return (\n    <button type=\"button\" onClick={handleClick}>\n      {selected ? '선택됨' : '선택하기'}\n    </button>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Choice />);\n"
+    },
+    {
+      "kind": "tweak", "title": "렌더 안에서 설정 함수 호출해 보기",
+      "brief": ["컴포넌트 본문에서 setSelected(true)를 직접 호출하면 렌더 중 다시 렌더를 요청해 오류가 날 수 있습니다.", "state 설정은 클릭이나 입력 처리 함수 안으로 되돌리세요.", "handleClick에서 setSelected((previous) => !previous)로 바꾸면 클릭할 때마다 선택과 해제가 번갈아 나타납니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
+      "code": "const { useState } = React;\n\nfunction Choice() {\n  const [selected, setSelected] = useState(false);\n  console.log('렌더:', selected);\n\n  function handleClick() {\n    console.log('이벤트 처리');\n    setSelected(true);\n  }\n\n  return (\n    <button type=\"button\" onClick={handleClick}>\n      {selected ? '선택됨' : '선택하기'}\n    </button>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Choice />);\n"
+    }
+  ]
+}
