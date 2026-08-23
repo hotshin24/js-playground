@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t7-09", "track": "T7", "order": 9, "runtime": "react",
+  "title": "effect에서 데이터를 불러와 화면 상태 바꾸기",
+  "steps": [
+    {
+      "kind": "read", "title": "effect 안에서 비동기 함수를 만들고 호출합니다",
+      "brief": [
+        "컴포넌트가 나타났을 때 외부 데이터를 불러오는 작업은 effect에서 시작할 수 있습니다.",
+        "effect 함수 자체를 async로 만들면 Promise를 반환해 cleanup 규칙과 충돌합니다. effect 안에 async 함수를 만들고 호출합니다.",
+        { "code": ["useEffect(() => {", "  async function load() {", "    const response = await fetch(url);", "  }", "  load();", "}, [url]);"] },
+        "요청 전에는 loading을 true로, 성공하면 data를, 실패하면 error를 설정합니다. 완료 뒤 loading을 false로 바꿉니다.",
+        "url이 의존성이면 url이 바뀔 때 새 요청을 시작합니다. 늦게 끝난 이전 요청 문제는 다음 레슨에서 다룹니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "로딩 뒤 JSON 상품 표시하기",
+      "brief": ["외부 서버 없이 실행되도록 JSON data URL을 사용합니다. fetch와 state 흐름은 실제 API 요청과 같습니다.", "처음에는 로딩 문구를 표시하고 요청이 끝나면 상품 이름과 가격을 표시합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useEffect, useState } = React;\nconst url = 'data:application/json,%7B%22name%22%3A%22shirt%22%2C%22price%22%3A39000%7D';\n\nfunction Product() {\n  const [data, setData] = useState(null);\n  const [error, setError] = useState(null);\n  const [loading, setLoading] = useState(true);\n\n  useEffect(() => {\n    async function load() {\n      try {\n        setLoading(true);\n        const response = await fetch(url);\n        if (!response.ok) throw new Error('요청 실패');\n        setData(await response.json());\n      } catch (caughtError) {\n        setError(caughtError.message);\n      } finally {\n        setLoading(false);\n      }\n    }\n    load();\n  }, []);\n\n  if (loading) return <p>불러오는 중...</p>;\n  if (error) return <p>오류: {error}</p>;\n  return <p>{data.name}: {data.price}원</p>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Product />);\n"
+    },
+    {
+      "kind": "tweak", "title": "잘못된 JSON으로 실패 상태 확인하기",
+      "brief": ["url의 JSON 부분을 올바르지 않은 문자열로 바꾸면 response.json()에서 오류가 나고 catch가 오류 state를 설정합니다.", "다시 실행할 수 있는 UI를 만들려면 요청을 시작하는 기준을 state로 두고 의존성에 포함할 수 있습니다.", "컴포넌트가 요청 도중 사라지거나 url이 빠르게 바뀌는 경우에는 이전 요청 결과를 무시해야 합니다. 다음 레슨에서 처리합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useEffect, useState } = React;\nconst url = 'data:application/json,%7B%22name%22%3A%22shirt%22%2C%22price%22%3A39000%7D';\n\nfunction Product() {\n  const [data, setData] = useState(null);\n  const [error, setError] = useState(null);\n  const [loading, setLoading] = useState(true);\n\n  useEffect(() => {\n    async function load() {\n      try {\n        setLoading(true);\n        const response = await fetch(url);\n        if (!response.ok) throw new Error('요청 실패');\n        setData(await response.json());\n      } catch (caughtError) {\n        setError(caughtError.message);\n      } finally {\n        setLoading(false);\n      }\n    }\n    load();\n  }, []);\n\n  if (loading) return <p>불러오는 중...</p>;\n  if (error) return <p>오류: {error}</p>;\n  return <p>{data.name}: {data.price}원</p>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Product />);\n"
+    }
+  ]
+}

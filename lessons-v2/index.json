@@ -118,6 +118,11 @@
     { "id": "t7-01", "track": "T7", "order": 1, "title": "컴포넌트의 마운트·업데이트·언마운트 구분하기" },
     { "id": "t7-02", "track": "T7", "order": 2, "title": "렌더링과 외부 시스템 동기화 구분하기" },
     { "id": "t7-03", "track": "T7", "order": 3, "title": "useEffect로 렌더 뒤 코드 실행하기" },
-    { "id": "t7-04", "track": "T7", "order": 4, "title": "의존성 배열로 effect 실행 시점 정하기" }
+    { "id": "t7-04", "track": "T7", "order": 4, "title": "의존성 배열로 effect 실행 시점 정하기" },
+    { "id": "t7-05", "track": "T7", "order": 5, "title": "effect가 사용하는 여러 값을 의존성에 넣기" },
+    { "id": "t7-06", "track": "T7", "order": 6, "title": "정리 함수로 이전 effect 끝내기" },
+    { "id": "t7-07", "track": "T7", "order": 7, "title": "마운트 때 구독하고 언마운트 때 해제하기" },
+    { "id": "t7-08", "track": "T7", "order": 8, "title": "effect 없이 계산할 수 있는 값 찾기" },
+    { "id": "t7-09", "track": "T7", "order": 9, "title": "effect에서 데이터를 불러와 화면 상태 바꾸기" }
   ]
 }
