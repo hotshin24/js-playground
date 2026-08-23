@@ -21,6 +21,18 @@
       "kind": "tweak", "title": "중첩 객체도 따로 복사하기",
       "brief": ["copied를 { ...original, detail: { ...original.detail } }로 바꾸고 실행해 보세요.", "이제 detail도 새 객체가 되므로 copied.detail.color를 바꿔도 original의 색상은 파랑으로 남습니다.", "중첩된 모든 값을 무조건 복사하기보다 바꿀 객체가 있는 단계마다 새 객체를 만드는 방식을 사용합니다."],
       "code": "const original = {\n  name: '셔츠',\n  detail: { color: '파랑' },\n};\n\nconst copied = { ...original };\n\nconsole.log(original === copied);\nconsole.log(original.detail === copied.detail);\n\ncopied.name = '모자';\ncopied.detail.color = '빨강';\n\nconsole.log(original.name);\nconsole.log(original.detail.color);\n"
+    },
+    {
+      "kind": "fill", "title": "중첩 객체를 안전하게 복사하기",
+      "brief": ["상품 객체를 받아 새 객체를 반환하세요. 겉 객체뿐 아니라 detail도 새 객체여야 합니다.", "함수 안의 null만 전개 연산자를 사용한 객체로 바꾸세요. 원본의 name과 detail.color는 그대로 유지되어야 합니다."],
+      "code": "function copyProduct(product) {\n  return null; // 이 줄을 바꾸세요\n}\n\nfunction checkCopy(product) {\n  const copied = copyProduct(product);\n  return [copied, copied !== product, copied && copied.detail !== product.detail];\n}\n",
+      "entry": "checkCopy",
+      "solutionCode": "function copyProduct(product) {\n  return { ...product, detail: { ...product.detail } };\n}\n\nfunction checkCopy(product) {\n  const copied = copyProduct(product);\n  return [copied, copied !== product, copied.detail !== product.detail];\n}\n",
+      "asserts": [
+        { "type": "value", "label": "값을 유지하고 두 객체를 새로 만듦", "args": [{ "name": "셔츠", "detail": { "color": "파랑" } }], "expected": [{ "name": "셔츠", "detail": { "color": "파랑" } }, true, true] },
+        { "type": "value", "label": "다른 상품도 같은 방식으로 복사함", "args": [{ "name": "신발", "detail": { "color": "흰색" } }], "expected": [{ "name": "신발", "detail": { "color": "흰색" } }, true, true] }
+      ],
+      "hints": ["겉 객체는 { ...product }로 복사합니다.", "detail 프로퍼티에는 { ...product.detail }로 만든 새 객체를 덮어쓰세요."]
     }
   ]
 }

@@ -21,6 +21,18 @@
       "kind": "tweak", "title": "초깃값 바꿔 보기",
       "brief": ["마지막 초깃값 0을 3000으로 바꾸면 배송비 3000이 먼저 더해져 결과가 33000이 됩니다.", "return nextSum을 지우면 다음 반복의 sum이 undefined가 되어 정상적인 합계를 만들 수 없습니다.", "단순 합계는 반복문으로도 만들 수 있습니다. reduce는 누산값이 어떻게 바뀌는지 설명할 수 있을 때 사용하세요."],
       "code": "const prices = [10000, 15000, 5000];\n\nconst total = prices.reduce((sum, price) => {\n  const nextSum = sum + price;\n  console.log(sum + ' + ' + price + ' = ' + nextSum);\n  return nextSum;\n}, 0);\n\nconsole.log('합계: ' + total);\n"
+    },
+    {
+      "kind": "fill", "title": "상품 가격의 합계 구하기",
+      "brief": ["products에 든 모든 객체의 price를 더해 반환하세요. 빈 배열에서는 0을 반환해야 합니다.", "reduce의 초깃값을 0으로 두고, 콜백에서 sum과 product.price를 더하세요."],
+      "code": "function totalPrice(products) {\n  return null; // 이 줄을 바꾸세요\n}\n",
+      "entry": "totalPrice",
+      "solutionCode": "function totalPrice(products) {\n  return products.reduce((sum, product) => sum + product.price, 0);\n}\n",
+      "asserts": [
+        { "type": "value", "label": "세 상품 가격 합계", "args": [[{ "price": 10000 }, { "price": 15000 }, { "price": 5000 }]], "expected": 30000 },
+        { "type": "value", "label": "빈 배열 합계는 0", "args": [[]], "expected": 0 }
+      ],
+      "hints": ["products.reduce((sum, product) => ..., 0)을 반환하세요.", "다음 누산값은 sum + product.price입니다."]
     }
   ]
 }

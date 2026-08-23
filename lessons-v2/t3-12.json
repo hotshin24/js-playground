@@ -21,6 +21,18 @@
       "kind": "tweak", "title": "return을 빠뜨린 결과 확인하기",
       "brief": ["화살표 함수를 (price) => { price + 1000; }으로 바꾸면 결과 배열은 [undefined, undefined, undefined]가 됩니다.", "중괄호를 사용하면 return을 직접 써야 합니다. (price) => { return price + 1000; }로 고치면 정상 결과가 나옵니다.", "map에서는 콜백이 각 위치에 넣을 값을 반드시 반환해야 합니다."],
       "code": "const prices = [10000, 20000, 30000];\nconst withTax = prices.map((price) => price + 1000);\n\nconsole.log(prices);\nconsole.log(withTax);\nconsole.log(prices === withTax);\n"
+    },
+    {
+      "kind": "fill", "title": "각 가격을 10% 할인하기",
+      "brief": ["prices의 각 값에 0.9를 곱한 새 배열을 반환하세요. 원본 배열은 바꾸지 않습니다.", "return 뒤의 null을 map을 사용한 식으로 바꾸세요."],
+      "code": "function discountPrices(prices) {\n  return null; // 이 줄을 바꾸세요\n}\n",
+      "entry": "discountPrices",
+      "solutionCode": "function discountPrices(prices) {\n  return prices.map((price) => price * 0.9);\n}\n",
+      "asserts": [
+        { "type": "value", "label": "세 가격을 각각 할인함", "args": [[10000, 20000, 30000]], "expected": [9000, 18000, 27000] },
+        { "type": "value", "label": "빈 배열이면 빈 배열", "args": [[]], "expected": [] }
+      ],
+      "hints": ["prices.map(...)의 결과를 반환하세요.", "map의 콜백은 price * 0.9를 반환합니다."]
     }
   ]
 }

@@ -21,6 +21,18 @@
       "kind": "tweak", "title": "조건을 반대로 바꿔 보기",
       "brief": ["!product.soldOut을 product.soldOut으로 바꾸면 품절된 모자만 남습니다.", "조건을 product.name === '신발'로 바꾸면 결과는 빈 배열입니다. filter는 값을 찾지 못해도 undefined가 아니라 배열을 반환합니다.", "React에서 배열 상태의 일부 항목을 제거할 때도 원본을 직접 바꾸지 않는 filter를 사용하게 됩니다."],
       "code": "const products = [\n  { name: '셔츠', soldOut: false },\n  { name: '모자', soldOut: true },\n  { name: '양말', soldOut: false },\n];\n\nconst available = products.filter((product) => !product.soldOut);\n\nconsole.log(available);\nconsole.log(products);\n"
+    },
+    {
+      "kind": "write", "title": "기준 가격 이하 상품만 남기기",
+      "brief": ["filterByPrice 함수를 작성하세요. products와 maxPrice를 받아 price가 maxPrice 이하인 객체만 담긴 새 배열을 반환합니다.", "filter의 콜백에서 각 product.price와 maxPrice를 비교하세요."],
+      "code": "// filterByPrice 함수를 작성하세요\n",
+      "entry": "filterByPrice",
+      "solutionCode": "function filterByPrice(products, maxPrice) {\n  return products.filter((product) => product.price <= maxPrice);\n}\n",
+      "asserts": [
+        { "type": "value", "label": "2만원 이하 상품만 남김", "args": [[{ "name": "셔츠", "price": 39000 }, { "name": "모자", "price": 15000 }, { "name": "양말", "price": 5000 }], 20000], "expected": [{ "name": "모자", "price": 15000 }, { "name": "양말", "price": 5000 }] },
+        { "type": "value", "label": "조건에 맞지 않으면 빈 배열", "args": [[{ "name": "셔츠", "price": 39000 }], 10000], "expected": [] }
+      ],
+      "hints": ["function filterByPrice(products, maxPrice)로 시작하세요.", "products.filter의 콜백에서 product.price <= maxPrice를 반환하세요."]
     }
   ]
 }
