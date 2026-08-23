@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t9-04", "track": "T9", "order": 4, "runtime": "react",
+  "title": "React.memo로 같은 props의 자식 렌더 건너뛰기",
+  "steps": [
+    {
+      "kind": "read", "title": "이전 props와 다음 props를 얕게 비교합니다",
+      "brief": [
+        "React.memo로 컴포넌트를 감싸면 부모가 다시 렌더되어도 자식 props가 이전과 같을 때 자식 렌더를 건너뛸 수 있습니다.",
+        { "code": ["const MemoizedChild = React.memo(Child);"] },
+        "props 비교는 각 값을 Object.is로 비교하는 얕은 비교입니다. 새 객체나 새 함수는 내용이 같아 보여도 다른 참조입니다.",
+        "컴포넌트 자신의 state나 읽는 Context가 바뀌면 memo로 감싸도 다시 렌더링됩니다.",
+        "React.memo는 렌더 비용과 비교했을 때 건너뛰는 이점이 있는 자식에 사용합니다. 모든 컴포넌트에 기본으로 붙이지 않습니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "부모 입력 때 자식 렌더 건너뛰기",
+      "brief": ["name 입력으로 App은 다시 렌더링되지만 MemoizedProduct의 label props는 같은 문자열입니다.", "콘솔에서 App 렌더는 늘어나고 Product 렌더는 처음 한 번만 출력되는지 확인하세요."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input { padding: 7px; }"] },
+      "code": "const { memo, useState } = React;\n\nfunction Product({ label }) {\n  console.log('Product 렌더');\n  return <p>{label}</p>;\n}\nconst MemoizedProduct = memo(Product);\n\nfunction App() {\n  const [name, setName] = useState('');\n  console.log('App 렌더');\n  return (\n    <main>\n      <input value={name} onChange={(event) => setName(event.currentTarget.value)} placeholder=\"이름\" />\n      <MemoizedProduct label=\"파란 셔츠\" />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "tweak", "title": "memo를 제거해 로그 비교하기",
+      "brief": ["<MemoizedProduct>를 <Product>로 바꾸면 name 입력마다 Product도 다시 렌더링됩니다.", "Product가 단순한 p 하나라면 memo 비교 비용을 추가할 만큼 느리지 않을 수 있습니다.", "memo의 동작을 확인했더라도 실제 적용 여부는 자식 렌더 비용과 부모 렌더 빈도를 측정해 결정하세요."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input { padding: 7px; }"] },
+      "code": "const { memo, useState } = React;\n\nfunction Product({ label }) {\n  console.log('Product 렌더');\n  return <p>{label}</p>;\n}\nconst MemoizedProduct = memo(Product);\n\nfunction App() {\n  const [name, setName] = useState('');\n  console.log('App 렌더');\n  return (\n    <main>\n      <input value={name} onChange={(event) => setName(event.currentTarget.value)} placeholder=\"이름\" />\n      <MemoizedProduct label=\"파란 셔츠\" />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    }
+  ]
+}

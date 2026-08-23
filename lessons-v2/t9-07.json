@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t9-07", "track": "T9", "order": 7, "runtime": "react",
+  "title": "메모이제이션의 비용과 사용하지 않을 때 판단하기",
+  "steps": [
+    {
+      "kind": "read", "title": "기억하고 비교하는 작업도 공짜가 아닙니다",
+      "brief": [
+        "useMemo와 useCallback은 이전 값과 의존성을 저장하고 렌더마다 의존성을 비교합니다. React.memo도 이전 props와 다음 props를 비교합니다.",
+        "계산이나 자식 렌더가 매우 가벼우면 건너뛰어 아끼는 비용보다 메모이제이션 코드와 비교 비용이 더 클 수 있습니다.",
+        "의존성 배열이 늘어나면 오래된 값을 사용하는 버그 가능성과 코드 복잡성도 커집니다.",
+        { "code": ["측정 → 병목 확인 → 가장 작은 최적화 → 다시 측정"] },
+        "컴포넌트를 필요한 위치에 두고 state 범위를 작게 유지하는 구조 개선이 메모이제이션보다 먼저일 때도 많습니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "가벼운 계산에 useMemo가 필요한지 비교하기",
+      "brief": ["firstName + lastName 같은 짧은 문자열 계산은 매 렌더에서 바로 계산해도 충분히 빠릅니다.", "이 코드에는 useMemo가 없습니다. 입력이 자연스럽게 동작하는지 확인하세요."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input { margin-right: 6px; padding: 7px; }"] },
+      "code": "const { useState } = React;\n\nfunction NameForm() {\n  const [firstName, setFirstName] = useState('');\n  const [lastName, setLastName] = useState('');\n  const fullName = (firstName + ' ' + lastName).trim();\n\n  return (\n    <main>\n      <input value={firstName} onChange={(event) => setFirstName(event.currentTarget.value)} placeholder=\"이름\" />\n      <input value={lastName} onChange={(event) => setLastName(event.currentTarget.value)} placeholder=\"성\" />\n      <p>{fullName || '이름을 입력하세요'}</p>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<NameForm />);\n"
+    },
+    {
+      "kind": "tweak", "title": "불필요한 useMemo 추가 비용 생각하기",
+      "brief": ["fullName 계산을 useMemo로 감싸려면 훅 import, 계산 함수, [firstName, lastName] 의존성이 추가됩니다.", "결과는 같지만 원래 계산이 매우 짧아 체감 성능 이점은 없습니다.", "최적화 API를 사용할 수 있다는 사실보다 어떤 실제 작업을 줄이는지 설명할 수 있는지가 중요합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input { margin-right: 6px; padding: 7px; }"] },
+      "code": "const { useState } = React;\n\nfunction NameForm() {\n  const [firstName, setFirstName] = useState('');\n  const [lastName, setLastName] = useState('');\n  const fullName = (firstName + ' ' + lastName).trim();\n\n  return (\n    <main>\n      <input value={firstName} onChange={(event) => setFirstName(event.currentTarget.value)} placeholder=\"이름\" />\n      <input value={lastName} onChange={(event) => setLastName(event.currentTarget.value)} placeholder=\"성\" />\n      <p>{fullName || '이름을 입력하세요'}</p>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<NameForm />);\n"
+    }
+  ]
+}

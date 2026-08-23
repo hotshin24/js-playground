@@ -138,6 +138,11 @@
     { "id": "t8-10", "track": "T8", "order": 10, "title": "reducer와 Context를 함께 사용할 때 판단하기" },
     { "id": "t9-01", "track": "T9", "order": 1, "title": "컴포넌트가 다시 렌더링되는 이유 찾기" },
     { "id": "t9-02", "track": "T9", "order": 2, "title": "최적화 전에 느린 계산 측정하기" },
-    { "id": "t9-03", "track": "T9", "order": 3, "title": "useMemo로 계산 결과 재사용하기" }
+    { "id": "t9-03", "track": "T9", "order": 3, "title": "useMemo로 계산 결과 재사용하기" },
+    { "id": "t9-04", "track": "T9", "order": 4, "title": "React.memo로 같은 props의 자식 렌더 건너뛰기" },
+    { "id": "t9-05", "track": "T9", "order": 5, "title": "렌더마다 새로 만들어지는 함수 참조 이해하기" },
+    { "id": "t9-06", "track": "T9", "order": 6, "title": "useCallback으로 함수 참조 재사용하기" },
+    { "id": "t9-07", "track": "T9", "order": 7, "title": "메모이제이션의 비용과 사용하지 않을 때 판단하기" },
+    { "id": "t9-08", "track": "T9", "order": 8, "title": "React state를 localStorage에 저장하기" }
   ]
 }
