@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t7-03", "track": "T7", "order": 3, "runtime": "react",
+  "title": "useEffect로 렌더 뒤 코드 실행하기",
+  "steps": [
+    {
+      "kind": "read", "title": "effect 함수는 화면이 반영된 뒤 실행됩니다",
+      "brief": [
+        "useEffect는 렌더가 끝나고 React가 DOM을 반영한 뒤 실행할 함수를 등록하는 훅입니다.",
+        { "code": ["useEffect(() => {", "  document.title = '클릭 ' + count + '회';", "});"] },
+        "useEffect 자체는 컴포넌트 최상위에서 호출합니다. 전달한 effect 함수 안에 외부 시스템과 동기화할 코드를 둡니다.",
+        "의존성 배열을 생략한 effect는 마운트와 모든 업데이트 뒤에 실행됩니다.",
+        "effect 안에서 state를 매번 설정하면 effect → 렌더 → effect가 반복될 수 있습니다. 외부 동기화에 필요한 경우만 사용합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "렌더와 effect 실행 순서 확인하기",
+      "brief": ["컴포넌트가 JSX를 계산하며 렌더 로그를 남기고, 화면 반영 뒤 effect 로그가 나옵니다.", "버튼을 누를 때도 렌더 로그 다음 effect 로그 순서입니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
+      "code": "const { useEffect, useState } = React;\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  console.log('렌더:', count);\n\n  useEffect(() => {\n    console.log('effect:', count);\n    document.title = '클릭 ' + count + '회';\n  });\n\n  return <button type=\"button\" onClick={() => setCount(count + 1)}>클릭 {count}회</button>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n"
+    },
+    {
+      "kind": "tweak", "title": "effect에서 state를 바꿔 보기",
+      "brief": ["effect 안에 setCount(count + 1)을 넣으면 렌더와 effect가 계속 반복되어 오류가 납니다.", "effect가 state를 바꾸고, 그 state 때문에 다시 effect가 실행되는 순환입니다. 해당 줄을 지우세요.", "사용자 클릭에 따른 count 변경은 effect가 아니라 기존 onClick 처리 함수에 두는 것이 맞습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
+      "code": "const { useEffect, useState } = React;\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  console.log('렌더:', count);\n\n  useEffect(() => {\n    console.log('effect:', count);\n    document.title = '클릭 ' + count + '회';\n  });\n\n  return <button type=\"button\" onClick={() => setCount(count + 1)}>클릭 {count}회</button>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n"
+    }
+  ]
+}

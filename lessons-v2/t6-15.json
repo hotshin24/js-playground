@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t6-15", "track": "T6", "order": 15, "runtime": "react",
+  "title": "useRef로 DOM 요소와 렌더와 무관한 값 기억하기",
+  "steps": [
+    {
+      "kind": "read", "title": "ref는 렌더 사이에 값을 기억하지만 변경해도 다시 렌더링하지 않습니다",
+      "brief": [
+        "useRef는 current 프로퍼티가 있는 객체를 반환합니다. 이 객체는 컴포넌트가 다시 렌더링되어도 유지됩니다.",
+        { "code": ["const inputRef = useRef(null);", "<input ref={inputRef} />", "inputRef.current.focus();"] },
+        "JSX 요소의 ref에 ref 객체를 전달하면 React가 실제 DOM 요소를 current에 넣습니다. 이벤트 처리 함수에서 그 요소의 focus 같은 메서드를 호출할 수 있습니다.",
+        "ref.current를 바꿔도 React는 다시 렌더링하지 않습니다. 화면에 표시되어야 하는 값은 state, 렌더와 관계없이 기억할 값은 ref가 알맞습니다.",
+        "렌더 중에는 DOM ref가 아직 연결되지 않았을 수 있습니다. 보통 이벤트나 effect처럼 렌더가 끝난 뒤 실행되는 코드에서 사용합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "버튼으로 입력창에 초점 이동하기",
+      "brief": ["inputRef.current는 렌더된 input DOM 요소를 가리킵니다. 버튼을 누르면 focus가 호출되어 커서가 입력창으로 이동합니다.", "ref 값 변경은 화면 문구를 바꾸지 않으므로 다시 렌더링할 필요가 없습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input, button { margin-right: 6px; padding: 8px; }"] },
+      "code": "const { useRef } = React;\n\nfunction Search() {\n  const inputRef = useRef(null);\n\n  function focusInput() {\n    inputRef.current.focus();\n  }\n\n  return (\n    <section>\n      <input ref={inputRef} aria-label=\"검색어\" />\n      <button type=\"button\" onClick={focusInput}>입력창 선택</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Search />);\n"
+    },
+    {
+      "kind": "tweak", "title": "ref로 클릭 횟수만 기억하기",
+      "brief": ["const clickCount = useRef(0)를 추가하고 focusInput 안에서 clickCount.current += 1과 console.log(clickCount.current)를 실행해 보세요.", "콘솔의 횟수는 늘지만 화면은 다시 렌더링되지 않습니다.", "클릭 횟수를 화면에도 표시해야 한다면 ref가 아니라 state를 사용해야 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input, button { margin-right: 6px; padding: 8px; }"] },
+      "code": "const { useRef } = React;\n\nfunction Search() {\n  const inputRef = useRef(null);\n\n  function focusInput() {\n    inputRef.current.focus();\n  }\n\n  return (\n    <section>\n      <input ref={inputRef} aria-label=\"검색어\" />\n      <button type=\"button\" onClick={focusInput}>입력창 선택</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Search />);\n"
+    }
+  ]
+}
