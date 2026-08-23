@@ -23,6 +23,18 @@
       "brief": ["useState(0)을 useState(10)으로 바꾸면 첫 화면이 10에서 시작합니다.", "setCount(count + 1)을 setCount(count - 1)로 바꾸면 클릭할 때 감소합니다.", "setCount는 상태를 즉시 변수에 대입하는 함수가 아니라 다음 렌더에 사용할 상태 변경을 React에 요청하는 함수입니다."],
       "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
       "code": "const { useState } = React;\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  function handleClick() {\n    setCount(count + 1);\n  }\n\n  return (\n    <section>\n      <p>화면 숫자: {count}</p>\n      <button type=\"button\" onClick={handleClick}>증가</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n"
+    },
+    {
+      "kind": "fill", "title": "state와 버튼 연결하기",
+      "brief": ["첫 null에는 count의 초깃값 0을, 둘째 null에는 클릭 뒤 count보다 1 큰 값을 넣으세요.", "화면 숫자는 일반 변수가 아니라 state에서 읽고 있습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useState } = React;\n\nfunction Counter() {\n  const [count, setCount] = useState(null);\n\n  return (\n    <button type=\"button\" onClick={() => setCount(null)}>\n      숫자: {count}\n    </button>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n",
+      "solutionCode": "const { useState } = React;\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <button type=\"button\" onClick={() => setCount(count + 1)}>\n      숫자: {count}\n    </button>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n",
+      "asserts": [
+        { "type": "dom", "label": "처음 숫자는 0", "select": "button", "text": ["숫자: 0"] },
+        { "type": "dom", "label": "클릭하면 숫자 1", "actions": [{ "action": "click", "selector": "button" }], "select": "button", "text": ["숫자: 1"] }
+      ],
+      "hints": ["useState(null)의 null을 0으로 바꾸세요.", "setCount에는 count + 1을 전달하세요."]
     }
   ]
 }

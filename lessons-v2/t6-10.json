@@ -23,6 +23,18 @@
       "brief": ["addShoes를 products.push({ id: 3, name: '신발' }); setProducts(products);로 바꾸면 같은 배열 참조를 전달해 화면이 갱신되지 않을 수 있습니다.", "다시 전개 연산자로 새 배열을 만드는 코드로 되돌리세요.", "현재는 같은 id 3을 여러 번 추가할 수 있습니다. 실제 데이터에서는 각 항목에 중복되지 않는 id를 만들어야 합니다."],
       "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin: 3px; padding: 6px 9px; }"] },
       "code": "const { useState } = React;\n\nfunction ProductList() {\n  const [products, setProducts] = useState([\n    { id: 1, name: '셔츠' },\n    { id: 2, name: '모자' },\n  ]);\n\n  function addShoes() {\n    setProducts((previous) => [...previous, { id: 3, name: '신발' }]);\n  }\n\n  function removeProduct(targetId) {\n    setProducts((previous) => previous.filter((product) => product.id !== targetId));\n  }\n\n  return (\n    <section>\n      <button type=\"button\" onClick={addShoes}>신발 추가</button>\n      <ul>{products.map((product) => (\n        <li key={product.id}>{product.name} <button type=\"button\" onClick={() => removeProduct(product.id)}>삭제</button></li>\n      ))}</ul>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductList />);\n"
+    },
+    {
+      "kind": "fill", "title": "새 배열을 만들어 상품 추가하기",
+      "brief": ["addHat의 null을 이전 배열을 펼치고 새 모자 객체를 덧붙이는 업데이트 함수로 바꾸세요.", "push로 원본을 바꾸지 않습니다. 클릭 뒤 목록에는 셔츠와 모자가 있어야 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useState } = React;\n\nfunction ProductList() {\n  const [products, setProducts] = useState([{ id: 1, name: '셔츠' }]);\n\n  function addHat() {\n    setProducts(null);\n  }\n\n  return (\n    <section>\n      <button type=\"button\" onClick={addHat}>모자 추가</button>\n      <ul>{products.map((product) => <li key={product.id}>{product.name}</li>)}</ul>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductList />);\n",
+      "solutionCode": "const { useState } = React;\n\nfunction ProductList() {\n  const [products, setProducts] = useState([{ id: 1, name: '셔츠' }]);\n\n  function addHat() {\n    setProducts((previous) => [...previous, { id: 2, name: '모자' }]);\n  }\n\n  return (\n    <section>\n      <button type=\"button\" onClick={addHat}>모자 추가</button>\n      <ul>{products.map((product) => <li key={product.id}>{product.name}</li>)}</ul>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductList />);\n",
+      "asserts": [
+        { "type": "dom", "label": "처음에는 셔츠 하나", "select": "li", "text": ["셔츠"] },
+        { "type": "dom", "label": "클릭하면 모자가 추가됨", "actions": [{ "action": "click", "selector": "button" }], "select": "li", "text": ["셔츠", "모자"] }
+      ],
+      "hints": ["setProducts((previous) => ...) 형태로 작성하세요.", "반환할 배열은 [...previous, { id: 2, name: '모자' }]입니다."]
     }
   ]
 }
