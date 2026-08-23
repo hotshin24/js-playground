@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t5-10", "track": "T5", "order": 10, "runtime": "react",
+  "title": "부모와 자식 컴포넌트로 화면 나누기",
+  "steps": [
+    {
+      "kind": "read", "title": "컴포넌트 안에서 다른 컴포넌트를 사용합니다",
+      "brief": [
+        "컴포넌트가 다른 컴포넌트를 JSX로 사용하면 부모와 자식 관계가 생깁니다.",
+        { "code": ["function App() {", "  return (", "    <main>", "      <Header />", "      <ProductList />", "    </main>", "  );", "}"] },
+        "App은 Header와 ProductList를 사용하는 부모이고, 두 컴포넌트는 App의 자식입니다.",
+        "컴포넌트가 여러 단계로 포함되는 모습을 컴포넌트 계층이라고 합니다. 실제 DOM의 부모·자식 관계와 비슷해 보이지만 React 컴포넌트 단위의 관계입니다.",
+        "반복되는 화면, 역할을 이름으로 설명할 수 있는 화면, 한눈에 읽기 어려울 만큼 긴 화면을 컴포넌트로 나누는 것이 좋습니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "세 컴포넌트의 계층 확인하기",
+      "brief": ["App이 Header와 ProductList를 사용하고 ProductList가 ProductCard를 두 번 사용합니다.", "화면은 하나지만 코드는 역할에 따라 네 함수로 나뉘어 있습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".list { display: grid; gap: 8px; }", ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }"] },
+      "code": "function Header() {\n  return <h1>상품 목록</h1>;\n}\n\nfunction ProductCard() {\n  return <article className=\"card\">파란 셔츠</article>;\n}\n\nfunction ProductList() {\n  return (\n    <section className=\"list\">\n      <ProductCard />\n      <ProductCard />\n    </section>\n  );\n}\n\nfunction App() {\n  return (\n    <main>\n      <Header />\n      <ProductList />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "tweak", "title": "컴포넌트 위치 바꿔 보기",
+      "brief": ["App에서 <Header />를 ProductList 아래로 옮기면 화면에서도 제목이 목록 아래로 이동합니다.", "ProductList 안의 ProductCard 하나를 지우면 카드가 하나만 표시됩니다.", "컴포넌트를 함수로 나눴더라도 실제 표시 순서는 부모가 반환한 JSX의 순서로 정해집니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".list { display: grid; gap: 8px; }", ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }"] },
+      "code": "function Header() {\n  return <h1>상품 목록</h1>;\n}\n\nfunction ProductCard() {\n  return <article className=\"card\">파란 셔츠</article>;\n}\n\nfunction ProductList() {\n  return (\n    <section className=\"list\">\n      <ProductCard />\n      <ProductCard />\n    </section>\n  );\n}\n\nfunction App() {\n  return (\n    <main>\n      <Header />\n      <ProductList />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    }
+  ]
+}

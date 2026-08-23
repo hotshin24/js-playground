@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t5-12", "track": "T5", "order": 12, "runtime": "react",
+  "title": "객체·함수·JSX를 props로 전달하기",
+  "steps": [
+    {
+      "kind": "read", "title": "props에는 JavaScript 값이라면 여러 종류를 전달할 수 있습니다",
+      "brief": [
+        "props는 문자열만 전달하는 기능이 아닙니다. 숫자, 불리언, 객체, 배열, 함수, JSX 값도 전달할 수 있습니다.",
+        { "code": ["<ProductCard", "  product={{ name: '셔츠', price: 39000 }}", "  formatPrice={formatPrice}", "  badge={<strong>신상품</strong>}", "/>" ] },
+        "객체 리터럴을 전달할 때 중괄호가 두 겹처럼 보입니다. 바깥은 JSX에서 JavaScript로 들어가는 표시이고 안쪽은 객체입니다.",
+        "함수는 괄호 없이 전달합니다. 자식이 필요한 시점에 호출할 수 있습니다.",
+        "컴포넌트 자체를 전달하려면 대문자로 받은 뒤 <Icon />처럼 사용할 수 있고, 이미 만든 JSX를 전달하면 {badge}처럼 표시합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "세 종류의 props 함께 사용하기",
+      "brief": ["product는 객체, formatPrice는 함수, badge는 JSX 값입니다.", "ProductCard는 객체에서 값을 읽고, 전달받은 함수로 가격을 표시하고, 전달받은 JSX를 제목 옆에 넣습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".badge { margin-left: 6px; color: tomato; font-size: 0.8em; }"] },
+      "code": "function formatPrice(price) {\n  return price.toLocaleString() + '원';\n}\n\nfunction ProductCard({ product, formatPrice, badge }) {\n  return (\n    <article>\n      <h2>{product.name} {badge}</h2>\n      <p>{formatPrice(product.price)}</p>\n    </article>\n  );\n}\n\nconst product = { name: '파란 셔츠', price: 39000 };\n\nReactDOM.createRoot(document.querySelector('#root')).render(\n  <ProductCard\n    product={product}\n    formatPrice={formatPrice}\n    badge={<span className=\"badge\">신상품</span>}\n  />\n);\n"
+    },
+    {
+      "kind": "tweak", "title": "함수와 함수 결과 구분하기",
+      "brief": ["formatPrice={formatPrice}를 formatPrice={formatPrice(39000)}으로 바꾸면 자식은 함수 대신 문자열을 받습니다. 자식에서 호출할 때 오류가 납니다.", "badge를 null로 전달하면 제목 옆에 아무것도 표시되지 않습니다.", "props의 이름만 보고도 값의 역할을 알 수 있게 product, formatPrice, badge처럼 구체적으로 짓는 것이 좋습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".badge { margin-left: 6px; color: tomato; font-size: 0.8em; }"] },
+      "code": "function formatPrice(price) {\n  return price.toLocaleString() + '원';\n}\n\nfunction ProductCard({ product, formatPrice, badge }) {\n  return (\n    <article>\n      <h2>{product.name} {badge}</h2>\n      <p>{formatPrice(product.price)}</p>\n    </article>\n  );\n}\n\nconst product = { name: '파란 셔츠', price: 39000 };\n\nReactDOM.createRoot(document.querySelector('#root')).render(\n  <ProductCard\n    product={product}\n    formatPrice={formatPrice}\n    badge={<span className=\"badge\">신상품</span>}\n  />\n);\n"
+    }
+  ]
+}

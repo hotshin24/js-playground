@@ -92,6 +92,11 @@
     { "id": "t5-06", "track": "T5", "order": 6, "title": "JSX 중괄호 안에 JavaScript 값 넣기" },
     { "id": "t5-07", "track": "T5", "order": 7, "title": "조건에 따라 다른 JSX 보여 주기" },
     { "id": "t5-08", "track": "T5", "order": 8, "title": "className과 style 객체로 JSX 꾸미기" },
-    { "id": "t5-09", "track": "T5", "order": 9, "title": "함수 컴포넌트로 화면 조각 만들기" }
+    { "id": "t5-09", "track": "T5", "order": 9, "title": "함수 컴포넌트로 화면 조각 만들기" },
+    { "id": "t5-10", "track": "T5", "order": 10, "title": "부모와 자식 컴포넌트로 화면 나누기" },
+    { "id": "t5-11", "track": "T5", "order": 11, "title": "props로 부모의 값을 자식에게 전달하기" },
+    { "id": "t5-12", "track": "T5", "order": 12, "title": "객체·함수·JSX를 props로 전달하기" },
+    { "id": "t5-13", "track": "T5", "order": 13, "title": "children으로 감싼 JSX 전달하기" },
+    { "id": "t5-14", "track": "T5", "order": 14, "title": "React 이벤트에 실행할 함수 전달하기" }
   ]
 }

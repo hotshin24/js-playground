@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t5-11", "track": "T5", "order": 11, "runtime": "react",
+  "title": "props로 부모의 값을 자식에게 전달하기",
+  "steps": [
+    {
+      "kind": "read", "title": "부모가 JSX 속성으로 값을 전달합니다",
+      "brief": [
+        "props는 부모 컴포넌트가 자식 컴포넌트에 전달하는 값입니다.",
+        { "code": ["<ProductCard name=\"셔츠\" price={39000} />", "", "function ProductCard(props) {", "  return <p>{props.name}: {props.price}원</p>;", "}"] },
+        "JSX 속성 이름이 props 객체의 프로퍼티 이름이 됩니다. 문자열은 따옴표로, 숫자 같은 JavaScript 값은 중괄호로 전달합니다.",
+        "함수 매개변수에서 const { name, price } = props와 같은 구조 분해를 바로 사용할 수도 있습니다: function ProductCard({ name, price }).",
+        "props는 부모에서 자식 방향으로 전달됩니다. 자식은 받은 props를 직접 변경하지 않고 필요한 새 값을 부모가 전달하게 합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "한 컴포넌트에 다른 props 전달하기",
+      "brief": ["ProductCard 코드는 하나지만 첫 호출은 셔츠와 39000, 둘째 호출은 모자와 15000을 전달합니다.", "자식 컴포넌트는 전달받은 값으로 서로 다른 화면을 반환합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".card { margin: 6px 0; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }"] },
+      "code": "function ProductCard({ name, price }) {\n  return (\n    <article className=\"card\">\n      <b>{name}</b>\n      <span> {price}원</span>\n    </article>\n  );\n}\n\nfunction App() {\n  return (\n    <main>\n      <ProductCard name=\"셔츠\" price={39000} />\n      <ProductCard name=\"모자\" price={15000} />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "tweak", "title": "문자열과 숫자 props 비교하기",
+      "brief": ["첫 price={39000}을 price=\"39000\"으로 바꿔 보세요. 화면은 같아 보여도 자식이 받는 자료형은 문자열로 바뀝니다.", "ProductCard 안에서 console.log(typeof price)를 추가해 확인하세요.", "가격 계산이 필요하다면 숫자 props를 전달해야 합니다. JSX에서도 값의 자료형이 사라지지 않습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".card { margin: 6px 0; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }"] },
+      "code": "function ProductCard({ name, price }) {\n  return (\n    <article className=\"card\">\n      <b>{name}</b>\n      <span> {price}원</span>\n    </article>\n  );\n}\n\nfunction App() {\n  return (\n    <main>\n      <ProductCard name=\"셔츠\" price={39000} />\n      <ProductCard name=\"모자\" price={15000} />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    }
+  ]
+}
