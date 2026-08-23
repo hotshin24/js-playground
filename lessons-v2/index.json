@@ -33,6 +33,11 @@
     { "id": "t1-12", "track": "T1", "order": 12, "title": "==와 === 구분하기" },
     { "id": "t1-13", "track": "T1", "order": 13, "title": "여러 조건을 함께 확인하기" },
     { "id": "t1-14", "track": "T1", "order": 14, "title": "truthy와 falsy 이해하기" },
-    { "id": "t1-15", "track": "T1", "order": 15, "title": "필요한 값만 골라서 사용하기" }
+    { "id": "t1-15", "track": "T1", "order": 15, "title": "필요한 값만 골라서 사용하기" },
+    { "id": "t2-01", "track": "T2", "order": 1, "title": "if로 조건에 맞는 코드만 실행하기" },
+    { "id": "t2-02", "track": "T2", "order": 2, "title": "else if와 else로 여러 경우 나누기" },
+    { "id": "t2-03", "track": "T2", "order": 3, "title": "switch로 정해진 값별 코드 고르기" },
+    { "id": "t2-04", "track": "T2", "order": 4, "title": "삼항 조건 연산자로 값 하나 고르기" },
+    { "id": "t2-05", "track": "T2", "order": 5, "title": "for로 같은 코드를 반복하기" }
   ]
 }
