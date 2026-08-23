@@ -63,6 +63,10 @@
     { "id": "t3-11", "track": "T3", "order": 11, "title": "forEach로 배열의 모든 값 사용하기" },
     { "id": "t3-12", "track": "T3", "order": 12, "title": "map으로 같은 길이의 새 배열 만들기" },
     { "id": "t3-13", "track": "T3", "order": 13, "title": "find와 findIndex로 원하는 값 찾기" },
-    { "id": "t3-14", "track": "T3", "order": 14, "title": "filter로 조건에 맞는 값만 남기기" }
+    { "id": "t3-14", "track": "T3", "order": 14, "title": "filter로 조건에 맞는 값만 남기기" },
+    { "id": "t3-15", "track": "T3", "order": 15, "title": "reduce로 배열을 값 하나로 합치기" },
+    { "id": "t3-16", "track": "T3", "order": 16, "title": "sort로 정렬할 때 원본 지키기" },
+    { "id": "t3-17", "track": "T3", "order": 17, "title": "Date 객체로 날짜와 시간 다루기" },
+    { "id": "t3-18", "track": "T3", "order": 18, "title": "export와 import로 파일 나누기" }
   ]
 }

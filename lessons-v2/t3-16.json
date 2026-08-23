@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 2, "id": "t3-16", "track": "T3", "order": 16, "runtime": "js",
+  "title": "sort로 정렬할 때 원본 지키기",
+  "steps": [
+    {
+      "kind": "read", "title": "sort는 원본 배열을 직접 바꿉니다",
+      "brief": [
+        "sort는 배열의 순서를 바꾸며 원본 배열 자체를 변경합니다.",
+        "숫자를 정렬할 때 비교 함수를 생략하면 숫자를 문자열처럼 비교해 예상과 다른 결과가 나올 수 있습니다.",
+        { "code": ["prices.sort((a, b) => a - b); // 오름차순", "prices.sort((a, b) => b - a); // 내림차순"] },
+        "비교 함수가 음수를 반환하면 a가 먼저, 양수를 반환하면 b가 먼저 옵니다.",
+        "원본을 지켜야 한다면 const sorted = [...prices].sort(...)처럼 배열을 복사한 뒤 정렬합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "복사본만 오름차순 정렬하기",
+      "brief": ["sorted에는 3, 20, 100이 들어가고 prices의 순서는 그대로입니다.", "prices === sorted는 false이므로 서로 다른 배열입니다."],
+      "code": "const prices = [100, 3, 20];\nconst sorted = [...prices].sort((a, b) => a - b);\n\nconsole.log(prices);\nconsole.log(sorted);\nconsole.log(prices === sorted);\n"
+    },
+    {
+      "kind": "tweak", "title": "복사 없이 정렬해 보기",
+      "brief": ["[...prices]를 prices로 바꾸면 sorted와 prices가 같은 배열이 되고 원본 순서도 바뀝니다.", "비교 함수를 지우면 100, 20, 3처럼 문자열 기준으로 정렬됩니다.", "React의 배열 상태를 정렬할 때는 원본을 직접 sort하지 말고 먼저 새 배열을 만들어야 합니다."],
+      "code": "const prices = [100, 3, 20];\nconst sorted = [...prices].sort((a, b) => a - b);\n\nconsole.log(prices);\nconsole.log(sorted);\nconsole.log(prices === sorted);\n"
+    }
+  ]
+}
