@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t8-10", "track": "T8", "order": 10, "runtime": "react",
+  "title": "reducer와 Context를 함께 사용할 때 판단하기",
+  "steps": [
+    {
+      "kind": "read", "title": "reducer는 전환 규칙, Context는 전달 경로를 담당합니다",
+      "brief": [
+        "useReducer와 Context는 서로 다른 문제를 해결합니다. reducer는 복잡한 state 전환 규칙을 모으고 Context는 깊은 컴포넌트에 값과 dispatch를 전달합니다.",
+        "둘을 함께 쓰면 Provider가 useReducer로 state를 소유하고 state와 dispatch를 Context로 공급할 수 있습니다.",
+        { "code": ["const [state, dispatch] = useReducer(reducer, initialState);", "<StateContext.Provider value={state}>", "<DispatchContext.Provider value={dispatch}>...</DispatchContext.Provider>"] },
+        "dispatch는 React가 안정적인 참조를 보장하므로 변경 동작 Context의 값으로 공급하기 알맞습니다.",
+        "작은 지역 state까지 모두 reducer와 Context로 옮기면 코드가 길어집니다. 전환 규칙과 전달 깊이가 둘 다 문제일 때 조합합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "깊은 버튼에서 장바구니 action 보내기",
+      "brief": ["CartProvider가 수량 state를 소유하고 state와 dispatch를 따로 공급합니다.", "CartCount는 state만 읽고 CartButtons는 dispatch만 읽어 action을 보냅니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { createContext, useContext, useReducer } = React;\nconst CartStateContext = createContext(null);\nconst CartDispatchContext = createContext(null);\n\nfunction reducer(state, action) {\n  if (action.type === 'add') return { ...state, count: state.count + 1 };\n  if (action.type === 'remove') return { ...state, count: Math.max(0, state.count - 1) };\n  return state;\n}\nfunction CartProvider({ children }) {\n  const [state, dispatch] = useReducer(reducer, { count: 0 });\n  return (\n    <CartDispatchContext.Provider value={dispatch}>\n      <CartStateContext.Provider value={state}>{children}</CartStateContext.Provider>\n    </CartDispatchContext.Provider>\n  );\n}\nfunction CartCount() { const state = useContext(CartStateContext); return <p>장바구니: {state.count}개</p>; }\nfunction CartButtons() {\n  const dispatch = useContext(CartDispatchContext);\n  return <><button onClick={() => dispatch({ type: 'add' })}>추가</button><button onClick={() => dispatch({ type: 'remove' })}>삭제</button></>;\n}\nfunction App() { return <CartProvider><CartCount /><CartButtons /></CartProvider>; }\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "tweak", "title": "Context 없이도 충분한 범위인지 판단하기",
+      "brief": ["CartCount와 CartButtons가 App 바로 아래에만 있다면 state와 dispatch를 props로 전달해도 구조가 단순합니다.", "Context를 제거하고 App에서 useReducer를 호출한 뒤 두 자식에 props로 전달하는 모양도 생각해 보세요.", "reducer가 필요하다는 사실이 Context도 필요하다는 뜻은 아닙니다. 상태 전환 복잡성과 전달 깊이를 따로 판단합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { createContext, useContext, useReducer } = React;\nconst CartStateContext = createContext(null);\nconst CartDispatchContext = createContext(null);\n\nfunction reducer(state, action) {\n  if (action.type === 'add') return { ...state, count: state.count + 1 };\n  if (action.type === 'remove') return { ...state, count: Math.max(0, state.count - 1) };\n  return state;\n}\nfunction CartProvider({ children }) {\n  const [state, dispatch] = useReducer(reducer, { count: 0 });\n  return (\n    <CartDispatchContext.Provider value={dispatch}>\n      <CartStateContext.Provider value={state}>{children}</CartStateContext.Provider>\n    </CartDispatchContext.Provider>\n  );\n}\nfunction CartCount() { const state = useContext(CartStateContext); return <p>장바구니: {state.count}개</p>; }\nfunction CartButtons() {\n  const dispatch = useContext(CartDispatchContext);\n  return <><button onClick={() => dispatch({ type: 'add' })}>추가</button><button onClick={() => dispatch({ type: 'remove' })}>삭제</button></>;\n}\nfunction App() { return <CartProvider><CartCount /><CartButtons /></CartProvider>; }\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    }
+  ]
+}

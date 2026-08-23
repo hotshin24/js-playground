@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t9-01", "track": "T9", "order": 1, "runtime": "react",
+  "title": "컴포넌트가 다시 렌더링되는 이유 찾기",
+  "steps": [
+    {
+      "kind": "read", "title": "state·부모 렌더·Context 변경을 구분합니다",
+      "brief": [
+        "컴포넌트 자신의 state가 바뀌면 다시 렌더링됩니다. 부모가 다시 렌더링되면 기본적으로 자식 컴포넌트도 다시 렌더링됩니다.",
+        "컴포넌트가 읽는 Context 값이 바뀌어도 다시 렌더링됩니다.",
+        { "code": ["자신의 state 변경", "부모 컴포넌트 렌더", "읽고 있는 Context 값 변경"] },
+        "다시 렌더링된다는 것은 컴포넌트 함수를 다시 호출해 JSX를 계산한다는 뜻입니다. DOM을 무조건 전부 새로 만드는 것은 아닙니다.",
+        "렌더 자체는 정상적인 React 동작입니다. 실제로 느린 작업이 확인되기 전에는 렌더 횟수만 보고 최적화하지 않습니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "부모 state 변경 때 자식 로그 확인하기",
+      "brief": ["App의 count가 바뀌면 App이 다시 렌더링되고, props가 같은 Child도 기본적으로 다시 호출됩니다.", "콘솔에서 App 렌더와 Child 렌더 로그가 함께 늘어나는 것을 확인하세요."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 7px 9px; }"] },
+      "code": "const { useState } = React;\n\nfunction Child({ label }) {\n  console.log('Child 렌더');\n  return <p>{label}</p>;\n}\nfunction App() {\n  const [count, setCount] = useState(0);\n  console.log('App 렌더');\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setCount(count + 1)}>부모 state: {count}</button>\n      <Child label=\"변하지 않는 자식 props\" />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "tweak", "title": "자식 렌더가 실제 문제인지 확인하기",
+      "brief": ["Child 안의 계산이 단순한 p 하나라면 다시 호출되어도 체감할 비용이 거의 없습니다.", "console.log가 많다는 이유만으로 React.memo를 붙이지 마세요.", "다음 레슨에서 일부러 느린 계산을 만들고 performance.now로 실제 시간을 측정합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 7px 9px; }"] },
+      "code": "const { useState } = React;\n\nfunction Child({ label }) {\n  console.log('Child 렌더');\n  return <p>{label}</p>;\n}\nfunction App() {\n  const [count, setCount] = useState(0);\n  console.log('App 렌더');\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setCount(count + 1)}>부모 state: {count}</button>\n      <Child label=\"변하지 않는 자식 props\" />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    }
+  ]
+}

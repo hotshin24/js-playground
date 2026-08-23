@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t8-09", "track": "T8", "order": 9, "runtime": "react",
+  "title": "Context를 값과 변경 함수로 나누기",
+  "steps": [
+    {
+      "kind": "read", "title": "하나의 큰 Context는 관련 없는 소비자도 함께 갱신할 수 있습니다",
+      "brief": [
+        "Context value 객체가 바뀌면 그 Context를 읽는 모든 소비 컴포넌트가 다시 렌더링됩니다.",
+        "현재 값만 읽는 컴포넌트와 변경 함수만 필요한 컴포넌트가 많다면 Context를 역할별로 나눌 수 있습니다.",
+        { "code": ["const ThemeValueContext = createContext(null);", "const ThemeActionContext = createContext(null);"] },
+        "값 Context에는 theme을, 동작 Context에는 안정적인 state 설정 함수 setTheme을 공급할 수 있습니다.",
+        "무조건 잘게 나누면 Provider와 파일만 늘어납니다. 실제로 함께 바뀌지 않는 관심사이고 소비 범위가 다를 때 분리를 고려합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "현재 값과 변경 방법을 따로 읽기",
+      "brief": ["ThemeLabel은 값 Context만 읽고 ThemeButton은 동작 Context만 읽습니다.", "버튼은 setTheme을 호출하고, theme 값이 바뀌면 ThemeLabel이 새 값을 표시합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 7px 9px; }"] },
+      "code": "const { createContext, useContext, useState } = React;\nconst ThemeValueContext = createContext(null);\nconst ThemeActionContext = createContext(null);\n\nfunction ThemeLabel() {\n  const theme = useContext(ThemeValueContext);\n  console.log('ThemeLabel 렌더');\n  return <p>현재 테마: {theme}</p>;\n}\nfunction ThemeButton() {\n  const setTheme = useContext(ThemeActionContext);\n  console.log('ThemeButton 렌더');\n  return <button type=\"button\" onClick={() => setTheme((value) => value === 'light' ? 'dark' : 'light')}>테마 변경</button>;\n}\n\nfunction App() {\n  const [theme, setTheme] = useState('light');\n  return (\n    <ThemeActionContext.Provider value={setTheme}>\n      <ThemeValueContext.Provider value={theme}>\n        <ThemeLabel />\n        <ThemeButton />\n      </ThemeValueContext.Provider>\n    </ThemeActionContext.Provider>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "tweak", "title": "다시 하나의 Context로 합쳐 보기",
+      "brief": ["두 값을 { theme, setTheme } 객체 하나로 공급하면 소비자는 필요한 값만 구조 분해할 수 있지만 Context value 자체는 theme 변경마다 새 객체가 됩니다.", "Context 분리는 값의 의미와 변경 빈도, 소비 위치를 기준으로 판단합니다.", "렌더가 실제 성능 문제인지 측정하지 않은 상태에서 Context를 지나치게 나누지는 마세요. T9에서 측정과 최적화를 다룹니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 7px 9px; }"] },
+      "code": "const { createContext, useContext, useState } = React;\nconst ThemeValueContext = createContext(null);\nconst ThemeActionContext = createContext(null);\n\nfunction ThemeLabel() {\n  const theme = useContext(ThemeValueContext);\n  console.log('ThemeLabel 렌더');\n  return <p>현재 테마: {theme}</p>;\n}\nfunction ThemeButton() {\n  const setTheme = useContext(ThemeActionContext);\n  console.log('ThemeButton 렌더');\n  return <button type=\"button\" onClick={() => setTheme((value) => value === 'light' ? 'dark' : 'light')}>테마 변경</button>;\n}\n\nfunction App() {\n  const [theme, setTheme] = useState('light');\n  return (\n    <ThemeActionContext.Provider value={setTheme}>\n      <ThemeValueContext.Provider value={theme}>\n        <ThemeLabel />\n        <ThemeButton />\n      </ThemeValueContext.Provider>\n    </ThemeActionContext.Provider>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    }
+  ]
+}

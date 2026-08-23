@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t9-02", "track": "T9", "order": 2, "runtime": "react",
+  "title": "최적화 전에 느린 계산 측정하기",
+  "steps": [
+    {
+      "kind": "read", "title": "performance.now로 계산 전후 시간을 비교합니다",
+      "brief": [
+        "최적화는 실제로 시간이 드는 작업을 줄이기 위해 사용합니다. 먼저 어떤 계산이 얼마나 걸리는지 측정해야 합니다.",
+        { "code": ["const start = performance.now();", "const result = slowCalculation(value);", "const elapsed = performance.now() - start;"] },
+        "performance.now()는 현재 페이지가 시작된 뒤 지난 시간을 밀리초 단위로 반환합니다. 계산 전후 차이로 대략적인 실행 시간을 볼 수 있습니다.",
+        "개발 환경의 로그와 브라우저 상태 때문에 측정값은 매번 조금씩 다릅니다. 한 번의 숫자보다 반복되는 경향을 봅니다.",
+        "느린 계산이 없는 컴포넌트에 메모이제이션을 추가하면 비교와 캐시 관리 비용만 늘 수 있습니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "관련 없는 입력에도 계산이 다시 되는지 보기",
+      "brief": ["count가 바뀌면 느린 계산이 필요하지만 name 입력만 바뀌어도 App이 렌더되므로 같은 계산이 다시 실행됩니다.", "입력할 때마다 콘솔의 계산 시간이 새로 출력되는지 확인하세요."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input, button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { useState } = React;\n\nfunction slowDouble(number) {\n  let result = 0;\n  for (let i = 0; i < 3000000; i += 1) result = number * 2;\n  return result;\n}\nfunction App() {\n  const [count, setCount] = useState(1);\n  const [name, setName] = useState('');\n  const start = performance.now();\n  const doubled = slowDouble(count);\n  console.log('계산 시간:', performance.now() - start, 'ms');\n\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setCount(count + 1)}>count {count}</button>\n      <input value={name} onChange={(event) => setName(event.currentTarget.value)} placeholder=\"이름\" />\n      <p>계산 결과: {doubled}</p>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "tweak", "title": "반복 횟수로 비용 차이 확인하기",
+      "brief": ["3000000을 3000으로 줄이면 계산 시간이 거의 느껴지지 않습니다. 이런 계산에는 메모이제이션 이점도 작습니다.", "반대로 반복 횟수를 지나치게 늘리면 입력 반응이 느려집니다. 실습 환경이 멈추지 않도록 적당한 범위만 사용하세요.", "다음 레슨에서는 count가 그대로일 때 이 계산 결과를 재사용합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input, button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { useState } = React;\n\nfunction slowDouble(number) {\n  let result = 0;\n  for (let i = 0; i < 3000000; i += 1) result = number * 2;\n  return result;\n}\nfunction App() {\n  const [count, setCount] = useState(1);\n  const [name, setName] = useState('');\n  const start = performance.now();\n  const doubled = slowDouble(count);\n  console.log('계산 시간:', performance.now() - start, 'ms');\n\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setCount(count + 1)}>count {count}</button>\n      <input value={name} onChange={(event) => setName(event.currentTarget.value)} placeholder=\"이름\" />\n      <p>계산 결과: {doubled}</p>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    }
+  ]
+}

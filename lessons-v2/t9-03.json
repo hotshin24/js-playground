@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t9-03", "track": "T9", "order": 3, "runtime": "react",
+  "title": "useMemo로 계산 결과 재사용하기",
+  "steps": [
+    {
+      "kind": "read", "title": "의존성이 같으면 이전 계산 결과를 돌려줍니다",
+      "brief": [
+        "useMemo는 렌더 중 계산한 값을 기억합니다. 의존성 배열의 값이 이전 렌더와 같으면 계산 함수를 다시 호출하지 않고 저장한 결과를 반환합니다.",
+        { "code": ["const doubled = useMemo(() => slowDouble(count), [count]);"] },
+        "count가 바뀌면 계산 함수를 다시 실행해 새 결과를 저장합니다. name처럼 의존성에 없는 값만 바뀌면 이전 결과를 재사용합니다.",
+        "useMemo의 계산 함수는 렌더 중 실행되므로 사이드 이펙트를 넣지 않습니다. 순수한 계산만 수행합니다.",
+        "모든 계산에 useMemo를 붙이지 않습니다. 앞 레슨처럼 실제 비용과 불필요한 재계산을 확인했을 때 사용합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "name 변경 때 계산 생략하기",
+      "brief": ["처음 렌더와 count 변경 때만 느린 계산 로그가 출력됩니다.", "name을 입력하면 App은 다시 렌더되지만 count가 같으므로 useMemo가 이전 doubled를 반환합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input, button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { useMemo, useState } = React;\n\nfunction slowDouble(number) {\n  console.log('느린 계산 실행');\n  let result = 0;\n  for (let i = 0; i < 3000000; i += 1) result = number * 2;\n  return result;\n}\nfunction App() {\n  const [count, setCount] = useState(1);\n  const [name, setName] = useState('');\n  const doubled = useMemo(() => slowDouble(count), [count]);\n\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setCount(count + 1)}>count {count}</button>\n      <input value={name} onChange={(event) => setName(event.currentTarget.value)} placeholder=\"이름\" />\n      <p>계산 결과: {doubled}</p>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "tweak", "title": "의존성을 비워 오래된 결과 만들기",
+      "brief": ["[count]를 []로 바꾸면 count 버튼을 눌러도 useMemo가 처음 계산한 결과만 계속 반환합니다.", "계산 함수가 count를 읽으므로 count가 의존성에 반드시 포함되어야 합니다.", "의존성을 빼서 계산 횟수를 줄이는 것은 최적화가 아니라 잘못된 결과를 만드는 버그입니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input, button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { useMemo, useState } = React;\n\nfunction slowDouble(number) {\n  console.log('느린 계산 실행');\n  let result = 0;\n  for (let i = 0; i < 3000000; i += 1) result = number * 2;\n  return result;\n}\nfunction App() {\n  const [count, setCount] = useState(1);\n  const [name, setName] = useState('');\n  const doubled = useMemo(() => slowDouble(count), [count]);\n\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setCount(count + 1)}>count {count}</button>\n      <input value={name} onChange={(event) => setName(event.currentTarget.value)} placeholder=\"이름\" />\n      <p>계산 결과: {doubled}</p>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    }
+  ]
+}

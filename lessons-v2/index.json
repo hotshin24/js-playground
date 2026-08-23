@@ -133,6 +133,11 @@
     { "id": "t8-05", "track": "T8", "order": 5, "title": "useState와 useReducer 중 알맞은 도구 고르기" },
     { "id": "t8-06", "track": "T8", "order": 6, "title": "props drilling이 생기는 구조 확인하기" },
     { "id": "t8-07", "track": "T8", "order": 7, "title": "Context로 깊은 자식에게 값 공급하기" },
-    { "id": "t8-08", "track": "T8", "order": 8, "title": "Context로 state와 변경 함수 함께 공급하기" }
+    { "id": "t8-08", "track": "T8", "order": 8, "title": "Context로 state와 변경 함수 함께 공급하기" },
+    { "id": "t8-09", "track": "T8", "order": 9, "title": "Context를 값과 변경 함수로 나누기" },
+    { "id": "t8-10", "track": "T8", "order": 10, "title": "reducer와 Context를 함께 사용할 때 판단하기" },
+    { "id": "t9-01", "track": "T9", "order": 1, "title": "컴포넌트가 다시 렌더링되는 이유 찾기" },
+    { "id": "t9-02", "track": "T9", "order": 2, "title": "최적화 전에 느린 계산 측정하기" },
+    { "id": "t9-03", "track": "T9", "order": 3, "title": "useMemo로 계산 결과 재사용하기" }
   ]
 }
