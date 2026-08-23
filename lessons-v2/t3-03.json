@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 2, "id": "t3-03", "track": "T3", "order": 3, "runtime": "js",
+  "title": "메서드와 this로 객체 자신의 값 사용하기",
+  "steps": [
+    {
+      "kind": "read", "title": "객체의 프로퍼티로 저장된 함수를 메서드라고 합니다",
+      "brief": [
+        "객체 안에 함수도 값으로 넣을 수 있습니다. 객체의 프로퍼티로 저장된 함수를 메서드라고 합니다.",
+        { "code": ["const product = {", "  name: '셔츠',", "  printName() {", "    console.log(this.name);", "  },", "};"] },
+        "product.printName()처럼 객체를 통해 메서드를 호출하면 메서드 안의 this는 호출할 때 점 앞에 있는 product를 가리킵니다.",
+        "따라서 this.name은 product.name과 같은 값을 읽습니다. 메서드를 다른 객체를 통해 호출하면 this가 달라질 수 있습니다.",
+        "화살표 함수는 자신만의 this를 만들지 않으므로 지금과 같은 객체 메서드에는 일반 함수 문법을 사용합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "두 객체에서 같은 메서드 사용하기",
+      "brief": ["shirt.printInfo()에서는 this가 shirt를, hat.printInfo()에서는 this가 hat을 가리킵니다.", "메서드 코드는 같지만 호출한 객체가 달라 각 객체의 이름과 가격이 출력됩니다."],
+      "code": "function printInfo() {\n  console.log(this.name + ': ' + this.price + '원');\n}\n\nconst shirt = { name: '셔츠', price: 39000, printInfo };\nconst hat = { name: '모자', price: 15000, printInfo };\n\nshirt.printInfo();\nhat.printInfo();\n"
+    },
+    {
+      "kind": "tweak", "title": "호출한 객체가 사라지면 어떻게 되는지 보기",
+      "brief": ["const detached = shirt.printInfo;를 추가한 뒤 detached();를 호출해 보세요. 더는 shirt를 통해 호출하지 않았으므로 this가 shirt를 가리키지 않습니다.", "this는 함수를 어디에 작성했는지만으로 정해지지 않습니다. 일반 함수에서는 어떻게 호출했는지가 중요합니다.", "처음에는 object.method() 형태를 유지하고, 메서드를 변수에 따로 떼어 내지 마세요."],
+      "code": "function printInfo() {\n  console.log(this.name + ': ' + this.price + '원');\n}\n\nconst shirt = { name: '셔츠', price: 39000, printInfo };\nconst hat = { name: '모자', price: 15000, printInfo };\n\nshirt.printInfo();\nhat.printInfo();\n"
+    }
+  ]
+}
