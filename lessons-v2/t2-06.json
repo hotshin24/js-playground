@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 2,
+  "id": "t2-06",
+  "track": "T2",
+  "order": 6,
+  "runtime": "js",
+  "title": "break와 continue로 반복 제어하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "멈추기와 건너뛰기는 다릅니다",
+      "brief": [
+        "break는 반복문을 즉시 끝냅니다. 반복문 다음에 있는 코드부터 실행이 이어집니다.",
+        "continue는 현재 반복에서 남은 코드만 건너뜁니다. 반복문 전체를 끝내지 않고 다음 반복으로 넘어갑니다.",
+        { "code": ["if (number === 3) {", "  continue;", "}", "if (number === 5) {", "  break;", "}"] },
+        "continue를 만나면 그 아래 코드는 실행되지 않습니다. break를 만나면 조건식이 아직 true여도 반복이 끝납니다.",
+        "둘 다 if와 함께 사용하는 경우가 많습니다. 어떤 조건에서 한 번만 건너뛸지, 반복 전체를 끝낼지 구분해야 합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "3은 건너뛰고 5에서 멈추기",
+      "brief": [
+        "number가 3이면 출력 줄을 건너뜁니다. number가 5가 되면 반복문을 끝냅니다.",
+        "따라서 1, 2, 4만 출력되고 완료가 출력됩니다."
+      ],
+      "code": "for (let number = 1; number <= 7; number += 1) {\n  if (number === 3) {\n    continue;\n  }\n\n  if (number === 5) {\n    break;\n  }\n\n  console.log(number);\n}\n\nconsole.log('완료');\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "두 명령을 서로 바꿔 보기",
+      "brief": [
+        "첫 continue를 break로 바꾸면 1과 2만 출력되고 반복이 끝납니다.",
+        "원래대로 되돌린 뒤 둘째 break를 continue로 바꾸면 5만 건너뛰고 6과 7까지 출력됩니다.",
+        "반복 결과가 예상과 다르면 break와 continue 아래에 어떤 코드가 남아 있는지 확인하세요."
+      ],
+      "code": "for (let number = 1; number <= 7; number += 1) {\n  if (number === 3) {\n    continue;\n  }\n\n  if (number === 5) {\n    break;\n  }\n\n  console.log(number);\n}\n\nconsole.log('완료');\n"
+    }
+  ]
+}

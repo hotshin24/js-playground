@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 2,
+  "id": "t2-08",
+  "track": "T2",
+  "order": 8,
+  "runtime": "js",
+  "title": "함수를 선언하고 필요한 때 호출하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "선언과 호출은 서로 다른 일입니다",
+      "brief": [
+        "함수 선언은 실행할 코드를 정의하는 일입니다. function 다음에 함수 이름을 쓰고, 중괄호 안에 실행할 코드를 넣습니다.",
+        { "code": ["function greet() {", "  console.log('안녕하세요');", "}", "", "greet();"] },
+        "greet 뒤의 괄호는 이 값이 함수임을 나타냅니다. greet()처럼 괄호까지 써야 함수를 호출합니다.",
+        "greet만 적으면 함수 자체를 가리킬 뿐 실행하지 않습니다. 이 차이는 함수를 다른 곳에 전달하는 콜백을 배울 때 중요합니다.",
+        "함수 호출이 끝나면 호출한 줄의 다음 줄로 돌아와 실행을 계속합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "호출 전후의 실행 순서 확인하기",
+      "brief": [
+        "함수 선언은 위에 있지만 함수 안의 메시지는 greet()를 만났을 때 출력됩니다.",
+        "출력 순서는 호출 전, 함수 시작, 함수 끝, 호출 후입니다."
+      ],
+      "code": "function greet() {\n  console.log('함수 시작');\n  console.log('함수 끝');\n}\n\nconsole.log('호출 전');\ngreet();\nconsole.log('호출 후');\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "괄호를 지워 차이 확인하기",
+      "brief": [
+        "greet();에서 괄호를 지워 greet;로 바꾸면 함수 안의 두 줄이 출력되지 않습니다.",
+        "console.log(greet);를 추가하면 함수의 내용이 값으로 출력됩니다. 함수 자체를 가리키는 것과 실행하는 것은 다릅니다.",
+        "실행하려면 함수 이름 뒤에 호출 괄호 ()가 필요합니다."
+      ],
+      "code": "function greet() {\n  console.log('함수 시작');\n  console.log('함수 끝');\n}\n\nconsole.log('호출 전');\ngreet();\nconsole.log('호출 후');\n"
+    }
+  ]
+}
