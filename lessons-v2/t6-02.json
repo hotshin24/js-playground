@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t6-02", "track": "T6", "order": 2, "runtime": "react",
+  "title": "useState로 값을 기억하고 화면 갱신하기",
+  "steps": [
+    {
+      "kind": "read", "title": "상태값과 설정 함수를 한 쌍으로 받습니다",
+      "brief": [
+        "useState는 컴포넌트에 state를 추가하는 React 훅입니다. 이 플레이그라운드에서는 const { useState } = React로 가져와 사용합니다.",
+        { "code": ["const [count, setCount] = useState(0);"] },
+        "useState(0)의 0은 첫 렌더에서 사용할 초깃값입니다. 반환된 배열의 첫 값 count는 현재 상태값이고, 둘째 값 setCount는 상태를 바꾸도록 요청하는 함수입니다.",
+        "setCount(1)을 호출하면 React가 새 상태를 저장하고 컴포넌트를 다시 렌더링합니다. 새 렌더의 count에는 1이 들어옵니다.",
+        "count를 count = 1처럼 직접 대입하지 않습니다. const이고, 직접 대입해도 React에 변경을 알릴 수 없습니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "상태 변경 뒤 다시 렌더링하기",
+      "brief": ["버튼을 누르면 setCount가 현재 count보다 1 큰 값을 요청합니다.", "React가 Counter를 다시 호출하고 새 count로 JSX를 계산하므로 화면 숫자가 증가합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
+      "code": "const { useState } = React;\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  function handleClick() {\n    setCount(count + 1);\n  }\n\n  return (\n    <section>\n      <p>화면 숫자: {count}</p>\n      <button type=\"button\" onClick={handleClick}>증가</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n"
+    },
+    {
+      "kind": "tweak", "title": "초깃값과 설정값 바꿔 보기",
+      "brief": ["useState(0)을 useState(10)으로 바꾸면 첫 화면이 10에서 시작합니다.", "setCount(count + 1)을 setCount(count - 1)로 바꾸면 클릭할 때 감소합니다.", "setCount는 상태를 즉시 변수에 대입하는 함수가 아니라 다음 렌더에 사용할 상태 변경을 React에 요청하는 함수입니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
+      "code": "const { useState } = React;\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  function handleClick() {\n    setCount(count + 1);\n  }\n\n  return (\n    <section>\n      <p>화면 숫자: {count}</p>\n      <button type=\"button\" onClick={handleClick}>증가</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n"
+    }
+  ]
+}
