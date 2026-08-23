@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 2, "id": "t4-13", "track": "T4", "order": 13, "runtime": "js",
+  "title": "throw와 try/catch로 오류 처리하기",
+  "steps": [
+    {
+      "kind": "read", "title": "오류가 날 수 있는 코드를 try 안에 둡니다",
+      "brief": [
+        "throw는 실행을 중단하고 오류를 발생시킵니다. 보통 throw new Error('메시지') 형태로 작성합니다.",
+        "try에는 오류가 날 수 있는 코드를 쓰고 catch에는 오류가 발생했을 때 처리할 코드를 씁니다.",
+        { "code": ["try {", "  throw new Error('가격이 없습니다');", "} catch (error) {", "  console.log(error.message);", "}"] },
+        "오류가 없으면 catch는 실행되지 않습니다. 오류가 발생하면 try의 남은 줄을 건너뛰고 catch로 이동합니다.",
+        "await한 Promise의 rejected 결과도 try/catch로 처리할 수 있습니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "잘못된 가격을 오류로 알리기",
+      "brief": ["price가 음수이므로 validatePrice가 Error를 던집니다. 다음 return은 실행되지 않습니다.", "catch가 오류 메시지를 출력한 뒤 프로그램은 try/catch 다음 줄을 계속 실행합니다."],
+      "code": "function validatePrice(price) {\n  if (price < 0) {\n    throw new Error('가격은 0 이상이어야 합니다');\n  }\n  return price;\n}\n\ntry {\n  console.log(validatePrice(-1000));\n} catch (error) {\n  console.log('오류: ' + error.message);\n}\n\nconsole.log('검사 종료');\n"
+    },
+    {
+      "kind": "tweak", "title": "오류가 없는 경로 확인하기",
+      "brief": ["validatePrice(-1000)을 validatePrice(12000)으로 바꾸면 12000이 출력되고 catch는 실행되지 않습니다.", "throw new Error 대신 문자열만 throw할 수도 있지만 Error 객체에는 이름과 실행 위치 정보가 있어 오류를 찾기 쉽습니다.", "catch에서 모든 오류를 조용히 무시하지 말고, 사용자에게 보여 줄 메시지나 개발자가 확인할 기록을 남겨야 합니다."],
+      "code": "function validatePrice(price) {\n  if (price < 0) {\n    throw new Error('가격은 0 이상이어야 합니다');\n  }\n  return price;\n}\n\ntry {\n  console.log(validatePrice(-1000));\n} catch (error) {\n  console.log('오류: ' + error.message);\n}\n\nconsole.log('검사 종료');\n"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 2, "id": "t4-12", "track": "T4", "order": 12, "runtime": "js",
+  "title": "async와 await로 Promise 기다리기",
+  "steps": [
+    {
+      "kind": "read", "title": "await는 async 함수 안에서 사용합니다",
+      "brief": [
+        "함수 앞에 async를 붙이면 그 함수는 항상 Promise를 반환합니다.",
+        "await promise는 Promise가 끝날 때까지 해당 async 함수 안의 다음 코드 실행을 미룹니다. 프로그램 전체를 멈추지는 않습니다.",
+        { "code": ["async function loadPrice() {", "  const price = await requestPrice();", "  return price + 3000;", "}"] },
+        "Promise가 fulfilled되면 await 식은 성공 결과가 됩니다. rejected되면 await 자리에서 오류가 발생합니다.",
+        "await는 then 연결을 위에서 아래로 읽는 형태로 바꿔 줍니다. 비동기 동작 자체가 동기 작업으로 바뀌는 것은 아닙니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "async 함수 안과 밖의 순서 확인하기",
+      "brief": ["loadPrice는 기다림 시작을 출력한 뒤 await에서 함수 안의 실행을 미룹니다.", "바깥의 호출 다음이 먼저 출력되고, Promise가 완료되면 가격과 함수 종료가 출력됩니다."],
+      "code": "function requestPrice() {\n  return new Promise((resolve) => {\n    setTimeout(() => resolve(12000), 500);\n  });\n}\n\nasync function loadPrice() {\n  console.log('기다림 시작');\n  const price = await requestPrice();\n  console.log('가격: ' + price);\n  return price + 3000;\n}\n\nloadPrice().then((total) => console.log('합계: ' + total));\nconsole.log('호출 다음');\n"
+    },
+    {
+      "kind": "tweak", "title": "await를 지웠을 때 비교하기",
+      "brief": ["const price = await requestPrice();에서 await를 지우면 price에는 숫자가 아니라 Promise 객체가 들어갑니다.", "price + 3000은 원하는 숫자 덧셈이 되지 않습니다. Promise의 결과가 필요한 줄에서는 await로 완료를 기다려야 합니다.", "loadPrice()의 반환값도 Promise이므로 바깥에서는 then을 사용하거나 또 다른 async 함수 안에서 await해야 합니다."],
+      "code": "function requestPrice() {\n  return new Promise((resolve) => {\n    setTimeout(() => resolve(12000), 500);\n  });\n}\n\nasync function loadPrice() {\n  console.log('기다림 시작');\n  const price = await requestPrice();\n  console.log('가격: ' + price);\n  return price + 3000;\n}\n\nloadPrice().then((total) => console.log('합계: ' + total));\nconsole.log('호출 다음');\n"
+    }
+  ]
+}

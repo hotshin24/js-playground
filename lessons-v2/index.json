@@ -77,6 +77,11 @@
     { "id": "t4-07", "track": "T4", "order": 7, "title": "input과 change 이벤트로 입력값 읽기" },
     { "id": "t4-08", "track": "T4", "order": 8, "title": "폼 제출을 JavaScript로 처리하기" },
     { "id": "t4-09", "track": "T4", "order": 9, "title": "동기 코드와 비동기 코드의 실행 순서" },
-    { "id": "t4-10", "track": "T4", "order": 10, "title": "Promise의 세 가지 상태 이해하기" }
+    { "id": "t4-10", "track": "T4", "order": 10, "title": "Promise의 세 가지 상태 이해하기" },
+    { "id": "t4-11", "track": "T4", "order": 11, "title": "then·catch·finally로 Promise 결과 사용하기" },
+    { "id": "t4-12", "track": "T4", "order": 12, "title": "async와 await로 Promise 기다리기" },
+    { "id": "t4-13", "track": "T4", "order": 13, "title": "throw와 try/catch로 오류 처리하기" },
+    { "id": "t4-14", "track": "T4", "order": 14, "title": "fetch로 JSON 응답 받아 사용하기" },
+    { "id": "t4-15", "track": "T4", "order": 15, "title": "여러 Promise를 함께 기다리기" }
   ]
 }

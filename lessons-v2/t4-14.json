@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 2, "id": "t4-14", "track": "T4", "order": 14, "runtime": "js",
+  "title": "fetch로 JSON 응답 받아 사용하기",
+  "steps": [
+    {
+      "kind": "read", "title": "응답 상태를 확인한 뒤 본문을 읽습니다",
+      "brief": [
+        "fetch(url)는 네트워크 요청을 시작하고 HTTP 응답을 나타내는 Promise를 반환합니다.",
+        "await fetch(url)의 결과는 JSON 데이터 자체가 아니라 Response 객체입니다. response.ok로 요청 성공 여부를 확인합니다.",
+        { "code": ["const response = await fetch(url);", "if (!response.ok) throw new Error('요청 실패');", "const data = await response.json();"] },
+        "response.json()도 본문을 읽고 변환하는 비동기 작업이므로 await가 필요합니다.",
+        "fetch는 404나 500 응답에서 자동으로 rejected되지 않습니다. 네트워크 자체가 실패한 경우와 HTTP 오류 응답을 구분해야 합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "외부 서버 없이 JSON 응답 읽기",
+      "brief": ["이 실습은 JSON을 담은 data URL을 사용해 외부 서버 상태와 관계없이 동작합니다.", "실제 API URL을 사용할 때도 Response의 ok를 확인하고 json()으로 본문을 읽는 순서는 같습니다."],
+      "code": "const url = 'data:application/json,%7B%22name%22%3A%22shirt%22%2C%22price%22%3A39000%7D';\n\nasync function loadProduct() {\n  const response = await fetch(url);\n\n  if (!response.ok) {\n    throw new Error('상품 요청 실패: ' + response.status);\n  }\n\n  const product = await response.json();\n  console.log(product.name);\n  console.log(product.price);\n}\n\nloadProduct().catch((error) => console.log(error.message));\n"
+    },
+    {
+      "kind": "tweak", "title": "JSON 변환 단계를 빼고 비교하기",
+      "brief": ["const product = await response.json();에서 .json()을 지우면 product에는 Response 객체가 들어갑니다. product.name은 undefined입니다.", "await를 지우면 product에는 JSON 변환이 끝나기 전의 Promise가 들어갑니다.", "fetch, ok 확인, json 변환은 서로 다른 세 단계입니다. 오류가 나면 어느 단계에서 실패했는지 확인하세요."],
+      "code": "const url = 'data:application/json,%7B%22name%22%3A%22shirt%22%2C%22price%22%3A39000%7D';\n\nasync function loadProduct() {\n  const response = await fetch(url);\n\n  if (!response.ok) {\n    throw new Error('상품 요청 실패: ' + response.status);\n  }\n\n  const product = await response.json();\n  console.log(product.name);\n  console.log(product.price);\n}\n\nloadProduct().catch((error) => console.log(error.message));\n"
+    }
+  ]
+}
