@@ -1,218 +1,39 @@
 {
-  "schemaVersion": 2,
-  "id": "t4-08",
-  "track": "T4",
-  "order": 8,
-  "runtime": "react",
-  "title": "입력창을 상태로 잡기",
+  "schemaVersion": 2, "id": "t4-08", "track": "T4", "order": 8, "runtime": "js",
+  "title": "폼 제출을 JavaScript로 처리하기",
   "steps": [
     {
-      "kind": "read",
-      "title": "누가 값을 쥐고 있는가",
+      "kind": "read", "title": "submit 이벤트는 form에서 처리합니다",
       "brief": [
-        "앞 트랙에서 입력창을 다뤄 봤습니다. 그때는 이랬습니다. 값은 입력창이 쥐고 있고, 코드는 필요할 때 input.value 를 물어보러 갔습니다. 화면이 주인이고 코드가 손님이었습니다.",
-        "React 에서는 반대로 합니다. 값은 상태가 쥡니다. 입력창은 그 값을 받아 보여 줄 뿐입니다. 화면이 상태의 결과라는 이 트랙의 원칙이 입력창에도 그대로 적용됩니다. 이렇게 만든 입력창을 제어 컴포넌트라고 부릅니다.",
-        "한 바퀴가 됩니다. value={keyword} 로 상태를 입력창에 내려보내고, onChange 로 사용자가 친 것을 받아 상태를 고칩니다. 상태가 바뀌면 다시 그려지고 새 값이 다시 내려갑니다. 내려가고 올라오고 다시 내려갑니다.",
-        "onChange 가 받는 것은 이벤트 객체입니다. 앞 트랙에서 본 그 event 이고, event.target 이 그 입력창입니다. 그래서 event.target.value 로 친 값을 꺼냅니다. 이름은 change 인데 글자를 칠 때마다 불립니다. 앞 트랙의 input 이벤트에 가깝습니다.",
-        "value 만 주고 onChange 를 빠뜨리면 어떻게 될까요. 콘솔에 경고가 뜹니다. You provided a `value` prop to a form field without an `onChange` handler. 값을 내려보내기만 하고 받을 길을 안 만들었으니 읽기 전용이 된다는 뜻입니다. 일부러 읽기 전용으로 두려면 readOnly 를 붙이고, 처음 값만 정하고 나머지는 입력창에 맡기려면 value 대신 defaultValue 를 쓰면 됩니다. 그 경우는 경고가 나지 않습니다."
+        "폼에서 제출 버튼을 누르거나 입력창에서 Enter를 누르면 form의 submit 이벤트가 발생합니다.",
+        "브라우저는 기본적으로 폼을 제출한 뒤 페이지를 이동하거나 새로고침합니다. JavaScript로 처리하려면 event.preventDefault()로 이 기본 동작을 막습니다.",
+        { "code": ["form.addEventListener('submit', (event) => {", "  event.preventDefault();", "});"] },
+        "클릭만 처리하는 대신 submit을 사용하면 버튼 클릭과 Enter 제출을 같은 코드로 처리할 수 있습니다.",
+        "입력값을 확인한 뒤 화면에 반영하고, 필요하면 form.reset()으로 입력 요소를 초기화할 수 있습니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "치는 대로 따라옵니다",
-      "brief": [
-        "검색창의 값을 상태가 쥐고 있습니다. 아래 두 줄은 그 상태에서 나옵니다.",
-        "실행한 뒤 미리보기의 검색창에 쳐 보세요. 아래 문구와 글자 수가 함께 따라옵니다.",
-        "코드에는 입력창에서 값을 읽어 오는 곳이 없습니다. onChange 에서 상태에 넣고, 화면은 그 상태만 봅니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".field { display: block; margin-bottom: 4px; font-size: 0.875rem; color: var(--c-text-muted); }",
-          ".field__input { width: 220px; }",
-          ".echo { margin: 8px 0 0; }",
-          ".count { margin: 4px 0 0; color: var(--c-text-muted); font-size: 0.875rem; }",
-          ".row { display: flex; align-items: center; gap: 6px; margin-top: 8px; }"
-        ]
-      },
-      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n\n  const handleChange = (event) => {\n    setKeyword(event.target.value);\n  };\n\n  return (\n    <div>\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword} onChange={handleChange} />\n      <p className=\"echo\">{keyword === '' ? '전체 코스' : `검색어: ${keyword}`}</p>\n      <p className=\"count\">{keyword.length}글자</p>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n"
+      "kind": "run", "title": "제출한 상품 이름 목록에 추가하기",
+      "brief": ["상품 이름을 적고 추가 버튼을 누르면 페이지 이동 없이 목록에 li가 추가됩니다.", "빈 문자열이면 추가하지 않습니다. trim은 문자열 앞뒤의 공백을 제거합니다."],
+      "scaffold": { "html": ["<form id=\"form\">", "  <input id=\"product\" aria-label=\"상품 이름\">", "  <button type=\"submit\">추가</button>", "</form>", "<ul id=\"list\"></ul>"], "css": ["form { display: flex; gap: 6px; }", "input, button { padding: 8px; }"] },
+      "code": "const form = document.querySelector('#form');\nconst productInput = document.querySelector('#product');\nconst list = document.querySelector('#list');\n\nform.addEventListener('submit', (event) => {\n  event.preventDefault();\n\n  const name = productInput.value.trim();\n  if (name === '') return;\n\n  const item = document.createElement('li');\n  item.textContent = name;\n  list.append(item);\n  form.reset();\n});\n"
     },
     {
-      "kind": "tweak",
-      "title": "한 바퀴를 끊어 보기",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행하고 검색창에 쳐 봐야 합니다.",
-        "① onChange={handleChange} 를 통째로 지워 보세요. 실행하자마자 콘솔에 You provided a `value` prop to a form field without an `onChange` handler. 가 뜹니다. 값을 내려보내기만 하고 올라올 길이 없으니 읽기 전용이 된다는 안내입니다. 쳐 보면 글자가 들어가지 않습니다.",
-        "② 되돌린 뒤 이번에는 value={keyword} 를 defaultValue={keyword} 로 바꾸고 onChange 도 함께 지워 보세요. 경고가 사라지고 글자도 들어갑니다. 그런데 아래 문구와 글자 수는 꿈쩍도 하지 않습니다. 이제 값을 쥔 것은 입력창이고 상태는 모릅니다. 앞 트랙과 같은 방식으로 돌아간 것입니다. 이렇게 만든 입력창을 비제어 컴포넌트라고 부릅니다.",
-        "③ 되돌린 뒤 handleChange 안에서 setKeyword 줄을 지워 보세요. 경고는 없는데 아무리 쳐도 글자가 들어가지 않습니다. 받을 길은 있는데 상태를 고치지 않으니 내려오는 값이 언제나 같기 때문입니다. 입력창이 아니라 상태가 값을 쥐고 있다는 증거입니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".field { display: block; margin-bottom: 4px; font-size: 0.875rem; color: var(--c-text-muted); }",
-          ".field__input { width: 220px; }",
-          ".echo { margin: 8px 0 0; }",
-          ".count { margin: 4px 0 0; color: var(--c-text-muted); font-size: 0.875rem; }",
-          ".row { display: flex; align-items: center; gap: 6px; margin-top: 8px; }"
-        ]
-      },
-      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n\n  const handleChange = (event) => {\n    setKeyword(event.target.value);\n  };\n\n  return (\n    <div>\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword} onChange={handleChange} />\n      <p className=\"echo\">{keyword === '' ? '전체 코스' : `검색어: ${keyword}`}</p>\n      <p className=\"count\">{keyword.length}글자</p>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n"
+      "kind": "tweak", "title": "기본 동작을 다시 허용해 보기",
+      "brief": ["event.preventDefault()를 지우고 제출하면 실행 화면이 다시 로드되어 추가한 항목이 사라질 수 있습니다.", "버튼의 type을 button으로 바꾸면 폼 제출 자체가 발생하지 않습니다. 폼 제출 버튼에는 type=submit을 사용합니다.", "입력 검사는 빈 값만 확인했습니다. 길이나 허용 문자를 검사하려면 목록에 추가하기 전에 조건을 더해야 합니다."],
+      "scaffold": { "html": ["<form id=\"form\">", "  <input id=\"product\" aria-label=\"상품 이름\">", "  <button type=\"submit\">추가</button>", "</form>", "<ul id=\"list\"></ul>"], "css": ["form { display: flex; gap: 6px; }", "input, button { padding: 8px; }"] },
+      "code": "const form = document.querySelector('#form');\nconst productInput = document.querySelector('#product');\nconst list = document.querySelector('#list');\n\nform.addEventListener('submit', (event) => {\n  event.preventDefault();\n\n  const name = productInput.value.trim();\n  if (name === '') return;\n\n  const item = document.createElement('li');\n  item.textContent = name;\n  list.append(item);\n  form.reset();\n});\n"
     },
     {
-      "kind": "fill",
-      "title": "올라오는 길 만들기",
-      "brief": [
-        "상태와 화면은 돼 있습니다. 사용자가 친 것을 받는 부분만 비어 있습니다.",
-        "null 자리를 채워 친 값이 상태에 들어가게 해 주세요. 받는 이벤트 객체의 이름은 event 입니다.",
-        "검사가 검색창에 '리액트' 를 대신 쳐 넣어 확인합니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".field { display: block; margin-bottom: 4px; font-size: 0.875rem; color: var(--c-text-muted); }",
-          ".field__input { width: 220px; }",
-          ".echo { margin: 8px 0 0; }",
-          ".count { margin: 4px 0 0; color: var(--c-text-muted); font-size: 0.875rem; }",
-          ".row { display: flex; align-items: center; gap: 6px; margin-top: 8px; }"
-        ]
-      },
-      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n\n  const handleChange = (event) => {\n    const next = null; // ← 여기를 채우세요\n    setKeyword(next);\n  };\n\n  return (\n    <div>\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword} onChange={handleChange} />\n      <p className=\"echo\">{keyword === '' ? '전체 코스' : `검색어: ${keyword}`}</p>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n",
-      "solutionCode": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n\n  const handleChange = (event) => {\n    const next = event.target.value;\n    setKeyword(next);\n  };\n\n  return (\n    <div>\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword} onChange={handleChange} />\n      <p className=\"echo\">{keyword === '' ? '전체 코스' : `검색어: ${keyword}`}</p>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n",
+      "kind": "write", "title": "폼 제출로 목록에 이름 추가하기",
+      "brief": ["폼의 submit 이벤트를 처리해 입력값을 li로 만들고 list에 추가하세요. 페이지가 다시 로드되지 않도록 기본 동작을 막아야 합니다.", "바로 앞의 완성 예제와 같은 순서로 작성합니다. 이번 검사에서는 '모자'를 입력한 뒤 제출합니다."],
+      "scaffold": { "html": ["<form id=\"form\">", "  <input id=\"product\" aria-label=\"상품 이름\">", "  <button id=\"submit\" type=\"submit\">추가</button>", "</form>", "<ul id=\"list\"></ul>"], "css": ["form { display: flex; gap: 6px; }"] },
+      "code": "const form = document.querySelector('#form');\nconst productInput = document.querySelector('#product');\nconst list = document.querySelector('#list');\n\n// submit 이벤트 처리 코드를 작성하세요\n",
+      "solutionCode": "const form = document.querySelector('#form');\nconst productInput = document.querySelector('#product');\nconst list = document.querySelector('#list');\n\nform.addEventListener('submit', (event) => {\n  event.preventDefault();\n  const item = document.createElement('li');\n  item.textContent = productInput.value;\n  list.append(item);\n});\n",
       "asserts": [
-        {
-          "type": "dom",
-          "label": "처음에는 전체 코스",
-          "select": ".echo",
-          "text": [
-            "전체 코스"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "친 값이 상태에 들어갑니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#q",
-              "value": "리액트"
-            }
-          ],
-          "select": ".echo",
-          "text": [
-            "검색어: 리액트"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "입력창에도 그 값이 남습니다",
-          "select": "#q",
-          "text": [
-            "리액트"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "지우면 전체 코스로 돌아옵니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#q",
-              "value": ""
-            }
-          ],
-          "select": ".echo",
-          "text": [
-            "전체 코스"
-          ]
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "검색창 만들기",
-      "brief": [
-        "검색창을 만들어 주세요. 값은 상태가 쥡니다. 처음에는 빈 문자열입니다.",
-        "<label className=\"field\" htmlFor=\"q\">코스 검색</label> 과 <input className=\"field__input\" id=\"q\" type=\"search\"> 를 두세요. 라벨과 입력창은 q 로 이어야 합니다.",
-        "그 아래 <p className=\"echo\"> 에 비었으면 '전체 코스', 아니면 '검색어: 리액트' 형태로 보여 주세요. 그 아래 <p className=\"count\"> 에 '3글자' 형태로 글자 수를 보여 주세요.",
-        "그리고 <div className=\"row\"> 안에 <button className=\"clear\">지우기</button> 를 두세요. 누르면 검색어가 비워집니다.",
-        "입력창에서 값을 읽어 오지 마세요. 상태가 값을 쥐고 화면은 그 결과입니다."
+        { "type": "dom", "label": "입력한 상품이 목록에 추가됨", "actions": [{ "action": "fill", "selector": "#product", "value": "모자" }, { "action": "submit", "selector": "#form" }], "select": "#list li", "text": ["모자"] }
       ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".field { display: block; margin-bottom: 4px; font-size: 0.875rem; color: var(--c-text-muted); }",
-          ".field__input { width: 220px; }",
-          ".echo { margin: 8px 0 0; }",
-          ".count { margin: 4px 0 0; color: var(--c-text-muted); font-size: 0.875rem; }",
-          ".row { display: flex; align-items: center; gap: 6px; margin-top: 8px; }"
-        ]
-      },
-      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 여기를 채우세요\n",
-      "solutionCode": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n\n  return (\n    <div>\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input\n        className=\"field__input\"\n        id=\"q\"\n        type=\"search\"\n        value={keyword}\n        onChange={(event) => setKeyword(event.target.value)}\n      />\n      <p className=\"echo\">{keyword === '' ? '전체 코스' : `검색어: ${keyword}`}</p>\n      <p className=\"count\">{keyword.length}글자</p>\n      <div className=\"row\">\n        <button className=\"clear\" type=\"button\" onClick={() => setKeyword('')}>지우기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "처음에는 전체 코스 · 0글자",
-          "select": ".echo, .count",
-          "text": [
-            "전체 코스",
-            "0글자"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "라벨이 입력창을 가리킵니다",
-          "select": "label[for=\"q\"]",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "치면 문구와 글자 수가 따라옵니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#q",
-              "value": "리액트"
-            }
-          ],
-          "select": ".echo, .count",
-          "text": [
-            "검색어: 리액트",
-            "3글자"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "지우기를 누르면 비워집니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".clear"
-            }
-          ],
-          "select": ".echo, .count",
-          "text": [
-            "전체 코스",
-            "0글자"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "입력창도 함께 비워집니다",
-          "select": "#q",
-          "text": [
-            ""
-          ]
-        }
-      ]
+      "hints": ["form.addEventListener('submit', (event) => { ... })로 시작하세요.", "콜백 안에서 preventDefault, createElement, textContent, append 순서로 작성하세요."]
     }
   ]
 }

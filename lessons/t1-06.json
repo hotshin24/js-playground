@@ -3,194 +3,38 @@
   "id": "t1-06",
   "track": "T1",
   "order": 6,
-  "title": "목록을 훑으며 세기",
+  "runtime": "js",
+  "title": "Symbol과 BigInt는 언제 쓸까요",
   "steps": [
     {
       "kind": "read",
-      "title": "값을 하나씩 꺼내 같은 일 하기",
+      "title": "드물지만 원시 타입에 포함됩니다",
       "brief": [
-        "배열에서 값을 꺼낼 때 지금까지는 번호를 하나씩 적었습니다. 값이 열 개면 열 줄을 써야 하고, 몇 개인지 미리 모르면 아예 쓸 수 없습니다.",
-        "반복문(for...of — 배열의 값을 처음부터 끝까지 하나씩 꺼내 주는 문법)은 그 일을 대신합니다. for (const n of numbers) { ... } 라고 쓰면 중괄호 안이 값의 개수만큼 실행되고, 그때마다 n에 값이 하나씩 들어옵니다. 이렇게 처음부터 끝까지 훑는 것을 순회라고도 합니다.",
-        "값이 셋이면 세 번, 열이면 열 번 돕니다. 빈 배열이면 한 번도 돌지 않습니다. 개수를 몰라도 되는 것이 이 문법의 핵심입니다.",
-        {
-          "code": [
-            "const prices = [1200, 3400, 5600];",
-            "",
-            "console.log(prices[0] >= 3000);   // false",
-            "",
-            "for (const price of prices) {",
-            "  console.log(price >= 3000);",
-            "}",
-            "// false",
-            "// true",
-            "// true"
-          ]
-        },
-        "위의 한 줄은 첫 값만 봅니다. 나머지를 보려면 줄을 더 써야 하고, 값이 몇 개인지 모르면 몇 줄을 써야 할지도 모릅니다.",
-        "아래는 같은 판정을 값마다 합니다. 배열이 길어져도 이 코드는 그대로입니다. 꺼낸 값을 그대로 출력하지 않고 조건에 넣었다는 점도 함께 보세요. 꺼낸 뒤에는 보통 값과 다를 것이 없습니다.",
-        "반복하면서 개수나 합계를 쌓으려면 값이 바뀌는 변수가 필요합니다. let은 다시 할당할 수 있는 변수를 선언합니다. let total = 0;으로 시작하고 total = total + price;라고 쓰면, 지금까지의 total에 이번 price를 더한 값이 다시 total에 할당됩니다. const는 다시 할당할 수 없으므로 이렇게 쌓는 자리에는 let을 씁니다."
+        "JavaScript의 원시 타입은 일곱 개입니다. 지금까지 string, number, boolean, undefined, null을 봤고, 나머지 두 개가 symbol과 bigint입니다.",
+        "Symbol은 다른 값과 겹치지 않는 고유한 값을 만듭니다. 설명이 같아도 각각 새로 만든 Symbol은 서로 다릅니다.",
+        { "code": ["const firstId = Symbol('id');", "const secondId = Symbol('id');", "console.log(firstId === secondId); // false"] },
+        "BigInt는 number로 정확히 다루기 어려울 만큼 큰 정수를 저장할 때 사용합니다. 정수 뒤에 n을 붙여 만듭니다.",
+        "처음 배우는 단계에서 직접 사용할 일은 많지 않습니다. 두 타입이 존재한다는 점과 기본 표기만 알아 두면 됩니다."
       ]
     },
     {
       "kind": "run",
-      "title": "한 바퀴 돌려 보기",
+      "title": "두 타입의 결과 확인하기",
       "brief": [
-        "아래는 값 세 개를 하나씩 꺼내 출력하면서, 동시에 몇 번 돌았는지를 셉니다.",
-        "실행 버튼을 눌러 보세요. 10, 20, 30 이 차례로 나오고 마지막에 3 이 나옵니다. 마지막 3 은 배열에서 꺼낸 값이 아니라 반복이 돌아간 횟수입니다.",
-        "count 만 const 가 아니라 let 입니다. const 는 한 번 정하면 바꿀 수 없는데 count 는 돌 때마다 달라져야 하기 때문입니다. count = count + 1 은 '지금 count 에 1을 더한 값을 다시 count 로 삼는다'는 뜻입니다. 이렇게 값을 이어서 쌓아 나가는 것이 반복문의 나머지 절반입니다."
+        "설명이 같은 Symbol 두 개를 비교해도 false가 나옵니다. 각 Symbol이 고유하기 때문입니다.",
+        "BigInt끼리는 더할 수 있습니다. typeof 결과는 각각 symbol과 bigint입니다."
       ],
-      "code": "const numbers = [10, 20, 30];\n\nlet count = 0;\n\nfor (const n of numbers) {\n  console.log(n);\n  count = count + 1;\n}\n\nconsole.log(count);\n"
+      "code": "const firstId = Symbol('id');\nconst secondId = Symbol('id');\nconst largeNumber = 9007199254740993n;\n\nconsole.log(firstId === secondId);\nconsole.log(largeNumber + 1n);\nconsole.log(typeof firstId);\nconsole.log(typeof largeNumber);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 더해 보기",
+      "title": "BigInt 계산 규칙 확인하기",
       "brief": [
-        "배열에 값을 하나 더 넣고 실행해 보세요. 출력되는 줄도 늘고 마지막 숫자도 함께 늘어납니다. 코드는 한 글자도 고치지 않았는데 반복 횟수가 달라집니다.",
-        "배열을 [] 로 비우고 실행해 보세요. 아무것도 출력되지 않고 마지막 줄만 0 입니다. 한 번도 돌지 않은 것입니다.",
-        "count = count + 1 을 count = 1 로 바꿔 보세요. 세 번 돌았는데도 마지막이 1 입니다. 쌓는 것과 덮어쓰는 것의 차이가 여기 있습니다. 쌓으려면 지금 값을 재료로 써야 합니다."
+        "largeNumber + 1n의 1n을 1로 바꾸고 실행해 보세요. BigInt와 number를 바로 더할 수 없다는 TypeError가 납니다.",
+        "다시 1n으로 되돌리면 정상적으로 계산됩니다. 계산할 때는 양쪽 값을 같은 타입으로 맞춰야 합니다.",
+        "Symbol과 BigInt의 세부 기능은 지금 암기하지 않아도 됩니다. 다음 레슨부터 자주 사용하는 타입을 다시 다룹니다."
       ],
-      "code": "const numbers = [10, 20, 30];\n\nlet count = 0;\n\nfor (const n of numbers) {\n  console.log(n);\n  count = count + 1;\n}\n\nconsole.log(count);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "합계 구하기",
-      "brief": [
-        "값을 하나씩 꺼내 계속 더하면 합계가 됩니다. total은 값이 계속 바뀌어야 해서 const가 아니라 let으로 만들었습니다.",
-        "null 자리에 지금까지의 합에 n을 더한 값을 넣어 보세요. 그 결과가 다시 total이 됩니다.",
-        "채우지 않고 실행하면 실제값이 null로 나옵니다."
-      ],
-      "code": "const numbers = [10, 20, 30];\n\nlet total = 0;\n\nfor (const n of numbers) {\n  total = null; // ← 여기를 채우세요\n}\n\nfunction getTotal() {\n  return total;\n}\n",
-      "entry": "getTotal",
-      "solutionCode": "const numbers = [10, 20, 30];\n\nlet total = 0;\n\nfor (const n of numbers) {\n  total = total + n;\n}\n\nfunction getTotal() {\n  return total;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "10 + 20 + 30 은 60입니다",
-          "args": [],
-          "expected": 60
-        }
-      ],
-      "hints": [
-        "total 은 계속 바뀌는 값입니다. 이번 줄에서 만들어야 하는 것은 '지금까지의 total 에 n 을 더한 새 값' 입니다. 지금 total 을 쓰지 않고 있다면 앞의 합이 사라집니다."
-      ]
-    },
-    {
-      "kind": "wrap",
-      "title": "어떤 배열에도 통하게",
-      "brief": [
-        "앞 단계에서 채운 합계가 그대로 함수 안에 들어가 있습니다. 다만 아직 정해진 배열 하나만 훑습니다.",
-        "함수가 받는 값의 이름은 list 입니다. 표시된 줄을 지우고, 반복문이 훑는 대상을 list 로 바꿔 보세요. total 과 n 은 그대로 둡니다.",
-        "검사는 세 건입니다. 고치지 않고 실행하면 첫 건만 통과합니다. 빈 배열도 들어오는데, 그때는 한 번도 돌지 않아 0 이 나와야 합니다."
-      ],
-      "code": "function sumOf(list) {\n  const numbers = [10, 20, 30]; // ← 이 줄을 지우고 list 를 쓰세요\n\n  let total = 0;\n\n  for (const n of numbers) {\n    total = total + n;\n  }\n\n  return total;\n}\n",
-      "entry": "sumOf",
-      "solutionCode": "function sumOf(list) {\n  let total = 0;\n\n  for (const n of list) {\n    total = total + n;\n  }\n\n  return total;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "10 + 20 + 30",
-          "args": [
-            [
-              10,
-              20,
-              30
-            ]
-          ],
-          "expected": 60
-        },
-        {
-          "type": "value",
-          "label": "값이 하나뿐인 배열",
-          "args": [
-            [
-              5
-            ]
-          ],
-          "expected": 5
-        },
-        {
-          "type": "value",
-          "label": "빈 배열 — 경계값",
-          "args": [
-            []
-          ],
-          "expected": 0
-        }
-      ],
-      "hints": [
-        "고칠 곳은 of 다음 한 군데입니다. 반복문이 무엇을 훑을지는 거기서 정해집니다."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "목록을 훑으며 세기",
-      "brief": [
-        "재고 수량 하나로 상품 상태가 갈립니다. 0이면 품절, 1개 이상 9개 이하면 재고 부족, 10개 이상이면 충분입니다. 목록 전체를 훑어 각 상태가 몇 건인지 세야 합니다.",
-        "countByStatus 함수를 완성해 보세요. items 배열을 받아 { soldOut, low, enough } 세 필드에 각각의 개수를 담은 객체를 반환합니다. 각 항목은 stock 숫자를 가지고 있습니다.",
-        "빈 배열이 들어와도 세 필드가 모두 0인 객체가 나와야 합니다. 필드가 빠지면 안 됩니다."
-      ],
-      "code": "function countByStatus(items) {\n  // 여기를 채우세요\n}\n",
-      "entry": "countByStatus",
-      "solutionCode": "function countByStatus(items) {\n  const result = { soldOut: 0, low: 0, enough: 0 };\n\n  for (const item of items) {\n    if (item.stock === 0) {\n      result.soldOut += 1;\n    } else if (item.stock < 10) {\n      result.low += 1;\n    } else {\n      result.enough += 1;\n    }\n  }\n\n  return result;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "세 상태가 섞인 목록",
-          "args": [
-            [
-              {
-                "stock": 0
-              },
-              {
-                "stock": 3
-              },
-              {
-                "stock": 12
-              }
-            ]
-          ],
-          "expected": {
-            "soldOut": 1,
-            "low": 1,
-            "enough": 1
-          }
-        },
-        {
-          "type": "value",
-          "label": "경계값 9와 10 — 9는 부족, 10은 충분입니다",
-          "args": [
-            [
-              {
-                "stock": 9
-              },
-              {
-                "stock": 10
-              }
-            ]
-          ],
-          "expected": {
-            "soldOut": 0,
-            "low": 1,
-            "enough": 1
-          }
-        },
-        {
-          "type": "value",
-          "label": "빈 목록도 세 필드가 모두 있어야 합니다",
-          "args": [
-            []
-          ],
-          "expected": {
-            "soldOut": 0,
-            "low": 0,
-            "enough": 0
-          }
-        }
-      ],
-      "hints": [
-        "세 갈래를 나누는 조건은 t1-02 에서 만든 것과 같습니다. 달라진 것은 글자를 반환하는 대신 숫자를 하나 올린다는 것뿐입니다.",
-        "빈 배열이 들어와도 세 필드가 있어야 합니다. 세기 전에 무엇을 먼저 준비해 두어야 하는지 보세요."
-      ]
+      "code": "const firstId = Symbol('id');\nconst secondId = Symbol('id');\nconst largeNumber = 9007199254740993n;\n\nconsole.log(firstId === secondId);\nconsole.log(largeNumber + 1n);\nconsole.log(typeof firstId);\nconsole.log(typeof largeNumber);\n"
     }
   ]
 }

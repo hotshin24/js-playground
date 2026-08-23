@@ -1,186 +1,38 @@
 {
-  "schemaVersion": 2,
-  "id": "t3-12",
-  "track": "T3",
-  "order": 12,
-  "runtime": "react",
-  "title": "안을 비워 두기",
+  "schemaVersion": 2, "id": "t3-12", "track": "T3", "order": 12, "runtime": "js",
+  "title": "map으로 같은 길이의 새 배열 만들기",
   "steps": [
     {
-      "kind": "read",
-      "title": "태그 사이에 넣는 props",
+      "kind": "read", "title": "콜백이 반환한 값이 새 배열의 값이 됩니다",
       "brief": [
-        "지금까지 컴포넌트에 값을 넘길 때는 속성처럼 적었습니다. <Card title=\"셔츠\" /> 처럼요. 이 방법은 글자나 숫자를 넘길 때 잘 맞습니다. 그런데 넘기고 싶은 것이 다른 컴포넌트라면 어떨까요.",
-        "섹션 껍데기를 생각해 봅시다. 제목 줄이 있고 그 아래에 무언가가 들어갑니다. 무엇이 들어갈지는 껍데기가 정하지 않습니다. 상품 카드일 수도 있고 코스 카드일 수도 있습니다. 껍데기는 자리만 마련해 두면 됩니다.",
-        "그럴 때 여는 태그와 닫는 태그 사이에 넣습니다. <Section heading=\"신상품\"><Card /><Card /></Section> 처럼요. HTML 을 쓰던 방식 그대로입니다. 받는 쪽에서는 children 이라는 이름으로 옵니다.",
-        "새로운 문법처럼 보이지만 결국 같은 props 입니다. 받는 쪽에서 props 의 키를 찍어 보면 children 이 그 안에 들어 있습니다. heading 과 나란히 있습니다. 사이에 넣은 것을 React 가 children 이라는 이름으로 담아 줄 뿐입니다. tweak 에서 직접 확인합니다.",
-        "몇 개를 넣었는지에 따라 모양이 달라집니다. 하나면 그 요소 자체가, 둘 이상이면 배열이 옵니다. 아무것도 넣지 않으면 undefined 입니다. 대개는 그냥 {children} 이라고 두면 되므로 신경 쓸 일이 없습니다.",
-        "이렇게 만들어 두면 껍데기와 알맹이가 갈립니다. 섹션은 제목과 여백만 책임지고, 안에 무엇이 오는지는 쓰는 쪽이 정합니다. 앞 트랙에서 같은 마크업을 상품에도 코스에도 썼던 것을 컴포넌트로 옮기면 이 모양이 됩니다."
+        "map은 배열의 각 값을 다른 값으로 바꾸어 같은 길이의 새 배열을 만듭니다.",
+        { "code": ["const prices = [10000, 20000];", "const withTax = prices.map((price) => {", "  return price + 1000;", "});"] },
+        "콜백이 첫 값에서 반환한 값은 새 배열의 첫 값이 됩니다. 모든 값에서 하나씩 반환하므로 결과 배열의 길이는 원본과 같습니다.",
+        "map은 원본 배열을 바꾸지 않습니다. 위 코드에서 prices는 그대로이고 withTax가 새 배열입니다.",
+        "중괄호 없는 화살표 함수로 prices.map((price) => price + 1000)처럼 줄여 쓸 수도 있습니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "같은 껍데기, 다른 알맹이",
-      "brief": [
-        "Section 껍데기 하나로 두 묶음을 그립니다. 안에 든 카드 수가 다릅니다.",
-        "실행해 보세요. 제목과 테두리는 같고 안의 내용만 다릅니다.",
-        "Section 안을 보세요. 자리는 {children} 한 줄뿐입니다. 무엇이 들어올지 미리 정하지 않았습니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          "#root { display: grid; gap: 12px; }",
-          ".section { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".section__head { margin: 0 0 6px; font-size: 0.875rem; letter-spacing: 0.04em;",
-          "  color: var(--c-text-muted); text-transform: uppercase; }",
-          ".section__body { display: grid; gap: 6px; }",
-          ".card { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
-          ".card__title { margin: 0; font-size: 1rem; }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Section = ({ heading, children }) => (\n  <section className=\"section\">\n    <h2 className=\"section__head\">{heading}</h2>\n    <div className=\"section__body\">{children}</div>\n  </section>\n);\n\nconst Card = ({ title }) => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">{title}</h3>\n  </article>\n);\n\nroot.render(\n  <>\n    <Section heading=\"신상품\">\n      <Card title=\"오버사이즈 셔츠\" />\n      <Card title=\"니트 베스트\" />\n    </Section>\n    <Section heading=\"추천 코스\">\n      <Card title=\"자바스크립트 입문\" />\n    </Section>\n  </>\n);\n"
+      "kind": "run", "title": "원본과 새 배열 비교하기",
+      "brief": ["각 price에 1000을 더한 11000, 21000, 31000이 새 배열에 들어갑니다.", "prices === withTax는 false입니다. 두 배열의 길이는 같지만 서로 다른 배열입니다."],
+      "code": "const prices = [10000, 20000, 30000];\nconst withTax = prices.map((price) => price + 1000);\n\nconsole.log(prices);\nconsole.log(withTax);\nconsole.log(prices === withTax);\n"
     },
     {
-      "kind": "tweak",
-      "title": "children 도 props 입니다",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
-        "① Section 의 받는 자리를 (props) 로 바꾸고 첫 줄에 console.log(Object.keys(props)); 를 넣어 보세요. 중괄호와 return 이 필요합니다. ['heading', 'children'] 이 찍힙니다. 태그 사이에 넣은 것이 children 이라는 이름의 props 로 와 있습니다. 이때 {heading} 은 {props.heading} 으로, {children} 은 {props.children} 으로 고쳐야 합니다.",
-        "② 이어서 console.log(Array.isArray(props.children)); 를 찍어 보세요. 카드 둘을 넣은 섹션에서는 true, 하나만 넣은 섹션에서는 false 입니다. 개수에 따라 모양이 다릅니다. 그래도 {children} 은 양쪽 다 잘 그립니다.",
-        "③ 구조 분해로 되돌린 뒤, 마지막 Section 을 <Section heading=\"추천 코스\" children={<Card title=\"자바스크립트 입문\" />} /> 로 바꿔 보세요. 태그 사이에 넣지 않고 속성으로 넘겼는데 결과가 같습니다. children 이 특별한 문법이 아니라 그냥 props 라는 증거입니다. 다만 읽기 어려우니 실제로는 태그 사이에 넣습니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          "#root { display: grid; gap: 12px; }",
-          ".section { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".section__head { margin: 0 0 6px; font-size: 0.875rem; letter-spacing: 0.04em;",
-          "  color: var(--c-text-muted); text-transform: uppercase; }",
-          ".section__body { display: grid; gap: 6px; }",
-          ".card { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
-          ".card__title { margin: 0; font-size: 1rem; }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Section = ({ heading, children }) => (\n  <section className=\"section\">\n    <h2 className=\"section__head\">{heading}</h2>\n    <div className=\"section__body\">{children}</div>\n  </section>\n);\n\nconst Card = ({ title }) => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">{title}</h3>\n  </article>\n);\n\nroot.render(\n  <>\n    <Section heading=\"신상품\">\n      <Card title=\"오버사이즈 셔츠\" />\n      <Card title=\"니트 베스트\" />\n    </Section>\n    <Section heading=\"추천 코스\">\n      <Card title=\"자바스크립트 입문\" />\n    </Section>\n  </>\n);\n"
+      "kind": "tweak", "title": "return을 빠뜨린 결과 확인하기",
+      "brief": ["화살표 함수를 (price) => { price + 1000; }으로 바꾸면 결과 배열은 [undefined, undefined, undefined]가 됩니다.", "중괄호를 사용하면 return을 직접 써야 합니다. (price) => { return price + 1000; }로 고치면 정상 결과가 나옵니다.", "map에서는 콜백이 각 위치에 넣을 값을 반드시 반환해야 합니다."],
+      "code": "const prices = [10000, 20000, 30000];\nconst withTax = prices.map((price) => price + 1000);\n\nconsole.log(prices);\nconsole.log(withTax);\nconsole.log(prices === withTax);\n"
     },
     {
-      "kind": "fill",
-      "title": "자리 마련하기",
-      "brief": [
-        "Section 껍데기에 제목은 들어가는데 안이 비어 있습니다.",
-        "null 자리를 채워 태그 사이에 넣은 것이 <div className=\"section__body\"> 안에 나오게 해 주세요.",
-        "받는 자리에서 어떤 이름으로 오는지 보고 그대로 쓰면 됩니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          "#root { display: grid; gap: 12px; }",
-          ".section { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".section__head { margin: 0 0 6px; font-size: 0.875rem; letter-spacing: 0.04em;",
-          "  color: var(--c-text-muted); text-transform: uppercase; }",
-          ".section__body { display: grid; gap: 6px; }",
-          ".card { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
-          ".card__title { margin: 0; font-size: 1rem; }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Section = ({ heading, children }) => {\n  const body = null; // ← 여기를 채우세요\n\n  return (\n    <section className=\"section\">\n      <h2 className=\"section__head\">{heading}</h2>\n      <div className=\"section__body\">{body}</div>\n    </section>\n  );\n};\n\nconst Card = ({ title }) => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">{title}</h3>\n  </article>\n);\n\nroot.render(\n  <Section heading=\"신상품\">\n    <Card title=\"오버사이즈 셔츠\" />\n    <Card title=\"니트 베스트\" />\n  </Section>\n);\n",
-      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Section = ({ heading, children }) => {\n  const body = children;\n\n  return (\n    <section className=\"section\">\n      <h2 className=\"section__head\">{heading}</h2>\n      <div className=\"section__body\">{body}</div>\n    </section>\n  );\n};\n\nconst Card = ({ title }) => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">{title}</h3>\n  </article>\n);\n\nroot.render(\n  <Section heading=\"신상품\">\n    <Card title=\"오버사이즈 셔츠\" />\n    <Card title=\"니트 베스트\" />\n  </Section>\n);\n",
+      "kind": "fill", "title": "각 가격을 10% 할인하기",
+      "brief": ["prices의 각 값에 0.9를 곱한 새 배열을 반환하세요. 원본 배열은 바꾸지 않습니다.", "return 뒤의 null을 map을 사용한 식으로 바꾸세요."],
+      "code": "function discountPrices(prices) {\n  return null; // 이 줄을 바꾸세요\n}\n",
+      "entry": "discountPrices",
+      "solutionCode": "function discountPrices(prices) {\n  return prices.map((price) => price * 0.9);\n}\n",
       "asserts": [
-        {
-          "type": "dom",
-          "label": "제목이 들어갑니다",
-          "select": ".section__head",
-          "text": [
-            "신상품"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "카드가 두 장 들어갑니다",
-          "select": ".section__body > .card",
-          "count": 2
-        },
-        {
-          "type": "dom",
-          "label": "카드 제목이 순서대로 들어갑니다",
-          "select": ".card__title",
-          "text": [
-            "오버사이즈 셔츠",
-            "니트 베스트"
-          ]
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "껍데기와 알맹이 나누기",
-      "brief": [
-        "섹션 껍데기 Section 과 카드 Card 를 만들어 두 묶음을 그려 주세요.",
-        "Section 은 heading 을 받아 <section className=\"section\"> 안에 <h2 className=\"section__head\"> 로 제목을 놓고, 그 아래 <div className=\"section__body\"> 안에 태그 사이로 받은 것을 놓습니다.",
-        "Card 는 title 을 받아 <article className=\"card\"> 안에 <h3 className=\"card__title\"> 로 제목을 놓습니다.",
-        "첫 묶음은 제목 '신상품' 에 '오버사이즈 셔츠' · '니트 베스트' 두 장, 둘째 묶음은 제목 '추천 코스' 에 '자바스크립트 입문' 한 장입니다. Section 은 안에 무엇이 오는지 몰라야 합니다."
+        { "type": "value", "label": "세 가격을 각각 할인함", "args": [[10000, 20000, 30000]], "expected": [9000, 18000, 27000] },
+        { "type": "value", "label": "빈 배열이면 빈 배열", "args": [[]], "expected": [] }
       ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          "#root { display: grid; gap: 12px; }",
-          ".section { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".section__head { margin: 0 0 6px; font-size: 0.875rem; letter-spacing: 0.04em;",
-          "  color: var(--c-text-muted); text-transform: uppercase; }",
-          ".section__body { display: grid; gap: 6px; }",
-          ".card { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
-          ".card__title { margin: 0; font-size: 1rem; }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 여기를 채우세요\n",
-      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Section = ({ heading, children }) => (\n  <section className=\"section\">\n    <h2 className=\"section__head\">{heading}</h2>\n    <div className=\"section__body\">{children}</div>\n  </section>\n);\n\nconst Card = ({ title }) => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">{title}</h3>\n  </article>\n);\n\nroot.render(\n  <>\n    <Section heading=\"신상품\">\n      <Card title=\"오버사이즈 셔츠\" />\n      <Card title=\"니트 베스트\" />\n    </Section>\n    <Section heading=\"추천 코스\">\n      <Card title=\"자바스크립트 입문\" />\n    </Section>\n  </>\n);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "섹션이 둘 나옵니다",
-          "select": ".section",
-          "count": 2
-        },
-        {
-          "type": "dom",
-          "label": "제목이 순서대로 들어갑니다",
-          "select": ".section__head",
-          "text": [
-            "신상품",
-            "추천 코스"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "첫 섹션에 카드 두 장",
-          "select": ".section:nth-child(1) .section__body > .card",
-          "count": 2
-        },
-        {
-          "type": "dom",
-          "label": "둘째 섹션에 카드 한 장",
-          "select": ".section:nth-child(2) .section__body > .card",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "카드 제목이 순서대로 들어갑니다",
-          "select": ".card__title",
-          "text": [
-            "오버사이즈 셔츠",
-            "니트 베스트",
-            "자바스크립트 입문"
-          ]
-        }
-      ]
+      "hints": ["prices.map(...)의 결과를 반환하세요.", "map의 콜백은 price * 0.9를 반환합니다."]
     }
   ]
 }

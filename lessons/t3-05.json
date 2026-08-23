@@ -1,168 +1,26 @@
 {
-  "schemaVersion": 2,
-  "id": "t3-05",
-  "track": "T3",
-  "order": 5,
-  "runtime": "react",
-  "title": "첫 컴포넌트",
+  "schemaVersion": 2, "id": "t3-05", "track": "T3", "order": 5, "runtime": "js",
+  "title": "원시값을 복사하면 서로 영향을 주지 않습니다",
   "steps": [
     {
-      "kind": "read",
-      "title": "JSX 를 돌려주는 함수",
+      "kind": "read", "title": "변수에는 원시값 자체가 복사됩니다",
       "brief": [
-        "지금까지 JSX 를 변수에 담았습니다. 변수는 한 번 만들면 그 값 하나입니다. 같은 모양을 여러 번 쓰려면 만드는 방법을 담아 두어야 합니다. 그것이 함수입니다.",
-        "앞 트랙에서 만든 cardOf 함수가 바로 그것이었습니다. 코스 하나를 받아 카드 HTML 문자열을 돌려줬습니다. React 의 컴포넌트도 같은 물건입니다. 다른 점은 문자열이 아니라 JSX 를 돌려준다는 것뿐입니다.",
-        "그렇게 만들어 두면 태그처럼 쓸 수 있습니다. const Card = () => (...) 로 만들고 <Card /> 라고 씁니다. 안에 넣을 것이 없으니 스스로 닫습니다. 앞 레슨에서 본 그 규칙입니다.",
-        "규칙이 하나 있습니다. 이름이 대문자로 시작해야 합니다. 소문자로 쓰면 React 는 그것을 HTML 태그로 봅니다. <card /> 라고 쓰면 card 라는 이름의 태그를 만들려 하고, 여러분이 만든 함수는 아예 불리지 않습니다. tweak 에서 직접 확인합니다.",
-        "이번 레슨의 컴포넌트는 값을 밖에서 받지 않습니다. 언제나 같은 카드를 돌려줍니다. 밖에서 값을 받는 것은 다음 레슨입니다."
+        "문자열, 숫자, 불리언, undefined, null, symbol, bigint는 원시값입니다. 원시값이 든 변수를 다른 변수에 할당하면 값이 복사됩니다.",
+        { "code": ["let firstPrice = 12000;", "let secondPrice = firstPrice;", "secondPrice = 39000;"] },
+        "secondPrice에 firstPrice의 숫자 12000이 복사됩니다. 이후 secondPrice를 39000으로 바꿔도 firstPrice는 12000입니다.",
+        "두 변수가 같은 숫자를 가지고 있었을 뿐, 하나의 저장 공간을 함께 사용한 것이 아닙니다.",
+        "이 동작은 다음 레슨의 객체 복사와 다릅니다. 두 코드를 나란히 비교해야 차이가 분명해집니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "한 번 만들고 두 번 쓰기",
-      "brief": [
-        "Card 컴포넌트를 하나 만들고 두 번 썼습니다.",
-        "실행해 보세요. 같은 카드가 두 장 나옵니다. 마크업은 한 번만 적었습니다.",
-        "<Card /> 가 태그처럼 보이지만 HTML 태그가 아닙니다. 바로 위에서 만든 함수입니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          "#root { display: grid; gap: 8px; }",
-          ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
-          ".card__price { margin: 0; color: var(--c-text-muted); }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = () => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n    <p className=\"card__price\">189,000원</p>\n  </article>\n);\n\nroot.render(\n  <>\n    <Card />\n    <Card />\n  </>\n);\n"
+      "kind": "run", "title": "복사한 변수만 바꾸기",
+      "brief": ["originalName의 문자열이 copiedName에 복사됩니다. copiedName을 바꿔도 originalName은 그대로입니다.", "숫자와 불리언도 같은 방식으로 서로 독립적인 값이 복사됩니다."],
+      "code": "let originalName = '셔츠';\nlet copiedName = originalName;\n\ncopiedName = '모자';\n\nconsole.log(originalName);\nconsole.log(copiedName);\n"
     },
     {
-      "kind": "tweak",
-      "title": "대문자 규칙 확인하기",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
-        "① 선언과 사용을 모두 소문자로 바꿔 보세요. const card = () => ... 와 <card /> 입니다. 화면이 텅 빕니다. 콘솔에는 The tag <card> is unrecognized in this browser. If you meant to render a React component, start its name with an uppercase letter. 가 뜹니다. React 가 card 라는 HTML 태그를 만들려 한 것입니다. 여러분의 함수는 불리지도 않았습니다.",
-        "② 되돌린 뒤 <Card /> 를 하나 더 추가해 보세요. 카드가 세 장이 됩니다. 마크업은 여전히 한 번만 적혀 있습니다.",
-        "③ 컴포넌트 함수 안 첫 줄에 console.log('Card 가 불렸습니다'); 를 넣고 실행해 보세요. 쓴 횟수만큼 찍힙니다. <Card /> 는 그때마다 함수를 부르는 것입니다. 이렇게 하려면 화살표 함수의 중괄호를 열고 return 을 써야 합니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          "#root { display: grid; gap: 8px; }",
-          ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
-          ".card__price { margin: 0; color: var(--c-text-muted); }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = () => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n    <p className=\"card__price\">189,000원</p>\n  </article>\n);\n\nroot.render(\n  <>\n    <Card />\n    <Card />\n  </>\n);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "컴포넌트 채우기",
-      "brief": [
-        "화면에 붙이는 곳은 돼 있습니다. 컴포넌트가 돌려줄 것만 비어 있습니다.",
-        "null 자리를 채워 제목 '오버사이즈 셔츠'(card__title)와 가격 '189,000원'(card__price)이 든 카드가 나오게 해 주세요. 바깥은 <article className=\"card\"> 입니다.",
-        "화면에는 카드가 두 장 나와야 합니다. 컴포넌트는 하나만 만들면 됩니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          "#root { display: grid; gap: 8px; }",
-          ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
-          ".card__price { margin: 0; color: var(--c-text-muted); }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = () => null; // ← 여기를 채우세요\n\nroot.render(\n  <>\n    <Card />\n    <Card />\n  </>\n);\n",
-      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = () => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n    <p className=\"card__price\">189,000원</p>\n  </article>\n);\n\nroot.render(\n  <>\n    <Card />\n    <Card />\n  </>\n);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "카드가 두 장 나옵니다",
-          "select": ".card",
-          "count": 2
-        },
-        {
-          "type": "dom",
-          "label": "제목이 두 번 들어갑니다",
-          "select": ".card__title",
-          "text": [
-            "오버사이즈 셔츠",
-            "오버사이즈 셔츠"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "가격이 두 번 들어갑니다",
-          "select": ".card__price",
-          "text": [
-            "189,000원",
-            "189,000원"
-          ]
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "컴포넌트로 세 장",
-      "brief": [
-        "카드 컴포넌트를 만들어 세 장을 화면에 놓아 주세요. 이름은 Card 입니다.",
-        "카드 하나는 <article className=\"card\"> 안에 제목 '니트 베스트'(card__title)와 가격 '245,000원'(card__price)이 들어갑니다.",
-        "마크업은 한 번만 적으세요. 세 장은 컴포넌트를 세 번 쓰는 것으로 만듭니다. 세 장을 묶을 때 그리드 칸을 잡아먹는 요소를 새로 만들지 마세요."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          "#root { display: grid; gap: 8px; }",
-          ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
-          ".card__price { margin: 0; color: var(--c-text-muted); }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 여기를 채우세요\n",
-      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = () => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">니트 베스트</h3>\n    <p className=\"card__price\">245,000원</p>\n  </article>\n);\n\nroot.render(\n  <>\n    <Card />\n    <Card />\n    <Card />\n  </>\n);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "카드가 세 장 나옵니다",
-          "select": ".card",
-          "count": 3
-        },
-        {
-          "type": "dom",
-          "label": "제목이 세 번 들어갑니다",
-          "select": ".card__title",
-          "text": [
-            "니트 베스트",
-            "니트 베스트",
-            "니트 베스트"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "가격도 세 번 들어갑니다",
-          "select": ".card__price",
-          "text": [
-            "245,000원",
-            "245,000원",
-            "245,000원"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "카드가 그리드 칸에 직접 놓입니다",
-          "select": "#root > *",
-          "count": 3
-        }
-      ]
+      "kind": "tweak", "title": "숫자 값으로 다시 확인하기",
+      "brief": ["문자열 대신 originalPrice = 12000과 copiedPrice를 만들어 같은 과정을 실행해 보세요.", "copiedPrice += 3000을 실행해도 originalPrice는 12000입니다.", "원시값을 복사한 뒤 한쪽 변수를 바꾸면 다른 변수의 값은 바뀌지 않습니다."],
+      "code": "let originalName = '셔츠';\nlet copiedName = originalName;\n\ncopiedName = '모자';\n\nconsole.log(originalName);\nconsole.log(copiedName);\n"
     }
   ]
 }

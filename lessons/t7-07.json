@@ -1,120 +1,28 @@
 {
-  "schemaVersion": 2,
-  "id": "t7-07",
-  "track": "T7",
-  "order": 7,
-  "runtime": "js",
-  "title": "같은 것을 class 로",
+  "schemaVersion": 2, "id": "t7-07", "track": "T7", "order": 7, "runtime": "react",
+  "title": "마운트 때 구독하고 언마운트 때 해제하기",
   "steps": [
     {
-      "kind": "read",
-      "title": "문법이 바뀐 것이지 원리가 바뀐 것은 아닙니다",
+      "kind": "read", "title": "등록한 것과 같은 대상·이벤트·함수로 제거합니다",
       "brief": [
-        "앞 레슨에서 생성자 함수로 같은 모양의 객체를 여럿 만들었습니다. 값은 생성자 안에서 this 에 담고, 메서드는 prototype 에 따로 붙였습니다. 두 곳으로 흩어져 있었습니다.",
-        "class 문법은 그 둘을 한 덩어리로 묶어 적게 해 줍니다. constructor 가 생성자 함수 자리이고, 그 옆에 적는 것들이 prototype 에 붙습니다.",
-        "여기서 반드시 알아 둘 것이 있습니다. 바뀐 것은 적는 방법뿐입니다. 만들어지는 결과는 앞 레슨과 똑같습니다. 값은 인스턴스에 들어가고 메서드는 프로토타입에 하나만 있어 나눠 씁니다. 체인도 그대로 이어집니다.",
-        "typeof 로 확인해 보면 더 분명합니다. class 로 만든 Course 도 typeof 는 'function' 입니다. 자바스크립트에 클래스라는 새 종류가 생긴 것이 아니라, 이미 있던 것을 적는 편한 문법이 생긴 것입니다. 그래서 이것을 문법 설탕이라고 부르기도 합니다.",
-        "다만 문법만 바뀐 것은 아니고 규칙이 몇 가지 더 붙었습니다. 그 규칙들이 앞 레슨의 사고를 막습니다.",
-        "첫째, new 없이 부르면 아예 에러가 납니다. Class constructor Course cannot be invoked without 'new' 라고 말해 줍니다. 앞 레슨에서 new 를 빠뜨리면 조용히 전역이 더러워졌던 것과 정반대입니다. 옛 코드가 this instanceof 로 손수 막던 것을 문법이 대신합니다.",
-        "둘째, class 본문은 언제나 엄격 모드입니다. 이 도구가 sloppy 여도 그렇습니다. 그래서 메서드를 떼어 내어 부르면 this 가 window 가 아니라 undefined 이고 그 자리에서 터집니다. t7-01 에서 'use strict' 를 켜 봤던 그 조건이 class 안에서는 기본입니다.",
-        "셋째, class 의 메서드는 열거되지 않습니다. Object.keys 로도, for...in 으로도 나오지 않습니다. 옛 방식에서는 prototype 에 붙인 메서드가 for...in 에 섞여 나와 곤란한 경우가 있었습니다.",
-        "다음 두 단계에 같은 코드를 두 문법으로 나란히 두었습니다. 출력이 같은지 직접 확인해 보세요. 어느 쪽이 낫다는 이야기가 아닙니다. 새로 쓸 때는 class 를 쓰는 것이 보통이고, 옛 코드를 읽을 때는 앞 레슨의 모양을 알아볼 수 있어야 합니다."
+        "브라우저 이벤트 구독은 마운트 뒤 addEventListener로 시작하고 cleanup에서 removeEventListener로 해제할 수 있습니다.",
+        { "code": ["useEffect(() => {", "  window.addEventListener('resize', handleResize);", "  return () => window.removeEventListener('resize', handleResize);", "}, []);"] },
+        "리스너를 제거하려면 등록할 때와 같은 함수 참조가 필요합니다. 그래서 handleResize를 effect 안에서 한 번 만들고 등록과 제거에 함께 사용합니다.",
+        "빈 의존성 배열은 이 effect가 렌더에서 바뀌는 props나 state를 사용하지 않고 마운트와 언마운트에만 맞춰진 경우에 적합합니다.",
+        "구독은 브라우저 이벤트뿐 아니라 채팅 연결, 외부 라이브러리 이벤트 등에도 같은 시작·해제 구조를 사용합니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "먼저 · 생성자 함수로 쓴 것",
-      "brief": [
-        "앞 레슨의 모양입니다. 생성자와 메서드가 따로 있습니다.",
-        "실행해 보세요. 세 줄이 나옵니다. 그 결과를 기억해 두세요.",
-        "Course.prototype 에 두 번 붙이는 줄을 보세요. 메서드가 늘면 이 줄도 늘어납니다."
-      ],
-      "code": "function Course(name, hours) {\n  this.name = name;\n  this.hours = hours;\n}\n\nCourse.prototype.describe = function () {\n  return this.name + ' · ' + this.hours + '시간';\n};\n\nCourse.prototype.addHours = function (n) {\n  this.hours += n;\n  return this;\n};\n\nconst a = new Course('리액트 입문', 8);\nconst b = new Course('CSS 레이아웃', 6);\n\nconsole.log(a.addHours(2).describe(), '/', b.describe());\nconsole.log('둘이 나눠 쓴다 :', a.describe === b.describe);\nconsole.log('체인 :', Object.getPrototypeOf(a) === Course.prototype);\n"
+      "kind": "run", "title": "창 크기 구독 시작하고 해제하기",
+      "brief": ["SizeWatcher가 마운트되면 resize 리스너가 등록되고 현재 너비를 state에 저장합니다.", "숨기면 리스너가 제거됩니다. 다시 표시하면 새 컴포넌트가 현재 너비로 다시 시작합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 7px 9px; }"] },
+      "code": "const { useEffect, useState } = React;\n\nfunction SizeWatcher() {\n  const [width, setWidth] = useState(window.innerWidth);\n\n  useEffect(() => {\n    function handleResize() {\n      setWidth(window.innerWidth);\n    }\n\n    window.addEventListener('resize', handleResize);\n    return () => window.removeEventListener('resize', handleResize);\n  }, []);\n\n  return <p>실행 화면 너비: {width}px</p>;\n}\n\nfunction App() {\n  const [visible, setVisible] = useState(true);\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setVisible(!visible)}>{visible ? '감시 중지' : '감시 시작'}</button>\n      {visible && <SizeWatcher />}\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     },
     {
-      "kind": "run",
-      "title": "다음 · class 로 쓴 것",
-      "brief": [
-        "같은 것을 class 로 적었습니다. 아래 세 줄은 건드리지 않았습니다.",
-        "실행해서 앞 단계와 견줘 보세요. 출력이 완전히 같습니다. 나눠 쓰는 것도, 체인도 그대로입니다.",
-        "두 코드를 나란히 놓고 보세요. constructor 가 생성자 함수 자리이고, describe 와 addHours 는 Course.prototype 에 붙던 것이 안으로 들어왔을 뿐입니다.",
-        "메서드 사이에 쉼표가 없는 것도 눈에 익혀 두세요. 객체 리터럴이 아니라 class 본문입니다."
-      ],
-      "code": "class Course {\n  constructor(name, hours) {\n    this.name = name;\n    this.hours = hours;\n  }\n\n  describe() {\n    return this.name + ' · ' + this.hours + '시간';\n  }\n\n  addHours(n) {\n    this.hours += n;\n    return this;\n  }\n}\n\nconst a = new Course('리액트 입문', 8);\nconst b = new Course('CSS 레이아웃', 6);\n\nconsole.log(a.addHours(2).describe(), '/', b.describe());\nconsole.log('둘이 나눠 쓴다 :', a.describe === b.describe);\nconsole.log('체인 :', Object.getPrototypeOf(a) === Course.prototype);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "class 본문 채우기",
-      "brief": [
-        "생성자는 돼 있고 메서드 자리가 비어 있습니다.",
-        "null 자리를 채워 describe() 를 만들어 주세요. '리액트 입문 · 8시간' 형태를 돌려줍니다.",
-        "class 본문에는 function 을 적지 않습니다. describe() { ... } 처럼 이름과 괄호만 적습니다. 앞 메서드와 쉼표로 잇지도 않습니다.",
-        "채우지 않고 실행하면 describe 가 없어 터집니다."
-      ],
-      "code": "class Course {\n  constructor(name, hours) {\n    this.name = name;\n    this.hours = hours;\n  }\n\n  null; // ← 여기를 채우세요\n}\n\n// 이 함수는 그대로 두세요\nfunction report(name, hours, otherName, otherHours) {\n  const a = new Course(name, hours);\n  const b = new Course(otherName, otherHours);\n  return a.describe() + ' / ' + b.describe() + ' / 나눠 쓰는가: ' + (a.describe === b.describe);\n}\n",
-      "entry": "report",
-      "solutionCode": "class Course {\n  constructor(name, hours) {\n    this.name = name;\n    this.hours = hours;\n  }\n\n  describe() {\n    return this.name + ' · ' + this.hours + '시간';\n  }\n}\n\n// 이 함수는 그대로 두세요\nfunction report(name, hours, otherName, otherHours) {\n  const a = new Course(name, hours);\n  const b = new Course(otherName, otherHours);\n  return a.describe() + ' / ' + b.describe() + ' / 나눠 쓰는가: ' + (a.describe === b.describe);\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "둘 다 자기 값을 쓰고 메서드는 하나",
-          "args": [
-            "리액트 입문",
-            8,
-            "CSS 레이아웃",
-            6
-          ],
-          "expected": "리액트 입문 · 8시간 / CSS 레이아웃 · 6시간 / 나눠 쓰는가: true"
-        },
-        {
-          "type": "value",
-          "label": "다른 값으로도",
-          "args": [
-            "자바스크립트 기초",
-            12,
-            "접근성 기초",
-            4
-          ],
-          "expected": "자바스크립트 기초 · 12시간 / 접근성 기초 · 4시간 / 나눠 쓰는가: true"
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "옛 코드를 class 로 옮기기",
-      "brief": [
-        "앞 레슨에서 생성자 함수로 만든 Course 를 class 로 다시 써 주세요. 남의 코드를 옮겨 적는 훈련입니다.",
-        "생성자는 name 과 hours 를 받아 this 에 담습니다.",
-        "메서드는 셋입니다. describe() 는 '리액트 입문 · 8시간' 형태를, isLong() 은 시간이 10 이상인지, addHours(n) 은 시간을 늘리고 자기 자신을 돌려줍니다.",
-        "prototype 에 직접 붙이지 마세요. class 본문 안에 적으면 됩니다.",
-        "this instanceof 로 막는 안전장치도 넣지 마세요. class 는 new 없는 호출을 스스로 막습니다.",
-        "report 는 그대로 두세요. 검사기가 이 함수를 부릅니다. new 없이 부른 경우가 정말 에러로 막히는지도 함께 봅니다."
-      ],
-      "code": "// Course 를 여기에 작성하세요\n\n// 이 함수는 그대로 두세요\nfunction report(name, hours, add) {\n  const c = new Course(name, hours);\n  let blocked = '막지 못함';\n  try {\n    Course(name, hours);\n  } catch (e) {\n    blocked = e.name;\n  }\n  return c.addHours(add).describe()\n    + ' / 긴 강의인가: ' + c.isLong()\n    + ' / new 없이 부르면: ' + blocked\n    + ' / 메서드가 열거되는가: ' + (Object.keys(c).indexOf('describe') >= 0);\n}\n",
-      "entry": "report",
-      "solutionCode": "class Course {\n  constructor(name, hours) {\n    this.name = name;\n    this.hours = hours;\n  }\n\n  describe() {\n    return this.name + ' · ' + this.hours + '시간';\n  }\n\n  isLong() {\n    return this.hours >= 10;\n  }\n\n  addHours(n) {\n    this.hours += n;\n    return this;\n  }\n}\n\n// 이 함수는 그대로 두세요\nfunction report(name, hours, add) {\n  const c = new Course(name, hours);\n  let blocked = '막지 못함';\n  try {\n    Course(name, hours);\n  } catch (e) {\n    blocked = e.name;\n  }\n  return c.addHours(add).describe()\n    + ' / 긴 강의인가: ' + c.isLong()\n    + ' / new 없이 부르면: ' + blocked\n    + ' / 메서드가 열거되는가: ' + (Object.keys(c).indexOf('describe') >= 0);\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "늘리면 긴 강의",
-          "args": [
-            "리액트 입문",
-            8,
-            4
-          ],
-          "expected": "리액트 입문 · 12시간 / 긴 강의인가: true / new 없이 부르면: TypeError / 메서드가 열거되는가: false"
-        },
-        {
-          "type": "value",
-          "label": "짧은 강의",
-          "args": [
-            "CSS 레이아웃",
-            6,
-            1
-          ],
-          "expected": "CSS 레이아웃 · 7시간 / 긴 강의인가: false / new 없이 부르면: TypeError / 메서드가 열거되는가: false"
-        }
-      ]
+      "kind": "tweak", "title": "서로 다른 함수로 제거해 보기",
+      "brief": ["cleanup을 window.removeEventListener('resize', () => setWidth(window.innerWidth))로 바꾸면 등록한 handleResize와 다른 함수라 제거되지 않습니다.", "함수 내용이 같아 보여도 새 화살표 함수는 다른 함수 값입니다.", "등록과 제거에 같은 handleResize를 사용하도록 되돌리세요."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 7px 9px; }"] },
+      "code": "const { useEffect, useState } = React;\n\nfunction SizeWatcher() {\n  const [width, setWidth] = useState(window.innerWidth);\n\n  useEffect(() => {\n    function handleResize() {\n      setWidth(window.innerWidth);\n    }\n\n    window.addEventListener('resize', handleResize);\n    return () => window.removeEventListener('resize', handleResize);\n  }, []);\n\n  return <p>실행 화면 너비: {width}px</p>;\n}\n\nfunction App() {\n  const [visible, setVisible] = useState(true);\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setVisible(!visible)}>{visible ? '감시 중지' : '감시 시작'}</button>\n      {visible && <SizeWatcher />}\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     }
   ]
 }

@@ -1,184 +1,28 @@
 {
-  "schemaVersion": 2,
-  "id": "t6-06",
-  "track": "T6",
-  "order": 6,
-  "runtime": "react",
-  "title": "가져오기를 훅으로",
+  "schemaVersion": 2, "id": "t6-06", "track": "T6", "order": 6, "runtime": "react",
+  "title": "이벤트에서 state를 바꾸고 다시 렌더링하기",
   "steps": [
     {
-      "kind": "read",
-      "title": "다섯 번 되풀이한 것",
+      "kind": "read", "title": "사용자 행동부터 새 화면까지 순서가 있습니다",
       "brief": [
-        "여기까지 다섯 레슨 동안 같은 묶음을 다섯 번 만들었습니다. 상태를 두 개쯤 두고, 효과 안에서 fetch 하고, 상태를 갈래로 나누고, 늦게 온 응답을 버리는 정리를 답니다. 화면만 달랐지 그 묶음은 매번 같았습니다.",
-        "t4-18 에서 이런 상황을 위한 도구를 배웠습니다. 커스텀 훅입니다. 특별한 문법이 없고 그냥 함수라고 했습니다. 안에서 useState 나 useEffect 를 부르고 컴포넌트가 필요로 하는 것을 돌려주면 끝입니다.",
-        "이번에 뺄 것은 화면이 아니라 데이터를 가져오는 절차입니다. 이름은 useFetch 로 하고 주소 하나를 받습니다.",
-        "돌려줄 것을 정해야 합니다. 화면이 필요로 하는 것은 두 가지입니다. 지금 어느 갈래인지, 그리고 받아 온 값이 무엇인지입니다. t6-03 에서 정한 그대로 status 와 data 를 객체 하나에 담아 돌려줍니다.",
-        "이렇게 빼면 좋은 점이 분명합니다. 정리를 다는 것을 한 곳에서만 제대로 하면 됩니다. 화면이 열 개여도 늦게 온 응답 문제는 훅 안에서 한 번 해결돼 있습니다. 앞 레슨에서 본 그 버그를 화면마다 다시 만들지 않아도 됩니다.",
-        "쓰는 쪽은 짧아집니다. const { status, data } = useFetch(주소) 한 줄이고, 그다음은 status 를 보고 갈라 그리는 일뿐입니다. 컴포넌트 안에 useState 도 useEffect 도 남지 않습니다.",
-        "t4-18 에서 말한 것을 다시 짚어 둡니다. 커스텀 훅은 상태를 공유하지 않습니다. 두 화면이 useFetch 를 부르면 요청도 상태도 각각 생깁니다. 공유되는 것은 값이 아니라 만드는 방법입니다.",
-        "그리고 여기까지가 직접 만드는 것의 끝입니다. 실무에서는 같은 주소를 여러 화면이 부를 때 요청을 한 번만 보내고 결과를 나눠 쓰거나, 받아 둔 것을 잠시 기억해 두었다가 다시 쓰는 일이 필요해집니다. 그때는 그 일을 전문으로 하는 라이브러리를 씁니다. 그것들이 무엇을 대신해 주는지는 지금 직접 만들어 봤기 때문에 읽을 수 있습니다."
+        "React의 화면 갱신은 네 단계로 따라갈 수 있습니다. 사용자가 이벤트를 일으키고, 처리 함수가 state 설정 함수를 호출하고, React가 컴포넌트를 다시 렌더링하고, 새 JSX를 DOM에 반영합니다.",
+        { "code": ["클릭", "→ handleClick 실행", "→ setCount 호출", "→ Counter 다시 렌더링", "→ 새 count가 화면에 반영"] },
+        "설정 함수를 호출하는 즉시 DOM을 직접 고치는 것이 아닙니다. React가 다음 렌더 결과를 계산한 뒤 필요한 DOM 변경을 처리합니다.",
+        "컴포넌트 함수 본문에 console.log를 두면 렌더될 때마다 실행됩니다. 이벤트 처리 함수의 로그와 구분해 보면 흐름을 확인할 수 있습니다.",
+        "렌더는 화면을 계산하는 과정이므로 그 안에서 state를 다시 설정하면 렌더가 반복될 수 있습니다. state 변경은 이벤트 같은 명확한 계기에서 수행합니다."
       ]
     },
     {
-      "kind": "fill",
-      "title": "훅이 돌려줄 것 채우기",
-      "brief": [
-        "가져오는 절차는 useFetch 로 다 옮겼습니다. 돌려줄 것만 비어 있습니다.",
-        "null 자리를 채워 지금 갈래와 받아 온 값을 함께 돌려주세요.",
-        "쓰는 쪽에서 const { status, data } = useFetch(...) 로 받습니다. 객체 하나에 담으면 됩니다.",
-        "채우지 않고 실행하면 undefined 에서 status 를 꺼내려다 실패합니다."
-      ],
-      "env": [
-        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
-        "// 검색어가 짧을수록 오래 걸립니다. 실제 서버도 대개 그렇습니다.",
-        "(() => {",
-        "  const COURSES = [",
-        "    { id: 1, name: '리액트 입문' },",
-        "    { id: 2, name: 'CSS 레이아웃' },",
-        "    { id: 3, name: '자바스크립트 기초' },",
-        "    { id: 4, name: '리액트 심화' },",
-        "  ];",
-        "",
-        "  const json = (data) => new Response(JSON.stringify(data), {",
-        "    status: 200,",
-        "    statusText: 'OK',",
-        "    headers: { 'Content-Type': 'application/json' },",
-        "  });",
-        "",
-        "  window.fetch = (url) => new Promise((resolve) => {",
-        "    const key = String(url);",
-        "    const at = key.indexOf('?q=');",
-        "    const q = at >= 0 ? decodeURIComponent(key.slice(at + 3)) : null;",
-        "    const delay = q === null ? 60 : (q.length <= 1 ? 400 : 40);",
-        "    setTimeout(() => {",
-        "      if (q === null) { resolve(json(COURSES)); return; }",
-        "      resolve(json(COURSES.filter((c) => c.name.includes(q))));",
-        "    }, delay);",
-        "  });",
-        "})();"
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
-          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }",
-          ".again { margin-top: 6px; }"
-        ]
-      },
-      "code": "const { useState, useEffect } = React;\n\nfunction useFetch(url) {\n  const [status, setStatus] = useState('loading');\n  const [data, setData] = useState(null);\n\n  useEffect(() => {\n    let ignore = false;\n    setStatus('loading');\n\n    fetch(url)\n      .then((res) => {\n        if (!res.ok) throw new Error('실패');\n        return res.json();\n      })\n      .then((body) => {\n        if (ignore) return;\n        setData(body);\n        setStatus('ok');\n      })\n      .catch(() => {\n        if (ignore) return;\n        setStatus('error');\n      });\n\n    return () => {\n      ignore = true;\n    };\n  }, [url]);\n\n  return null /* ← 여기를 채우세요 */;\n}\n\nfunction Search({ query }) {\n  const { status, data } = useFetch('/api/search?q=' + encodeURIComponent(query));\n\n  if (status === 'loading') return <p className=\"state\">찾는 중…</p>;\n  if (status === 'error') return <p className=\"state\">찾지 못했습니다</p>;\n\n  return (\n    <div>\n      <p className=\"state\">{query} · {data.length}개</p>\n      {data.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n    </div>\n  );\n}\n\n// 아래 넷은 그대로 두세요. 검사기가 race 를 부릅니다\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst yieldTask = () => new Promise((done) => {\n  const channel = new MessageChannel();\n  channel.port1.onmessage = () => done();\n  channel.port2.postMessage(0);\n});\n\nfunction waitQuiet() {\n  const el = document.querySelector('#root');\n  return new Promise((resolve) => {\n    const startedAt = Date.now();\n    let last = null;\n    let same = 0;\n    let tries = 0;\n    const tick = () => {\n      const now = el.textContent;\n      same = now === last ? same + 1 : 0;\n      last = now;\n      tries += 1;\n      // 늦게 오는 응답이 400ms 뒤에 옵니다. 그 전에 확정하면 낡은 응답을 보지 못합니다\n      const quiet = same >= 2 && !now.includes('찾는 중') && Date.now() - startedAt > 600;\n      if (quiet || tries > 40) resolve(now);\n      else setTimeout(tick, 50);\n    };\n    tick();\n  });\n}\n\nasync function race(first, second) {\n  root.render(<Search query={first} />);\n  await yieldTask();\n  await yieldTask();\n  await yieldTask();\n  root.render(<Search query={second} />);\n  return waitQuiet();\n}\n\nrace('리', '리액트 심');\n",
-      "entry": "race",
-      "solutionCode": "const { useState, useEffect } = React;\n\nfunction useFetch(url) {\n  const [status, setStatus] = useState('loading');\n  const [data, setData] = useState(null);\n\n  useEffect(() => {\n    let ignore = false;\n    setStatus('loading');\n\n    fetch(url)\n      .then((res) => {\n        if (!res.ok) throw new Error('실패');\n        return res.json();\n      })\n      .then((body) => {\n        if (ignore) return;\n        setData(body);\n        setStatus('ok');\n      })\n      .catch(() => {\n        if (ignore) return;\n        setStatus('error');\n      });\n\n    return () => {\n      ignore = true;\n    };\n  }, [url]);\n\n  return { status, data };\n}\n\nfunction Search({ query }) {\n  const { status, data } = useFetch('/api/search?q=' + encodeURIComponent(query));\n\n  if (status === 'loading') return <p className=\"state\">찾는 중…</p>;\n  if (status === 'error') return <p className=\"state\">찾지 못했습니다</p>;\n\n  return (\n    <div>\n      <p className=\"state\">{query} · {data.length}개</p>\n      {data.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n    </div>\n  );\n}\n\n// 아래 넷은 그대로 두세요. 검사기가 race 를 부릅니다\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst yieldTask = () => new Promise((done) => {\n  const channel = new MessageChannel();\n  channel.port1.onmessage = () => done();\n  channel.port2.postMessage(0);\n});\n\nfunction waitQuiet() {\n  const el = document.querySelector('#root');\n  return new Promise((resolve) => {\n    const startedAt = Date.now();\n    let last = null;\n    let same = 0;\n    let tries = 0;\n    const tick = () => {\n      const now = el.textContent;\n      same = now === last ? same + 1 : 0;\n      last = now;\n      tries += 1;\n      // 늦게 오는 응답이 400ms 뒤에 옵니다. 그 전에 확정하면 낡은 응답을 보지 못합니다\n      const quiet = same >= 2 && !now.includes('찾는 중') && Date.now() - startedAt > 600;\n      if (quiet || tries > 40) resolve(now);\n      else setTimeout(tick, 50);\n    };\n    tick();\n  });\n}\n\nasync function race(first, second) {\n  root.render(<Search query={first} />);\n  await yieldTask();\n  await yieldTask();\n  await yieldTask();\n  root.render(<Search query={second} />);\n  return waitQuiet();\n}\n\nrace('리', '리액트 심');\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "마지막 검색어의 결과",
-          "args": [
-            "리",
-            "리액트 심"
-          ],
-          "expected": "리액트 심 · 1개리액트 심화"
-        },
-        {
-          "type": "value",
-          "label": "반대로 쳐도 마지막 것",
-          "args": [
-            "리액트 심",
-            "리"
-          ],
-          "expected": "리 · 2개리액트 입문리액트 심화"
-        },
-        {
-          "type": "dom",
-          "label": "화면에는 마지막 결과만",
-          "select": ".course",
-          "count": 2
-        }
-      ]
+      "kind": "run", "title": "이벤트와 렌더 로그 구분하기",
+      "brief": ["처음에는 렌더 로그만 출력됩니다. 버튼을 누르면 이벤트 로그가 나온 뒤 새 state로 렌더 로그가 다시 나옵니다.", "화면 문구는 새 렌더가 끝난 뒤 선택으로 바뀝니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
+      "code": "const { useState } = React;\n\nfunction Choice() {\n  const [selected, setSelected] = useState(false);\n  console.log('렌더:', selected);\n\n  function handleClick() {\n    console.log('이벤트 처리');\n    setSelected(true);\n  }\n\n  return (\n    <button type=\"button\" onClick={handleClick}>\n      {selected ? '선택됨' : '선택하기'}\n    </button>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Choice />);\n"
     },
     {
-      "kind": "write",
-      "title": "useFetch 만들기",
-      "brief": [
-        "데이터를 가져오는 절차를 useFetch 로 빼고, 그것을 쓰는 화면을 만들어 주세요.",
-        "useFetch(url) 은 주소 하나를 받습니다. 안에서 상태 둘을 만듭니다. status 의 처음 값은 'loading' 이고 data 의 처음 값은 null 입니다.",
-        "효과 안에서 status 를 'loading' 으로 되돌린 뒤 그 주소를 가져오세요. res.ok 가 거짓이면 던지고, .catch 에서 status 를 'error' 로 둡니다. 성공하면 data 에 넣고 status 를 'ok' 로 둡니다.",
-        "늦게 온 응답을 버리는 정리를 반드시 넣으세요. 앞 레슨에서 만든 그대로입니다. 의존성 배열은 [url] 입니다.",
-        "돌려줄 것은 { status, data } 입니다.",
-        "Search 는 검색어를 props 로 받고 useFetch 를 부르기만 합니다. Search 안에는 useState 도 useEffect 도 없어야 합니다.",
-        "status 가 'loading' 이면 state 클래스로 '찾는 중…', 'error' 면 '찾지 못했습니다' 를 보여 주세요. 아니면 state 로 '리 · 2개' 형태를 보여 주고 코스마다 course 클래스로 이름을 보여 주세요. 줄마다 key 가 필요합니다.",
-        "아래 root 와 yieldTask 와 waitQuiet 와 race 는 그대로 두세요. 검사기가 race 를 부릅니다."
-      ],
-      "env": [
-        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
-        "// 검색어가 짧을수록 오래 걸립니다. 실제 서버도 대개 그렇습니다.",
-        "(() => {",
-        "  const COURSES = [",
-        "    { id: 1, name: '리액트 입문' },",
-        "    { id: 2, name: 'CSS 레이아웃' },",
-        "    { id: 3, name: '자바스크립트 기초' },",
-        "    { id: 4, name: '리액트 심화' },",
-        "  ];",
-        "",
-        "  const json = (data) => new Response(JSON.stringify(data), {",
-        "    status: 200,",
-        "    statusText: 'OK',",
-        "    headers: { 'Content-Type': 'application/json' },",
-        "  });",
-        "",
-        "  window.fetch = (url) => new Promise((resolve) => {",
-        "    const key = String(url);",
-        "    const at = key.indexOf('?q=');",
-        "    const q = at >= 0 ? decodeURIComponent(key.slice(at + 3)) : null;",
-        "    const delay = q === null ? 60 : (q.length <= 1 ? 400 : 40);",
-        "    setTimeout(() => {",
-        "      if (q === null) { resolve(json(COURSES)); return; }",
-        "      resolve(json(COURSES.filter((c) => c.name.includes(q))));",
-        "    }, delay);",
-        "  });",
-        "})();"
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
-          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }",
-          ".again { margin-top: 6px; }"
-        ]
-      },
-      "code": "const { useState, useEffect } = React;\n\n// useFetch 와 Search 를 여기에 작성하세요\n\n// 아래 넷은 그대로 두세요. 검사기가 race 를 부릅니다\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst yieldTask = () => new Promise((done) => {\n  const channel = new MessageChannel();\n  channel.port1.onmessage = () => done();\n  channel.port2.postMessage(0);\n});\n\nfunction waitQuiet() {\n  const el = document.querySelector('#root');\n  return new Promise((resolve) => {\n    const startedAt = Date.now();\n    let last = null;\n    let same = 0;\n    let tries = 0;\n    const tick = () => {\n      const now = el.textContent;\n      same = now === last ? same + 1 : 0;\n      last = now;\n      tries += 1;\n      // 늦게 오는 응답이 400ms 뒤에 옵니다. 그 전에 확정하면 낡은 응답을 보지 못합니다\n      const quiet = same >= 2 && !now.includes('찾는 중') && Date.now() - startedAt > 600;\n      if (quiet || tries > 40) resolve(now);\n      else setTimeout(tick, 50);\n    };\n    tick();\n  });\n}\n\nasync function race(first, second) {\n  root.render(<Search query={first} />);\n  await yieldTask();\n  await yieldTask();\n  await yieldTask();\n  root.render(<Search query={second} />);\n  return waitQuiet();\n}\n\nrace('리', '리액트 심');\n",
-      "entry": "race",
-      "solutionCode": "const { useState, useEffect } = React;\n\nfunction useFetch(url) {\n  const [status, setStatus] = useState('loading');\n  const [data, setData] = useState(null);\n\n  useEffect(() => {\n    let ignore = false;\n    setStatus('loading');\n\n    fetch(url)\n      .then((res) => {\n        if (!res.ok) throw new Error('실패');\n        return res.json();\n      })\n      .then((body) => {\n        if (ignore) return;\n        setData(body);\n        setStatus('ok');\n      })\n      .catch(() => {\n        if (ignore) return;\n        setStatus('error');\n      });\n\n    return () => {\n      ignore = true;\n    };\n  }, [url]);\n\n  return { status, data };\n}\n\nfunction Search({ query }) {\n  const { status, data } = useFetch('/api/search?q=' + encodeURIComponent(query));\n\n  if (status === 'loading') return <p className=\"state\">찾는 중…</p>;\n  if (status === 'error') return <p className=\"state\">찾지 못했습니다</p>;\n\n  return (\n    <div>\n      <p className=\"state\">{query} · {data.length}개</p>\n      {data.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n    </div>\n  );\n}\n\n// 아래 넷은 그대로 두세요. 검사기가 race 를 부릅니다\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst yieldTask = () => new Promise((done) => {\n  const channel = new MessageChannel();\n  channel.port1.onmessage = () => done();\n  channel.port2.postMessage(0);\n});\n\nfunction waitQuiet() {\n  const el = document.querySelector('#root');\n  return new Promise((resolve) => {\n    const startedAt = Date.now();\n    let last = null;\n    let same = 0;\n    let tries = 0;\n    const tick = () => {\n      const now = el.textContent;\n      same = now === last ? same + 1 : 0;\n      last = now;\n      tries += 1;\n      // 늦게 오는 응답이 400ms 뒤에 옵니다. 그 전에 확정하면 낡은 응답을 보지 못합니다\n      const quiet = same >= 2 && !now.includes('찾는 중') && Date.now() - startedAt > 600;\n      if (quiet || tries > 40) resolve(now);\n      else setTimeout(tick, 50);\n    };\n    tick();\n  });\n}\n\nasync function race(first, second) {\n  root.render(<Search query={first} />);\n  await yieldTask();\n  await yieldTask();\n  await yieldTask();\n  root.render(<Search query={second} />);\n  return waitQuiet();\n}\n\nrace('리', '리액트 심');\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "마지막 검색어의 결과",
-          "args": [
-            "리",
-            "리액트 심"
-          ],
-          "expected": "리액트 심 · 1개리액트 심화"
-        },
-        {
-          "type": "value",
-          "label": "반대로 쳐도 마지막 것",
-          "args": [
-            "리액트 심",
-            "리"
-          ],
-          "expected": "리 · 2개리액트 입문리액트 심화"
-        },
-        {
-          "type": "dom",
-          "label": "화면에는 마지막 결과만",
-          "select": ".course",
-          "count": 2
-        }
-      ]
+      "kind": "tweak", "title": "렌더 안에서 설정 함수 호출해 보기",
+      "brief": ["컴포넌트 본문에서 setSelected(true)를 직접 호출하면 렌더 중 다시 렌더를 요청해 오류가 날 수 있습니다.", "state 설정은 클릭이나 입력 처리 함수 안으로 되돌리세요.", "handleClick에서 setSelected((previous) => !previous)로 바꾸면 클릭할 때마다 선택과 해제가 번갈아 나타납니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
+      "code": "const { useState } = React;\n\nfunction Choice() {\n  const [selected, setSelected] = useState(false);\n  console.log('렌더:', selected);\n\n  function handleClick() {\n    console.log('이벤트 처리');\n    setSelected(true);\n  }\n\n  return (\n    <button type=\"button\" onClick={handleClick}>\n      {selected ? '선택됨' : '선택하기'}\n    </button>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Choice />);\n"
     }
   ]
 }

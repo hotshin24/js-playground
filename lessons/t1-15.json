@@ -3,181 +3,48 @@
   "id": "t1-15",
   "track": "T1",
   "order": 15,
-  "title": "데이터에서 HTML 문자열 만들기",
+  "runtime": "js",
+  "title": "필요한 값만 골라서 사용하기",
   "steps": [
     {
       "kind": "read",
-      "title": "글자 안에 값 끼워 넣기",
+      "title": "&&와 ||는 불리언만 반환하지 않습니다",
       "brief": [
-        "마크업을 데이터로 만들려면 글자와 값을 섞어야 합니다. 상품 이름과 가격을 받아 '셔츠 - 39000원' 같은 글자를 만드는 일입니다.",
-        "템플릿 리터럴(template literal — 백틱으로 감싸 값을 끼워 넣을 수 있는 문자열)은 따옴표 대신 백틱 ` 로 감쌉니다. 그 안에서 ${ } 를 쓰면 중괄호 안의 값이 그 자리에 들어갑니다.",
-        {
-          "code": [
-            "const name = '셔츠';",
-            "const count = 3;",
-            "",
-            "const joined = name + ' ' + count + '개 남음';",
-            "const filled = `${name} ${count}개 남음`;",
-            "",
-            "console.log(joined);             // 셔츠 3개 남음",
-            "console.log(filled);             // 셔츠 3개 남음",
-            "console.log(joined === filled);  // true"
-          ]
-        },
-        "두 줄은 같은 글자를 만듭니다. 마지막 줄이 true 인 것이 그 증거입니다. 결과가 같으니 어느 쪽을 써도 되지만 읽는 품이 다릅니다.",
-        "위쪽은 따옴표와 + 를 번갈아 적어야 해서, 값이 늘어날수록 어디가 글자이고 어디가 값인지 알아보기 어려워집니다. 아래쪽은 완성될 글자의 모양을 그대로 두고 값 자리만 표시합니다. ${ } 안에는 이름뿐 아니라 계산식도 넣을 수 있습니다."
+        "&&와 ||는 왼쪽 값만으로 결과를 정할 수 있으면 오른쪽을 확인하지 않습니다. 이를 단락 평가라고 합니다.",
+        "||는 왼쪽이 truthy면 왼쪽 값을, falsy면 오른쪽 값을 반환합니다. &&는 왼쪽이 falsy면 왼쪽 값을, truthy면 오른쪽 값을 반환합니다.",
+        { "code": ["'민수' || '손님'; // '민수'", "'' || '손님';     // '손님'", "true && '표시';   // '표시'"] },
+        "??는 왼쪽이 null 또는 undefined일 때만 오른쪽 값을 반환하는 null 병합 연산자입니다.",
+        "0과 빈 문자열을 정상 값으로 유지해야 한다면 || 대신 ??를 사용합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "끼워 넣어 보기",
+      "title": "||와 ?? 결과 비교하기",
       "brief": [
-        "아래는 세 가지를 보여줍니다. 이름과 가격을 끼운 글자, 계산식을 끼운 글자, 그리고 따옴표로 감싼 글자입니다.",
-        "실행 버튼을 눌러 보세요. 마지막 줄만 ${name} 이 그대로 출력됩니다.",
-        "백틱과 따옴표의 차이가 여기서 드러납니다."
+        "0 || 10은 10이지만 0 ?? 10은 0입니다. 0은 falsy지만 null이나 undefined는 아니기 때문입니다.",
+        "null에서는 두 연산자 모두 오른쪽 값 10을 반환합니다."
       ],
-      "code": "const name = '셔츠';\nconst price = 39000;\n\nconst line = `${name} - ${price}원`;\n\nconsole.log(line);\nconsole.log(`재고 ${3 + 2}개`);\nconsole.log('${name} 은 그대로');\n"
-    },
-    {
-      "kind": "tweak",
-      "title": "식을 넣어 보기",
-      "brief": [
-        "${price}원 을 ${price * 2}원 으로 바꾸고 실행해 보세요. 중괄호 안에서 계산이 일어난 뒤 그 결과가 들어갑니다.",
-        "마지막 줄의 따옴표를 백틱으로 바꿔 보세요. 이번에는 이름이 값으로 채워집니다.",
-        "${ } 안에 앞에서 배운 삼항 연산자를 넣어 봐도 좋습니다. 값 하나가 나오는 식이면 무엇이든 들어갑니다."
-      ],
-      "code": "const name = '셔츠';\nconst price = 39000;\n\nconst line = `${name} - ${price}원`;\n\nconsole.log(line);\nconsole.log(`재고 ${3 + 2}개`);\nconsole.log('${name} 은 그대로');\n"
+      "code": "console.log(0 || 10);\nconsole.log(0 ?? 10);\nconsole.log('' || '기본값');\nconsole.log('' ?? '기본값');\nconsole.log(null || 10);\nconsole.log(null ?? 10);\n"
     },
     {
       "kind": "fill",
-      "title": "항목 한 줄 만들기",
+      "title": "기본값을 고르는 함수 완성하기",
       "brief": [
-        "목록의 항목 하나를 마크업 문자열로 만듭니다. <li class=\"item\">셔츠 - 39000원</li> 형태여야 합니다.",
-        "null 자리에 백틱으로 감싼 글자를 넣어 보세요. 이름과 가격 자리만 ${ } 로 채웁니다. 공백과 하이픈은 적힌 그대로여야 합니다.",
-        "채우지 않고 실행하면 실제값이 null 로 나옵니다."
+        "displayName이 null이나 undefined일 때만 '손님'을 반환하고, 그 밖의 값은 그대로 반환하세요.",
+        "빈 문자열도 사용자가 넣은 값으로 유지해야 하므로 ||가 아니라 ??를 사용해야 합니다."
       ],
-      "code": "const product = { name: '셔츠', price: 39000 };\n\nconst line = null; // ← 여기를 채우세요\n\nfunction getLine() {\n  return line;\n}\n",
-      "entry": "getLine",
-      "solutionCode": "const product = { name: '셔츠', price: 39000 };\n\nconst line = `<li class=\"item\">${product.name} - ${product.price}원</li>`;\n\nfunction getLine() {\n  return line;\n}\n",
+      "code": "function chooseName(displayName) {\n  return null; // 이 줄을 바꾸세요\n}\n",
+      "entry": "chooseName",
+      "solutionCode": "function chooseName(displayName) {\n  return displayName ?? '손님';\n}\n",
       "asserts": [
-        {
-          "type": "value",
-          "label": "항목 한 줄이 그대로 만들어집니다",
-          "args": [],
-          "expected": "<li class=\"item\">셔츠 - 39000원</li>"
-        }
+        { "type": "value", "label": "이름이 있으면 그대로 반환", "args": ["민수"], "expected": "민수" },
+        { "type": "value", "label": "null이면 기본 이름 반환", "args": [null], "expected": "손님" },
+        { "type": "value", "label": "빈 문자열도 그대로 유지", "args": [""], "expected": "" },
+        { "type": "value", "label": "숫자 0도 그대로 유지", "args": [0], "expected": 0 }
       ],
       "hints": [
-        "바깥만 백틱으로 바꾸면 됩니다. 백틱 안에서는 큰따옴표를 따로 감쌀 필요가 없어서 class=\"item\" 을 적힌 그대로 둘 수 있습니다."
-      ]
-    },
-    {
-      "kind": "wrap",
-      "title": "어떤 항목에도 통하게",
-      "brief": [
-        "앞 단계에서 만든 항목 한 줄이 그대로 함수 안에 들어가 있습니다. 다만 아직 정해진 상품 하나만 봅니다.",
-        "함수가 받는 값의 이름은 item 입니다. 표시된 줄을 지우고, 백틱 안에서 product 라고 쓴 곳을 item 으로 바꿔 보세요. 태그와 공백은 손대지 않습니다.",
-        "검사는 세 건입니다. 고치지 않고 실행하면 첫 건만 통과합니다. 여기서 완성한 함수가 다음 단계에서 map 안에 들어갑니다."
-      ],
-      "code": "function itemLine(item) {\n  const product = { name: '셔츠', price: 39000 }; // ← 이 줄을 지우고 item 을 쓰세요\n\n  return `<li class=\"item\">${product.name} - ${product.price}원</li>`;\n}\n",
-      "entry": "itemLine",
-      "solutionCode": "function itemLine(item) {\n  return `<li class=\"item\">${item.name} - ${item.price}원</li>`;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "셔츠 항목",
-          "args": [
-            {
-              "name": "셔츠",
-              "price": 39000
-            }
-          ],
-          "expected": "<li class=\"item\">셔츠 - 39000원</li>"
-        },
-        {
-          "type": "value",
-          "label": "모자 항목",
-          "args": [
-            {
-              "name": "모자",
-              "price": 19000
-            }
-          ],
-          "expected": "<li class=\"item\">모자 - 19000원</li>"
-        },
-        {
-          "type": "value",
-          "label": "가격이 네 자리인 항목",
-          "args": [
-            {
-              "name": "양말",
-              "price": 4000
-            }
-          ],
-          "expected": "<li class=\"item\">양말 - 4000원</li>"
-        }
-      ],
-      "hints": [
-        "고칠 곳은 ${ } 안 두 군데입니다. 백틱 밖의 태그와 하이픈은 글자 그대로라 손댈 것이 없습니다."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "데이터에서 HTML 문자열 만들기",
-      "brief": [
-        "마크업을 손으로 쓰는 대신 데이터에서 만들어 내는 것이 이 도구가 가르치려는 전환점입니다. 배열을 문자열 조각으로 바꾸고 하나로 이어 붙이면 목록 마크업이 됩니다.",
-        "renderList 함수를 완성해 보세요. products 배열을 받아 아래 구조의 HTML 문자열 하나를 반환합니다. 줄바꿈이나 공백을 넣지 마세요. 정확히 이 형태여야 합니다.",
-        "<ul class=\"list\">, 각 항목은 <li class=\"item\">이름 - 가격원</li>, 닫는 </ul>. 단 soldOut이 true인 항목은 클래스가 \"item item--soldout\"이 됩니다."
-      ],
-      "code": "function renderList(products) {\n  // 여기를 채우세요\n}\n",
-      "entry": "renderList",
-      "solutionCode": "function renderList(products) {\n  const items = products.map((product) => {\n    const className = product.soldOut ? 'item item--soldout' : 'item';\n\n    return `<li class=\"${className}\">${product.name} - ${product.price}원</li>`;\n  });\n\n  return `<ul class=\"list\">${items.join('')}</ul>`;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "항목 두 개가 순서대로 이어 붙습니다",
-          "args": [
-            [
-              {
-                "name": "셔츠",
-                "price": 39000,
-                "soldOut": false
-              },
-              {
-                "name": "모자",
-                "price": 19000,
-                "soldOut": false
-              }
-            ]
-          ],
-          "expected": "<ul class=\"list\"><li class=\"item\">셔츠 - 39000원</li><li class=\"item\">모자 - 19000원</li></ul>"
-        },
-        {
-          "type": "value",
-          "label": "품절 항목은 클래스가 달라집니다",
-          "args": [
-            [
-              {
-                "name": "양말",
-                "price": 5000,
-                "soldOut": true
-              }
-            ]
-          ],
-          "expected": "<ul class=\"list\"><li class=\"item item--soldout\">양말 - 5000원</li></ul>"
-        },
-        {
-          "type": "value",
-          "label": "빈 배열이면 껍데기만 남습니다",
-          "args": [
-            []
-          ],
-          "expected": "<ul class=\"list\"></ul>"
-        }
-      ],
-      "hints": [
-        "배열을 조각으로 바꾸는 것은 map 이고, 하나로 잇는 것은 t1-05 에서 본 join 입니다. 이을 때 사이에 아무것도 넣지 않아야 합니다.",
-        "품절 여부에 따라 클래스가 달라집니다. 클래스 자리에 값을 하나 고르는 일이므로 삼항 연산자가 들어갑니다."
+        "왼쪽에는 displayName, 오른쪽에는 기본 문자열 '손님'을 둡니다.",
+        "null과 undefined에서만 오른쪽 값을 고르는 연산자는 ??입니다."
       ]
     }
   ]

@@ -1,5 +1,5 @@
-import { isV2Preview, lessonRoot } from './curriculum.js';
-const fetchOptions = isV2Preview ? { cache: 'no-store' } : undefined;
+import { lessonRoot } from './curriculum.js';
+const fetchOptions = { cache: 'no-store' };
 
 const RUNTIMES = ['js', 'react'];
 const IDENTIFIER = /^[A-Za-z_$][\w$]*$/;
@@ -14,7 +14,7 @@ const fail = (message) => {
 /**
  * 지문 문단은 문자열이거나 코드 블록 객체다.
  * 코드는 줄 배열로 적는다 — scaffold·env 와 같은 관례이고, JSON 안에서 \n 이스케이프를 없앤다.
- * 기존 113레슨의 문단 2341개는 전부 문자열이라 해석이 달라지지 않는다.
+ * 문자열 문단의 해석은 그대로 유지하면서 코드 블록 문단도 지원한다.
  */
 const isBriefPart = (p) =>
   typeof p === 'string' ||

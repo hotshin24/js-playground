@@ -1,269 +1,40 @@
 {
-  "schemaVersion": 2,
-  "id": "t8-08",
-  "track": "T8",
-  "order": 8,
-  "title": "서로를 부를 때",
-  "runtime": "js",
+  "schemaVersion": 2, "id": "t8-08", "track": "T8", "order": 8, "runtime": "react",
+  "title": "Context로 state와 변경 함수 함께 공급하기",
   "steps": [
     {
-      "kind": "read",
-      "title": "둘이 서로를 부르면",
+      "kind": "read", "title": "Provider가 현재 값과 변경 방법을 객체로 공급합니다",
       "brief": [
-        "파일을 나누다 보면 두 파일이 서로를 부르게 되는 때가 옵니다. 이것을 순환 참조라고 합니다.",
-        "일부러 만드는 것이 아닙니다. 주문 화면을 생각해 봅시다. 주문 한 줄을 그리려면 고객 이름이 필요합니다. 고객 요약을 그리려면 주문 목록이 필요합니다. 각각을 파일로 나누면 order.js 가 customer.js 를, customer.js 가 order.js 를 부릅니다. 둘 다 자연스러운 요구이고, 나눈 결과로 생긴 것입니다.",
-        "그런데 순환은 금지된 것이 아닙니다. ES 모듈은 순환을 허용합니다. 다만 조건이 하나 붙습니다 — 언제 읽느냐입니다.",
-        "모듈은 순서대로 평가됩니다. a 가 b 를 부르면 b 가 먼저 평가되고, 그 b 가 다시 a 를 부르면 a 는 아직 평가 중입니다. 이때 b 가 a 의 값을 **지금 당장** 읽으려 하면 아직 만들어지지 않은 것을 읽는 셈이 됩니다.",
-        "브라우저는 이럴 때 undefined 를 주지 않고 끊습니다. ReferenceError: Cannot access 'x' before initialization — 만들어지기 전에는 접근할 수 없다는 뜻입니다. const 로 선언한 변수를 선언 줄보다 먼저 쓰려 할 때 나는 것과 같은 오류입니다.",
-        "반대로 함수 안에서 읽으면 괜찮습니다. 함수는 나중에 불리고, 그때는 양쪽 평가가 다 끝나 있기 때문입니다. 다음 두 단계에서 이 차이를 직접 봅니다.",
-        "푸는 방법은 대개 하나입니다. 두 파일이 공통으로 쓰는 것을 세 번째 파일로 빼고 양쪽이 그것을 보게 합니다. 그러면 화살표가 한 방향이 됩니다. 순환이 났다는 것은 대개 두 파일이 사실은 한 가지를 나눠 갖고 있었다는 신호입니다.",
-        "여기까지가 T8 입니다. 그리고 이 레슨의 실습을 마치면 이 도구에서 준비한 것이 전부 끝납니다. 마무리를 여기에 적어 두겠습니다.",
-        "T0-1 에서 시작할 때 여러분은 변수가 무엇인지 몰랐습니다. 지금은 값에 이름을 붙이고, 조건과 반복으로 흐름을 나누고, 함수와 배열로 데이터를 다루고, DOM 을 만들고 이벤트를 받고, React 로 화면을 상태의 함수로 그리고, 효과와 Context 를 쓰고, fetch 로 남의 서버에서 데이터를 가져오고, 클래스와 프로토타입을 읽고, 코드를 파일로 나눕니다. 8개 트랙 113레슨입니다.",
-        "이 도구가 끝은 아닙니다. 여기서는 파일을 브라우저 메모리에 올려 돌렸고, 그래서 폴더도 없고 패키지도 설치할 수 없었습니다. 실제로 파일 여러 개짜리 프로젝트를 다루려면 빌드 도구가 필요합니다. Vite 나 웹팩 같은 것들이 파일을 모아 하나로 묶고, 확장자를 대신 찾아 주고, 패키지를 설치해 씁니다. T8 에서 만난 제약들이 그 도구들이 무엇을 해 주는지에 대한 설명이었습니다.",
-        "그것이 다음에 만날 것입니다. 지금 상태로도 그 문서들을 읽을 수 있습니다."
+        "깊은 자식이 Context 값을 읽기만 하는 것이 아니라 바꿔야 한다면 Provider가 state와 변경 함수를 함께 공급할 수 있습니다.",
+        { "code": ["<ThemeContext.Provider value={{ theme, toggleTheme }}>", "  {children}", "</ThemeContext.Provider>"] },
+        "소비 컴포넌트는 useContext 결과를 구조 분해해 theme과 toggleTheme을 사용합니다.",
+        "state의 소유자는 여전히 Provider를 렌더링하는 부모입니다. Context는 전달 경로를 바꿀 뿐 state 소유권을 없애지 않습니다.",
+        "value 객체는 state가 바뀔 때 새로 만들어지고 해당 Context를 읽는 소비 컴포넌트가 다시 렌더링됩니다. 렌더 범위는 다음 레슨에서 다룹니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "도는 순환",
-      "brief": [
-        "실행해 보세요. 순환이 있는데 멀쩡히 돕니다.",
-        "customer.js 는 order.js 의 orderLine 을, order.js 는 customer.js 의 customer 를 부릅니다. 화살표가 양쪽입니다.",
-        "그런데 order.js 가 customer 를 읽는 자리를 보세요. 함수 **안**입니다. orderLine 이 실제로 불리는 것은 main.js 가 customerLine() 을 부른 뒤이고, 그때는 두 파일의 평가가 다 끝나 있습니다.",
-        "다음 단계에서 그 한 줄을 밖으로 꺼내 보겠습니다."
-      ],
-      "files": [
-        {
-          "name": "main.js",
-          "entry": true,
-          "code": [
-            "import { customerLine } from './customer.js';",
-            "",
-            "console.log(customerLine());",
-            ""
-          ]
-        },
-        {
-          "name": "customer.js",
-          "code": [
-            "import { orderLine } from './order.js';",
-            "",
-            "export const customer = { name: '김하늘', grade: 'VIP', orders: [1200, 3400] };",
-            "",
-            "export function customerLine() {",
-            "  return customer.name + ' — ' + customer.orders.map(orderLine).join(', ');",
-            "}",
-            ""
-          ]
-        },
-        {
-          "name": "order.js",
-          "code": [
-            "import { customer } from './customer.js';",
-            "",
-            "export function orderLine(amount) {",
-            "  return '[' + customer.grade + '] ' + amount + '원';",
-            "}",
-            ""
-          ]
-        }
-      ]
+      "kind": "run", "title": "깊은 버튼에서 부모 state 바꾸기",
+      "brief": ["App이 theme state와 toggleTheme 함수를 Context로 공급합니다.", "깊은 ThemeButton이 toggleTheme을 호출하면 App의 state가 바뀌고 ThemePanel과 버튼이 새 theme으로 렌더링됩니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".light, .dark { padding: 14px; }", ".light { background: #eee; color: #222; }", ".dark { background: #222; color: white; }"] },
+      "code": "const { createContext, useContext, useState } = React;\nconst ThemeContext = createContext(null);\n\nfunction ThemeButton() {\n  const { theme, toggleTheme } = useContext(ThemeContext);\n  return <button type=\"button\" onClick={toggleTheme}>{theme === 'light' ? '어둡게' : '밝게'}</button>;\n}\nfunction ThemePanel() {\n  const { theme } = useContext(ThemeContext);\n  return <section className={theme}><p>현재 테마: {theme}</p><ThemeButton /></section>;\n}\n\nfunction App() {\n  const [theme, setTheme] = useState('light');\n  function toggleTheme() { setTheme((value) => value === 'light' ? 'dark' : 'light'); }\n  return (\n    <ThemeContext.Provider value={{ theme, toggleTheme }}>\n      <ThemePanel />\n    </ThemeContext.Provider>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     },
     {
-      "kind": "tweak",
-      "title": "읽는 시점을 앞으로 당겨 보세요",
-      "brief": [
-        "order.js 를 이렇게 고쳐 보세요. 함수 안에서 읽던 것을 최상위로 꺼냅니다.",
-        "import 줄 아래에 const grade = customer.grade; 를 넣고, 함수 안의 customer.grade 를 grade 로 바꿉니다.",
-        "실행하면 order.js 3행에서 끊깁니다. ReferenceError: Cannot access 'customer' before initialization.",
-        "화살표는 그대로인데 읽는 시점만 바뀌었습니다. main.js 가 customer.js 를 먼저 열고, customer.js 가 order.js 를 열고, order.js 가 customer 를 읽으려는 그 순간 customer.js 는 아직 3행까지 가지도 못했습니다. 아직 만들어지지 않은 것입니다.",
-        "이것이 순환의 실제 성질입니다. 이 도구가 막는 것이 아니라 언어가 이렇게 돕니다. 확인했으면 되돌려 주세요."
-      ],
-      "files": [
-        {
-          "name": "main.js",
-          "entry": true,
-          "readOnly": true,
-          "code": [
-            "import { customerLine } from './customer.js';",
-            "",
-            "console.log(customerLine());",
-            ""
-          ]
-        },
-        {
-          "name": "customer.js",
-          "readOnly": true,
-          "code": [
-            "import { orderLine } from './order.js';",
-            "",
-            "export const customer = { name: '김하늘', grade: 'VIP', orders: [1200, 3400] };",
-            "",
-            "export function customerLine() {",
-            "  return customer.name + ' — ' + customer.orders.map(orderLine).join(', ');",
-            "}",
-            ""
-          ]
-        },
-        {
-          "name": "order.js",
-          "code": [
-            "import { customer } from './customer.js';",
-            "",
-            "export function orderLine(amount) {",
-            "  return '[' + customer.grade + '] ' + amount + '원';",
-            "}",
-            ""
-          ]
-        }
-      ]
+      "kind": "tweak", "title": "Provider 밖에서 Context 읽어 보기",
+      "brief": ["ThemePanel을 Provider 바깥으로 옮기면 useContext 결과가 기본값 null이라 구조 분해할 수 없다는 오류가 납니다.", "createContext(null)을 사용할 때는 소비 컴포넌트가 반드시 Provider 안에 있도록 하거나 커스텀 훅에서 누락을 검사할 수 있습니다.", "Provider가 공급하는 객체의 프로퍼티 이름과 소비 쪽 구조 분해 이름도 정확히 맞아야 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".light, .dark { padding: 14px; }", ".light { background: #eee; color: #222; }", ".dark { background: #222; color: white; }"] },
+      "code": "const { createContext, useContext, useState } = React;\nconst ThemeContext = createContext(null);\n\nfunction ThemeButton() {\n  const { theme, toggleTheme } = useContext(ThemeContext);\n  return <button type=\"button\" onClick={toggleTheme}>{theme === 'light' ? '어둡게' : '밝게'}</button>;\n}\nfunction ThemePanel() {\n  const { theme } = useContext(ThemeContext);\n  return <section className={theme}><p>현재 테마: {theme}</p><ThemeButton /></section>;\n}\n\nfunction App() {\n  const [theme, setTheme] = useState('light');\n  function toggleTheme() { setTheme((value) => value === 'light' ? 'dark' : 'light'); }\n  return (\n    <ThemeContext.Provider value={{ theme, toggleTheme }}>\n      <ThemePanel />\n    </ThemeContext.Provider>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     },
     {
-      "kind": "tweak",
-      "title": "세 번째 파일로 풀어 보세요",
-      "brief": [
-        "앞 단계의 고장은 '읽는 시점을 함수 안으로 되돌리면' 사라집니다. 하지만 그것은 증상만 피한 것입니다. 순환은 그대로 남아 있습니다.",
-        "제대로 풀어 보겠습니다. 두 파일이 공통으로 쥐고 있는 것은 customer 데이터입니다. 그것을 data.js 로 옮기세요.",
-        "data.js 에 export const customer = { name: '김하늘', grade: 'VIP', orders: [1200, 3400] }; 를 두고, customer.js 와 order.js 가 각각 './data.js' 에서 가져오게 고칩니다. customer.js 는 customer 를 다시 내보내지 않아도 됩니다.",
-        "고치고 나면 화살표를 그려 보세요. customer.js → order.js → data.js 이고 customer.js → data.js 입니다. 되돌아오는 화살표가 없습니다.",
-        "이제 order.js 에서 최상위로 읽어도 괜찮습니다. const grade = customer.grade; 를 다시 넣어 확인해 보세요. 이번에는 돕니다 — data.js 가 order.js 보다 먼저 끝나기 때문입니다.",
-        "순환이 났다는 것은 대개 두 파일이 사실은 한 가지를 나눠 갖고 있었다는 신호입니다. 그것을 꺼내면 순환도 함께 사라집니다."
-      ],
-      "files": [
-        {
-          "name": "main.js",
-          "entry": true,
-          "readOnly": true,
-          "code": [
-            "import { customerLine } from './customer.js';",
-            "",
-            "console.log(customerLine());",
-            ""
-          ]
-        },
-        {
-          "name": "customer.js",
-          "code": [
-            "import { orderLine } from './order.js';",
-            "",
-            "export const customer = { name: '김하늘', grade: 'VIP', orders: [1200, 3400] };",
-            "",
-            "export function customerLine() {",
-            "  return customer.name + ' — ' + customer.orders.map(orderLine).join(', ');",
-            "}",
-            ""
-          ]
-        },
-        {
-          "name": "order.js",
-          "code": [
-            "import { customer } from './customer.js';",
-            "",
-            "export function orderLine(amount) {",
-            "  return '[' + customer.grade + '] ' + amount + '원';",
-            "}",
-            ""
-          ]
-        },
-        {
-          "name": "data.js",
-          "code": [
-            "// 공통으로 쓰는 것을 여기로 옮기세요",
-            ""
-          ]
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "끊어 주세요",
-      "brief": [
-        "지금 이 코드는 실행되지 않습니다. report.js 와 tax.js 가 서로를 부르고, tax.js 가 최상위에서 BASE 를 읽습니다.",
-        "실행해서 어디서 끊기는지 먼저 확인해 보세요.",
-        "base.js 가 비어 있습니다. BASE 를 그리로 옮기고, report.js 와 tax.js 가 각각 base.js 에서 가져오게 고쳐 주세요. 두 파일이 서로를 부르지 않게 됩니다.",
-        "main.js 는 읽기 전용입니다. describe(10000) 이 '11000원 · 세금 1000원' 을 돌려주면 됩니다.",
-        "이 단계를 마치면 T8 이 끝납니다. 수고하셨습니다."
-      ],
-      "files": [
-        {
-          "name": "main.js",
-          "entry": true,
-          "readOnly": true,
-          "code": [
-            "import { summary } from './report.js';",
-            "",
-            "export function describe(amount) {",
-            "  return summary(amount);",
-            "}",
-            ""
-          ]
-        },
-        {
-          "name": "report.js",
-          "code": [
-            "import { RATE } from './tax.js';",
-            "",
-            "export const BASE = 1000;",
-            "",
-            "export const summary = (amount) =>",
-            "  (amount + BASE) + '원 · 세금 ' + Math.round(amount * RATE) + '원';",
-            ""
-          ],
-          "solutionCode": [
-            "import { RATE } from './tax.js';",
-            "import { BASE } from './base.js';",
-            "",
-            "export const summary = (amount) =>",
-            "  (amount + BASE) + '원 · 세금 ' + Math.round(amount * RATE) + '원';",
-            ""
-          ]
-        },
-        {
-          "name": "tax.js",
-          "code": [
-            "import { BASE } from './report.js';",
-            "",
-            "export const RATE = BASE / 10000;",
-            ""
-          ],
-          "solutionCode": [
-            "import { BASE } from './base.js';",
-            "",
-            "export const RATE = BASE / 10000;",
-            ""
-          ]
-        },
-        {
-          "name": "base.js",
-          "code": [
-            "// BASE 를 여기로 옮기세요",
-            ""
-          ],
-          "solutionCode": [
-            "export const BASE = 1000;",
-            ""
-          ]
-        }
-      ],
-      "entry": "describe",
+      "kind": "fill", "title": "state와 변경 함수를 Context로 공급하기",
+      "brief": ["Provider의 value에 theme과 toggleTheme을 담은 객체를 전달하세요.", "깊은 ThemeControl이 두 값을 읽습니다. 버튼을 누르면 Provider를 렌더링한 App의 state가 바뀌어야 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { createContext, useContext, useState } = React;\nconst ThemeContext = createContext(null);\n\nfunction ThemeControl() {\n  const { theme, toggleTheme } = useContext(ThemeContext);\n  return <button type=\"button\" onClick={toggleTheme}>테마: {theme}</button>;\n}\nfunction App() {\n  const [theme, setTheme] = useState('light');\n  function toggleTheme() {\n    setTheme((current) => current === 'light' ? 'dark' : 'light');\n  }\n  return <ThemeContext.Provider value={null}><ThemeControl /></ThemeContext.Provider>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
+      "solutionCode": "const { createContext, useContext, useState } = React;\nconst ThemeContext = createContext(null);\n\nfunction ThemeControl() {\n  const { theme, toggleTheme } = useContext(ThemeContext);\n  return <button type=\"button\" onClick={toggleTheme}>테마: {theme}</button>;\n}\nfunction App() {\n  const [theme, setTheme] = useState('light');\n  function toggleTheme() {\n    setTheme((current) => current === 'light' ? 'dark' : 'light');\n  }\n  return <ThemeContext.Provider value={{ theme, toggleTheme }}><ThemeControl /></ThemeContext.Provider>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
       "asserts": [
-        {
-          "type": "value",
-          "label": "10000 → '11000원 · 세금 1000원'",
-          "args": [
-            10000
-          ],
-          "expected": "11000원 · 세금 1000원"
-        },
-        {
-          "type": "value",
-          "label": "0 → '1000원 · 세금 0원'",
-          "args": [
-            0
-          ],
-          "expected": "1000원 · 세금 0원"
-        }
-      ]
+        { "type": "dom", "label": "Context로 현재 theme을 공급함", "select": "button", "text": ["테마: light"] },
+        { "type": "dom", "label": "Context의 함수로 부모 state를 바꿈", "actions": [{ "action": "click", "selector": "button" }], "select": "button", "text": ["테마: dark"] }
+      ],
+      "hints": ["value에는 JavaScript 객체를 전달하므로 JSX 중괄호가 필요합니다.", "value={{ theme, toggleTheme }}로 두 값을 공급하세요."]
     }
   ]
 }

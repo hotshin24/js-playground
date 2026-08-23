@@ -1,176 +1,26 @@
 {
-  "schemaVersion": 2,
-  "id": "t3-02",
-  "track": "T3",
-  "order": 2,
-  "runtime": "react",
-  "title": "HTML 과 이름이 다른 것들",
+  "schemaVersion": 2, "id": "t3-02", "track": "T3", "order": 2, "runtime": "js",
+  "title": "객체의 프로퍼티 읽고 바꾸기",
   "steps": [
     {
-      "kind": "read",
-      "title": "JSX 는 자바스크립트입니다",
+      "kind": "read", "title": "점 표기법과 대괄호 표기법을 사용합니다",
       "brief": [
-        "앞 레슨에서 class 대신 className 을 썼습니다. 이유는 하나입니다. JSX 는 HTML 이 아니라 자바스크립트이기 때문입니다. class 는 자바스크립트가 이미 다른 뜻으로 쓰는 낱말입니다. for 도 반복문의 낱말입니다. 그래서 JSX 에서는 className 과 htmlFor 로 바꿔 씁니다.",
-        "그런데 앞 레슨에서 본 것처럼 class 라고 써도 화면은 그대로였습니다. React 가 모르는 이름을 만나면 그대로 요소에 넘겨 주기 때문입니다. 오류가 아니라 경고입니다. 화면만 봐서는 잘못을 알 수 없고 콘솔을 봐야 알 수 있습니다. 이런 종류의 실수가 있다는 것을 알아 두는 것이 이 레슨의 목적입니다.",
-        "label 의 for 도 같습니다. htmlFor 로 쓰지 않으면 경고가 뜹니다. for 와 id 를 맞춰 두면 라벨 글자를 눌러도 입력창에 초점이 갑니다. 앞 트랙에서 초점을 다룰 때 본 그 연결입니다.",
-        "태그를 닫는 규칙도 다릅니다. HTML 에서는 <input> 이나 <img> 처럼 닫지 않아도 되는 태그가 있습니다. JSX 에서는 모든 태그를 닫아야 합니다. 안에 넣을 것이 없으면 <input /> 처럼 슬래시로 스스로 닫습니다.",
-        "이것은 경고로 끝나지 않습니다. 닫지 않으면 변환 자체가 실패해 아무것도 실행되지 않습니다. 같은 실수처럼 보여도 하나는 조용히 지나가고 하나는 앞을 막습니다."
+        "product.name처럼 객체 뒤에 점과 키를 쓰면 프로퍼티 값을 읽을 수 있습니다. 이를 점 표기법이라고 합니다.",
+        "product['name']처럼 대괄호 안에 키 문자열을 써도 같은 값을 읽습니다. 이를 대괄호 표기법이라고 합니다.",
+        { "code": ["console.log(product.name);", "console.log(product['name']);"] },
+        "키가 변수에 들어 있거나 공백이 포함된 키를 읽을 때는 대괄호 표기법이 필요합니다.",
+        "product.price = 42000처럼 대입하면 기존 프로퍼티 값이 바뀝니다. 없던 키에 대입하면 새 프로퍼티가 추가됩니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "세 가지가 모두 든 카드",
-      "brief": [
-        "품절 상태의 상품 카드입니다. className · htmlFor · 스스로 닫는 태그가 모두 들어 있습니다.",
-        "실행해 보세요. 카드가 나오고 콘솔은 조용합니다. 이름을 모두 제대로 썼기 때문입니다.",
-        "미리보기에서 '재입고 알림 받기' 글자를 눌러 보세요. 입력창에 초점이 갑니다. htmlFor 와 id 가 이어져 있기 때문입니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".card { max-width: 280px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
-          ".card__price { margin: 0 0 4px; color: var(--c-text-muted); }",
-          ".card__stock { margin: 0 0 8px; color: var(--c-text-warn); font-size: 0.875rem; }",
-          ".field { display: block; margin-bottom: 4px; font-size: 0.875rem; }",
-          ".field__input { width: 100%; box-sizing: border-box; }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nroot.render(\n  <article className=\"card\">\n    <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n    <p className=\"card__price\">189,000원</p>\n    <p className=\"card__stock\">품절</p>\n    <label className=\"field\" htmlFor=\"notify\">재입고 알림 받기</label>\n    <input className=\"field__input\" id=\"notify\" type=\"email\" placeholder=\"이메일\" />\n  </article>\n);\n"
+      "kind": "run", "title": "키를 직접 쓰거나 변수로 전달하기",
+      "brief": ["product.name과 product['name']은 모두 셔츠를 출력합니다.", "key에는 'price'가 들어 있으므로 product[key]는 product.price와 같은 39000입니다."],
+      "code": "const product = {\n  name: '셔츠',\n  price: 39000,\n};\n\nconst key = 'price';\n\nconsole.log(product.name);\nconsole.log(product['name']);\nconsole.log(product[key]);\n"
     },
     {
-      "kind": "tweak",
-      "title": "이름을 틀려 보기",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
-        "① className 을 class 로 바꿔 보세요. 화면은 그대로입니다. 콘솔에 Invalid DOM property `class`. Did you mean `className`? 이 뜹니다. 경고이지 오류가 아닙니다.",
-        "② htmlFor 를 for 로 바꿔 보세요. 이번에도 화면은 그대로이고 콘솔에 같은 모양의 경고가 뜹니다. 다만 라벨 글자를 눌러도 입력창에 초점이 가지 않습니다. 연결이 끊긴 것입니다. 화면에는 아무 표시도 없습니다.",
-        "③ <input ... /> 에서 슬래시만 지우고 실행해 보세요. 화면이 아예 나오지 않고 콘솔에 Unterminated JSX contents. 라는 에러가 뜹니다. ①②와 달리 실행이 시작되지도 못합니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".card { max-width: 280px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
-          ".card__price { margin: 0 0 4px; color: var(--c-text-muted); }",
-          ".card__stock { margin: 0 0 8px; color: var(--c-text-warn); font-size: 0.875rem; }",
-          ".field { display: block; margin-bottom: 4px; font-size: 0.875rem; }",
-          ".field__input { width: 100%; box-sizing: border-box; }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nroot.render(\n  <article className=\"card\">\n    <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n    <p className=\"card__price\">189,000원</p>\n    <p className=\"card__stock\">품절</p>\n    <label className=\"field\" htmlFor=\"notify\">재입고 알림 받기</label>\n    <input className=\"field__input\" id=\"notify\" type=\"email\" placeholder=\"이메일\" />\n  </article>\n);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "라벨과 입력창 잇기",
-      "brief": [
-        "카드는 다 만들어져 있습니다. 라벨과 입력창을 잇는 이름만 비어 있습니다.",
-        "null 자리를 채워 두 곳이 'notify' 로 이어지게 해 주세요. 문자열입니다.",
-        "검사가 라벨의 for 와 입력창의 id 가 맞는지 확인합니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".card { max-width: 280px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
-          ".card__price { margin: 0 0 4px; color: var(--c-text-muted); }",
-          ".card__stock { margin: 0 0 8px; color: var(--c-text-warn); font-size: 0.875rem; }",
-          ".field { display: block; margin-bottom: 4px; font-size: 0.875rem; }",
-          ".field__input { width: 100%; box-sizing: border-box; }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst inputId = null; // ← 여기를 채우세요\n\nroot.render(\n  <article className=\"card\">\n    <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n    <p className=\"card__stock\">품절</p>\n    <label className=\"field\" htmlFor={inputId}>재입고 알림 받기</label>\n    <input className=\"field__input\" id={inputId} type=\"email\" />\n  </article>\n);\n",
-      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst inputId = 'notify';\n\nroot.render(\n  <article className=\"card\">\n    <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n    <p className=\"card__stock\">품절</p>\n    <label className=\"field\" htmlFor={inputId}>재입고 알림 받기</label>\n    <input className=\"field__input\" id={inputId} type=\"email\" />\n  </article>\n);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "라벨이 notify 를 가리킵니다",
-          "select": "label[for=\"notify\"]",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "입력창의 id 가 notify 입니다",
-          "select": "input#notify",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "라벨 글자는 그대로입니다",
-          "select": ".field",
-          "text": [
-            "재입고 알림 받기"
-          ]
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "품절 카드 만들기",
-      "brief": [
-        "품절된 상품 카드를 만들어 주세요. 바깥은 <article className=\"card\"> 이고 안에 네 가지가 들어갑니다.",
-        "제목 '니트 베스트'(card__title), 가격 '245,000원'(card__price), 품절 표시 '품절'(card__stock), 그리고 라벨과 입력창입니다.",
-        "라벨은 <label> 이고 클래스는 field, 글자는 '재입고 알림 받기' 입니다. 입력창은 <input> 이고 클래스는 field__input, type 은 email 입니다. 라벨과 입력창은 restock 이라는 이름으로 이어 주세요.",
-        "이름 세 가지를 기억하세요. class 가 아니라 className, for 가 아니라 htmlFor, 그리고 <input> 은 스스로 닫아야 합니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".card { max-width: 280px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
-          ".card__price { margin: 0 0 4px; color: var(--c-text-muted); }",
-          ".card__stock { margin: 0 0 8px; color: var(--c-text-warn); font-size: 0.875rem; }",
-          ".field { display: block; margin-bottom: 4px; font-size: 0.875rem; }",
-          ".field__input { width: 100%; box-sizing: border-box; }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 여기를 채우세요\n",
-      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nroot.render(\n  <article className=\"card\">\n    <h3 className=\"card__title\">니트 베스트</h3>\n    <p className=\"card__price\">245,000원</p>\n    <p className=\"card__stock\">품절</p>\n    <label className=\"field\" htmlFor=\"restock\">재입고 알림 받기</label>\n    <input className=\"field__input\" id=\"restock\" type=\"email\" />\n  </article>\n);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "카드가 한 장 그려집니다",
-          "select": ".card",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "제목과 가격이 들어갑니다",
-          "select": ".card__title, .card__price",
-          "text": [
-            "니트 베스트",
-            "245,000원"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "품절 표시가 있습니다",
-          "select": ".card__stock",
-          "text": [
-            "품절"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "라벨이 restock 을 가리킵니다",
-          "select": "label[for=\"restock\"]",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "입력창이 이어져 있습니다",
-          "select": "input#restock.field__input",
-          "count": 1
-        }
-      ]
+      "kind": "tweak", "title": "값 변경과 새 프로퍼티 추가하기",
+      "brief": ["맨 아래에 product.price = 42000;과 console.log(product.price);를 추가하세요. 가격이 바뀝니다.", "product.stock = 5;를 추가하면 stock 프로퍼티가 새로 생깁니다.", "product.key는 이름이 실제로 key인 프로퍼티를 찾습니다. 변수 key의 값인 price를 사용하려면 product[key]라고 써야 합니다."],
+      "code": "const product = {\n  name: '셔츠',\n  price: 39000,\n};\n\nconst key = 'price';\n\nconsole.log(product.name);\nconsole.log(product['name']);\nconsole.log(product[key]);\n"
     }
   ]
 }

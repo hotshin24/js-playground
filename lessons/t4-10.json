@@ -1,254 +1,26 @@
 {
-  "schemaVersion": 2,
-  "id": "t4-10",
-  "track": "T4",
-  "order": 10,
-  "runtime": "react",
-  "title": "파생 상태를 만들지 마세요",
+  "schemaVersion": 2, "id": "t4-10", "track": "T4", "order": 10, "runtime": "js",
+  "title": "Promise의 세 가지 상태 이해하기",
   "steps": [
     {
-      "kind": "read",
-      "title": "여기서 방향이 꺾입니다",
+      "kind": "read", "title": "Promise는 비동기 작업의 현재 상태와 결과를 나타냅니다",
       "brief": [
-        "여기까지 상태를 늘려 왔습니다. 수량, 담김 여부, 옵션, 담은 목록, 검색어. 필요한 값이 생길 때마다 useState 를 하나 더 두면 됐습니다. 이번 레슨은 반대 방향입니다. 상태를 더 두면 안 되는 경우가 있습니다.",
-        "기준은 하나입니다. 이미 가진 것으로 계산할 수 있는 값은 상태가 아닙니다. 검색 결과의 개수를 생각해 봅시다. 전체 목록이 있고 검색어가 있으면 개수는 계산으로 나옵니다. 따로 기억해 둘 이유가 없습니다. 이렇게 다른 상태에서 나오는 값을 굳이 상태로 두는 것을 파생 상태라고 부릅니다.",
-        "왜 문제인가. 상태가 둘이 되면 둘을 맞춰 주는 일이 생깁니다. 검색어를 고치는 곳마다 개수도 함께 고쳐야 합니다. 고치는 곳이 하나면 어렵지 않습니다. 그런데 지우기 버튼이 생기고, 초기화가 생기고, 다른 곳에서도 검색어를 건드리기 시작하면, 그중 하나만 빠뜨려도 둘이 어긋납니다.",
-        "어긋난 화면은 오류를 내지 않습니다. 검색어는 비었는데 '코스 1개' 라고 적혀 있을 뿐입니다. 콘솔도 조용합니다. 보는 사람만 이상하다고 느낍니다. 이 레슨의 run 이 정확히 그런 코드입니다.",
-        "계산으로 두면 어긋날 수가 없습니다. 화면을 그릴 때마다 검색어에서 다시 세기 때문에 언제나 맞습니다. 맞춰 주는 코드가 아예 없으니 빠뜨릴 곳도 없습니다. 목록이 몇 만 개가 아니라면 이 계산은 느리지 않습니다.",
-        "앞 트랙의 마지막에서 같은 이야기를 했습니다. 상태를 한 곳에 두고 화면은 그 상태로부터 매번 만든다고요. 그때는 손으로 만들었고 지금은 React 가 대신합니다. 원칙은 같습니다. 기억할 것은 최소로 두고 나머지는 그때그때 만듭니다."
+        "Promise는 나중에 끝날 작업을 나타내는 객체입니다. 처음에는 대기 중인 pending 상태입니다.",
+        "작업이 성공해 resolve가 호출되면 fulfilled 상태가 되고 결과값을 가집니다. 실패해 reject가 호출되면 rejected 상태가 되고 오류 이유를 가집니다.",
+        { "code": ["const promise = new Promise((resolve, reject) => {", "  resolve('완료');", "});"] },
+        "Promise는 한 번 fulfilled나 rejected가 되면 상태와 결과가 다시 바뀌지 않습니다.",
+        "Promise를 만드는 코드와 결과를 사용하는 코드는 역할이 다릅니다. 다음 레슨에서 then, catch, finally로 결과를 사용하는 방법을 배웁니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "개수를 상태로 둔 코드",
-      "brief": [
-        "검색어와 개수를 각각 상태로 두었습니다. 흔히 보는 형태입니다.",
-        "실행한 뒤 검색창에 '리액트' 를 쳐 보세요. 개수가 1개로 잘 바뀝니다. 여기까지는 문제가 없어 보입니다.",
-        "지우기 버튼을 눌러 보세요. 검색창은 비었는데 개수는 1개 그대로입니다. 지우기가 검색어만 고치고 개수는 건드리지 않았기 때문입니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".panel { display: grid; gap: 8px; max-width: 340px; }",
-          ".field { font-size: 0.875rem; color: var(--c-text-muted); }",
-          ".field__input { width: 100%; }",
-          ".count { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
-          ".list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }",
-          ".course { padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 6px; font-size: 0.875rem; }",
-          ".empty { margin: 0; padding: 10px; border: 1px dashed var(--c-border); border-radius: 6px;",
-          "  color: var(--c-text-muted); text-align: center; font-size: 0.875rem; }",
-          ".row { display: flex; gap: 6px; }"
-        ]
-      },
-      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst courses = ['자바스크립트 입문', '리액트 시작하기', 'CSS 레이아웃'];\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n  const [count, setCount] = useState(courses.length);\n\n  const handleChange = (event) => {\n    const next = event.target.value;\n    setKeyword(next);\n    setCount(courses.filter((course) => course.includes(next)).length);\n  };\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword} onChange={handleChange} />\n      <p className=\"count\">코스 {count}개</p>\n      <div className=\"row\">\n        <button className=\"clear\" type=\"button\" onClick={() => setKeyword('')}>지우기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n"
+      "kind": "run", "title": "pending에서 fulfilled로 바뀌기",
+      "brief": ["Promise를 만든 직후에는 타이머가 끝나지 않아 pending입니다.", "약 1초 뒤 resolve('결제 완료')가 호출되어 fulfilled 상태가 됩니다. then은 다음 레슨에서 자세히 다룹니다. 여기서는 결과 확인용으로만 사용합니다."],
+      "code": "const payment = new Promise((resolve) => {\n  setTimeout(() => {\n    resolve('결제 완료');\n  }, 1000);\n});\n\nconsole.log(payment);\npayment.then((result) => console.log(result));\n"
     },
     {
-      "kind": "tweak",
-      "title": "맞춰 주거나, 두지 않거나",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
-        "① 지우기의 onClick 에 setCount(courses.length) 를 함께 넣어 보세요. 이제 지우기도 맞습니다. 고쳐지긴 했는데, 검색어를 건드리는 곳이 늘어날 때마다 이 줄을 잊지 말아야 합니다.",
-        "② 그 상태에서 지우기를 하나 더 만들어 보세요. 이번에는 setCount 를 일부러 빼고 setKeyword('') 만 씁니다. 그 버튼을 누르면 다시 어긋납니다. 맞춰 주는 코드는 빠뜨릴 수 있는 코드입니다.",
-        "③ 이번에는 count 상태를 아예 없애 보세요. useState 줄을 지우고, handleChange 에서 setCount 줄을 지우고, 화면에는 courses.filter((course) => course.includes(keyword)).length 를 씁니다. 검색도 지우기도 언제나 맞습니다. 맞춰 줄 것이 없으니 어긋날 수도 없습니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".panel { display: grid; gap: 8px; max-width: 340px; }",
-          ".field { font-size: 0.875rem; color: var(--c-text-muted); }",
-          ".field__input { width: 100%; }",
-          ".count { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
-          ".list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }",
-          ".course { padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 6px; font-size: 0.875rem; }",
-          ".empty { margin: 0; padding: 10px; border: 1px dashed var(--c-border); border-radius: 6px;",
-          "  color: var(--c-text-muted); text-align: center; font-size: 0.875rem; }",
-          ".row { display: flex; gap: 6px; }"
-        ]
-      },
-      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst courses = ['자바스크립트 입문', '리액트 시작하기', 'CSS 레이아웃'];\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n  const [count, setCount] = useState(courses.length);\n\n  const handleChange = (event) => {\n    const next = event.target.value;\n    setKeyword(next);\n    setCount(courses.filter((course) => course.includes(next)).length);\n  };\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword} onChange={handleChange} />\n      <p className=\"count\">코스 {count}개</p>\n      <div className=\"row\">\n        <button className=\"clear\" type=\"button\" onClick={() => setKeyword('')}>지우기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "계산으로 바꾸기",
-      "brief": [
-        "개수 상태를 지웠습니다. 화면에 보여 줄 개수만 비어 있습니다.",
-        "null 자리를 채워 검색어에 맞는 코스의 개수가 나오게 해 주세요. 전체 목록은 courses 이고 검색어는 keyword 입니다.",
-        "검사가 검색어를 넣었다 지우며 확인합니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".panel { display: grid; gap: 8px; max-width: 340px; }",
-          ".field { font-size: 0.875rem; color: var(--c-text-muted); }",
-          ".field__input { width: 100%; }",
-          ".count { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
-          ".list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }",
-          ".course { padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 6px; font-size: 0.875rem; }",
-          ".empty { margin: 0; padding: 10px; border: 1px dashed var(--c-border); border-radius: 6px;",
-          "  color: var(--c-text-muted); text-align: center; font-size: 0.875rem; }",
-          ".row { display: flex; gap: 6px; }"
-        ]
-      },
-      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst courses = ['자바스크립트 입문', '리액트 시작하기', 'CSS 레이아웃'];\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n\n  const found = null; // ← 여기를 채우세요\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword}\n        onChange={(event) => setKeyword(event.target.value)} />\n      <p className=\"count\">코스 {found.length}개</p>\n      <div className=\"row\">\n        <button className=\"clear\" type=\"button\" onClick={() => setKeyword('')}>지우기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n",
-      "solutionCode": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst courses = ['자바스크립트 입문', '리액트 시작하기', 'CSS 레이아웃'];\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n\n  const found = courses.filter((course) => course.includes(keyword));\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword}\n        onChange={(event) => setKeyword(event.target.value)} />\n      <p className=\"count\">코스 {found.length}개</p>\n      <div className=\"row\">\n        <button className=\"clear\" type=\"button\" onClick={() => setKeyword('')}>지우기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "처음에는 셋 다 셉니다",
-          "select": ".count",
-          "text": [
-            "코스 3개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "검색하면 개수가 줄어듭니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#q",
-              "value": "리액트"
-            }
-          ],
-          "select": ".count",
-          "text": [
-            "코스 1개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "지우면 어긋나지 않고 되돌아옵니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".clear"
-            }
-          ],
-          "select": ".count",
-          "text": [
-            "코스 3개"
-          ]
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "검색 목록 만들기",
-      "brief": [
-        "검색되는 코스 목록을 만들어 주세요. 상태는 검색어 하나뿐입니다. 처음에는 빈 문자열입니다.",
-        "바깥은 <div className=\"panel\"> 입니다. <label className=\"field\" htmlFor=\"q\">코스 검색</label>, <input className=\"field__input\" id=\"q\" type=\"search\">, <p className=\"count\">코스 3개</p> 형태의 개수 줄이 차례로 옵니다.",
-        "그 아래 <ul className=\"list\"> 에 맞는 코스를 <li className=\"course\"> 로 그려 주세요. 줄마다 key 가 필요합니다. 맞는 것이 하나도 없으면 목록 대신 <p className=\"empty\">조건에 맞는 코스가 없습니다.</p> 를 보여 주세요.",
-        "맨 아래 <div className=\"row\"> 안에 <button className=\"clear\">지우기</button> 를 두세요.",
-        "개수와 목록은 상태로 두지 마세요. 검색어에서 계산합니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".panel { display: grid; gap: 8px; max-width: 340px; }",
-          ".field { font-size: 0.875rem; color: var(--c-text-muted); }",
-          ".field__input { width: 100%; }",
-          ".count { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
-          ".list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }",
-          ".course { padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 6px; font-size: 0.875rem; }",
-          ".empty { margin: 0; padding: 10px; border: 1px dashed var(--c-border); border-radius: 6px;",
-          "  color: var(--c-text-muted); text-align: center; font-size: 0.875rem; }",
-          ".row { display: flex; gap: 6px; }"
-        ]
-      },
-      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst courses = ['자바스크립트 입문', '리액트 시작하기', 'CSS 레이아웃'];\n\n// 여기를 채우세요\n",
-      "solutionCode": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst courses = ['자바스크립트 입문', '리액트 시작하기', 'CSS 레이아웃'];\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n\n  const found = courses.filter((course) => course.includes(keyword));\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword}\n        onChange={(event) => setKeyword(event.target.value)} />\n      <p className=\"count\">코스 {found.length}개</p>\n      {found.length > 0 && (\n        <ul className=\"list\">\n          {found.map((course) => (\n            <li className=\"course\" key={course}>{course}</li>\n          ))}\n        </ul>\n      )}\n      {found.length === 0 && <p className=\"empty\">조건에 맞는 코스가 없습니다.</p>}\n      <div className=\"row\">\n        <button className=\"clear\" type=\"button\" onClick={() => setKeyword('')}>지우기</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "처음에는 셋이 다 보입니다",
-          "select": ".course",
-          "text": [
-            "자바스크립트 입문",
-            "리액트 시작하기",
-            "CSS 레이아웃"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "처음 개수는 3개",
-          "select": ".count",
-          "text": [
-            "코스 3개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "검색하면 걸러집니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#q",
-              "value": "리액트"
-            }
-          ],
-          "select": ".course",
-          "text": [
-            "리액트 시작하기"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "개수도 함께 맞습니다",
-          "select": ".count",
-          "text": [
-            "코스 1개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "없으면 안내가 나옵니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#q",
-              "value": "파이썬"
-            }
-          ],
-          "select": ".empty",
-          "text": [
-            "조건에 맞는 코스가 없습니다."
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "그때 개수는 0개입니다",
-          "select": ".count",
-          "text": [
-            "코스 0개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "지우면 전부 돌아옵니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".clear"
-            }
-          ],
-          "select": ".count",
-          "text": [
-            "코스 3개"
-          ]
-        }
-      ],
-      "hints": [
-        "상태가 몇 개인지 세어 보세요. 지문은 검색어 하나뿐이라고 했습니다. 걸러진 목록이나 개수를 따로 기억하고 있다면 그것이 이 레슨이 하지 말라는 것입니다.",
-        "개수 줄과 목록은 같은 값에서 나옵니다. 그릴 때마다 검색어로 걸러 낸 결과 하나를 만들어 두고, 그 길이와 그 내용을 각각 쓰면 둘이 어긋날 수 없습니다."
-      ]
+      "kind": "tweak", "title": "성공을 실패로 바꿔 보기",
+      "brief": ["new Promise의 매개변수를 (resolve, reject)로 바꾸고 resolve 줄을 reject(new Error('결제 실패'))로 바꾸세요.", "마지막 payment.then(...) 줄도 payment.catch((error) => console.log(error.message));로 바꾸면 실패 이유를 확인할 수 있습니다.", "reject에는 실패 이유를 나타내는 Error 객체를 전달하는 것이 일반적입니다. 실패 처리 없이 실행하면 처리되지 않은 오류가 콘솔에 표시됩니다."],
+      "code": "const payment = new Promise((resolve) => {\n  setTimeout(() => {\n    resolve('결제 완료');\n  }, 1000);\n});\n\nconsole.log(payment);\npayment.then((result) => console.log(result));\n"
     }
   ]
 }

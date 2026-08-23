@@ -1,225 +1,40 @@
 {
-  "schemaVersion": 2,
-  "id": "t8-03",
-  "track": "T8",
-  "order": 3,
-  "title": "default 와 이름",
-  "runtime": "js",
+  "schemaVersion": 2, "id": "t8-03", "track": "T8", "order": 3, "runtime": "react",
+  "title": "useReducer와 dispatch로 action 보내기",
   "steps": [
     {
-      "kind": "read",
-      "title": "이름 없이 하나만 내놓기",
+      "kind": "read", "title": "state와 dispatch를 한 쌍으로 받습니다",
       "brief": [
-        "지금까지 내보낸 것은 전부 이름이 있었습니다. 이것을 named export 라고 부릅니다. 가져올 때 중괄호 안에 그 이름을 정확히 적어야 했습니다.",
-        "다른 방식이 하나 있습니다. export default 입니다. 파일마다 하나만 둘 수 있고, 이름을 붙이지 않아도 됩니다.",
-        "내보내는 쪽은 export default (n) => n * 2; 이고, 가져오는 쪽은 import double from './utils.js'; 입니다. 중괄호가 없습니다.",
-        "여기서 중요한 것은, 가져오는 쪽이 이름을 마음대로 정한다는 것입니다. import whatever from './utils.js'; 라고 써도 됩니다. 이름이 없으니 맞출 이름도 없습니다.",
-        "그래서 이런 일이 생깁니다. 같은 함수를 어떤 파일에서는 formatPrice 로, 다른 파일에서는 price 로 부릅니다. 문법은 통과하지만 코드를 읽는 사람은 두 이름이 같은 것인지 확인해야 합니다.",
-        "둘을 한 파일에 함께 둘 수도 있습니다. 그때 가져오는 줄은 import calc, { double } from './utils.js'; 처럼 default 를 먼저, 이름 있는 것을 중괄호에 적습니다.",
-        "무엇을 쓸지는 취향이 아니라 팀의 규칙인 경우가 많습니다. 이 도구는 판단을 대신하지 않겠습니다. 대신 다음 단계에서 두 방식의 차이가 실제로 어디서 드러나는지 보겠습니다."
+        "useReducer는 reducer 함수와 초기 state를 받아 현재 state와 dispatch 함수를 반환합니다.",
+        { "code": ["const [quantity, dispatch] = useReducer(quantityReducer, 0);", "dispatch({ type: 'increase' });"] },
+        "dispatch는 action을 reducer에 보냅니다. React가 현재 state와 action으로 reducer를 호출하고 반환된 다음 state를 저장합니다.",
+        "dispatch 코드에는 상태를 어떻게 계산하는지 쓰지 않고 무슨 일이 일어났는지만 적습니다.",
+        "state가 바뀌면 useState와 마찬가지로 컴포넌트가 다시 렌더링됩니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "이름을 바꿔 받아 보세요",
-      "brief": [
-        "실행해 보세요. utils.js 는 default 로 하나, 이름 있는 것으로 하나를 내놓습니다.",
-        "main.js 의 import 줄에서 shout 를 아무 이름으로나 바꿔 보세요. yell 이든 f 든 통과합니다. 그다음 whisper 를 murmur 처럼 다른 이름으로 바꿔 보세요. 이번에는 main.js 1행에서 끊기고 does not provide an export named 'murmur' 라고 말합니다.",
-        "이것이 두 방식의 차이입니다. default 는 받는 쪽이 이름을 정하고, 이름 있는 것은 내보낸 이름을 그대로 써야 합니다."
-      ],
-      "files": [
-        {
-          "name": "main.js",
-          "entry": true,
-          "code": [
-            "import shout, { whisper } from './utils.js';",
-            "",
-            "console.log(shout('안녕'));",
-            "console.log(whisper('안녕'));",
-            ""
-          ]
-        },
-        {
-          "name": "utils.js",
-          "code": [
-            "export default (text) => text.toUpperCase() + '!';",
-            "export const whisper = (text) => '(' + text + ')';",
-            ""
-          ]
-        }
-      ]
+      "kind": "run", "title": "버튼에서 action 보내기",
+      "brief": ["각 버튼은 계산식 대신 action 객체를 dispatch합니다.", "증가·감소·초기화의 실제 계산은 컴포넌트 밖 quantityReducer 한곳에 모여 있습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { useReducer } = React;\n\nfunction quantityReducer(state, action) {\n  if (action.type === 'increase') return state + 1;\n  if (action.type === 'decrease') return Math.max(0, state - 1);\n  if (action.type === 'reset') return 0;\n  return state;\n}\n\nfunction Quantity() {\n  const [quantity, dispatch] = useReducer(quantityReducer, 0);\n\n  return (\n    <section>\n      <p>수량: {quantity}</p>\n      <button type=\"button\" onClick={() => dispatch({ type: 'increase' })}>증가</button>\n      <button type=\"button\" onClick={() => dispatch({ type: 'decrease' })}>감소</button>\n      <button type=\"button\" onClick={() => dispatch({ type: 'reset' })}>초기화</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Quantity />);\n"
     },
     {
-      "kind": "tweak",
-      "title": "default 는 파일마다 하나뿐입니다",
-      "brief": [
-        "utils.js 마지막 줄에 export default 를 하나 더 붙여 보세요. export default (text) => text; 를 3행에 더하면 됩니다.",
-        "실행하면 utils.js 3행에서 끊깁니다. Identifier '.default' has already been declared — 이름이 이미 선언돼 있다는 말입니다.",
-        "메시지가 조금 낯설 것입니다. default 는 이름을 안 적을 뿐이지 내부적으로는 이름이 하나 붙습니다. 그 이름을 두 번 선언한 셈이라 const 를 같은 이름으로 두 번 선언했을 때와 같은 말을 듣습니다. 파일마다 default 는 하나뿐입니다.",
-        "확인했으면 지우고, 이번에는 whisper 옆에 이름 있는 export 를 하나 더 만들어 보세요. 이름만 다르면 얼마든지 둘 수 있습니다.",
-        "default 가 하나뿐이라는 것이 '그 파일의 대표' 라는 느낌을 줍니다. 그래서 컴포넌트 하나가 파일 하나일 때 default 를 쓰는 곳이 많습니다. T8 뒷부분에서 다시 만납니다."
-      ],
-      "files": [
-        {
-          "name": "main.js",
-          "entry": true,
-          "code": [
-            "import shout, { whisper } from './utils.js';",
-            "",
-            "console.log(shout('안녕'), whisper('안녕'));",
-            ""
-          ]
-        },
-        {
-          "name": "utils.js",
-          "code": [
-            "export default (text) => text.toUpperCase() + '!';",
-            "export const whisper = (text) => '(' + text + ')';",
-            ""
-          ]
-        }
-      ]
+      "kind": "tweak", "title": "모르는 action 보내 보기",
+      "brief": ["증가 버튼의 type을 'add'로 바꾸면 reducer에 해당 조건이 없어 현재 state를 그대로 반환합니다.", "버튼을 다시 동작시키려면 action의 type과 reducer가 확인하는 문자열을 맞춰야 합니다.", "action type은 JavaScript 예약어가 아니라 개발자가 정하는 문자열이므로 오타를 주의해야 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { useReducer } = React;\n\nfunction quantityReducer(state, action) {\n  if (action.type === 'increase') return state + 1;\n  if (action.type === 'decrease') return Math.max(0, state - 1);\n  if (action.type === 'reset') return 0;\n  return state;\n}\n\nfunction Quantity() {\n  const [quantity, dispatch] = useReducer(quantityReducer, 0);\n\n  return (\n    <section>\n      <p>수량: {quantity}</p>\n      <button type=\"button\" onClick={() => dispatch({ type: 'increase' })}>증가</button>\n      <button type=\"button\" onClick={() => dispatch({ type: 'decrease' })}>감소</button>\n      <button type=\"button\" onClick={() => dispatch({ type: 'reset' })}>초기화</button>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Quantity />);\n"
     },
     {
-      "kind": "fill",
-      "title": "default 로 내놓기",
-      "brief": [
-        "badge.js 를 완성해 주세요. label 함수를 default 로 내보냅니다. 이름을 적지 않아도 됩니다.",
-        "main.js 는 이미 그것을 makeLabel 이라는 이름으로 받고 있습니다. 내보내는 쪽과 이름이 다르지만 default 라서 괜찮습니다.",
-        "label 은 이름과 개수를 받아 '리액트 입문 (3)' 형태의 문자열을 돌려줍니다."
-      ],
-      "files": [
-        {
-          "name": "main.js",
-          "entry": true,
-          "readOnly": true,
-          "code": [
-            "import makeLabel from './badge.js';",
-            "",
-            "export function describe(name, count) {",
-            "  return makeLabel(name, count);",
-            "}",
-            ""
-          ]
-        },
-        {
-          "name": "badge.js",
-          "code": [
-            "// label 을 default 로 내보내세요",
-            "// (name, count) 를 받아 '이름 (개수)' 를 돌려줍니다",
-            ""
-          ],
-          "solutionCode": [
-            "export default (name, count) => name + ' (' + count + ')';",
-            ""
-          ]
-        }
-      ],
-      "entry": "describe",
+      "kind": "fill", "title": "버튼에서 action 보내기",
+      "brief": ["버튼을 누르면 reducer의 increase 조건이 실행되도록 dispatch의 null을 action 객체로 바꾸세요.", "계산식은 버튼에 쓰지 않고 무슨 일이 일어났는지를 type 문자열로 알립니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useReducer } = React;\n\nfunction reducer(state, action) {\n  if (action.type === 'increase') return state + 1;\n  return state;\n}\n\nfunction Counter() {\n  const [count, dispatch] = useReducer(reducer, 0);\n  return <button type=\"button\" onClick={() => dispatch(null)}>숫자: {count}</button>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n",
+      "solutionCode": "const { useReducer } = React;\n\nfunction reducer(state, action) {\n  if (action.type === 'increase') return state + 1;\n  return state;\n}\n\nfunction Counter() {\n  const [count, dispatch] = useReducer(reducer, 0);\n  return <button type=\"button\" onClick={() => dispatch({ type: 'increase' })}>숫자: {count}</button>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n",
       "asserts": [
-        {
-          "type": "value",
-          "label": "('리액트 입문', 3) → '리액트 입문 (3)'",
-          "args": [
-            "리액트 입문",
-            3
-          ],
-          "expected": "리액트 입문 (3)"
-        },
-        {
-          "type": "value",
-          "label": "('', 0) → ' (0)'",
-          "args": [
-            "",
-            0
-          ],
-          "expected": " (0)"
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "둘을 함께 두기",
-      "brief": [
-        "cart.js 를 만들어 주세요. 장바구니 계산을 담습니다.",
-        "total 을 default 로 내보내세요. 항목 배열을 받아 price 와 count 를 곱한 합을 돌려줍니다. 항목은 { price, count } 모양입니다.",
-        "같은 파일에서 count 라는 이름 있는 함수도 내보내세요. 항목 배열을 받아 count 의 합을 돌려줍니다.",
-        "main.js 에서는 default 를 sum 이라는 이름으로 받고 이름 있는 것은 그대로 받아, summary 를 만들어 내놓아 주세요. summary 는 '3개 · 5,000원' 형태를 돌려줍니다. 금액은 toLocaleString('ko-KR') 로 찍습니다."
+        { "type": "dom", "label": "처음 값은 0", "select": "button", "text": ["숫자: 0"] },
+        { "type": "dom", "label": "action을 보내면 1 증가", "actions": [{ "action": "click", "selector": "button" }], "select": "button", "text": ["숫자: 1"] }
       ],
-      "files": [
-        {
-          "name": "main.js",
-          "entry": true,
-          "code": [
-            "// cart.js 의 default 를 sum 으로, count 는 그대로 받으세요",
-            "",
-            "// summary 를 만들어 내놓으세요",
-            ""
-          ],
-          "solutionCode": [
-            "import sum, { count } from './cart.js';",
-            "",
-            "export function summary(items) {",
-            "  return count(items) + '개 · ' + sum(items).toLocaleString('ko-KR') + '원';",
-            "}",
-            ""
-          ]
-        },
-        {
-          "name": "cart.js",
-          "code": [
-            "// total 을 default 로, count 를 이름 있는 것으로 내보내세요",
-            ""
-          ],
-          "solutionCode": [
-            "export default (items) => items.reduce((acc, item) => acc + item.price * item.count, 0);",
-            "",
-            "export const count = (items) => items.reduce((acc, item) => acc + item.count, 0);",
-            ""
-          ]
-        }
-      ],
-      "entry": "summary",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "1000원 3개 · 2000원 1개 → '4개 · 5,000원'",
-          "args": [
-            [
-              {
-                "price": 1000,
-                "count": 3
-              },
-              {
-                "price": 2000,
-                "count": 1
-              }
-            ]
-          ],
-          "expected": "4개 · 5,000원"
-        },
-        {
-          "type": "value",
-          "label": "빈 장바구니 → '0개 · 0원'",
-          "args": [
-            []
-          ],
-          "expected": "0개 · 0원"
-        },
-        {
-          "type": "value",
-          "label": "10000원 1개 → '1개 · 10,000원'",
-          "args": [
-            [
-              {
-                "price": 10000,
-                "count": 1
-              }
-            ]
-          ],
-          "expected": "1개 · 10,000원"
-        }
-      ]
+      "hints": ["dispatch에는 객체를 전달합니다.", "reducer가 확인하는 type은 increase입니다."]
     }
   ]
 }

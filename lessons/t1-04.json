@@ -3,117 +3,37 @@
   "id": "t1-04",
   "track": "T1",
   "order": 4,
-  "title": "값의 타입과 형변환 들여다보기",
+  "runtime": "js",
+  "title": "참과 거짓으로 상태 나타내기",
   "steps": [
     {
       "kind": "read",
-      "title": "종류를 바꿔 보기",
+      "title": "boolean 값은 두 개뿐입니다",
       "brief": [
-        "값의 종류가 문자열인지 숫자인지는 typeof 로 확인했습니다. 그런데 화면에서 받은 값은 숫자처럼 보여도 대개 문자열입니다. 계산에 쓰려면 종류를 바꿔야 합니다.",
-        "형변환(type conversion — 값의 종류를 다른 종류로 바꾸는 일)에는 두 함수를 씁니다. Number(값) 은 숫자로, String(값) 은 글자로 바꿉니다. Number('9800') 은 숫자 9800 이 됩니다.",
-        "문제는 Number 가 항상 성공하지는 않는다는 것입니다. Number('abc') 처럼 숫자로 볼 수 없는 값을 넣으면 NaN(Not a Number — 숫자가 아님을 뜻하는 특별한 값)이 나옵니다. 오류가 나서 멈추는 것이 아니라 이 값이 조용히 돌아옵니다.",
-        {
-          "code": [
-            "const typed = '9800';",
-            "const shipping = 2500;",
-            "",
-            "console.log(typed + shipping);           // 98002500",
-            "console.log(Number(typed) + shipping);   // 12300",
-            "",
-            "const comma = '9,800';",
-            "",
-            "console.log(Number(comma) + shipping);   // NaN"
-          ]
-        },
-        "typed 는 화면에서 받은 값이라 문자열입니다. 그대로 더하면 계산이 아니라 뒤에 붙이기가 되어 98002500 이 나옵니다. Number 로 바꾼 뒤에 더해야 12300 이 됩니다.",
-        "마지막 줄은 쉼표가 섞인 값입니다. Number 가 이것을 숫자로 보지 못해 NaN 이 되고, NaN 에 무엇을 더해도 NaN 입니다. 변환 실패가 그 자리에서 멈추지 않고 계산 결과까지 따라옵니다."
+        "불리언(boolean)은 true와 false 중 하나인 값입니다. 따옴표를 붙이지 않습니다.",
+        { "code": ["const isLoggedIn = true;", "const isSoldOut = false;"] },
+        "불리언은 '로그인했는가', '품절인가'처럼 예 또는 아니요로 답할 수 있는 상태를 나타낼 때 알맞습니다.",
+        "비교식의 결과도 불리언입니다. 10 > 3은 맞으므로 true이고, 10 < 3은 틀리므로 false입니다. 비교 연산자는 T1-11에서 자세히 배웁니다."
       ]
     },
     {
       "kind": "run",
-      "title": "바꿔 보기",
+      "title": "값과 비교 결과 확인하기",
       "brief": [
-        "아래는 세 가지를 바꿉니다. 숫자로 볼 수 있는 글자, 볼 수 없는 글자, 그리고 숫자를 글자로 바꾸는 경우입니다.",
-        "실행 버튼을 눌러 보세요. 둘째 줄에 NaN 이 나옵니다. 변환이 실패했다는 뜻입니다.",
-        "셋째 줄은 따옴표 없이 12000 으로 보이지만 문자열입니다. typeof 를 붙여 확인해 봐도 좋습니다."
+        "불리언 값을 그대로 출력한 결과와 비교해서 얻은 결과를 나란히 봅니다.",
+        "typeof true의 결과는 boolean입니다. 'true'처럼 따옴표로 감싸면 문자열이 되므로 주의하세요."
       ],
-      "code": "console.log(Number('9800'));\nconsole.log(Number('abc'));\nconsole.log(String(12000));\n"
+      "code": "const isSoldOut = false;\n\nconsole.log(isSoldOut);\nconsole.log(10 > 3);\nconsole.log(10 < 3);\nconsole.log(typeof true);\nconsole.log(typeof 'true');\n"
     },
     {
       "kind": "tweak",
-      "title": "NaN 을 비교해 보기",
+      "title": "상태를 반대로 바꾸기",
       "brief": [
-        "실행 버튼을 눌러 보세요. 첫 줄은 NaN 인데 둘째 줄은 false 가 나옵니다. NaN 인 것이 분명한데 NaN 과 같지 않다고 합니다.",
-        "NaN 은 자기 자신과도 같지 않은 유일한 값입니다. 그래서 === 로는 변환 실패를 절대 찾아낼 수 없습니다. converted === NaN 을 어떻게 바꿔 써도 false 입니다.",
-        "console.log(Number.isNaN(converted)); 를 한 줄 추가하고 실행해 보세요. 이번에는 true 가 나옵니다. Number.isNaN 이 따로 있는 이유가 이것입니다. 외울 것이 아니라 === 가 안 되니 다른 수단이 필요한 것입니다."
+        "isSoldOut의 false를 true로 바꾸고 실행해 보세요. 변수에 담긴 상태가 바뀝니다.",
+        "!는 불리언을 반대로 바꾸는 NOT 연산자입니다. 맨 아래에 console.log(!isSoldOut);을 추가해 결과를 확인하세요.",
+        "true와 'true'는 화면에 비슷하게 보이지만 자료형이 다릅니다. 상태에는 문자열이 아니라 불리언을 사용합니다."
       ],
-      "code": "const converted = Number('abc');\n\nconsole.log(converted);\nconsole.log(converted === NaN);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "실패를 알아내기",
-      "brief": [
-        "converted 에는 변환에 실패한 값이 들어 있습니다. 실패했는지 여부를 참·거짓으로 담아야 합니다.",
-        "null 자리에 변환 실패를 판별하는 표현을 넣어 보세요. === 로는 알아낼 수 없다는 점을 앞에서 확인했습니다.",
-        "채우지 않고 실행하면 실제값이 null 로 나옵니다."
-      ],
-      "code": "const converted = Number('abc');\n\nconst failed = null; // ← 여기를 채우세요\n\nfunction getFailed() {\n  return failed;\n}\n",
-      "entry": "getFailed",
-      "solutionCode": "const converted = Number('abc');\n\nconst failed = Number.isNaN(converted);\n\nfunction getFailed() {\n  return failed;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "'abc' 는 숫자로 바꿀 수 없습니다",
-          "args": [],
-          "expected": true
-        }
-      ],
-      "hints": [
-        "NaN 은 === 로 판별할 수 없습니다. 바꾸기 단계에서 직접 추가했던 Number.isNaN(...)을 다시 보세요.",
-        "Number.isNaN의 괄호 안에는 실패했는지 확인할 값 converted를 넣습니다."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "숫자로 바꾸는 함수",
-      "brief": [
-        "toNumber 함수를 완성해 보세요. 받은 값을 Number로 숫자로 바꿉니다.",
-        "바꾼 결과가 Number.isNaN으로 확인했을 때 실패라면 null을 반환하고, 성공했다면 바꾼 숫자를 반환합니다.",
-        "바로 앞 단계에서 만든 변환 실패 판별을 함수 안으로 옮기는 문제입니다. 객체나 삼항 연산자는 필요하지 않습니다."
-      ],
-      "code": "function toNumber(value) {\n  // 여기를 채우세요\n}\n",
-      "entry": "toNumber",
-      "solutionCode": "function toNumber(value) {\n  const converted = Number(value);\n\n  if (Number.isNaN(converted)) {\n    return null;\n  }\n\n  return converted;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "숫자는 그대로 숫자입니다",
-          "args": [
-            42
-          ],
-          "expected": 42
-        },
-        {
-          "type": "value",
-          "label": "숫자처럼 생긴 문자열은 숫자가 됩니다",
-          "args": [
-            "9800"
-          ],
-          "expected": 9800
-        },
-        {
-          "type": "value",
-          "label": "변환할 수 없으면 null입니다",
-          "args": [
-            "abc"
-          ],
-          "expected": null
-        }
-      ],
-      "hints": [
-        "먼저 Number(value)의 결과를 변수에 담으세요. 같은 변환을 두 번 할 필요는 없습니다.",
-        "앞 단계처럼 Number.isNaN(converted)를 조건으로 쓰고, 실패와 성공에서 각각 반환하면 됩니다."
-      ]
+      "code": "const isSoldOut = false;\n\nconsole.log(isSoldOut);\nconsole.log(10 > 3);\nconsole.log(10 < 3);\nconsole.log(typeof true);\nconsole.log(typeof 'true');\n"
     }
   ]
 }

@@ -1,155 +1,28 @@
 {
-  "schemaVersion": 2,
-  "id": "t7-05",
-  "track": "T7",
-  "order": 5,
-  "runtime": "js",
-  "title": "물려받은 것",
+  "schemaVersion": 2, "id": "t7-05", "track": "T7", "order": 5, "runtime": "react",
+  "title": "effect가 사용하는 여러 값을 의존성에 넣기",
   "steps": [
     {
-      "kind": "read",
-      "title": "우리가 만들지 않은 메서드가 왜 거기 있는가",
+      "kind": "read", "title": "effect 안에서 읽는 반응형 값을 빠뜨리지 않습니다",
       "brief": [
-        "객체 하나를 만들어 봅시다. const course = { name: '리액트 입문' } 입니다. 넣은 것은 name 하나뿐입니다.",
-        "그런데 course.hasOwnProperty('name') 이 동작합니다. course.toString() 도 됩니다. 우리는 그런 메서드를 만든 적이 없습니다.",
-        "자바스크립트는 객체에서 어떤 이름을 찾지 못하면 거기서 멈추지 않습니다. 그 객체가 가리키는 다른 객체로 올라가 다시 찾습니다. 거기에도 없으면 또 위로 올라갑니다. 이 이어진 줄을 프로토타입 체인이라고 부릅니다.",
-        "course 의 한 단계 위는 Object.prototype 입니다. 거기에 hasOwnProperty 와 toString 이 들어 있습니다. 그래서 우리가 만들지 않아도 부를 수 있습니다.",
-        "체인은 끝이 있습니다. Object.prototype 의 위는 null 입니다. 거기까지 올라가서도 찾지 못하면 undefined 가 나옵니다. 없는 속성을 읽었을 때 에러가 아니라 undefined 가 나오는 이유가 이것입니다.",
-        "배열도 같습니다. [1, 2] 가 자기 안에 가진 것은 값 두 개뿐인데 map 과 filter 를 부를 수 있습니다. 배열의 한 단계 위가 Array.prototype 이고 거기에 그 메서드들이 있습니다. 그 위는 다시 Object.prototype 입니다. T1 에서 쓴 배열 메서드가 전부 거기 있었습니다.",
-        "위로 올라가는 길을 보는 방법이 둘입니다. Object.getPrototypeOf(객체) 와 객체.__proto__ 입니다. 둘은 같은 것을 돌려줍니다.",
-        "실무에서 읽고 쓸 것은 Object.getPrototypeOf 입니다. __proto__ 는 오래된 방식이고 표준에도 '되도록 쓰지 말 것' 으로 남아 있습니다. 다만 남의 코드와 브라우저 개발자 도구에는 __proto__ 가 그대로 보이므로, 보면 알아볼 수 있어야 합니다. 이 트랙의 목적이 그것입니다.",
-        "체인을 직접 이을 수도 있습니다. Object.create(부모) 는 부모를 한 단계 위로 두는 새 객체를 만듭니다. 다음 레슨의 생성자 함수가 하는 일이 결국 이것입니다.",
-        "같은 이름이 아래에도 있으면 아래가 이깁니다. 찾다가 먼저 만난 것을 쓰기 때문입니다. 이것을 가린다고 표현합니다. 위에 있던 것이 사라지는 것은 아니고 가려질 뿐입니다."
+        "effect에서 props나 state를 여러 개 읽는다면 의존성 배열에도 모두 적습니다.",
+        { "code": ["useEffect(() => {", "  document.title = name + ' ' + count;", "}, [name, count]);"] },
+        "name이나 count 중 하나가 바뀌면 effect가 다시 실행되어 문서 제목을 현재 값과 맞춥니다.",
+        "의존성을 빠뜨리면 effect 함수가 만들어질 당시의 오래된 값을 계속 사용할 수 있습니다.",
+        "effect를 덜 실행하려고 의존성을 임의로 빼지 않습니다. 먼저 effect 안의 코드가 정말 외부 동기화인지, 사용한 값이 모두 필요한지 확인합니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "출처를 따라가 보기",
-      "brief": [
-        "객체 하나와 배열 하나의 체인을 따라갑니다.",
-        "실행해 보세요. 우리가 넣은 것은 name 하나인데 hasOwnProperty 와 toString 이 동작합니다.",
-        "출처를 확인하는 줄을 보세요. course.hasOwnProperty 와 Object.prototype.hasOwnProperty 가 같은 함수입니다. 복사된 것이 아니라 위에 있는 그것을 그대로 씁니다.",
-        "Object.prototype 의 위가 null 인 것이 체인의 끝입니다."
-      ],
-      "code": "const course = { name: '리액트 입문' };\n\nconsole.log('우리가 넣은 것 :', Object.keys(course));\nconsole.log('그런데 이것이 됩니다 :', course.hasOwnProperty('name'));\nconsole.log('이것도 됩니다 :', String(course));\n\nconsole.log('한 단계 위 :', Object.getPrototypeOf(course) === Object.prototype);\nconsole.log('그 위 :', Object.getPrototypeOf(Object.prototype));\nconsole.log('hasOwnProperty 의 출처 :', course.hasOwnProperty === Object.prototype.hasOwnProperty);\n\nconst list = [1, 2];\nconsole.log('배열이 가진 것 :', Object.keys(list));\nconsole.log('map 의 출처 :', list.map === Array.prototype.map);\nconsole.log('배열의 체인 :', Object.getPrototypeOf(list) === Array.prototype,\n  '→', Object.getPrototypeOf(Array.prototype) === Object.prototype);\n"
+      "kind": "run", "title": "이름과 횟수 변경에 모두 반응하기",
+      "brief": ["name을 입력하거나 count를 증가시키면 [name, count] 중 하나가 바뀌어 effect가 실행됩니다.", "문서 제목에는 두 state의 최신 값이 함께 반영됩니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input, button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { useEffect, useState } = React;\n\nfunction App() {\n  const [name, setName] = useState('');\n  const [count, setCount] = useState(0);\n\n  useEffect(() => {\n    document.title = (name || '이름 없음') + ' · ' + count + '회';\n    console.log('제목 동기화:', name, count);\n  }, [name, count]);\n\n  return (\n    <main>\n      <input value={name} onChange={(event) => setName(event.currentTarget.value)} placeholder=\"이름\" />\n      <button type=\"button\" onClick={() => setCount(count + 1)}>증가 {count}</button>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     },
     {
-      "kind": "tweak",
-      "title": "가려 보고 · 이어 보고 · 끊어 보기",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 되돌리고 다시 실행해야 합니다.",
-        "① course 에 toString() { return '내 것'; } 을 추가하고 String(course) 를 다시 찍어 보세요. '[object Object]' 대신 '내 것' 이 나옵니다. 아래에서 먼저 만났기 때문입니다. Object.prototype.toString 은 그대로 있고 가려졌을 뿐입니다.",
-        "② 되돌린 뒤 맨 아래에 const base = { hello() { return '안녕 ' + this.name; } }; 와 const child = Object.create(base); child.name = '아이'; 를 넣고 child.hello() 를 찍어 보세요. '안녕 아이' 가 나옵니다. hello 는 child 에 없고 한 단계 위에 있습니다. Object.keys(child) 를 찍어 보면 name 하나뿐입니다.",
-        "③ 되돌린 뒤 console.log(course.__proto__ === Object.getPrototypeOf(course)); 를 찍어 보세요. true 입니다. 같은 것을 보는 두 방법인데, 코드에는 아래쪽을 쓰고 위쪽은 남의 코드에서 읽을 줄만 알면 됩니다."
-      ],
-      "code": "const course = { name: '리액트 입문' };\n\nconsole.log('우리가 넣은 것 :', Object.keys(course));\nconsole.log('그런데 이것이 됩니다 :', course.hasOwnProperty('name'));\nconsole.log('이것도 됩니다 :', String(course));\n\nconsole.log('한 단계 위 :', Object.getPrototypeOf(course) === Object.prototype);\nconsole.log('그 위 :', Object.getPrototypeOf(Object.prototype));\nconsole.log('hasOwnProperty 의 출처 :', course.hasOwnProperty === Object.prototype.hasOwnProperty);\n\nconst list = [1, 2];\nconsole.log('배열이 가진 것 :', Object.keys(list));\nconsole.log('map 의 출처 :', list.map === Array.prototype.map);\nconsole.log('배열의 체인 :', Object.getPrototypeOf(list) === Array.prototype,\n  '→', Object.getPrototypeOf(Array.prototype) === Object.prototype);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "체인을 잇는 줄 채우기",
-      "brief": [
-        "공통 메서드를 담은 base 와 그것을 물려받을 객체를 만드는 자리입니다. 잇는 줄이 비어 있습니다.",
-        "null 자리를 채워 base 를 한 단계 위로 두는 새 객체를 만들어 주세요.",
-        "Object.create(base) 입니다.",
-        "채우지 않고 실행하면 null 에 값을 넣으려다 실패합니다."
-      ],
-      "code": "const base = {\n  describe() {\n    return this.name + ' · ' + this.hours + '시간';\n  },\n};\n\nfunction makeCourse(name, hours) {\n  const course = null; // ← 여기를 채우세요\n\n  course.name = name;\n  course.hours = hours;\n  return course;\n}\n\n// 이 함수는 그대로 두세요\nfunction report(name, hours) {\n  const c = makeCourse(name, hours);\n  return c.describe() + ' / 자기 것: ' + Object.keys(c).join(',') + ' / 물려받음: ' + (c.describe === base.describe);\n}\n",
-      "entry": "report",
-      "solutionCode": "const base = {\n  describe() {\n    return this.name + ' · ' + this.hours + '시간';\n  },\n};\n\nfunction makeCourse(name, hours) {\n  const course = Object.create(base);\n\n  course.name = name;\n  course.hours = hours;\n  return course;\n}\n\n// 이 함수는 그대로 두세요\nfunction report(name, hours) {\n  const c = makeCourse(name, hours);\n  return c.describe() + ' / 자기 것: ' + Object.keys(c).join(',') + ' / 물려받음: ' + (c.describe === base.describe);\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "메서드는 위에서 오고 값은 자기 것",
-          "args": [
-            "리액트 입문",
-            8
-          ],
-          "expected": "리액트 입문 · 8시간 / 자기 것: name,hours / 물려받음: true"
-        },
-        {
-          "type": "value",
-          "label": "다른 코스도 같은 메서드를 씁니다",
-          "args": [
-            "CSS 레이아웃",
-            6
-          ],
-          "expected": "CSS 레이아웃 · 6시간 / 자기 것: name,hours / 물려받음: true"
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "체인을 따라가는 함수 만들기",
-      "brief": [
-        "값이 어디서 오는지 추적하는 whereFrom 을 만들어 주세요. 남의 코드를 읽을 때 스스로 확인하는 훈련입니다.",
-        "whereFrom(obj, key) 는 obj 에서 시작해 체인을 따라 올라가며 그 이름을 가진 객체를 찾습니다.",
-        "obj 자신이 가지고 있으면 '자기 것' 을 돌려주세요. 자기가 가졌는지는 Object.prototype.hasOwnProperty.call(대상, key) 로 확인합니다. 대상이 그 메서드를 가렸을 수도 있으니 이렇게 부르는 것이 안전합니다.",
-        "한 단계 위에 있으면 '1단계 위', 두 단계 위면 '2단계 위' 처럼 몇 단계인지 돌려주세요.",
-        "체인 끝까지 없으면 '없음' 을 돌려주세요. 체인의 끝은 null 입니다.",
-        "Object.getPrototypeOf 로 올라가세요. __proto__ 는 쓰지 마세요."
-      ],
-      "code": "// whereFrom 을 여기에 작성하세요\n",
-      "entry": "whereFrom",
-      "solutionCode": "function whereFrom(obj, key) {\n  const owns = Object.prototype.hasOwnProperty;\n  let current = obj;\n  let step = 0;\n\n  while (current !== null) {\n    if (owns.call(current, key)) {\n      return step === 0 ? '자기 것' : step + '단계 위';\n    }\n    current = Object.getPrototypeOf(current);\n    step += 1;\n  }\n\n  return '없음';\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "자기 것",
-          "args": [
-            {
-              "name": "리액트 입문"
-            },
-            "name"
-          ],
-          "expected": "자기 것"
-        },
-        {
-          "type": "value",
-          "label": "Object.prototype 에서 온 것",
-          "args": [
-            {
-              "name": "x"
-            },
-            "hasOwnProperty"
-          ],
-          "expected": "1단계 위"
-        },
-        {
-          "type": "value",
-          "label": "배열의 map 은 한 단계 위",
-          "args": [
-            [
-              1,
-              2
-            ],
-            "map"
-          ],
-          "expected": "1단계 위"
-        },
-        {
-          "type": "value",
-          "label": "배열의 toString 은 한 단계 위(Array 가 자기 것으로 가집니다)",
-          "args": [
-            [
-              1,
-              2
-            ],
-            "toString"
-          ],
-          "expected": "1단계 위"
-        },
-        {
-          "type": "value",
-          "label": "없는 이름",
-          "args": [
-            {
-              "name": "x"
-            },
-            "없는것"
-          ],
-          "expected": "없음"
-        }
-      ]
+      "kind": "tweak", "title": "의존성 하나를 빼 보기",
+      "brief": ["[name, count]를 [count]로 바꾸면 이름만 입력할 때 effect가 실행되지 않아 문서 제목의 이름이 바로 바뀌지 않습니다.", "그 상태에서 count를 바꾸면 effect가 실행되어 최신 name도 뒤늦게 반영됩니다.", "effect에서 name과 count를 모두 읽으므로 올바른 의존성은 둘을 모두 포함한 배열입니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input, button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { useEffect, useState } = React;\n\nfunction App() {\n  const [name, setName] = useState('');\n  const [count, setCount] = useState(0);\n\n  useEffect(() => {\n    document.title = (name || '이름 없음') + ' · ' + count + '회';\n    console.log('제목 동기화:', name, count);\n  }, [name, count]);\n\n  return (\n    <main>\n      <input value={name} onChange={(event) => setName(event.currentTarget.value)} placeholder=\"이름\" />\n      <button type=\"button\" onClick={() => setCount(count + 1)}>증가 {count}</button>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     }
   ]
 }

@@ -1,324 +1,40 @@
 {
-  "schemaVersion": 2,
-  "id": "t6-04",
-  "track": "T6",
-  "order": 4,
-  "runtime": "react",
-  "title": "다시 불러오기",
+  "schemaVersion": 2, "id": "t6-04", "track": "T6", "order": 4, "runtime": "react",
+  "title": "이전 state로 안전하게 다음 값 계산하기",
   "steps": [
     {
-      "kind": "read",
-      "title": "무엇이 바뀌면 다시 맞춰야 하는가",
+      "kind": "read", "title": "설정 함수에 업데이트 함수를 전달합니다",
       "brief": [
-        "지금까지 의존성 배열에 빈 배열만 넣었습니다. 화면이 열릴 때 한 번 가져오고 끝이었습니다. 이제 그 배열을 제대로 씁니다.",
-        "t4-13 에서 기준을 세웠습니다. 효과는 React 바깥과 화면을 맞추는 일이라고 했습니다. 맞출 대상이 바뀌면 다시 맞춰야 합니다. 검색어가 '리' 에서 '자' 로 바뀌었으면 화면에 있는 목록은 더 이상 맞지 않습니다. 그래서 다시 가져옵니다.",
-        "배열에 넣는 것은 '이 값이 바뀌면 다시 하라' 는 목록입니다. [query] 라고 쓰면 query 가 바뀔 때마다 효과가 다시 돕니다. 바뀌지 않은 렌더에서는 돌지 않습니다.",
-        "효과가 다시 돌기 전에 화면을 되돌려 두는 편이 좋습니다. 이 레슨의 코드는 효과 맨 위에서 setFound(null) 을 부릅니다. 그러면 새 결과가 올 때까지 '찾는 중…' 이 보입니다. 그것을 하지 않으면 새 검색어를 입력했는데 옛 결과가 그대로 남아 있습니다. 사용자는 그것을 새 결과라고 읽습니다.",
-        "두 번째 이야기는 강제 재요청입니다. 바뀐 것이 없는데도 다시 받고 싶을 때가 있습니다. 새로고침 버튼이 그것입니다.",
-        "여기서 흔한 실수가 효과 안의 fetch 를 함수로 빼서 버튼이 직접 부르게 하는 것입니다. 그러면 요청을 보내는 길이 둘이 됩니다. 처음 한 번은 효과가, 그 뒤로는 버튼이 보냅니다. 고칠 일이 생기면 두 곳을 고쳐야 하고, 한 곳만 고치면 어긋납니다.",
-        "대신 숫자 상태를 하나 두고 배열에 함께 넣습니다. 버튼은 그 숫자를 올리기만 합니다. 숫자가 바뀌었으니 효과가 다시 돕니다. 요청을 보내는 길은 여전히 효과 하나뿐입니다. 버튼은 '다시 해야 한다' 는 사실만 알립니다.",
-        "배열을 아예 쓰지 않는 형태는 다루지 않습니다. 배열이 없으면 렌더마다 효과가 돌고, 그 안에서 상태를 바꾸면 끝나지 않습니다. t4-12 에서 같은 이유로 피했습니다."
+        "다음 상태가 이전 상태를 바탕으로 계산된다면 설정 함수에 값을 바로 전달하는 대신 업데이트 함수를 전달할 수 있습니다.",
+        { "code": ["setCount((previousCount) => previousCount + 1);"] },
+        "React는 업데이트 함수를 순서대로 처리하며 각 함수에 앞 업데이트가 반영된 최신 대기 상태를 전달합니다.",
+        "따라서 함수형 업데이트를 세 번 호출하면 0에서 1, 1에서 2, 2에서 3으로 계산됩니다.",
+        "매개변수 이름은 자유지만 previousCount나 prev처럼 이전 상태임을 알 수 있게 짓는 것이 좋습니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "검색어가 바뀌면",
-      "brief": [
-        "검색어를 props 로 받는 화면입니다. 1.5초 뒤에 검색어를 '리' 에서 '자' 로 바꿉니다.",
-        "실행해 보세요. 미리보기가 '리' 의 결과를 보여 주다가 '찾는 중…' 을 거쳐 '자' 의 결과로 바뀝니다.",
-        "의존성 배열이 [query, tick] 입니다. query 가 바뀌었으므로 효과가 다시 돌았습니다.",
-        "'다시 불러오기' 버튼도 눌러 보세요. 검색어는 그대로인데 '찾는 중…' 이 잠깐 보였다가 같은 결과가 다시 옵니다. tick 이 바뀌어 효과가 다시 돈 것입니다."
-      ],
-      "env": [
-        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
-        "// 검색어가 짧을수록 오래 걸립니다. 실제 서버도 대개 그렇습니다.",
-        "(() => {",
-        "  const COURSES = [",
-        "    { id: 1, name: '리액트 입문' },",
-        "    { id: 2, name: 'CSS 레이아웃' },",
-        "    { id: 3, name: '자바스크립트 기초' },",
-        "    { id: 4, name: '리액트 심화' },",
-        "  ];",
-        "",
-        "  const json = (data) => new Response(JSON.stringify(data), {",
-        "    status: 200,",
-        "    statusText: 'OK',",
-        "    headers: { 'Content-Type': 'application/json' },",
-        "  });",
-        "",
-        "  window.fetch = (url) => new Promise((resolve) => {",
-        "    const key = String(url);",
-        "    const at = key.indexOf('?q=');",
-        "    const q = at >= 0 ? decodeURIComponent(key.slice(at + 3)) : null;",
-        "    const delay = q === null ? 60 : (q.length <= 1 ? 400 : 40);",
-        "    setTimeout(() => {",
-        "      if (q === null) { resolve(json(COURSES)); return; }",
-        "      resolve(json(COURSES.filter((c) => c.name.includes(q))));",
-        "    }, delay);",
-        "  });",
-        "})();"
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
-          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }",
-          ".again { margin-top: 6px; }"
-        ]
-      },
-      "code": "const { useState, useEffect } = React;\n\nfunction Search({ query }) {\n  const [found, setFound] = useState(null);\n  const [tick, setTick] = useState(0);\n\n  useEffect(() => {\n    setFound(null);\n    fetch('/api/search?q=' + encodeURIComponent(query))\n      .then((res) => res.json())\n      .then((list) => setFound(list));\n  }, [query, tick]);\n\n  if (found === null) {\n    return <p className=\"state\">찾는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{query} · {found.length}개</p>\n      {found.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n      <button className=\"again\" type=\"button\" onClick={() => setTick(tick + 1)}>다시 불러오기</button>\n    </div>\n  );\n}\n\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nroot.render(<Search query=\"리\" />);\nsetTimeout(() => root.render(<Search query=\"자\" />), 1500);\n"
+      "kind": "run", "title": "한 번 클릭해 세 번 증가하기",
+      "brief": ["세 업데이트 함수가 차례로 이전 결과를 받아 계산합니다. 버튼을 한 번 누르면 count가 3 증가합니다.", "현재 렌더의 count를 직접 읽지 않으므로 스냅샷 값이 같아도 각 업데이트가 이어집니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
+      "code": "const { useState } = React;\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  function addThree() {\n    setCount((previous) => previous + 1);\n    setCount((previous) => previous + 1);\n    setCount((previous) => previous + 1);\n  }\n\n  return <button type=\"button\" onClick={addThree}>현재 값: {count}</button>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n"
     },
     {
-      "kind": "tweak",
-      "title": "배열에서 빼 보기",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 되돌리고 다시 실행해야 합니다.",
-        "① 의존성 배열을 [tick] 으로 바꿔 보세요. 1.5초 뒤에 검색어가 '자' 로 바뀌는데 목록은 '리' 의 결과 그대로입니다. 위의 글자만 '자' 로 바뀌어 더 이상합니다. 화면이 서로 어긋난 것을 말해 주는 사람이 없습니다.",
-        "② 되돌린 뒤 [query] 로 바꾸고 '다시 불러오기' 를 눌러 보세요. 아무 일도 일어나지 않습니다. tick 은 바뀌지만 배열에 없으므로 효과는 그것을 보지 않습니다.",
-        "③ 되돌린 뒤 onClick 을 () => setTick(1) 로 바꿔 보세요. 처음 한 번은 동작하는데 두 번째부터 아무 일도 없습니다. 0 에서 1 로는 바뀌었지만 1 에서 1 로는 바뀐 것이 아니기 때문입니다. 값이 같으면 React 는 아무것도 하지 않습니다."
-      ],
-      "env": [
-        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
-        "// 검색어가 짧을수록 오래 걸립니다. 실제 서버도 대개 그렇습니다.",
-        "(() => {",
-        "  const COURSES = [",
-        "    { id: 1, name: '리액트 입문' },",
-        "    { id: 2, name: 'CSS 레이아웃' },",
-        "    { id: 3, name: '자바스크립트 기초' },",
-        "    { id: 4, name: '리액트 심화' },",
-        "  ];",
-        "",
-        "  const json = (data) => new Response(JSON.stringify(data), {",
-        "    status: 200,",
-        "    statusText: 'OK',",
-        "    headers: { 'Content-Type': 'application/json' },",
-        "  });",
-        "",
-        "  window.fetch = (url) => new Promise((resolve) => {",
-        "    const key = String(url);",
-        "    const at = key.indexOf('?q=');",
-        "    const q = at >= 0 ? decodeURIComponent(key.slice(at + 3)) : null;",
-        "    const delay = q === null ? 60 : (q.length <= 1 ? 400 : 40);",
-        "    setTimeout(() => {",
-        "      if (q === null) { resolve(json(COURSES)); return; }",
-        "      resolve(json(COURSES.filter((c) => c.name.includes(q))));",
-        "    }, delay);",
-        "  });",
-        "})();"
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
-          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }",
-          ".again { margin-top: 6px; }"
-        ]
-      },
-      "code": "const { useState, useEffect } = React;\n\nfunction Search({ query }) {\n  const [found, setFound] = useState(null);\n  const [tick, setTick] = useState(0);\n\n  useEffect(() => {\n    setFound(null);\n    fetch('/api/search?q=' + encodeURIComponent(query))\n      .then((res) => res.json())\n      .then((list) => setFound(list));\n  }, [query, tick]);\n\n  if (found === null) {\n    return <p className=\"state\">찾는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{query} · {found.length}개</p>\n      {found.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n      <button className=\"again\" type=\"button\" onClick={() => setTick(tick + 1)}>다시 불러오기</button>\n    </div>\n  );\n}\n\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nroot.render(<Search query=\"리\" />);\nsetTimeout(() => root.render(<Search query=\"자\" />), 1500);\n"
+      "kind": "tweak", "title": "값 업데이트와 함수형 업데이트 비교하기",
+      "brief": ["세 줄을 모두 setCount(count + 1)로 바꾸면 한 번 클릭할 때 1만 증가합니다.", "다시 함수형 업데이트로 되돌린 뒤 마지막 줄을 previous + 10으로 바꾸면 한 번에 12 증가합니다.", "이전 상태가 필요하지 않고 정해진 값으로 바꾸는 경우에는 setCount(0)처럼 값을 직접 전달해도 됩니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
+      "code": "const { useState } = React;\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  function addThree() {\n    setCount((previous) => previous + 1);\n    setCount((previous) => previous + 1);\n    setCount((previous) => previous + 1);\n  }\n\n  return <button type=\"button\" onClick={addThree}>현재 값: {count}</button>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n"
     },
     {
-      "kind": "fill",
-      "title": "다시 돌 조건 채우기",
-      "brief": [
-        "화면과 버튼은 돼 있고 의존성 배열이 비어 있습니다.",
-        "null 자리를 채워 검색어가 바뀌거나 버튼을 눌렀을 때 효과가 다시 돌게 해 주세요. 값 두 개가 들어갑니다.",
-        "이 단계의 Search 는 검색어를 props 로 받습니다. 검사기가 검색어를 바꿔 가며 다시 찾는지 확인합니다. 아래 search 와 waitFor 는 그대로 두세요.",
-        "채우지 않고 실행하면 검색어를 바꿔도 다시 찾지 않습니다."
-      ],
-      "env": [
-        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
-        "// 검색어가 짧을수록 오래 걸립니다. 실제 서버도 대개 그렇습니다.",
-        "(() => {",
-        "  const COURSES = [",
-        "    { id: 1, name: '리액트 입문' },",
-        "    { id: 2, name: 'CSS 레이아웃' },",
-        "    { id: 3, name: '자바스크립트 기초' },",
-        "    { id: 4, name: '리액트 심화' },",
-        "  ];",
-        "",
-        "  const json = (data) => new Response(JSON.stringify(data), {",
-        "    status: 200,",
-        "    statusText: 'OK',",
-        "    headers: { 'Content-Type': 'application/json' },",
-        "  });",
-        "",
-        "  window.fetch = (url) => new Promise((resolve) => {",
-        "    const key = String(url);",
-        "    const at = key.indexOf('?q=');",
-        "    const q = at >= 0 ? decodeURIComponent(key.slice(at + 3)) : null;",
-        "    const delay = q === null ? 60 : (q.length <= 1 ? 400 : 40);",
-        "    setTimeout(() => {",
-        "      if (q === null) { resolve(json(COURSES)); return; }",
-        "      resolve(json(COURSES.filter((c) => c.name.includes(q))));",
-        "    }, delay);",
-        "  });",
-        "})();"
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
-          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }",
-          ".again { margin-top: 6px; }"
-        ]
-      },
-      "code": "const { useState, useEffect } = React;\n\nfunction Search({ query }) {\n  const [found, setFound] = useState(null);\n  const [tick, setTick] = useState(0);\n\n  useEffect(() => {\n    setFound(null);\n    fetch('/api/search?q=' + encodeURIComponent(query))\n      .then((res) => res.json())\n      .then((list) => setFound(list));\n  }, null /* ← 여기를 채우세요 */);\n\n  if (found === null) {\n    return <p className=\"state\">찾는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{query} · {found.length}개</p>\n      {found.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n      <button className=\"again\" type=\"button\" onClick={() => setTick(tick + 1)}>다시 불러오기</button>\n    </div>\n  );\n}\n\n// 아래 넷은 그대로 두세요. 검사기가 search 와 again 을 부릅니다\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nfunction waitFor(ok, whenLate) {\n  const el = document.querySelector('#root');\n  return new Promise((resolve) => {\n    const startedAt = Date.now();\n    const tick = () => {\n      if (ok(el.textContent)) resolve(el.textContent);\n      else if (Date.now() - startedAt > 2000) resolve(whenLate || el.textContent);\n      else setTimeout(tick, 30);\n    };\n    tick();\n  });\n}\n\nfunction search(query) {\n  root.render(<Search query={query} />);\n  return waitFor((t) => t.includes('찾는 중'), '다시 찾지 않았습니다')\n    .then((r) => (r === '다시 찾지 않았습니다' ? r : waitFor((t) => t && !t.includes('찾는 중'))));\n}\n\nfunction again() {\n  document.querySelector('.again').click();\n  return waitFor((t) => t.includes('찾는 중'), '버튼이 아무 일도 하지 않았습니다')\n    .then((r) => (r === '버튼이 아무 일도 하지 않았습니다' ? r : waitFor((t) => t && !t.includes('찾는 중'))));\n}\n\nsearch('리');\n",
-      "entry": "search",
-      "solutionCode": "const { useState, useEffect } = React;\n\nfunction Search({ query }) {\n  const [found, setFound] = useState(null);\n  const [tick, setTick] = useState(0);\n\n  useEffect(() => {\n    setFound(null);\n    fetch('/api/search?q=' + encodeURIComponent(query))\n      .then((res) => res.json())\n      .then((list) => setFound(list));\n  }, [query, tick]);\n\n  if (found === null) {\n    return <p className=\"state\">찾는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{query} · {found.length}개</p>\n      {found.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n      <button className=\"again\" type=\"button\" onClick={() => setTick(tick + 1)}>다시 불러오기</button>\n    </div>\n  );\n}\n\n// 아래 넷은 그대로 두세요. 검사기가 search 와 again 을 부릅니다\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nfunction waitFor(ok, whenLate) {\n  const el = document.querySelector('#root');\n  return new Promise((resolve) => {\n    const startedAt = Date.now();\n    const tick = () => {\n      if (ok(el.textContent)) resolve(el.textContent);\n      else if (Date.now() - startedAt > 2000) resolve(whenLate || el.textContent);\n      else setTimeout(tick, 30);\n    };\n    tick();\n  });\n}\n\nfunction search(query) {\n  root.render(<Search query={query} />);\n  return waitFor((t) => t.includes('찾는 중'), '다시 찾지 않았습니다')\n    .then((r) => (r === '다시 찾지 않았습니다' ? r : waitFor((t) => t && !t.includes('찾는 중'))));\n}\n\nfunction again() {\n  document.querySelector('.again').click();\n  return waitFor((t) => t.includes('찾는 중'), '버튼이 아무 일도 하지 않았습니다')\n    .then((r) => (r === '버튼이 아무 일도 하지 않았습니다' ? r : waitFor((t) => t && !t.includes('찾는 중'))));\n}\n\nsearch('리');\n",
+      "kind": "fill", "title": "이전 state를 두 번 이어서 갱신하기",
+      "brief": ["두 setCount의 null을 업데이트 함수로 바꾸세요. 버튼을 한 번 누르면 0에서 2가 되어야 합니다.", "각 업데이트 함수는 React가 전달한 previous에 1을 더해 반환합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useState } = React;\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  function addTwo() {\n    setCount(null);\n    setCount(null);\n  }\n\n  return <button type=\"button\" onClick={addTwo}>숫자: {count}</button>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n",
+      "solutionCode": "const { useState } = React;\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  function addTwo() {\n    setCount((previous) => previous + 1);\n    setCount((previous) => previous + 1);\n  }\n\n  return <button type=\"button\" onClick={addTwo}>숫자: {count}</button>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n",
       "asserts": [
-        {
-          "type": "value",
-          "label": "'리' 로 찾기",
-          "args": [
-            "리"
-          ],
-          "expected": "리 · 2개리액트 입문리액트 심화다시 불러오기"
-        },
-        {
-          "type": "value",
-          "label": "검색어가 바뀌면 다시 찾습니다",
-          "args": [
-            "자"
-          ],
-          "expected": "자 · 1개자바스크립트 기초다시 불러오기"
-        },
-        {
-          "type": "value",
-          "label": "찾은 것이 없어도 화면이 바뀝니다",
-          "args": [
-            "없는말"
-          ],
-          "expected": "없는말 · 0개다시 불러오기"
-        },
-        {
-          "type": "value",
-          "label": "다시 '리' 로",
-          "args": [
-            "리"
-          ],
-          "expected": "리 · 2개리액트 입문리액트 심화다시 불러오기"
-        },
-        {
-          "type": "dom",
-          "label": "다시 불러오기 버튼이 있습니다",
-          "select": ".again",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "코스 줄이 둘",
-          "select": ".course",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "다시 불러오는 화면 만들기",
-      "brief": [
-        "검색어로 코스를 찾아 보여 주는 Search 를 만들어 주세요. 검색어가 바뀌면 다시 찾고, 버튼을 누르면 같은 검색어로 다시 받아 옵니다.",
-        "Search 는 검색어를 props 로 받습니다. function Search({ query }) 형태입니다.",
-        "상태는 둘입니다. 찾은 목록(처음 값 null)과 다시 불러오기용 숫자(처음 값 0)입니다.",
-        "효과 맨 위에서 목록을 null 로 되돌린 뒤 '/api/search?q=' + encodeURIComponent(query) 를 가져와 상태에 넣으세요. 의존성 배열에는 검색어와 숫자를 함께 넣습니다.",
-        "목록이 null 이면 state 클래스로 '찾는 중…' 만 보여 주세요.",
-        "아니면 state 클래스로 '리 · 2개' 형태를 보여 주고, 찾은 코스마다 course 클래스로 이름 한 줄씩 보여 주세요. 줄마다 key 가 필요합니다. 그 아래에 again 클래스를 가진 버튼을 두고 글자는 '다시 불러오기' 로 하세요.",
-        "버튼은 숫자를 올리기만 해야 합니다. 버튼이 직접 fetch 를 부르면 요청을 보내는 길이 둘이 됩니다.",
-        "아래 root 와 waitFor 와 search 와 again 은 그대로 두세요. 검사기가 이것들을 부릅니다."
+        { "type": "dom", "label": "한 번 누르면 2 증가", "actions": [{ "action": "click", "selector": "button" }], "select": "button", "text": ["숫자: 2"] },
+        { "type": "dom", "label": "다시 누르면 4", "actions": [{ "action": "click", "selector": "button" }], "select": "button", "text": ["숫자: 4"] }
       ],
-      "env": [
-        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
-        "// 검색어가 짧을수록 오래 걸립니다. 실제 서버도 대개 그렇습니다.",
-        "(() => {",
-        "  const COURSES = [",
-        "    { id: 1, name: '리액트 입문' },",
-        "    { id: 2, name: 'CSS 레이아웃' },",
-        "    { id: 3, name: '자바스크립트 기초' },",
-        "    { id: 4, name: '리액트 심화' },",
-        "  ];",
-        "",
-        "  const json = (data) => new Response(JSON.stringify(data), {",
-        "    status: 200,",
-        "    statusText: 'OK',",
-        "    headers: { 'Content-Type': 'application/json' },",
-        "  });",
-        "",
-        "  window.fetch = (url) => new Promise((resolve) => {",
-        "    const key = String(url);",
-        "    const at = key.indexOf('?q=');",
-        "    const q = at >= 0 ? decodeURIComponent(key.slice(at + 3)) : null;",
-        "    const delay = q === null ? 60 : (q.length <= 1 ? 400 : 40);",
-        "    setTimeout(() => {",
-        "      if (q === null) { resolve(json(COURSES)); return; }",
-        "      resolve(json(COURSES.filter((c) => c.name.includes(q))));",
-        "    }, delay);",
-        "  });",
-        "})();"
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".state { margin: 0 0 6px; color: var(--c-text-muted); }",
-          ".course { margin: 0 0 4px; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 4px; }",
-          ".again { margin-top: 6px; }"
-        ]
-      },
-      "code": "const { useState, useEffect } = React;\n\n// Search 를 여기에 작성하세요\n\n// 아래 넷은 그대로 두세요. 검사기가 search 와 again 을 부릅니다\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nfunction waitFor(ok, whenLate) {\n  const el = document.querySelector('#root');\n  return new Promise((resolve) => {\n    const startedAt = Date.now();\n    const tick = () => {\n      if (ok(el.textContent)) resolve(el.textContent);\n      else if (Date.now() - startedAt > 2000) resolve(whenLate || el.textContent);\n      else setTimeout(tick, 30);\n    };\n    tick();\n  });\n}\n\nfunction search(query) {\n  root.render(<Search query={query} />);\n  return waitFor((t) => t.includes('찾는 중'), '다시 찾지 않았습니다')\n    .then((r) => (r === '다시 찾지 않았습니다' ? r : waitFor((t) => t && !t.includes('찾는 중'))));\n}\n\nfunction again() {\n  document.querySelector('.again').click();\n  return waitFor((t) => t.includes('찾는 중'), '버튼이 아무 일도 하지 않았습니다')\n    .then((r) => (r === '버튼이 아무 일도 하지 않았습니다' ? r : waitFor((t) => t && !t.includes('찾는 중'))));\n}\n\nsearch('리');\n",
-      "entry": "search",
-      "solutionCode": "const { useState, useEffect } = React;\n\nfunction Search({ query }) {\n  const [found, setFound] = useState(null);\n  const [tick, setTick] = useState(0);\n\n  useEffect(() => {\n    setFound(null);\n    fetch('/api/search?q=' + encodeURIComponent(query))\n      .then((res) => res.json())\n      .then((list) => setFound(list));\n  }, [query, tick]);\n\n  if (found === null) {\n    return <p className=\"state\">찾는 중…</p>;\n  }\n\n  return (\n    <div>\n      <p className=\"state\">{query} · {found.length}개</p>\n      {found.map((c) => <p className=\"course\" key={c.id}>{c.name}</p>)}\n      <button className=\"again\" type=\"button\" onClick={() => setTick(tick + 1)}>다시 불러오기</button>\n    </div>\n  );\n}\n\n// 아래 넷은 그대로 두세요. 검사기가 search 와 again 을 부릅니다\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nfunction waitFor(ok, whenLate) {\n  const el = document.querySelector('#root');\n  return new Promise((resolve) => {\n    const startedAt = Date.now();\n    const tick = () => {\n      if (ok(el.textContent)) resolve(el.textContent);\n      else if (Date.now() - startedAt > 2000) resolve(whenLate || el.textContent);\n      else setTimeout(tick, 30);\n    };\n    tick();\n  });\n}\n\nfunction search(query) {\n  root.render(<Search query={query} />);\n  return waitFor((t) => t.includes('찾는 중'), '다시 찾지 않았습니다')\n    .then((r) => (r === '다시 찾지 않았습니다' ? r : waitFor((t) => t && !t.includes('찾는 중'))));\n}\n\nfunction again() {\n  document.querySelector('.again').click();\n  return waitFor((t) => t.includes('찾는 중'), '버튼이 아무 일도 하지 않았습니다')\n    .then((r) => (r === '버튼이 아무 일도 하지 않았습니다' ? r : waitFor((t) => t && !t.includes('찾는 중'))));\n}\n\nsearch('리');\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "'리' 로 찾기",
-          "args": [
-            "리"
-          ],
-          "expected": "리 · 2개리액트 입문리액트 심화다시 불러오기"
-        },
-        {
-          "type": "value",
-          "label": "검색어가 바뀌면 다시 찾습니다",
-          "args": [
-            "자"
-          ],
-          "expected": "자 · 1개자바스크립트 기초다시 불러오기"
-        },
-        {
-          "type": "value",
-          "label": "찾은 것이 없어도 화면이 바뀝니다",
-          "args": [
-            "없는말"
-          ],
-          "expected": "없는말 · 0개다시 불러오기"
-        },
-        {
-          "type": "value",
-          "label": "다시 '리' 로",
-          "args": [
-            "리"
-          ],
-          "expected": "리 · 2개리액트 입문리액트 심화다시 불러오기"
-        },
-        {
-          "type": "dom",
-          "label": "다시 불러오기 버튼이 있습니다",
-          "select": ".again",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "코스 줄이 둘",
-          "select": ".course",
-          "count": 2
-        }
-      ]
+      "hints": ["setCount((previous) => previous + 1) 형태를 사용합니다.", "두 줄 모두 같은 업데이트 함수를 전달하세요."]
     }
   ]
 }

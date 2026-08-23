@@ -3,134 +3,38 @@
   "id": "t0-03",
   "track": "T0",
   "order": 3,
-  "title": "입력을 받아 결과 돌려주기",
+  "runtime": "js",
+  "title": "값에 이름 붙이기",
   "steps": [
     {
       "kind": "read",
-      "title": "함수가 무엇인가요",
+      "title": "변수 선언과 할당",
       "brief": [
-        "함수(function — 값을 받아 결과를 반환하는, 즉 돌려주는 코드 덩어리)는 같은 일을 여러 번 해야 할 때 그 일을 한 덩어리로 묶어 두는 것입니다. 묶어 두고 이름을 붙이면 필요할 때마다 그 이름으로 부를 수 있습니다. 함수를 부르는 것을 호출한다고도 합니다.",
-        "아래가 함수 하나를 만들고 한 번 부르는 코드입니다.",
-        {
-          "code": [
-            "function addTax(price) {",
-            "  return price + 1000;",
-            "}",
-            "",
-            "const total = addTax(12000);",
-            "",
-            "console.log(total);   // 13000"
-          ]
-        },
-        "첫 줄의 addTax 가 이 덩어리에 붙인 이름이고, 괄호 안의 price 는 받을 값에 미리 붙여 둔 이름입니다. 이것을 매개변수(parameter — 함수가 받을 값에 붙여 둔 이름)라고 합니다. 호출할 때 넣은 12000 이 price 가 됩니다.",
-        "return 은 그 값을 반환합니다. 어디로 반환하느냐면 함수를 호출한 자리입니다. addTax(12000) 이라고 적은 그 자리가 13000 으로 바뀌는 셈입니다. 그래서 그 자리의 값에 total 이라는 이름을 붙일 수 있습니다.",
-        "만들어 두는 것과 호출하는 것은 다릅니다. 위의 세 줄은 덩어리를 만들어 둔 것뿐이고, addTax(12000) 이라고 써야 비로소 그 안이 실행됩니다. 만들기만 하고 호출하지 않으면 아무 일도 일어나지 않습니다."
+        "같은 값을 여러 곳에서 쓰려면 값에 이름을 붙입니다. 그 이름을 변수(variable — 값을 가리키는 이름)라고 합니다.",
+        "const price = 12000;은 price라는 변수를 선언(declaration — 이름을 처음 만드는 것)하고, 숫자 12000을 할당(assignment — 그 이름이 가리킬 값을 정하는 것)합니다.",
+        { "code": ["const price = 12000;", "", "console.log(price);", "console.log(price + 3000);"] },
+        "12000은 한 번만 적었지만 price라는 이름으로 두 번 사용했습니다. 값을 바꿀 때 선언 줄 한 곳만 고치면 사용하는 곳이 함께 바뀝니다.",
+        "const로 선언한 변수에는 다른 값을 다시 할당할 수 없습니다. 다시 할당해야 한다면 let을 씁니다. const와 let은 모두 변수를 만들지만 재할당 가능 여부가 다릅니다."
       ]
     },
     {
       "kind": "run",
-      "title": "함수를 불러 보기",
+      "title": "const와 let 비교하기",
       "brief": [
-        "아래에는 double 이라는 함수가 만들어져 있고, 그 아래에서 두 번 호출하고 있습니다.",
-        "실행 버튼을 눌러 보세요. 10 과 100 이 나옵니다. 같은 함수인데 결과가 다른 이유는 넣은 값이 다르기 때문입니다.",
-        "console.log(double(5)) 를 보세요. 안쪽 double(5) 가 먼저 실행돼 그 자리가 10 이 되고, console.log 는 그 10 을 받아 출력합니다."
+        "price는 한 번 정한 뒤 바꾸지 않습니다. count는 처음 1이었다가 2를 다시 할당합니다.",
+        "실행하면 12000과 2가 출력됩니다. count = 2는 새 변수를 만든 것이 아니라 기존 count가 가리키는 값을 바꾼 줄입니다."
       ],
-      "code": "function double(n) {\n  return n * 2;\n}\n\nconsole.log(double(5));\nconsole.log(double(50));\n"
-    },
-    {
-      "kind": "run",
-      "title": "출력과 반환",
-      "brief": [
-        "두 함수가 하는 일은 같습니다. 받은 값을 두 배로 만듭니다. 다른 것은 그 결과를 어떻게 하느냐뿐입니다 — double 은 return 으로 반환하고, showDouble 은 console.log 로 출력합니다.",
-        "실행 버튼을 눌러 보세요. 세 줄이 나옵니다 — 10 / a 에 담긴 것: 10 / b 에 담긴 것: undefined.",
-        "첫 줄은 showDouble 이 출력한 것입니다. double 은 아무것도 출력하지 않았는데 a 에는 10 이 들어 있고, showDouble 은 출력했는데 b 는 비어 있습니다. 출력하는 일과 반환하는 일은 다릅니다. 반환한 값만 이름에 담아 다시 쓸 수 있습니다. 이렇게 값을 이름에 담는 것을 할당이라고 합니다."
-      ],
-      "code": "function double(n) {\n  return n * 2;\n}\n\nfunction showDouble(n) {\n  console.log(n * 2);\n}\n\nconst a = double(5);\nconst b = showDouble(5);\n\nconsole.log('a 에 담긴 것:', a);\nconsole.log('b 에 담긴 것:', b);\n"
+      "code": "const price = 12000;\nlet count = 1;\n\ncount = 2;\n\nconsole.log(price);\nconsole.log(count);\n"
     },
     {
       "kind": "tweak",
-      "title": "넣는 값을 바꿔 보기",
+      "title": "재할당해 보기",
       "brief": [
-        "double 안의 return n * 2; 줄을 지우고 실행해 보세요. a 에 담긴 것도 undefined 가 됩니다. 계산은 사라지지 않았는데 반환되는 것이 없습니다. return 이 하는 일이 그것입니다.",
-        "되돌린 뒤 showDouble 안의 console.log(n * 2); 를 return n * 2; 로 바꿔 보세요. 첫 줄이 사라지고 b 에 담긴 것: 10 이 됩니다. 화면에는 아무것도 출력되지 않는데 값은 제대로 반환된 것입니다.",
-        "함수 안의 줄은 중괄호 { } 안에 들어 있고 한 칸 들여 적혀 있습니다. 들여쓰기는 안에 든 것을 눈으로 알아보기 위한 것이고 없어도 그대로 돌아갑니다. 들여쓰기를 없애고 실행해 확인해 보세요. 통과·실패는 없습니다."
+        "맨 아래 출력 줄 앞에 price = 39000;을 추가하고 실행해 보세요. const 변수에 다시 할당할 수 없다는 오류가 발생합니다.",
+        "그 줄을 지운 뒤 let count를 const count로 바꿔 보세요. 이번에는 count = 2에서 같은 오류가 납니다.",
+        "처음 정한 이름을 유지할 수 있으면 const, 코드가 진행되며 다른 값을 다시 할당해야 하면 let을 씁니다. 앞으로는 기본적으로 const를 쓰고 재할당이 필요한 자리에서만 let을 씁니다."
       ],
-      "code": "function double(n) {\n  return n * 2;\n}\n\nfunction showDouble(n) {\n  console.log(n * 2);\n}\n\nconst a = double(5);\nconst b = showDouble(5);\n\nconsole.log('a 에 담긴 것:', a);\nconsole.log('b 에 담긴 것:', b);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "반환할 값 채우기",
-      "brief": [
-        "withShipping 함수는 상품 가격을 받아 배송비 3000원을 더한 값을 반환해야 합니다. return 뒤의 null 자리를 채워 보세요.",
-        "받은 값의 이름은 괄호 안에 적힌 price 입니다. 그 이름에 3000 을 더하면 됩니다.",
-        "여기서부터 검사가 붙습니다. 이 도구의 검사는 return 으로 반환한 값만 봅니다. console.log 로 아무리 잘 출력해도 검사는 통과하지 않습니다. 채우지 않고 실행하면 실제값이 null 로 나옵니다."
-      ],
-      "code": "function withShipping(price) {\n  return null; // ← 여기를 채우세요\n}\n",
-      "entry": "withShipping",
-      "solutionCode": "function withShipping(price) {\n  return price + 3000;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "10000원 상품이면 13000원",
-          "args": [
-            10000
-          ],
-          "expected": 13000
-        },
-        {
-          "type": "value",
-          "label": "0원 상품이면 배송비만 남습니다",
-          "args": [
-            0
-          ],
-          "expected": 3000
-        }
-      ],
-      "hints": [
-        "받을 값에 붙인 이름이 괄호 안에 적혀 있습니다. 그 이름을 그대로 쓰면 부를 때 넣은 값이 들어옵니다."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "함수를 처음부터 만들기",
-      "brief": [
-        "상자 개수를 받아 포장비를 반환하는 boxFee 를 만드세요. 상자 하나에 500원입니다.",
-        "이번에는 껍데기가 없습니다. function 으로 시작하는 형태로 처음부터 직접 써 보세요. 이름은 boxFee 여야 검사가 찾을 수 있고, 받을 값의 이름은 원하는 대로 정해도 됩니다.",
-        "검사는 return 으로 반환한 값만 봅니다. 출력하는 것으로는 통과하지 않습니다."
-      ],
-      "code": "// 여기에 함수를 만드세요\n",
-      "entry": "boxFee",
-      "solutionCode": "function boxFee(count) {\n  return count * 500;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "상자 2개면 1000원",
-          "args": [
-            2
-          ],
-          "expected": 1000
-        },
-        {
-          "type": "value",
-          "label": "상자가 없으면 0원 — 경계값",
-          "args": [
-            0
-          ],
-          "expected": 0
-        },
-        {
-          "type": "value",
-          "label": "개수가 달라져도 통합니다",
-          "args": [
-            10
-          ],
-          "expected": 5000
-        }
-      ],
-      "hints": [
-        "만드는 모양은 앞 단계에 그대로 있습니다 — function 다음에 이름, 괄호 안에 받을 값의 이름, 그리고 중괄호를 열고 그 안에서 return 으로 결과를 반환합니다.",
-        "상자 하나에 500원이므로 개수에 500 을 곱합니다. 곱하기는 * 기호입니다."
-      ]
+      "code": "const price = 12000;\nlet count = 1;\n\ncount = 2;\n\nconsole.log(price);\nconsole.log(count);\n"
     }
   ]
 }

@@ -3,120 +3,38 @@
   "id": "t1-08",
   "track": "T1",
   "order": 8,
-  "title": "화살표로 함수 짧게 쓰기",
+  "runtime": "js",
+  "title": "원하는 자료형으로 직접 바꾸기",
   "steps": [
     {
       "kind": "read",
-      "title": "같은 함수를 더 짧게",
+      "title": "직접 바꾸면 의도가 분명합니다",
       "brief": [
-        "앞에서 함수를 변수에 담아 봤습니다. 그 형태에는 더 짧은 표기가 있습니다. 화살표 함수(arrow function — => 기호로 쓰는 함수 표기)입니다.",
-        "const triple = function (n) { return n * 3; }; 를 const triple = (n) => { return n * 3; }; 로 쓸 수 있습니다. function이라는 단어가 사라지고 괄호 뒤에 =>가 붙었습니다.",
-        "반환할 값이 한 줄뿐이면 중괄호와 return까지 뺄 수 있습니다. const triple = (n) => n * 3; 이 되면 화살표 오른쪽 값이 곧 반환하는 값입니다.",
-        {
-          "code": [
-            "const double = function (n) {",
-            "  return n * 2;",
-            "};",
-            "",
-            "const isBig = (n) => n > 100;",
-            "const label = (n) => n + '원';",
-            "",
-            "console.log(double(50));   // 100",
-            "console.log(isBig(50));    // false",
-            "console.log(label(50));    // 50원"
-          ]
-        },
-        "위는 지금까지의 표기라 세 줄이 필요합니다. 아래 둘은 한 줄입니다. 하는 일은 계산·판정·글자 잇기로 서로 다른데 표기는 모두 같은 모양입니다.",
-        "화살표 오른쪽에 적은 것이 그대로 반환하는 값입니다. n > 100 을 적으면 참·거짓이 반환되고, n + '원' 을 적으면 글자가 돌아옵니다. 반환할 것을 따로 말하지 않아도 되는 이유입니다."
+        "값의 자료형을 다른 자료형으로 바꾸는 일을 형변환이라고 합니다. 개발자가 Number, String, Boolean을 써서 직접 바꾸면 명시적 형변환입니다.",
+        { "code": ["Number('42');   // 숫자 42", "String(42);     // 문자열 '42'", "Boolean(1);    // true"] },
+        "Number는 숫자 모양의 문자열을 숫자로 바꿉니다. 바꿀 수 없는 문자열은 NaN이 됩니다.",
+        "String은 값을 문자열로 바꿉니다. Boolean은 값이 참처럼 취급되는지 거짓처럼 취급되는지에 따라 true 또는 false로 바꿉니다.",
+        "Boolean의 자세한 규칙은 T1-14에서 배웁니다. 지금은 1은 true, 0은 false가 된다는 예만 확인합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "세 가지 표기 비교하기",
+      "title": "변환 전후를 나란히 보기",
       "brief": [
-        "아래 세 함수는 하는 일이 완전히 같습니다. 표기만 다릅니다.",
-        "실행 버튼을 눌러 보세요. 세 줄 모두 같은 값이 나옵니다.",
-        "마지막 것이 가장 짧습니다. 뒤에서 함수를 다른 함수에 넘길 때 이 짧은 표기를 자주 쓰게 됩니다."
+        "Number('12000')은 숫자 12000이므로 3000을 더하면 15000입니다.",
+        "String(12000)은 문자열이므로 뒤에 '원'을 이어 붙일 수 있습니다."
       ],
-      "code": "function tripleA(n) {\n  return n * 3;\n}\n\nconst tripleB = (n) => {\n  return n * 3;\n};\n\nconst tripleC = (n) => n * 3;\n\nconsole.log(tripleA(5));\nconsole.log(tripleB(5));\nconsole.log(tripleC(5));\n"
+      "code": "const priceText = '12000';\nconst price = Number(priceText);\n\nconsole.log(price + 3000);\nconsole.log(String(price) + '원');\nconsole.log(Boolean(1));\nconsole.log(Boolean(0));\n"
     },
     {
       "kind": "tweak",
-      "title": "짧은 표기로 바꿔 보기",
+      "title": "바꿀 수 없는 값 확인하기",
       "brief": [
-        "tripleB의 중괄호와 return을 지워 tripleC와 같은 모양으로 바꾸고 실행해 보세요. 결과가 그대로여야 합니다.",
-        "반대로 tripleC에 중괄호를 다시 씌워 보세요. 이때 return을 빠뜨리면 undefined가 나옵니다. 중괄호를 쓰면 반환할 값을 직접 적어 줘야 합니다.",
-        "중괄호가 있으면 return이 필요하고, 없으면 필요 없습니다. 이 규칙 하나만 기억하면 됩니다."
+        "priceText의 '12000'을 '만원'으로 바꾸고 실행해 보세요. Number('만원')은 숫자로 바꿀 수 없어 NaN이 됩니다.",
+        "사용자가 입력한 값은 보통 문자열입니다. 계산 전에 Number로 바꿀 때는 결과가 NaN인지 확인해야 합니다.",
+        "형변환 함수를 코드에 직접 적으면 어떤 자료형을 원하는지 읽는 사람도 알 수 있습니다."
       ],
-      "code": "function tripleA(n) {\n  return n * 3;\n}\n\nconst tripleB = (n) => {\n  return n * 3;\n};\n\nconst tripleC = (n) => n * 3;\n\nconsole.log(tripleA(5));\nconsole.log(tripleB(5));\nconsole.log(tripleC(5));\n"
-    },
-    {
-      "kind": "fill",
-      "title": "화살표 오른쪽 채우기",
-      "brief": [
-        "half는 받은 숫자의 절반을 반환하는 함수입니다. 중괄호가 없으므로 화살표 오른쪽에 적은 것이 그대로 반환하는 값이 됩니다.",
-        "null 자리에 n의 절반을 구하는 식을 넣어 보세요. 나누기는 / 기호를 씁니다.",
-        "채우지 않고 실행하면 실제값이 null로 나옵니다."
-      ],
-      "code": "const half = (n) => null; // ← 여기를 채우세요\n\nfunction getHalf() {\n  return half(10);\n}\n",
-      "entry": "getHalf",
-      "solutionCode": "const half = (n) => n / 2;\n\nfunction getHalf() {\n  return half(10);\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "10의 절반은 5입니다",
-          "args": [],
-          "expected": 5
-        }
-      ],
-      "hints": [
-        "중괄호가 없으므로 화살표 오른쪽에 적은 것이 곧 반환하는 값입니다. return 을 적을 자리가 아닙니다."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "배송비를 더하는 화살표 함수",
-      "brief": [
-        "deliveryTotal을 화살표 함수로 완성해 보세요. 가격과 무게를 받아 배송비를 더한 금액을 반환합니다.",
-        "무게가 5를 넘으면 배송비는 5000원, 그렇지 않으면 2500원입니다. 값 하나를 고르는 자리이므로 삼항 연산자를 쓰면 한 줄로 끝납니다.",
-        "function 대신 화살표로 쓰세요. 이름은 deliveryTotal 그대로 두어야 검사가 찾을 수 있습니다."
-      ],
-      "code": "const deliveryTotal = (price, weight) => null; // ← 여기를 채우세요\n",
-      "entry": "deliveryTotal",
-      "solutionCode": "const deliveryTotal = (price, weight) => price + (weight > 5 ? 5000 : 2500);\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "가벼우면 배송비 2500원",
-          "args": [
-            10000,
-            3
-          ],
-          "expected": 12500
-        },
-        {
-          "type": "value",
-          "label": "5는 아직 가벼움 — 경계값",
-          "args": [
-            10000,
-            5
-          ],
-          "expected": 12500
-        },
-        {
-          "type": "value",
-          "label": "5를 넘으면 배송비 5000원",
-          "args": [
-            10000,
-            6
-          ],
-          "expected": 15000
-        }
-      ],
-      "hints": [
-        "배송비를 고르는 것은 값 하나를 고르는 일입니다. t1-02 에서 본 삼항 연산자가 그대로 들어갑니다.",
-        "이름을 const 로 만들고 화살표를 붙이는 모양이어야 합니다. function 으로 쓰면 이 단계가 묻는 것을 지나치게 됩니다."
-      ]
+      "code": "const priceText = '12000';\nconst price = Number(priceText);\n\nconsole.log(price + 3000);\nconsole.log(String(price) + '원');\nconsole.log(Boolean(1));\nconsole.log(Boolean(0));\n"
     }
   ]
 }

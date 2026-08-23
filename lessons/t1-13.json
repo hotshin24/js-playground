@@ -3,185 +3,38 @@
   "id": "t1-13",
   "track": "T1",
   "order": 13,
-  "title": "구조 분해로 꺼내기",
+  "runtime": "js",
+  "title": "여러 조건을 함께 확인하기",
   "steps": [
     {
       "kind": "read",
-      "title": "꺼내면서 이름 붙이기",
+      "title": "&&, ||, !로 조건을 조합합니다",
       "brief": [
-        "객체에서 값을 꺼낼 때 지금까지는 점을 찍었습니다. 한 함수 안에서 같은 객체의 값을 여러 번 쓰면 product.name, product.price처럼 앞부분이 계속 반복됩니다.",
-        "구조 분해(destructuring — 묶음에서 값을 꺼내 각각 이름을 붙이는 표기)는 그 반복을 없앱니다. const { name, price } = product; 라고 쓰면 product.name이 name에, product.price가 price에 담깁니다.",
-        {
-          "code": [
-            "const user = { id: 7, nick: '수민', city: '서울' };",
-            "",
-            "console.log(user.nick + ' / ' + user.city);   // 수민 / 서울",
-            "",
-            "const { nick, city } = user;",
-            "",
-            "console.log(nick + ' / ' + city);             // 수민 / 서울",
-            "console.log(nick.length);                     // 2",
-            "",
-            "const small = { nick, city };",
-            "console.log(small);   // {nick: \"수민\", city: \"서울\"}"
-          ]
-        },
-        "두 줄이 같은 값을 만듭니다. 다만 아래쪽에는 user. 가 없습니다. 꺼낼 값이 둘일 때는 차이가 작지만, 다섯이 되면 그 앞부분을 다섯 번 적어야 합니다. 꺼낸 뒤에는 보통 값이라 nick.length 처럼 바로 이어 쓸 수 있습니다.",
-        "마지막 두 줄은 반대 방향입니다. 꺼내 둔 값으로 새 객체를 만드는데 { nick: nick, city: city } 라고 적지 않았습니다. 프로퍼티 이름과 담을 값의 이름이 같으면 한 번만 적어도 됩니다. 단축 속성명(shorthand)이라고 하며, 구조 분해로 꺼낸 값을 다시 묶을 때 거의 항상 이 모양이 됩니다.",
-        "중괄호 안에 적는 것은 꺼낼 프로퍼티 이름입니다. 객체에 없는 이름을 적으면 undefined가 담깁니다. 그럴 때 쓸 값을 미리 정해 둘 수 있는데, name = '이름 없음' 처럼 등호를 붙이면 됩니다."
+        "논리 연산자는 여러 조건을 조합합니다. &&는 양쪽 조건이 모두 true일 때 true가 됩니다.",
+        "||는 양쪽 중 하나만 true여도 true가 됩니다. !는 true를 false로, false를 true로 바꿉니다.",
+        { "code": ["age >= 18 && hasTicket", "isMember || hasCoupon", "!isSoldOut"] },
+        "&&는 '그리고', ||는 '또는', !는 '아니다'로 읽으면 조건의 뜻을 파악하기 쉽습니다.",
+        "논리 연산자가 불리언이 아닌 값을 만났을 때의 동작은 T1-15에서 따로 확인합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "꺼내 보기",
+      "title": "입장 조건과 할인 조건 확인하기",
       "brief": [
-        "아래는 같은 객체에서 값을 두 가지 방법으로 꺼냅니다. 위는 점을 찍었고 아래는 구조 분해입니다.",
-        "실행 버튼을 눌러 보세요. 네 줄 모두 같은 값이 나옵니다. 꺼내는 방법만 다를 뿐 결과는 같습니다.",
-        "구조 분해 쪽이 한 줄로 끝난다는 점을 확인하세요. 꺼낼 것이 많아질수록 차이가 커집니다."
+        "나이가 18 이상이고 표가 있어야 canEnter가 true입니다.",
+        "회원이거나 쿠폰이 있으면 hasDiscount가 true입니다. 현재는 쿠폰이 있으므로 true입니다."
       ],
-      "code": "const product = { name: '셔츠', price: 39000 };\n\nconsole.log(product.name);\nconsole.log(product.price);\n\nconst { name, price } = product;\n\nconsole.log(name);\nconsole.log(price);\n"
+      "code": "const age = 20;\nconst hasTicket = true;\nconst isMember = false;\nconst hasCoupon = true;\n\nconsole.log(age >= 18 && hasTicket);\nconsole.log(isMember || hasCoupon);\nconsole.log(!hasTicket);\n"
     },
     {
       "kind": "tweak",
-      "title": "없는 이름을 꺼내 보기",
+      "title": "조건 하나씩 바꿔 보기",
       "brief": [
-        "구조 분해 줄을 const { name, price, color } = product; 로 바꾸고 console.log(color); 를 한 줄 넣어 실행해 보세요. undefined가 나옵니다.",
-        "이번에는 color = '기본색' 처럼 등호를 붙여 보세요. 객체에 color가 없으니 이 값이 대신 담깁니다.",
-        "객체에 color: '파랑' 을 추가하고 다시 실행해 보세요. 이번에는 기본값이 쓰이지 않습니다. 기본값은 값이 없을 때만 나섭니다."
+        "hasTicket을 false로 바꾸면 첫 결과가 false가 됩니다. 나이 조건만 맞아서는 입장할 수 없기 때문입니다.",
+        "hasCoupon도 false로 바꾸면 둘째 결과가 false가 됩니다. 이번에는 회원도 아니고 쿠폰도 없습니다.",
+        "조건이 길어지면 canEnter처럼 뜻을 설명하는 변수에 결과를 담아 읽기 쉽게 만들 수 있습니다."
       ],
-      "code": "const product = { name: '셔츠', price: 39000 };\n\nconsole.log(product.name);\nconsole.log(product.price);\n\nconst { name, price } = product;\n\nconsole.log(name);\nconsole.log(price);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "기본값 정하기",
-      "brief": [
-        "아래 상품에는 stock이 없습니다. 그래서 구조 분해에 기본값을 붙여 두었는데, 그 값이 아직 null입니다.",
-        "null 자리에 기본 재고로 쓸 숫자 0을 넣어 보세요.",
-        "채우지 않고 실행하면 실제값이 null로 나옵니다."
-      ],
-      "code": "const product = { name: '모자', price: 19000 };\n\nconst { stock = null } = product; // ← 여기를 채우세요\n\nfunction getStock() {\n  return stock;\n}\n",
-      "entry": "getStock",
-      "solutionCode": "const product = { name: '모자', price: 19000 };\n\nconst { stock = 0 } = product;\n\nfunction getStock() {\n  return stock;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "재고가 없으면 기본값 0이 담깁니다",
-          "args": [],
-          "expected": 0
-        }
-      ],
-      "hints": [
-        "기본값은 그 이름이 없을 때만 쓰입니다. 여기서는 숫자 하나를 적으면 됩니다."
-      ]
-    },
-    {
-      "kind": "wrap",
-      "title": "어떤 상품에도 통하게",
-      "brief": [
-        "앞 단계에서 쓴 구조 분해가 그대로 함수 안에 들어가 있습니다. 다만 아직 product 라는 정해진 상품만 봅니다.",
-        "함수가 받는 값의 이름은 item 입니다. 표시된 줄을 지우고, 구조 분해의 등호 오른쪽을 item 으로 바꿔 보세요.",
-        "검사는 세 건입니다. 고치지 않고 실행하면 첫 건만 통과합니다. 기본값이 나서는 경우와 그렇지 않은 경우가 함께 들어옵니다."
-      ],
-      "code": "function stockOf(item) {\n  const product = { name: '모자', price: 19000 }; // ← 이 줄을 지우고 item 을 쓰세요\n\n  const { stock = 0 } = product;\n\n  return stock;\n}\n",
-      "entry": "stockOf",
-      "solutionCode": "function stockOf(item) {\n  const { stock = 0 } = item;\n\n  return stock;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "stock 이 없으면 기본값 0",
-          "args": [
-            {
-              "name": "모자",
-              "price": 19000
-            }
-          ],
-          "expected": 0
-        },
-        {
-          "type": "value",
-          "label": "stock 이 있으면 그 값",
-          "args": [
-            {
-              "name": "셔츠",
-              "stock": 7
-            }
-          ],
-          "expected": 7
-        },
-        {
-          "type": "value",
-          "label": "stock 이 12 인 상품",
-          "args": [
-            {
-              "name": "코트",
-              "stock": 12
-            }
-          ],
-          "expected": 12
-        }
-      ],
-      "hints": [
-        "구조 분해는 등호 오른쪽에 적힌 묶음에서 꺼냅니다. 지금은 함수가 받은 값이 아니라 위에 적어 둔 상품에서 꺼내고 있습니다."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "주문 한 줄 만들기",
-      "brief": [
-        "orderLine 함수를 완성해 보세요. 주문 항목을 받아 name과 count만 담은 새 객체를 반환합니다.",
-        "count가 없으면 1로 봅니다. 구조 분해의 기본값을 쓰면 조건문 없이 처리됩니다.",
-        "count가 0으로 들어오는 경우도 있습니다. 0은 없는 것이 아니므로 그대로 0이어야 합니다."
-      ],
-      "code": "function orderLine(item) {\n  // 여기를 채우세요\n}\n",
-      "entry": "orderLine",
-      "solutionCode": "function orderLine(item) {\n  const { name, count = 1 } = item;\n\n  return { name, count };\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "수량이 있으면 그대로 옮깁니다",
-          "args": [
-            {
-              "name": "셔츠",
-              "count": 3
-            }
-          ],
-          "expected": {
-            "name": "셔츠",
-            "count": 3
-          }
-        },
-        {
-          "type": "value",
-          "label": "수량이 없으면 1로 봅니다",
-          "args": [
-            {
-              "name": "모자"
-            }
-          ],
-          "expected": {
-            "name": "모자",
-            "count": 1
-          }
-        },
-        {
-          "type": "value",
-          "label": "0은 없는 것이 아닙니다 — 기본값이 나서지 않습니다",
-          "args": [
-            {
-              "name": "양말",
-              "count": 0
-            }
-          ],
-          "expected": {
-            "name": "양말",
-            "count": 0
-          }
-        }
-      ],
-      "hints": [
-        "구조 분해에 기본값을 붙이면 조건문 없이 끝납니다. 등호 하나로 적는 그 모양이 read 에 있습니다.",
-        "0 이 들어오는 경우를 확인해 보세요. 기본값은 값이 없을 때만 나서야 하고, 0 은 있는 값입니다. || 로 처리하면 여기서 어긋납니다."
-      ]
+      "code": "const age = 20;\nconst hasTicket = true;\nconst isMember = false;\nconst hasCoupon = true;\n\nconsole.log(age >= 18 && hasTicket);\nconsole.log(isMember || hasCoupon);\nconsole.log(!hasTicket);\n"
     }
   ]
 }

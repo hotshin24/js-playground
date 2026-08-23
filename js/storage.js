@@ -4,8 +4,8 @@ import { storageKey } from './curriculum.js';
 const KEY = storageKey;
 const SCHEMA_VERSION = 1;
 // 저장 개정 번호. 레슨이 다른 번호로 옮겨 가면 옛 저장분이 남의 레슨에 붙는다.
-// 2: T1 재분할로 t1-* 저장분을 한 번 비웠다.
-const REVISION = 2;
+// 3: 2026 새 커리큘럼으로 전체 레슨을 교체했다.
+const REVISION = 3;
 
 const empty = () => ({
   schemaVersion: SCHEMA_VERSION,
@@ -37,14 +37,10 @@ const migrateLesson = (entry) => {
   return { ...rest, steps: { 0: { code, codeHash: starterHash, completedAt, updatedAt } } };
 };
 
-// 레슨이 옮겨 간 회차에는 그 트랙 저장분만 버린다. 다른 트랙 진행 상황은 남긴다.
+// 새 커리큘럼 전환 전 저장분은 레슨 ID의 뜻이 달라졌으므로 사용하지 않는다.
 const applyRevision = (lessons, revision) => {
   if ((revision || 1) >= REVISION) return lessons;
-  const kept = {};
-  Object.entries(lessons).forEach(([id, entry]) => {
-    if (!id.startsWith('t1-')) kept[id] = entry;
-  });
-  return kept;
+  return {};
 };
 
 // 손상된 JSON 도 프라이빗 모드 예외도 결말은 같다: 빈 상태로 학습을 계속한다.

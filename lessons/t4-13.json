@@ -1,233 +1,26 @@
 {
-  "schemaVersion": 2,
-  "id": "t4-13",
-  "track": "T4",
-  "order": 13,
-  "runtime": "react",
-  "title": "필요한 useEffect",
+  "schemaVersion": 2, "id": "t4-13", "track": "T4", "order": 13, "runtime": "js",
+  "title": "throw와 try/catch로 오류 처리하기",
   "steps": [
     {
-      "kind": "read",
-      "title": "React 바깥과 맞출 때",
+      "kind": "read", "title": "오류가 날 수 있는 코드를 try 안에 둡니다",
       "brief": [
-        "앞 레슨에서 useEffect 를 쓰지 말아야 할 자리를 봤습니다. 그러면 언제 쓸까요. 기준은 하나입니다. React 바깥의 무언가와 맞춰야 할 때입니다.",
-        "React 가 맡은 세계는 좁습니다. 상태가 바뀌면 화면을 다시 그리는 것, 그것뿐입니다. 그 안에서 끝나는 일에는 효과가 필요 없습니다. 검색 결과를 세는 것도, 조건에 따라 다른 요소를 그리는 것도 전부 그리는 일이라 계산으로 끝납니다.",
-        "바깥은 다릅니다. 브라우저 탭에 뜨는 문서 제목, 시간이 지나면 저절로 일어나는 타이머, localStorage 에 저장하기, 스크롤 위치 옮기기, React 를 모르는 다른 라이브러리. 이런 것들은 화면을 그린다고 저절로 맞춰지지 않습니다. 누군가 가서 맞춰 줘야 합니다. 그 자리가 useEffect 입니다.",
-        "이 레슨의 무대에는 React 가 만들지 않은 문단이 하나 있습니다. #root 바깥에 있어서 React 는 그것이 있는지도 모릅니다. 효과에서 그 문단의 글자를 바꿔 보면 바깥을 건드린다는 말이 무슨 뜻인지 눈으로 보입니다. 문서 제목과 같은 부류입니다.",
-        "문법은 이렇습니다. useEffect(() => { 할 일 }, [지켜볼 값]) 입니다. 첫 번째 인자는 할 일을 담은 함수이고, 두 번째 인자는 의존성 배열이라고 부릅니다. 화면을 그린 뒤에 그 함수가 불립니다. 그리는 도중이 아니라 그린 뒤라는 점이 중요합니다. 그래야 화면이 먼저 나오고 바깥 일은 그다음에 처리됩니다.",
-        "의존성 배열은 세 가지 모양이 있고 각각 언제 도는지가 다릅니다. 빈 배열 [] 은 처음 한 번만 돕니다. 값이 든 배열 [keyword] 는 처음에 한 번 돌고 그 뒤로는 keyword 가 바뀔 때마다 돕니다. 배열을 아예 쓰지 않으면 그릴 때마다 매번 돕니다.",
-        "대괄호 안에는 효과 안에서 쓰는 값을 넣습니다. 문서 제목을 keyword 로 만든다면 [keyword] 입니다. 빠뜨리면 옛 값으로 맞추게 되고, 넣지 않아도 될 것을 넣으면 쓸데없이 자주 돕니다."
+        "throw는 실행을 중단하고 오류를 발생시킵니다. 보통 throw new Error('메시지') 형태로 작성합니다.",
+        "try에는 오류가 날 수 있는 코드를 쓰고 catch에는 오류가 발생했을 때 처리할 코드를 씁니다.",
+        { "code": ["try {", "  throw new Error('가격이 없습니다');", "} catch (error) {", "  console.log(error.message);", "}"] },
+        "오류가 없으면 catch는 실행되지 않습니다. 오류가 발생하면 try의 남은 줄을 건너뛰고 catch로 이동합니다.",
+        "await한 Promise의 rejected 결과도 try/catch로 처리할 수 있습니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "세 가지가 언제 도는가",
-      "brief": [
-        "효과 셋을 나란히 두었습니다. 하나는 문서 제목을 검색어에 맞추고, 나머지 둘은 언제 도는지 보려고 로그만 남깁니다.",
-        "실행하고 콘솔을 보세요. 처음에는 셋이 모두 한 번씩 돕니다. 그다음 검색창에 한 글자만 쳐 보세요. [keyword] 효과와 배열 없음 효과는 도는데 [] 효과는 조용합니다.",
-        "이번에는 '다른 상태 건드리기' 를 눌러 보세요. 검색어는 그대로인데 화면이 다시 그려집니다. 배열 없음 효과만 돕니다. 대괄호 안의 값이 안 바뀌었으니 [keyword] 효과는 돌 이유가 없습니다.",
-        "문서 제목은 이 프레임 안쪽 것이라 눈에 보이지 않습니다. 콘솔에 찍어 확인하세요. 대신 위쪽 점선 문단이 함께 바뀝니다. 그 문단은 React 바깥에 있어서 효과가 직접 글자를 넣은 것입니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<p id=\"outside\">아직 맞추지 않았습니다</p>",
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".panel { display: grid; gap: 8px; max-width: 340px; }",
-          ".field { font-size: 0.875rem; color: var(--c-text-muted); }",
-          ".field__input { width: 100%; }",
-          ".count { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
-          ".row { display: flex; gap: 6px; }",
-          "#outside { margin: 0 0 10px; padding: 6px 8px; border: 1px dashed var(--c-border);",
-          "  border-radius: 6px; color: var(--c-text-muted); font-size: 0.875rem; }"
-        ]
-      },
-      "code": "const { useState, useEffect } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst courses = ['자바스크립트 입문', '리액트 시작하기', 'CSS 레이아웃'];\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n  const [n, setN] = useState(0);\n\n  const found = courses.filter((course) => course.includes(keyword));\n\n  useEffect(() => {\n    document.title = keyword === '' ? '코스 전체' : `코스 검색: ${keyword}`;\n    document.querySelector('#outside').textContent = `바깥에 적었습니다: ${document.title}`;\n    console.log('[keyword] 효과 · 문서 제목 =', document.title);\n  }, [keyword]);\n\n  useEffect(() => {\n    console.log('[] 효과 · 처음 한 번만');\n  }, []);\n\n  useEffect(() => {\n    console.log('배열 없음 효과 · 그릴 때마다');\n  });\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword}\n        onChange={(event) => setKeyword(event.target.value)} />\n      <p className=\"count\">코스 {found.length}개</p>\n      <div className=\"row\">\n        <button className=\"other\" type=\"button\" onClick={() => setN(n + 1)}>다른 상태 건드리기 ({n})</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n"
+      "kind": "run", "title": "잘못된 가격을 오류로 알리기",
+      "brief": ["price가 음수이므로 validatePrice가 Error를 던집니다. 다음 return은 실행되지 않습니다.", "catch가 오류 메시지를 출력한 뒤 프로그램은 try/catch 다음 줄을 계속 실행합니다."],
+      "code": "function validatePrice(price) {\n  if (price < 0) {\n    throw new Error('가격은 0 이상이어야 합니다');\n  }\n  return price;\n}\n\ntry {\n  console.log(validatePrice(-1000));\n} catch (error) {\n  console.log('오류: ' + error.message);\n}\n\nconsole.log('검사 종료');\n"
     },
     {
-      "kind": "tweak",
-      "title": "대괄호를 바꿔 보기",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
-        "① 제목을 맞추는 효과의 [keyword] 를 [] 로 바꿔 보세요. 검색창에 쳐도 문서 제목이 '코스 전체' 에서 바뀌지 않습니다. 처음 한 번만 돌았고 그때의 검색어는 빈 문자열이었기 때문입니다. 화면은 멀쩡한데 바깥만 옛 값에 머물러 있습니다.",
-        "② 되돌린 뒤 [keyword] 를 [n] 으로 바꿔 보세요. 검색창에 쳐도 제목이 안 바뀌고, '다른 상태 건드리기' 를 눌러야 그제야 바뀝니다. 그때 붙는 제목은 지금 검색어입니다. 지켜볼 값을 잘못 적으면 엉뚱한 때에 맞춰집니다.",
-        "③ 되돌린 뒤 대괄호를 통째로 지워 보세요. 검색해도 다른 상태를 건드려도 매번 돕니다. 결과는 맞지만 필요 없을 때도 계속 일합니다. 효과 안에서 무거운 일을 한다면 이 차이가 커집니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<p id=\"outside\">아직 맞추지 않았습니다</p>",
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".panel { display: grid; gap: 8px; max-width: 340px; }",
-          ".field { font-size: 0.875rem; color: var(--c-text-muted); }",
-          ".field__input { width: 100%; }",
-          ".count { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
-          ".row { display: flex; gap: 6px; }",
-          "#outside { margin: 0 0 10px; padding: 6px 8px; border: 1px dashed var(--c-border);",
-          "  border-radius: 6px; color: var(--c-text-muted); font-size: 0.875rem; }"
-        ]
-      },
-      "code": "const { useState, useEffect } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst courses = ['자바스크립트 입문', '리액트 시작하기', 'CSS 레이아웃'];\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n  const [n, setN] = useState(0);\n\n  const found = courses.filter((course) => course.includes(keyword));\n\n  useEffect(() => {\n    document.title = keyword === '' ? '코스 전체' : `코스 검색: ${keyword}`;\n    document.querySelector('#outside').textContent = `바깥에 적었습니다: ${document.title}`;\n    console.log('[keyword] 효과 · 문서 제목 =', document.title);\n  }, [keyword]);\n\n  useEffect(() => {\n    console.log('[] 효과 · 처음 한 번만');\n  }, []);\n\n  useEffect(() => {\n    console.log('배열 없음 효과 · 그릴 때마다');\n  });\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword}\n        onChange={(event) => setKeyword(event.target.value)} />\n      <p className=\"count\">코스 {found.length}개</p>\n      <div className=\"row\">\n        <button className=\"other\" type=\"button\" onClick={() => setN(n + 1)}>다른 상태 건드리기 ({n})</button>\n      </div>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "바깥에 적을 글자 채우기",
-      "brief": [
-        "효과가 문서 제목과 바깥 문단을 함께 맞춥니다. 바깥 문단에 넣을 글자만 비어 있습니다.",
-        "null 자리를 채워 검색어가 비었으면 '코스 전체', 아니면 '코스 검색: 리액트' 형태가 되게 해 주세요.",
-        "지켜볼 값은 이미 [keyword] 로 적혀 있습니다. 검색어가 바뀔 때마다 이 효과가 다시 돕니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<p id=\"outside\">아직 맞추지 않았습니다</p>",
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".panel { display: grid; gap: 8px; max-width: 340px; }",
-          ".field { font-size: 0.875rem; color: var(--c-text-muted); }",
-          ".field__input { width: 100%; }",
-          ".count { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
-          ".row { display: flex; gap: 6px; }",
-          "#outside { margin: 0 0 10px; padding: 6px 8px; border: 1px dashed var(--c-border);",
-          "  border-radius: 6px; color: var(--c-text-muted); font-size: 0.875rem; }"
-        ]
-      },
-      "code": "const { useState, useEffect } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst courses = ['자바스크립트 입문', '리액트 시작하기', 'CSS 레이아웃'];\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n\n  const found = courses.filter((course) => course.includes(keyword));\n\n  useEffect(() => {\n    const label = null; // ← 여기를 채우세요\n\n    document.title = label;\n    document.querySelector('#outside').textContent = label;\n  }, [keyword]);\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword}\n        onChange={(event) => setKeyword(event.target.value)} />\n      <p className=\"count\">코스 {found.length}개</p>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n",
-      "solutionCode": "const { useState, useEffect } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst courses = ['자바스크립트 입문', '리액트 시작하기', 'CSS 레이아웃'];\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n\n  const found = courses.filter((course) => course.includes(keyword));\n\n  useEffect(() => {\n    const label = keyword === '' ? '코스 전체' : `코스 검색: ${keyword}`;\n\n    document.title = label;\n    document.querySelector('#outside').textContent = label;\n  }, [keyword]);\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword}\n        onChange={(event) => setKeyword(event.target.value)} />\n      <p className=\"count\">코스 {found.length}개</p>\n    </div>\n  );\n};\n\nroot.render(<Search />);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "처음에는 코스 전체로 맞춥니다",
-          "select": "#outside",
-          "text": [
-            "코스 전체"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "검색하면 바깥도 따라옵니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#q",
-              "value": "리액트"
-            }
-          ],
-          "select": "#outside",
-          "text": [
-            "코스 검색: 리액트"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "개수도 함께 맞습니다",
-          "select": ".count",
-          "text": [
-            "코스 1개"
-          ]
-        }
-      ],
-      "hints": [
-        "검색어가 비었을 때와 아닐 때 글자가 다릅니다. 지금 그 자리에 조건이 있는지, 아니면 한 가지 모양만 만들고 있는지 보세요.",
-        "'코스 검색: ' 뒤에 붙는 것은 지금 검색어입니다. 효과가 지켜보는 값이 무엇인지 아래 배열에 적혀 있으니 그 이름을 그대로 쓰면 됩니다."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "제목까지 맞추기",
-      "brief": [
-        "검색되는 코스 목록을 만들고, 브라우저 문서 제목도 검색어에 맞춰 주세요. 상태는 검색어 하나뿐입니다.",
-        "바깥은 <div className=\"panel\"> 입니다. <label className=\"field\" htmlFor=\"q\">코스 검색</label>, <input className=\"field__input\" id=\"q\" type=\"search\">, <p className=\"count\">코스 3개</p> 형태의 개수 줄이 차례로 오고, 그 아래에 맞는 코스마다 <p className=\"course\"> 를 그립니다. 줄마다 key 가 필요합니다.",
-        "문서 제목은 검색어가 비었으면 '코스 전체', 아니면 '코스 검색: 리액트' 형태입니다. 무대 위쪽의 <p id=\"outside\"> 에도 같은 글자를 넣어 주세요. 둘 다 React 바깥이므로 효과에서 맞춥니다. 지켜볼 값을 정확히 적으세요.",
-        "개수와 목록은 상태로 두지 마세요. 효과 안에서 상태를 바꾸지도 마세요."
-      ],
-      "scaffold": {
-        "html": [
-          "<p id=\"outside\">아직 맞추지 않았습니다</p>",
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".panel { display: grid; gap: 8px; max-width: 340px; }",
-          ".field { font-size: 0.875rem; color: var(--c-text-muted); }",
-          ".field__input { width: 100%; }",
-          ".count { margin: 0; color: var(--c-text-muted); font-size: 0.875rem; }",
-          ".row { display: flex; gap: 6px; }",
-          ".course { margin: 0; padding: 6px 8px; border: 1px solid var(--c-border); border-radius: 6px; font-size: 0.875rem; }",
-          "#outside { margin: 0 0 10px; padding: 6px 8px; border: 1px dashed var(--c-border);",
-          "  border-radius: 6px; color: var(--c-text-muted); font-size: 0.875rem; }"
-        ]
-      },
-      "code": "const { useState, useEffect } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst courses = ['자바스크립트 입문', '리액트 시작하기', 'CSS 레이아웃'];\n\n// 여기를 채우세요\n",
-      "solutionCode": "const { useState, useEffect } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst courses = ['자바스크립트 입문', '리액트 시작하기', 'CSS 레이아웃'];\n\nconst Search = () => {\n  const [keyword, setKeyword] = useState('');\n\n  const found = courses.filter((course) => course.includes(keyword));\n\n  useEffect(() => {\n    const label = keyword === '' ? '코스 전체' : `코스 검색: ${keyword}`;\n    document.title = label;\n    document.querySelector('#outside').textContent = label;\n  }, [keyword]);\n\n  return (\n    <div className=\"panel\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword}\n        onChange={(event) => setKeyword(event.target.value)} />\n      <p className=\"count\">코스 {found.length}개</p>\n      {found.map((course) => (\n        <p className=\"course\" key={course}>{course}</p>\n      ))}\n    </div>\n  );\n};\n\nroot.render(<Search />);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "처음에는 셋 다 보입니다",
-          "select": ".course",
-          "text": [
-            "자바스크립트 입문",
-            "리액트 시작하기",
-            "CSS 레이아웃"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "처음 개수는 3개",
-          "select": ".count",
-          "text": [
-            "코스 3개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "검색하면 걸러집니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#q",
-              "value": "트"
-            }
-          ],
-          "select": ".course",
-          "text": [
-            "자바스크립트 입문",
-            "리액트 시작하기"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "개수도 함께 맞습니다",
-          "select": ".count",
-          "text": [
-            "코스 2개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "지우면 되돌아옵니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#q",
-              "value": ""
-            }
-          ],
-          "select": ".count",
-          "text": [
-            "코스 3개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "바깥 문단도 맞춰집니다",
-          "select": "#outside",
-          "text": [
-            "코스 전체"
-          ]
-        }
-      ]
+      "kind": "tweak", "title": "오류가 없는 경로 확인하기",
+      "brief": ["validatePrice(-1000)을 validatePrice(12000)으로 바꾸면 12000이 출력되고 catch는 실행되지 않습니다.", "throw new Error 대신 문자열만 throw할 수도 있지만 Error 객체에는 이름과 실행 위치 정보가 있어 오류를 찾기 쉽습니다.", "catch에서 모든 오류를 조용히 무시하지 말고, 사용자에게 보여 줄 메시지나 개발자가 확인할 기록을 남겨야 합니다."],
+      "code": "function validatePrice(price) {\n  if (price < 0) {\n    throw new Error('가격은 0 이상이어야 합니다');\n  }\n  return price;\n}\n\ntry {\n  console.log(validatePrice(-1000));\n} catch (error) {\n  console.log('오류: ' + error.message);\n}\n\nconsole.log('검사 종료');\n"
     }
   ]
 }

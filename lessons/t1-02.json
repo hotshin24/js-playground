@@ -3,169 +3,37 @@
   "id": "t1-02",
   "track": "T1",
   "order": 2,
-  "title": "조건에 따라 갈라지기",
+  "runtime": "js",
+  "title": "문자열로 글자 다루기",
   "steps": [
     {
       "kind": "read",
-      "title": "if는 갈림길입니다",
+      "title": "따옴표로 감싼 값은 문자열입니다",
       "brief": [
-        "앞 레슨에서 비교가 참이나 거짓을 만든다는 것을 봤습니다. 그 참·거짓으로 길을 가르는 것이 if입니다.",
-        "if 뒤 괄호 안이 참일 때만 중괄호 안이 실행됩니다. 거짓일 때 갈 길은 else 로 주고, 갈래가 셋 이상이면 else if 를 사이에 넣습니다. 이렇게 조건에 따라 길이 갈리는 것을 분기라고도 합니다.",
-        {
-          "code": [
-            "const total = 30000;",
-            "",
-            "if (total >= 50000) {",
-            "  console.log('무료 배송');",
-            "} else if (total >= 30000) {",
-            "  console.log('배송비 1500원');",
-            "} else {",
-            "  console.log('배송비 3000원');",
-            "}",
-            "// 배송비 1500원"
-          ]
-        },
-        "출력된 것은 한 줄뿐입니다. 30000 은 마지막 갈래의 조건(50000 미만)에도 맞지만 그 줄은 실행되지 않았습니다. 위에서부터 확인하다가 처음 참인 곳으로 들어가고 나머지는 건너뛰기 때문입니다.",
-        "그래서 갈래의 순서가 결과를 바꿉니다. 조건을 넓은 것부터 적으면 뒤에 있는 좁은 갈래는 영영 실행되지 않습니다.",
-        "갈래가 둘뿐이고 고르는 것이 값 하나라면 더 짧은 표기가 있습니다. 삼항 연산자(ternary — 조건 ? 참일_때 : 거짓일_때 형태로 값 하나를 고르는 식)입니다.",
-        {
-          "code": [
-            "const stock = 3;",
-            "",
-            "const label = stock > 0 ? '있음' : '없음';",
-            "",
-            "console.log(label);   // 있음"
-          ]
-        },
-        "두 표기의 진짜 차이는 길이가 아닙니다. if 는 문장이라 값을 만들지 못하고 갈래마다 무언가를 실행할 뿐입니다. 그래서 const 오른쪽에 놓을 수 없습니다. 삼항은 식이라 값 하나가 나오고, 그래서 등호 오른쪽에 그대로 놓입니다.",
-        "갈래가 셋 이상이거나 갈래 안에서 여러 줄을 실행해야 하면 if 를 씁니다. 값 하나를 고르는 자리에서만 삼항이 짧습니다."
+        "문자열(string)은 글자가 이어진 값입니다. 작은따옴표나 큰따옴표로 시작과 끝을 표시합니다.",
+        { "code": ["const name = '지수';", "const message = \"안녕하세요\";", "const numberText = '42';"] },
+        "'42'도 따옴표로 감쌌으므로 문자열입니다. 숫자 42와는 다른 값입니다.",
+        "문자열 뒤에 .length를 붙이면 글자 수를 알 수 있습니다. 문자열끼리 + 연산자를 사용하면 두 문자열이 이어집니다. 이를 문자열 연결이라고 합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "갈림길 실행해 보기",
+      "title": "글자 수와 연결 결과 보기",
       "brief": [
-        "아래 함수는 재고 수량을 받아 상태를 글자로 반환합니다. 갈래는 셋입니다.",
-        "실행 버튼을 눌러 보세요. 세 번 부른 결과가 각각 다르게 나옵니다.",
-        "같은 함수인데 결과가 다른 이유는 넣은 값이 어느 갈래에 걸리는지가 다르기 때문입니다."
+        "name.length는 2입니다. greeting은 '안녕, 지수'가 됩니다.",
+        "+ 양쪽에 문자열이 있으면 글자를 이어 붙입니다. 숫자 덧셈과 결과가 다르다는 점을 확인하세요."
       ],
-      "code": "function stockLabel(stock) {\n  if (stock === 0) {\n    return '품절';\n  } else if (stock < 10) {\n    return '재고 부족';\n  } else {\n    return '충분';\n  }\n}\n\nconsole.log(stockLabel(0));\nconsole.log(stockLabel(3));\nconsole.log(stockLabel(50));\n"
+      "code": "const name = '지수';\nconst greeting = '안녕, ' + name;\n\nconsole.log(name.length);\nconsole.log(greeting);\nconsole.log('4' + '2');\n"
     },
     {
       "kind": "tweak",
-      "title": "경계를 옮겨 보기",
+      "title": "문자열 42와 숫자 42 비교하기",
       "brief": [
-        "stock < 10 의 10을 5로 바꾸고 실행해 보세요. 3은 그대로 '재고 부족'이지만, 7을 넣어 보면 결과가 달라집니다.",
-        "console.log(stockLabel(7)); 을 한 줄 더 추가해 확인해 보세요.",
-        "숫자 하나를 바꿨을 뿐인데 어떤 값이 어느 갈래로 가는지가 통째로 달라집니다. 조건문에서 경계값을 조심해야 하는 이유입니다."
+        "맨 아래 '4' + '2'를 4 + 2로 바꾸고 실행해 보세요. 42가 아니라 6이 출력됩니다.",
+        "따옴표가 있으면 문자열 연결을 하고, 따옴표가 없으면 숫자 덧셈을 합니다.",
+        "문자열 안에 작은따옴표를 넣어야 할 때는 바깥을 큰따옴표로 감쌀 수 있습니다. 예: \"I'm ready\""
       ],
-      "code": "function stockLabel(stock) {\n  if (stock === 0) {\n    return '품절';\n  } else if (stock < 10) {\n    return '재고 부족';\n  } else {\n    return '충분';\n  }\n}\n\nconsole.log(stockLabel(0));\nconsole.log(stockLabel(3));\nconsole.log(stockLabel(50));\n"
-    },
-    {
-      "kind": "fill",
-      "title": "먼저 볼 갈래 정하기",
-      "brief": [
-        "포인트가 5000 이상이면 VIP, 1000 이상이면 일반, 그 아래는 신규입니다. 첫 갈래의 조건만 비어 있습니다.",
-        "null 자리에 point 가 5000 이상인지 묻는 비교를 넣어 보세요.",
-        "채우지 않고 실행하면 '일반' 이 나옵니다. null 은 거짓이라 첫 갈래를 건너뛰기 때문입니다. 8000 은 두 조건 모두에 맞으니, 어느 갈래를 먼저 보느냐가 답을 정합니다."
-      ],
-      "code": "const point = 8000;\n\nfunction getGrade() {\n  if (null) { // ← 여기를 채우세요\n    return 'VIP';\n  } else if (point >= 1000) {\n    return '일반';\n  } else {\n    return '신규';\n  }\n}\n",
-      "entry": "getGrade",
-      "solutionCode": "const point = 8000;\n\nfunction getGrade() {\n  if (point >= 5000) {\n    return 'VIP';\n  } else if (point >= 1000) {\n    return '일반';\n  } else {\n    return '신규';\n  }\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "8000점은 VIP 입니다",
-          "args": [],
-          "expected": "VIP"
-        }
-      ],
-      "hints": [
-        "위에서부터 확인하다가 처음 참인 곳으로 들어가고 나머지는 건너뜁니다. 8000 은 1000 이상이기도 합니다. 지금 '일반' 이 나온다면 첫 갈래가 거짓이었다는 뜻입니다."
-      ]
-    },
-    {
-      "kind": "wrap",
-      "title": "어떤 점수에도 통하게",
-      "brief": [
-        "앞 단계에서 채운 갈림길이 그대로 함수 안에 들어가 있습니다. 다만 아직 8000 이라는 정해진 점수만 봅니다.",
-        "함수가 받는 값의 이름은 value 입니다. 표시된 줄을 지우고, 두 조건에서 point 라고 쓴 곳을 value 로 바꿔 보세요. 갈래 순서는 그대로 둡니다.",
-        "검사는 세 건입니다. 고치지 않고 실행하면 첫 건만 통과합니다. 세 갈래를 하나씩 밟는 값들이 들어옵니다."
-      ],
-      "code": "function gradeOf(value) {\n  const point = 8000; // ← 이 줄을 지우고 value 를 쓰세요\n\n  if (point >= 5000) {\n    return 'VIP';\n  } else if (point >= 1000) {\n    return '일반';\n  } else {\n    return '신규';\n  }\n}\n",
-      "entry": "gradeOf",
-      "solutionCode": "function gradeOf(value) {\n  if (value >= 5000) {\n    return 'VIP';\n  } else if (value >= 1000) {\n    return '일반';\n  } else {\n    return '신규';\n  }\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "8000 은 VIP",
-          "args": [
-            8000
-          ],
-          "expected": "VIP"
-        },
-        {
-          "type": "value",
-          "label": "3000 은 일반",
-          "args": [
-            3000
-          ],
-          "expected": "일반"
-        },
-        {
-          "type": "value",
-          "label": "500 은 신규",
-          "args": [
-            500
-          ],
-          "expected": "신규"
-        }
-      ],
-      "hints": [
-        "고칠 곳이 두 군데입니다. 두 조건 모두 함수가 받은 값을 봐야 합니다. 하나만 고치면 갈래 하나가 여전히 8000 을 봅니다."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "재고 상태를 판정하는 함수",
-      "brief": [
-        "stockLabel 함수를 완성해 보세요. 재고 수량을 받아 상태를 글자로 반환합니다.",
-        "0이면 '품절', 1개 이상 9개 이하면 '재고 부족', 10개 이상이면 '충분'입니다.",
-        "갈래가 셋이므로 else if가 필요합니다. 위에서부터 조건이 확인된다는 점을 이용하면 조건을 짧게 쓸 수 있습니다."
-      ],
-      "code": "function stockLabel(stock) {\n  // 여기를 채우세요\n}\n",
-      "entry": "stockLabel",
-      "solutionCode": "function stockLabel(stock) {\n  if (stock === 0) {\n    return '품절';\n  } else if (stock < 10) {\n    return '재고 부족';\n  } else {\n    return '충분';\n  }\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "0이면 품절",
-          "args": [
-            0
-          ],
-          "expected": "품절"
-        },
-        {
-          "type": "value",
-          "label": "9는 아직 부족 — 경계값",
-          "args": [
-            9
-          ],
-          "expected": "재고 부족"
-        },
-        {
-          "type": "value",
-          "label": "10부터 충분 — 경계값",
-          "args": [
-            10
-          ],
-          "expected": "충분"
-        }
-      ],
-      "hints": [
-        "갈래가 셋이면 조건도 셋일 필요는 없습니다. 위에서부터 확인된다는 것을 쓰면 두 번째 조건은 '9 이하' 를 다시 적지 않아도 됩니다.",
-        "각 갈래가 글자를 반환하고 있는지 보세요. 조건 안에서 값을 만들기만 하고 반환하지 않으면 아무것도 나오지 않습니다."
-      ]
+      "code": "const name = '지수';\nconst greeting = '안녕, ' + name;\n\nconsole.log(name.length);\nconsole.log(greeting);\nconsole.log('4' + '2');\n"
     }
   ]
 }

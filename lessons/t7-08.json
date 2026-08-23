@@ -1,106 +1,40 @@
 {
-  "schemaVersion": 2,
-  "id": "t7-08",
-  "track": "T7",
-  "order": 8,
-  "runtime": "js",
-  "title": "물려주기와 조립하기",
+  "schemaVersion": 2, "id": "t7-08", "track": "T7", "order": 8, "runtime": "react",
+  "title": "effect 없이 계산할 수 있는 값 찾기",
   "steps": [
     {
-      "kind": "read",
-      "title": "체인을 한 칸 더 잇는 문법",
+      "kind": "read", "title": "렌더 중 계산에는 effect가 필요하지 않습니다",
       "brief": [
-        "t7-05 에서 프로토타입 체인을 봤고 t7-06 에서 그것이 어떻게 만들어지는지 봤습니다. extends 는 그 체인을 한 칸 더 잇는 문법입니다.",
-        "class Workshop extends Course 라고 적으면 Workshop 으로 만든 객체의 체인이 Workshop.prototype → Course.prototype → Object.prototype 이 됩니다. 자식에 없으면 부모에서 찾습니다.",
-        "super 는 두 자리에서 씁니다.",
-        "첫째는 생성자 안입니다. super(name, hours) 라고 부르면 부모의 생성자가 실행돼 부모 몫의 값을 담습니다. 그 뒤에 자식 몫을 담습니다. 순서가 정해져 있습니다 — super 를 부르기 전에는 this 를 건드릴 수 없습니다. 빠뜨리면 Must call super constructor 라는 에러가 납니다.",
-        "둘째는 메서드 안입니다. super.describe() 는 부모의 같은 이름 메서드를 부릅니다. 자식이 부모의 것을 덮어쓰되 완전히 버리지는 않고 앞뒤에 덧붙일 때 쓰는 모양입니다.",
-        "정적 멤버도 함께 물려받습니다. 부모에 static of 가 있으면 자식에서도 Workshop.of 로 부를 수 있습니다.",
-        "여기까지가 문법입니다. 이제 이 트랙의 목적을 다시 떠올려 보세요. 읽기 위해 배우는 것입니다. 그리고 읽을 수 있게 된 다음에 알아야 할 것이 하나 더 있습니다.",
-        "React 는 화면을 만들 때 상속을 쓰지 않습니다. T3 에서 컴포넌트를 만들 때 어느 컴포넌트도 다른 컴포넌트를 물려받지 않았습니다. 대신 t3-12 에서 children 으로 안을 비워 두고 바깥에서 채웠습니다. 그것을 합성이라고 부릅니다.",
-        "왜 그럴까요. 상속은 '무엇의 한 종류인가' 를 정해 두는 일입니다. 특강은 코스의 한 종류이므로 잘 맞습니다. 그런데 화면 조각은 대개 그렇지 않습니다. 모달 안에 폼이 들어가는 것은 모달이 폼의 한 종류라서가 아니라 모달이 무엇이든 담을 수 있기 때문입니다. 담는 관계를 물려받는 관계로 적으면 조금만 복잡해져도 어긋납니다.",
-        "그래서 화면을 만들 때 extends 를 쓰고 싶어지면 대개는 children 이나 props 로 풀 수 있습니다. 이 레슨에서 배우는 것은 남의 코드를 읽기 위한 것이고, 여러분이 새로 만드는 컴포넌트에 쓰라는 뜻이 아닙니다."
+        "T6에서 기존 state로 계산 가능한 파생값은 별도 state로 저장하지 않는다고 배웠습니다. 파생값을 갱신하기 위한 effect도 필요하지 않습니다.",
+        { "code": ["const fullName = firstName + ' ' + lastName;"] },
+        "이를 fullName state로 만들고 effect에서 setFullName하면 첫 렌더는 오래된 값으로 끝난 뒤 effect 때문에 한 번 더 렌더링됩니다.",
+        "배열을 filter하거나 문자열을 조합하는 순수 계산은 컴포넌트 렌더 안에서 바로 수행합니다.",
+        "effect는 React 바깥 시스템과 동기화할 때 사용합니다. React 내부 값끼리 맞추기 위한 기본 도구가 아닙니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "특강은 코스의 한 종류",
-      "brief": [
-        "Course 를 Workshop 이 물려받습니다. 특강은 코스의 한 종류라 상속이 어울리는 자리입니다.",
-        "실행해 보세요. 자식은 부모의 설명 뒤에 정원을 덧붙입니다.",
-        "describe 안의 super.describe() 를 보세요. 부모의 것을 부른 결과에 자기 것을 이어 붙였습니다. 덮어쓰되 버리지는 않았습니다.",
-        "instanceof 가 둘 다 참인 것도 보세요. Workshop 으로 만든 것은 Course 이기도 합니다. 체인이 이어져 있기 때문입니다."
-      ],
-      "code": "class Course {\n  constructor(name, hours) {\n    this.name = name;\n    this.hours = hours;\n  }\n\n  describe() {\n    return this.name + ' · ' + this.hours + '시간';\n  }\n}\n\nclass Workshop extends Course {\n  constructor(name, hours, seats) {\n    super(name, hours);\n    this.seats = seats;\n  }\n\n  describe() {\n    return super.describe() + ' · 정원 ' + this.seats + '명';\n  }\n}\n\nconst course = new Course('리액트 입문', 8);\nconst shop = new Workshop('리액트 심화', 4, 12);\n\nconsole.log('부모 :', course.describe());\nconsole.log('자식 :', shop.describe());\nconsole.log('instanceof :', shop instanceof Workshop, shop instanceof Course);\nconsole.log('체인 :',\n  Object.getPrototypeOf(shop) === Workshop.prototype,\n  Object.getPrototypeOf(Workshop.prototype) === Course.prototype);\n"
+      "kind": "run", "title": "두 state에서 전체 이름 계산하기",
+      "brief": ["firstName이나 lastName이 바뀌면 렌더가 다시 실행되고 fullName도 현재 두 값으로 계산됩니다.", "fullName state와 useEffect가 없어도 항상 입력값과 맞습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input { margin-right: 6px; padding: 7px; }"] },
+      "code": "const { useState } = React;\n\nfunction NameForm() {\n  const [firstName, setFirstName] = useState('');\n  const [lastName, setLastName] = useState('');\n  const fullName = (firstName + ' ' + lastName).trim();\n\n  return (\n    <main>\n      <input value={firstName} onChange={(event) => setFirstName(event.currentTarget.value)} placeholder=\"이름\" />\n      <input value={lastName} onChange={(event) => setLastName(event.currentTarget.value)} placeholder=\"성\" />\n      <p>전체 이름: {fullName || '입력 전'}</p>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<NameForm />);\n"
     },
     {
-      "kind": "tweak",
-      "title": "super 를 건드려 보기",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 되돌리고 다시 실행해야 합니다.",
-        "① Workshop 의 생성자에서 super(name, hours); 줄을 지워 보세요. ReferenceError: Must call super constructor in derived class... 가 납니다. 자식 생성자는 부모를 먼저 부르지 않으면 this 를 만질 수 없습니다.",
-        "② 되돌린 뒤 super(name, hours); 를 this.seats = seats; 아래로 옮겨 보세요. 같은 에러가 납니다. 순서가 규칙입니다.",
-        "③ 되돌린 뒤 자식의 describe 에서 super.describe() 를 this.describe() 로 바꿔 보세요. Uncaught RangeError: Maximum call stack size exceeded 가 납니다. 자식의 describe 가 자기 자신을 부르고 그것이 또 자기를 불러 끝없이 쌓이다가 자리가 모자라 멈춘 것입니다. super 는 '부모의 그것' 을 가리키는 전용 통로이고 this 로는 대신할 수 없습니다."
-      ],
-      "code": "class Course {\n  constructor(name, hours) {\n    this.name = name;\n    this.hours = hours;\n  }\n\n  describe() {\n    return this.name + ' · ' + this.hours + '시간';\n  }\n}\n\nclass Workshop extends Course {\n  constructor(name, hours, seats) {\n    super(name, hours);\n    this.seats = seats;\n  }\n\n  describe() {\n    return super.describe() + ' · 정원 ' + this.seats + '명';\n  }\n}\n\nconst course = new Course('리액트 입문', 8);\nconst shop = new Workshop('리액트 심화', 4, 12);\n\nconsole.log('부모 :', course.describe());\nconsole.log('자식 :', shop.describe());\nconsole.log('instanceof :', shop instanceof Workshop, shop instanceof Course);\nconsole.log('체인 :',\n  Object.getPrototypeOf(shop) === Workshop.prototype,\n  Object.getPrototypeOf(Workshop.prototype) === Course.prototype);\n"
+      "kind": "tweak", "title": "파생값을 effect로 옮겼을 때 비교하기",
+      "brief": ["fullName을 state로 만들고 effect에서 갱신하려면 state 하나, effect 하나, 의존성 두 개가 추가됩니다.", "기존 코드는 한 줄 계산만으로 같은 결과를 만들고 추가 렌더도 필요 없습니다.", "코드가 실행되는 위치를 정할 때 '외부 시스템과 동기화하는가?'를 먼저 물으세요. 아니라면 effect가 필요하지 않을 가능성이 큽니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["input { margin-right: 6px; padding: 7px; }"] },
+      "code": "const { useState } = React;\n\nfunction NameForm() {\n  const [firstName, setFirstName] = useState('');\n  const [lastName, setLastName] = useState('');\n  const fullName = (firstName + ' ' + lastName).trim();\n\n  return (\n    <main>\n      <input value={firstName} onChange={(event) => setFirstName(event.currentTarget.value)} placeholder=\"이름\" />\n      <input value={lastName} onChange={(event) => setLastName(event.currentTarget.value)} placeholder=\"성\" />\n      <p>전체 이름: {fullName || '입력 전'}</p>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<NameForm />);\n"
     },
     {
-      "kind": "fill",
-      "title": "부모를 부르는 줄 채우기",
-      "brief": [
-        "자식 생성자에서 부모 몫을 담는 줄이 비어 있습니다.",
-        "null 자리를 채워 부모 생성자에 name 과 hours 를 넘겨 주세요.",
-        "super(name, hours); 입니다. this 를 건드리기 전에 와야 합니다.",
-        "채우지 않고 실행하면 this 를 만지는 순간 에러가 납니다."
-      ],
-      "code": "class Course {\n  constructor(name, hours) {\n    this.name = name;\n    this.hours = hours;\n  }\n\n  describe() {\n    return this.name + ' · ' + this.hours + '시간';\n  }\n}\n\nclass Workshop extends Course {\n  constructor(name, hours, seats) {\n    null; // ← 여기를 채우세요\n    this.seats = seats;\n  }\n\n  describe() {\n    return super.describe() + ' · 정원 ' + this.seats + '명';\n  }\n}\n\n// 이 함수는 그대로 두세요\nfunction report(name, hours, seats) {\n  const w = new Workshop(name, hours, seats);\n  return w.describe() + ' / Course 인가: ' + (w instanceof Course);\n}\n",
-      "entry": "report",
-      "solutionCode": "class Course {\n  constructor(name, hours) {\n    this.name = name;\n    this.hours = hours;\n  }\n\n  describe() {\n    return this.name + ' · ' + this.hours + '시간';\n  }\n}\n\nclass Workshop extends Course {\n  constructor(name, hours, seats) {\n    super(name, hours);\n    this.seats = seats;\n  }\n\n  describe() {\n    return super.describe() + ' · 정원 ' + this.seats + '명';\n  }\n}\n\n// 이 함수는 그대로 두세요\nfunction report(name, hours, seats) {\n  const w = new Workshop(name, hours, seats);\n  return w.describe() + ' / Course 인가: ' + (w instanceof Course);\n}\n",
+      "kind": "fill", "title": "effect 없이 필터 결과 계산하기",
+      "brief": ["products와 query로 filtered를 바로 계산하세요. 별도 state나 effect를 추가하지 않습니다.", "filter와 includes를 사용해 입력 문자열을 포함하는 상품만 남기세요."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useState } = React;\nconst products = ['셔츠', '모자', '신발'];\n\nfunction Search() {\n  const [query, setQuery] = useState('');\n  const filtered = products; // 이 줄을 바꾸세요\n\n  return (\n    <main>\n      <input value={query} onChange={(event) => setQuery(event.currentTarget.value)} />\n      <ul>{filtered.map((name) => <li key={name}>{name}</li>)}</ul>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Search />);\n",
+      "solutionCode": "const { useState } = React;\nconst products = ['셔츠', '모자', '신발'];\n\nfunction Search() {\n  const [query, setQuery] = useState('');\n  const filtered = products.filter((name) => name.includes(query));\n\n  return (\n    <main>\n      <input value={query} onChange={(event) => setQuery(event.currentTarget.value)} />\n      <ul>{filtered.map((name) => <li key={name}>{name}</li>)}</ul>\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Search />);\n",
       "asserts": [
-        {
-          "type": "value",
-          "label": "부모 몫과 자식 몫이 함께",
-          "args": [
-            "리액트 심화",
-            4,
-            12
-          ],
-          "expected": "리액트 심화 · 4시간 · 정원 12명 / Course 인가: true"
-        },
-        {
-          "type": "value",
-          "label": "다른 값으로도",
-          "args": [
-            "접근성 워크숍",
-            2,
-            30
-          ],
-          "expected": "접근성 워크숍 · 2시간 · 정원 30명 / Course 인가: true"
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "물려받는 것과 담는 것",
-      "brief": [
-        "Course 를 물려받는 Workshop 과, 담기만 하는 Bundle 을 만들어 주세요. 둘의 차이를 손으로 느끼는 자리입니다.",
-        "Course 는 name 과 hours 를 받습니다. describe() 는 '리액트 입문 · 8시간' 형태를 돌려줍니다.",
-        "Workshop 은 Course 를 물려받습니다. name 과 hours 와 seats 를 받고, describe() 는 부모의 결과 뒤에 ' · 정원 12명' 형태를 덧붙입니다. 부모의 것을 다시 적지 말고 불러 쓰세요.",
-        "Bundle 은 아무것도 물려받지 않습니다. items 배열 하나를 받아 담아 둡니다. describe() 는 담긴 것들의 describe() 를 ' + ' 로 이어 돌려줍니다.",
-        "Bundle 이 Course 를 물려받지 않는 이유를 생각해 보세요. 묶음은 코스의 한 종류가 아니라 코스를 담는 것입니다. 담는 관계는 상속이 아니라 합성으로 적습니다. React 의 children 이 같은 생각입니다.",
-        "report 는 그대로 두세요. 검사기가 이 함수를 부릅니다."
+        { "type": "dom", "label": "처음에는 상품 세 개", "select": "li", "count": 3 },
+        { "type": "dom", "label": "모를 입력하면 모자만 남음", "actions": [{ "action": "fill", "selector": "input", "value": "모" }], "select": "li", "text": ["모자"] }
       ],
-      "code": "// Course · Workshop · Bundle 을 여기에 작성하세요\n\n// 이 함수는 그대로 두세요\nfunction report() {\n  const a = new Course('리액트 입문', 8);\n  const w = new Workshop('리액트 심화', 4, 12);\n  const bundle = new Bundle([a, w]);\n  return bundle.describe()\n    + ' / Workshop 은 Course 인가: ' + (w instanceof Course)\n    + ' / Bundle 은 Course 인가: ' + (bundle instanceof Course);\n}\n",
-      "entry": "report",
-      "solutionCode": "class Course {\n  constructor(name, hours) {\n    this.name = name;\n    this.hours = hours;\n  }\n\n  describe() {\n    return this.name + ' · ' + this.hours + '시간';\n  }\n}\n\nclass Workshop extends Course {\n  constructor(name, hours, seats) {\n    super(name, hours);\n    this.seats = seats;\n  }\n\n  describe() {\n    return super.describe() + ' · 정원 ' + this.seats + '명';\n  }\n}\n\nclass Bundle {\n  constructor(items) {\n    this.items = items;\n  }\n\n  describe() {\n    return this.items.map((item) => item.describe()).join(' + ');\n  }\n}\n\n// 이 함수는 그대로 두세요\nfunction report() {\n  const a = new Course('리액트 입문', 8);\n  const w = new Workshop('리액트 심화', 4, 12);\n  const bundle = new Bundle([a, w]);\n  return bundle.describe()\n    + ' / Workshop 은 Course 인가: ' + (w instanceof Course)\n    + ' / Bundle 은 Course 인가: ' + (bundle instanceof Course);\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "물려받은 것과 담은 것",
-          "args": [],
-          "expected": "리액트 입문 · 8시간 + 리액트 심화 · 4시간 · 정원 12명 / Workshop 은 Course 인가: true / Bundle 은 Course 인가: false"
-        }
-      ]
+      "hints": ["products.filter(...)의 결과를 filtered에 담으세요.", "콜백은 name.includes(query)를 반환합니다."]
     }
   ]
 }

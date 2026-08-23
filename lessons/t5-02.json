@@ -1,152 +1,28 @@
 {
-  "schemaVersion": 2,
-  "id": "t5-02",
-  "track": "T5",
-  "order": 2,
-  "runtime": "js",
-  "title": "직접 던지기",
+  "schemaVersion": 2, "id": "t5-02", "track": "T5", "order": 2, "runtime": "react",
+  "title": "root를 만들고 React 화면 렌더링하기",
   "steps": [
     {
-      "kind": "read",
-      "title": "돌려줄 정상값이 없을 때",
+      "kind": "read", "title": "HTML의 진입점과 React 화면을 연결합니다",
       "brief": [
-        "앞 레슨의 에러는 자바스크립트가 던진 것이었습니다. JSON.parse 가 글자를 읽다 포기하고 던졌습니다. 이번에는 우리가 던집니다.",
-        "함수가 '이건 잘못됐다' 를 알았는데 돌려줄 정상값이 없을 때가 있습니다. 남은 자리가 3인데 5명을 신청했다면 무엇을 돌려줘야 할까요. false 나 null 을 돌려줄 수는 있습니다. 그러면 부르는 쪽이 매번 그 값을 검사해야 하고, 검사를 빠뜨리면 그대로 흘러갑니다. 무엇보다 왜 실패했는지가 사라집니다. 자리가 없어서인지 인원을 0으로 적어서인지 알 수 없습니다.",
-        "throw 가 그 자리입니다. throw new Error('남은 자리가 없습니다') 처럼 씁니다. throw 를 만나면 함수는 그 자리에서 끝납니다. return 과 비슷하지만 값을 돌려주는 것이 아니라 실패를 알리는 것이고, 부르는 쪽이 try 로 감싸 두었다면 그 catch 가 받습니다.",
-        "무엇이든 던질 수 있습니다. 문자열도 숫자도 객체도 던져집니다. 그런데 문자열을 던지면 받는 쪽의 e.message 가 undefined 가 됩니다. 객체를 던지면 글자로 만들었을 때 [object Object] 가 됩니다. 받는 쪽은 어느 것이 올지 몰라 매번 확인해야 합니다.",
-        "그래서 Error 를 던집니다. Error 객체에는 message 가 있고, 종류를 뜻하는 name 이 있고, 어디서 났는지를 담은 stack 이 있습니다. 받는 쪽은 언제나 e.message 만 보면 됩니다. 규칙이 하나로 정해지는 것이 이유입니다.",
-        "name 은 바꿀 수 있습니다. const err = new Error('수강 인원을 넘었습니다') 를 만들고 err.name = '정원초과' 로 두면 글자로 만들었을 때 '정원초과: 수강 인원을 넘었습니다' 가 됩니다. 종류가 여러 가지일 때 갈라 보기 좋습니다.",
-        "던질 것과 돌려줄 것을 가르는 기준은 이렇습니다. 예상 범위 안의 결과는 돌려줍니다. 검색 결과가 0건인 것은 실패가 아니라 결과입니다. 함수가 맡은 일을 할 수 없는 상태는 던집니다. 자리가 없어 신청을 처리할 수 없는 것이 그것입니다."
+        "React 화면을 시작하려면 먼저 HTML에 비어 있는 요소를 준비합니다: <div id=\"root\"></div>.",
+        "document.querySelector('#root')로 그 요소를 찾고 ReactDOM.createRoot에 전달하면 React가 관리할 root가 만들어집니다.",
+        { "code": ["const container = document.querySelector('#root');", "const root = ReactDOM.createRoot(container);", "root.render(<App />);"] },
+        "render는 어떤 React 화면을 root에 표시할지 정합니다. <App />은 App 컴포넌트를 사용한다는 JSX입니다.",
+        "createRoot는 같은 HTML 요소에 한 번만 호출하고, 이후 화면 갱신은 같은 root를 사용합니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "세 번 신청해 보기",
-      "brief": [
-        "남은 자리가 3인 코스에 2명, 5명, 0명을 신청합니다.",
-        "실행해 보세요. 첫째는 성공하고 나머지 둘은 서로 다른 이유로 실패합니다. 이유가 e.message 에 그대로 담겨 옵니다.",
-        "enroll 안을 보세요. 실패한 경우에 돌려주는 값이 없습니다. throw 가 그 자리에서 함수를 끝내므로 아래 return 까지 가지 않습니다."
-      ],
-      "code": "const course = { name: '리액트 입문', seats: 3 };\n\nfunction enroll(count) {\n  if (count < 1) {\n    throw new Error('신청 인원은 1명 이상이어야 합니다');\n  }\n  if (count > course.seats) {\n    throw new Error('남은 자리는 ' + course.seats + '자리입니다');\n  }\n  return course.name + ' ' + count + '명 신청 완료';\n}\n\nconst lines = [];\n\nfor (const count of [2, 5, 0]) {\n  try {\n    lines.push(enroll(count));\n  } catch (e) {\n    lines.push('신청 실패 · ' + e.message);\n  }\n}\n\nconsole.log(lines.join('\\n'));\n"
+      "kind": "run", "title": "세 단계를 나눠 확인하기",
+      "brief": ["container는 실제 div DOM 요소이고 root는 React가 화면을 관리하는 객체입니다.", "root.render(<App />)를 호출한 뒤 App이 반환한 화면이 div 안에 나타납니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "function App() {\n  return <h2>React 시작</h2>;\n}\n\nconst container = document.querySelector('#root');\nconst root = ReactDOM.createRoot(container);\nroot.render(<App />);\n"
     },
     {
-      "kind": "tweak",
-      "title": "문자열을 던지면 · 값을 돌려주면 · 종류를 나누면",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
-        "① 자리가 모자랄 때의 throw 를 throw '남은 자리가 없습니다' 로 바꿔 보세요. 던져지기는 합니다. 그런데 결과가 '신청 실패 · undefined' 로 나옵니다. 문자열에는 message 가 없기 때문입니다. 받는 쪽 코드는 그대로인데 값만 사라집니다.",
-        "② 되돌린 뒤 같은 자리를 return '남은 자리가 없습니다' 로 바꿔 보세요. 이번에는 실패가 성공과 같은 통로로 나옵니다. lines 에 '신청 실패' 없이 그대로 섞입니다. 부르는 쪽에서 이것이 성공인지 실패인지 가리려면 글자를 뜯어봐야 합니다.",
-        "③ 되돌린 뒤 자리가 모자랄 때를 세 줄로 바꿔 보세요. const err = new Error('남은 자리는 3자리입니다') 를 만들고, err.name = '정원초과' 를 넣고, throw err 로 던집니다. 그리고 catch 안의 e.message 를 String(e) 로 바꾸면 '정원초과: 남은 자리는 3자리입니다' 가 나옵니다. 종류와 설명이 함께 보입니다."
-      ],
-      "code": "const course = { name: '리액트 입문', seats: 3 };\n\nfunction enroll(count) {\n  if (count < 1) {\n    throw new Error('신청 인원은 1명 이상이어야 합니다');\n  }\n  if (count > course.seats) {\n    throw new Error('남은 자리는 ' + course.seats + '자리입니다');\n  }\n  return course.name + ' ' + count + '명 신청 완료';\n}\n\nconst lines = [];\n\nfor (const count of [2, 5, 0]) {\n  try {\n    lines.push(enroll(count));\n  } catch (e) {\n    lines.push('신청 실패 · ' + e.message);\n  }\n}\n\nconsole.log(lines.join('\\n'));\n"
-    },
-    {
-      "kind": "fill",
-      "title": "실패를 알리는 줄 채우기",
-      "brief": [
-        "자리가 모자란 경우만 비어 있습니다.",
-        "null 자리를 채워 '남은 자리는 3자리입니다' 를 message 로 갖는 Error 를 던져 주세요. 3 은 직접 적지 말고 course.seats 에서 가져오세요.",
-        "report 는 그대로 두세요. 검사기가 이 함수를 부릅니다. 던지지 않고 값을 돌려주면 앞에 '신청 실패 · ' 가 붙지 않아 통과하지 않습니다.",
-        "채우지 않고 실행하면 자리가 모자라도 신청이 된 것처럼 나옵니다."
-      ],
-      "code": "const course = { name: '리액트 입문', seats: 3 };\n\nfunction enroll(count) {\n  if (count > course.seats) {\n    null; // ← 여기를 채우세요\n  }\n  return course.name + ' ' + count + '명 신청 완료';\n}\n\n// 이 함수는 그대로 두세요\nfunction report(count) {\n  try {\n    return enroll(count);\n  } catch (e) {\n    return '신청 실패 · ' + e.message;\n  }\n}\n",
-      "entry": "report",
-      "solutionCode": "const course = { name: '리액트 입문', seats: 3 };\n\nfunction enroll(count) {\n  if (count > course.seats) {\n    throw new Error('남은 자리는 ' + course.seats + '자리입니다');\n  }\n  return course.name + ' ' + count + '명 신청 완료';\n}\n\n// 이 함수는 그대로 두세요\nfunction report(count) {\n  try {\n    return enroll(count);\n  } catch (e) {\n    return '신청 실패 · ' + e.message;\n  }\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "자리가 있으면 신청됩니다",
-          "args": [
-            2
-          ],
-          "expected": "리액트 입문 2명 신청 완료"
-        },
-        {
-          "type": "value",
-          "label": "자리가 모자라면 이유가 옵니다",
-          "args": [
-            5
-          ],
-          "expected": "신청 실패 · 남은 자리는 3자리입니다"
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "신청 검증 만들기",
-      "brief": [
-        "수강 신청을 검증하는 apply 를 만들어 주세요.",
-        "apply(course, count) 는 코스와 신청 인원을 받습니다. course 는 { name, seats } 이고 seats 는 남은 자리입니다.",
-        "인원이 1보다 작으면 '신청 인원은 1명 이상이어야 합니다' 를 message 로 갖는 Error 를 던지세요. 인원이 남은 자리보다 많으면 '남은 자리는 3자리입니다' 형태로 던지세요. 숫자는 직접 적지 말고 course.seats 에서 가져옵니다.",
-        "둘 다 아니면 '리액트 입문 2명 신청 완료' 형태의 글자를 돌려주세요.",
-        "인원을 먼저 검사하고 자리를 나중에 검사하세요. 0명 신청은 자리가 없어서가 아니라 인원이 잘못된 것입니다.",
-        "report 는 그대로 두세요. 검사기가 이 함수를 부릅니다. 실패를 던지지 않고 돌려주면 통과하지 않습니다."
-      ],
-      "code": "// 이 함수는 그대로 두세요\nfunction report(course, count) {\n  try {\n    return apply(course, count);\n  } catch (e) {\n    return '신청 실패 · ' + e.message;\n  }\n}\n\n// apply 를 여기에 작성하세요\n",
-      "entry": "report",
-      "solutionCode": "// 이 함수는 그대로 두세요\nfunction report(course, count) {\n  try {\n    return apply(course, count);\n  } catch (e) {\n    return '신청 실패 · ' + e.message;\n  }\n}\n\nfunction apply(course, count) {\n  if (count < 1) {\n    throw new Error('신청 인원은 1명 이상이어야 합니다');\n  }\n  if (count > course.seats) {\n    throw new Error('남은 자리는 ' + course.seats + '자리입니다');\n  }\n  return course.name + ' ' + count + '명 신청 완료';\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "자리가 있으면 신청됩니다",
-          "args": [
-            {
-              "name": "리액트 입문",
-              "seats": 3
-            },
-            2
-          ],
-          "expected": "리액트 입문 2명 신청 완료"
-        },
-        {
-          "type": "value",
-          "label": "자리보다 많이 신청하면 던집니다",
-          "args": [
-            {
-              "name": "리액트 입문",
-              "seats": 3
-            },
-            5
-          ],
-          "expected": "신청 실패 · 남은 자리는 3자리입니다"
-        },
-        {
-          "type": "value",
-          "label": "0명은 인원이 잘못된 것입니다",
-          "args": [
-            {
-              "name": "리액트 입문",
-              "seats": 3
-            },
-            0
-          ],
-          "expected": "신청 실패 · 신청 인원은 1명 이상이어야 합니다"
-        },
-        {
-          "type": "value",
-          "label": "자리가 0이어도 인원을 먼저 봅니다",
-          "args": [
-            {
-              "name": "CSS 레이아웃",
-              "seats": 0
-            },
-            0
-          ],
-          "expected": "신청 실패 · 신청 인원은 1명 이상이어야 합니다"
-        },
-        {
-          "type": "value",
-          "label": "자리가 0이면 1명도 받지 못합니다",
-          "args": [
-            {
-              "name": "CSS 레이아웃",
-              "seats": 0
-            },
-            1
-          ],
-          "expected": "신청 실패 · 남은 자리는 0자리입니다"
-        }
-      ]
+      "kind": "tweak", "title": "잘못된 진입점 확인하기",
+      "brief": ["선택자를 '#app'으로 바꾸면 HTML에 해당 요소가 없어 container가 null이 되고 root를 만들 수 없습니다.", "HTML의 id도 app으로 함께 바꾸면 다시 실행됩니다. JavaScript 선택자와 HTML 진입점이 일치해야 합니다.", "render에 <App /> 대신 <h2>직접 작성한 JSX</h2>를 전달할 수도 있지만, 화면이 커지면 컴포넌트로 나누는 편이 읽기 쉽습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "function App() {\n  return <h2>React 시작</h2>;\n}\n\nconst container = document.querySelector('#root');\nconst root = ReactDOM.createRoot(container);\nroot.render(<App />);\n"
     }
   ]
 }

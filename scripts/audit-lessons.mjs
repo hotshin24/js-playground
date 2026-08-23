@@ -5,7 +5,7 @@ import vm from 'node:vm';
 import { validateLesson } from '../js/lessons.js';
 
 const root = path.resolve(import.meta.dirname, '..');
-const lessonDir = path.join(root, 'lessons-v2');
+const lessonDir = path.join(root, 'lessons');
 const index = JSON.parse(fs.readFileSync(path.join(lessonDir, 'index.json'), 'utf8'));
 const checkedKinds = new Set(['fill', 'wrap', 'write']);
 const errors = [];

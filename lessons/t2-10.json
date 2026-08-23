@@ -3,123 +3,47 @@
   "id": "t2-10",
   "track": "T2",
   "order": 10,
-  "title": "없을 때를 처리하기",
+  "runtime": "js",
+  "title": "return으로 함수의 결과 돌려주기",
   "steps": [
     {
       "kind": "read",
-      "title": "빈 화면은 고장난 화면과 같아 보입니다",
+      "title": "출력과 반환은 목적이 다릅니다",
       "brief": [
-        "앞 레슨에서 배열을 카드로 그렸습니다. 코스가 셋이면 카드가 셋입니다. 그러면 코스가 0개일 때는 어떻게 될까요. map 은 빈 배열을 돌려주고 join 은 빈 문자열을 돌려주므로, 그리드에는 아무것도 들어가지 않습니다. 화면이 텅 빕니다.",
-        "문제는 텅 빈 화면이 두 가지를 동시에 뜻한다는 것입니다. '결과가 없습니다' 일 수도 있고 '무언가 잘못됐습니다' 일 수도 있습니다. 보는 사람은 둘을 구분할 수 없습니다. 검색 결과가 없을 때 아무 말도 없는 화면을 만나면 대부분 도구를 의심합니다.",
-        "그래서 비었을 때 무엇을 보여줄지 따로 정합니다. 이것을 빈 상태 처리라고 부릅니다. 방법은 간단합니다. 그리기 전에 배열이 비었는지 확인하고, 비었으면 안내 문구를, 아니면 카드를 넣습니다. 배열이 비었는지는 length 가 0 인지로 확인합니다."
+        "return은 함수가 만든 값을 호출한 자리로 돌려줍니다. 반환된 값은 변수에 저장하거나 다른 계산에 사용할 수 있습니다.",
+        { "code": ["function add(a, b) {", "  return a + b;", "}", "", "const result = add(2, 3);"] },
+        "add(2, 3)을 호출한 자리에는 반환값 5가 남습니다. 그래서 result에 5가 저장됩니다.",
+        "console.log는 사람이 값을 보도록 출력하지만 호출한 자리에 계산 결과를 돌려주지 않습니다.",
+        "return을 만나면 함수 실행이 즉시 끝납니다. 같은 함수에서 return 아래에 있는 코드는 실행되지 않습니다."
       ]
     },
     {
-      "kind": "fill",
-      "title": "빈 상태 문구 채우기",
+      "kind": "run",
+      "title": "반환값을 다시 계산에 사용하기",
       "brief": [
-        "그리는 함수가 배열이 비었는지 먼저 확인하도록 돼 있습니다. 비었을 때 넣을 것만 남았습니다.",
-        "null 자리를 채워 아래 문자열이 들어가게 해 주세요. 클래스 이름은 empty 를 그대로 쓰세요.",
-        "<p class=\"empty\">조건에 맞는 코스가 없습니다.</p>"
+        "addShipping(12000)은 15000을 반환합니다. 반환값에 2를 곱한 30000도 출력할 수 있습니다.",
+        "함수 안에서 출력하지 않아도 바깥 코드가 반환값을 원하는 방식으로 사용할 수 있습니다."
       ],
-      "scaffold": {
-        "html": [
-          "<div class=\"grid\" id=\"grid\"></div>",
-          "",
-          "<button id=\"clear\" class=\"clear\" type=\"button\">결과 비우기</button>"
-        ],
-        "css": [
-          ".grid { display: grid; gap: 8px; }",
-          ".course { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
-          ".course__title { margin: 0; font-size: 1rem; }",
-          ".empty { margin: 0; padding: 12px; border: 1px dashed var(--c-border); border-radius: 6px;",
-          "  color: var(--c-text-muted); text-align: center; }",
-          ".clear { margin-top: 8px; }"
-        ]
-      },
-      "code": "const grid = document.querySelector('#grid');\n\nconst cardOf = (course) =>\n  `<article class=\"course\"><h3 class=\"course__title\">${course.title}</h3></article>`;\n\nconst render = (list) => {\n  if (list.length === 0) {\n    grid.innerHTML = null; // ← 여기를 채우세요\n    return;\n  }\n\n  grid.innerHTML = list.map(cardOf).join('');\n};\n\nrender([]);\n",
-      "solutionCode": "const grid = document.querySelector('#grid');\n\nconst cardOf = (course) =>\n  `<article class=\"course\"><h3 class=\"course__title\">${course.title}</h3></article>`;\n\nconst render = (list) => {\n  if (list.length === 0) {\n    grid.innerHTML = '<p class=\"empty\">조건에 맞는 코스가 없습니다.</p>';\n    return;\n  }\n\n  grid.innerHTML = list.map(cardOf).join('');\n};\n\nrender([]);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "빈 상태 안내가 하나 그려집니다",
-          "select": ".empty",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "안내 문구가 들어갑니다",
-          "select": ".empty",
-          "text": [
-            "조건에 맞는 코스가 없습니다."
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "카드는 그려지지 않습니다",
-          "select": ".course",
-          "count": 0
-        }
-      ]
+      "code": "function addShipping(price) {\n  return price + 3000;\n}\n\nconst total = addShipping(12000);\n\nconsole.log(total);\nconsole.log(total * 2);\n"
     },
     {
       "kind": "write",
-      "title": "두 경우를 모두 그리기",
+      "title": "할인 가격을 반환하는 함수 작성하기",
       "brief": [
-        "배열 하나를 받아 그리는 함수를 만들어 주세요. 배열에 코스가 있으면 카드를, 비었으면 '조건에 맞는 코스가 없습니다.' 안내를 그립니다. 클래스 이름은 course · course__title · empty 를 그대로 쓰세요.",
-        "처음에는 주어진 세 코스를 그려 주세요. 그리고 '결과 비우기' 버튼을 누르면 빈 배열로 다시 그려 안내가 보이게 해 주세요.",
-        "그리는 일을 한 곳에 모아 두면 두 번 쓰지 않아도 됩니다. 코드로 클릭을 일으키지 마세요."
+        "discount 함수를 작성하세요. price와 amount 두 값을 매개변수로 받고, price에서 amount를 뺀 값을 반환합니다.",
+        "console.log로 출력하지 말고 return을 사용해야 검사가 호출 결과를 확인할 수 있습니다."
       ],
-      "scaffold": {
-        "html": [
-          "<div class=\"grid\" id=\"grid\"></div>",
-          "",
-          "<button id=\"clear\" class=\"clear\" type=\"button\">결과 비우기</button>"
-        ],
-        "css": [
-          ".grid { display: grid; gap: 8px; }",
-          ".course { padding: 8px; border: 1px solid var(--c-border); border-radius: 6px; }",
-          ".course__title { margin: 0; font-size: 1rem; }",
-          ".empty { margin: 0; padding: 12px; border: 1px dashed var(--c-border); border-radius: 6px;",
-          "  color: var(--c-text-muted); text-align: center; }",
-          ".clear { margin-top: 8px; }"
-        ]
-      },
-      "code": "const courses = [\n  { title: '자바스크립트 입문' },\n  { title: '리액트 시작하기' },\n  { title: 'CSS 레이아웃 마스터' },\n];\n\n// 여기를 채우세요\n",
-      "solutionCode": "const courses = [\n  { title: '자바스크립트 입문' },\n  { title: '리액트 시작하기' },\n  { title: 'CSS 레이아웃 마스터' },\n];\n\nconst grid = document.querySelector('#grid');\nconst clear = document.querySelector('#clear');\n\nconst cardOf = (course) =>\n  `<article class=\"course\"><h3 class=\"course__title\">${course.title}</h3></article>`;\n\nconst render = (list) => {\n  if (list.length === 0) {\n    grid.innerHTML = '<p class=\"empty\">조건에 맞는 코스가 없습니다.</p>';\n    return;\n  }\n\n  grid.innerHTML = list.map(cardOf).join('');\n};\n\nrender(courses);\n\nclear.addEventListener('click', () => {\n  render([]);\n});\n",
+      "code": "// discount 함수를 작성하세요\n",
+      "entry": "discount",
+      "solutionCode": "function discount(price, amount) {\n  return price - amount;\n}\n",
       "asserts": [
-        {
-          "type": "dom",
-          "label": "처음에는 카드가 세 장입니다",
-          "select": ".course",
-          "count": 3
-        },
-        {
-          "type": "dom",
-          "label": "처음에는 빈 상태 안내가 없습니다",
-          "select": ".empty",
-          "count": 0
-        },
-        {
-          "type": "dom",
-          "label": "비우면 안내가 보입니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": "#clear"
-            }
-          ],
-          "select": ".empty",
-          "text": [
-            "조건에 맞는 코스가 없습니다."
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "비우면 카드는 남지 않습니다",
-          "select": ".course",
-          "count": 0
-        }
+        { "type": "value", "label": "39000에서 4000 할인", "args": [39000, 4000], "expected": 35000 },
+        { "type": "value", "label": "10000에서 할인 없음", "args": [10000, 0], "expected": 10000 },
+        { "type": "value", "label": "5000에서 전액 할인", "args": [5000, 5000], "expected": 0 }
+      ],
+      "hints": [
+        "함수 선언은 function discount(price, amount)로 시작합니다.",
+        "중괄호 안에서 return price - amount;를 작성하세요."
       ]
     }
   ]

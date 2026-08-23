@@ -1,122 +1,40 @@
 {
-  "schemaVersion": 2,
-  "id": "t7-06",
-  "track": "T7",
-  "order": 6,
-  "runtime": "js",
-  "title": "옛날 방식의 생성자",
+  "schemaVersion": 2, "id": "t7-06", "track": "T7", "order": 6, "runtime": "react",
+  "title": "정리 함수로 이전 effect 끝내기",
   "steps": [
     {
-      "kind": "read",
-      "title": "체인은 누가 만드는가",
+      "kind": "read", "title": "effect가 시작한 작업은 cleanup에서 정리합니다",
       "brief": [
-        "앞 레슨에서 체인을 따라 올라가 봤습니다. 그리고 Object.create 로 직접 이어도 봤습니다. 그러면 배열이나 우리가 만든 객체의 체인은 누가 이어 둔 것일까요.",
-        "class 문법이 생기기 전에는 같은 모양의 객체를 여럿 만들 때 생성자 함수를 썼습니다. 지금도 라이브러리 안쪽과 오래된 코드에 그대로 있습니다.",
-        "생성자 함수는 특별한 문법이 아닙니다. 그냥 함수인데 new 를 붙여 부르기로 약속한 함수입니다. 약속을 눈에 보이게 하려고 이름을 대문자로 시작합니다. Course 처럼 씁니다.",
-        "new 를 붙여 부르면 네 가지 일이 일어납니다. 하나씩 보면 어려울 것이 없습니다.",
-        "첫째, 빈 객체를 하나 만듭니다. 둘째, 그 객체의 한 단계 위를 그 함수의 prototype 으로 이어 둡니다. 앞 레슨의 체인이 여기서 만들어집니다. 셋째, this 를 그 객체로 삼아 함수 본문을 실행합니다. 그래서 this.name = name 이 새 객체에 값을 넣습니다. 넷째, 함수가 객체를 돌려주지 않으면 그 새 객체를 결과로 줍니다.",
-        "모든 함수는 prototype 이라는 속성을 가지고 있습니다. 그 자리에 메서드를 넣어 두면 그 함수로 만든 객체가 전부 그것을 씁니다. Course.prototype.describe = function () { ... } 가 그 모양입니다.",
-        "왜 함수 안에 넣지 않고 prototype 에 넣을까요. 함수 안에 this.describe = function ... 이라고 적으면 객체를 만들 때마다 함수가 새로 만들어집니다. 백 개를 만들면 똑같은 함수가 백 개 생깁니다. prototype 에 두면 하나를 나눠 씁니다.",
-        "여기서 T1 의 모듈 패턴과 갈립니다. 그때는 함수가 객체를 만들어 돌려줬고 메서드도 그때마다 새로 만들어졌습니다. 대신 감춘 값을 가질 수 있었습니다. 생성자와 prototype 은 반대로 값을 감추지 못하는 대신 메서드를 나눠 씁니다. 어느 쪽이 옳은 것이 아니라 고르는 것입니다.",
-        "가장 흔한 사고는 new 를 빠뜨리는 것입니다. t7-01 에서 확인했듯 그러면 this 가 새 객체가 아니라 전역이 되어, 값이 window 에 들어가고 함수는 undefined 를 돌려줍니다. 오류도 나지 않습니다. 다음 레슨의 class 가 이것을 어떻게 막는지 보게 됩니다."
+        "effect 함수가 반환하는 함수를 정리 함수 또는 cleanup이라고 합니다.",
+        { "code": ["useEffect(() => {", "  const timerId = setInterval(tick, 1000);", "  return () => clearInterval(timerId);", "}, []);"] },
+        "정리 함수는 컴포넌트가 언마운트될 때 실행됩니다. 의존성이 바뀌어 effect를 다시 실행할 때도 새 effect 전에 이전 정리 함수가 먼저 실행됩니다.",
+        "타이머를 시작했다면 취소하고, 이벤트 리스너를 등록했다면 제거하고, 외부 구독을 시작했다면 해제합니다.",
+        "정리하지 않으면 화면에서 사라진 컴포넌트의 작업이 계속 실행되거나 같은 리스너가 여러 번 등록될 수 있습니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "찍어 내기",
-      "brief": [
-        "생성자 함수로 코스 둘을 만듭니다.",
-        "실행해 보세요. 둘 다 자기 값을 가지고 같은 메서드를 씁니다.",
-        "Object.keys 를 보세요. 인스턴스가 가진 것은 name 과 hours 뿐이고 describe 는 없습니다. 한 단계 위에 있습니다.",
-        "a.describe === b.describe 가 true 인 것이 prototype 에 둔 이유입니다. 함수 하나를 둘이 나눠 씁니다."
-      ],
-      "code": "function Course(name, hours) {\n  this.name = name;\n  this.hours = hours;\n}\n\nCourse.prototype.describe = function () {\n  return this.name + ' · ' + this.hours + '시간';\n};\n\nconst a = new Course('리액트 입문', 8);\nconst b = new Course('CSS 레이아웃', 6);\n\nconsole.log('만들어진 것 :', a.describe(), '/', b.describe());\nconsole.log('자기 것 :', Object.keys(a));\nconsole.log('메서드는 프로토타입에 :', a.describe === Course.prototype.describe);\nconsole.log('둘이 같은 메서드를 쓴다 :', a.describe === b.describe);\nconsole.log('체인 :', Object.getPrototypeOf(a) === Course.prototype);\nconsole.log('constructor :', a.constructor === Course, '· instanceof :', a instanceof Course);\n"
+      "kind": "run", "title": "타이머 시작하고 언마운트 때 정리하기",
+      "brief": ["Timer가 마운트되면 1초마다 tick이 콘솔에 출력됩니다.", "숨기기 버튼으로 Timer를 언마운트하면 cleanup이 interval을 취소해 출력이 멈춥니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 7px 9px; }"] },
+      "code": "const { useEffect, useState } = React;\n\nfunction Timer() {\n  useEffect(() => {\n    console.log('타이머 시작');\n    const timerId = setInterval(() => console.log('tick'), 1000);\n\n    return () => {\n      console.log('타이머 정리');\n      clearInterval(timerId);\n    };\n  }, []);\n\n  return <p>타이머 실행 중</p>;\n}\n\nfunction App() {\n  const [visible, setVisible] = useState(true);\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setVisible(!visible)}>{visible ? '숨기기' : '표시하기'}</button>\n      {visible && <Timer />}\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     },
     {
-      "kind": "tweak",
-      "title": "안에 넣으면 · new 를 빠뜨리면 · 돌려주면",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 되돌리고 다시 실행해야 합니다.",
-        "① Course.prototype.describe = ... 를 지우고 생성자 안에 this.describe = function () { return this.name + ' · ' + this.hours + '시간'; }; 를 넣어 보세요. 화면은 똑같습니다. 그런데 Object.keys(a) 에 describe 가 들어가고 a.describe === b.describe 가 false 가 됩니다. 객체마다 함수가 따로 만들어진 것입니다.",
-        "② 되돌린 뒤 const c = Course('없는것', 1); 를 추가하고 console.log(c, window.name, window.hours); 를 찍어 보세요. c 는 undefined 이고 window 에 값이 들어가 있습니다. 오류는 나지 않습니다. t7-01 에서 본 그 자리입니다.",
-        "③ 되돌린 뒤 생성자 맨 끝에 return { name: '내가 돌려준 것' }; 을 넣어 보세요. new 로 만들었는데도 그 객체가 나옵니다. describe 를 부르면 없다고 터집니다. 체인이 이어지지 않은 남남이기 때문입니다. 반대로 return 42; 처럼 객체가 아닌 것을 돌려주면 무시되고 원래 새 객체가 나옵니다."
-      ],
-      "code": "function Course(name, hours) {\n  this.name = name;\n  this.hours = hours;\n}\n\nCourse.prototype.describe = function () {\n  return this.name + ' · ' + this.hours + '시간';\n};\n\nconst a = new Course('리액트 입문', 8);\nconst b = new Course('CSS 레이아웃', 6);\n\nconsole.log('만들어진 것 :', a.describe(), '/', b.describe());\nconsole.log('자기 것 :', Object.keys(a));\nconsole.log('메서드는 프로토타입에 :', a.describe === Course.prototype.describe);\nconsole.log('둘이 같은 메서드를 쓴다 :', a.describe === b.describe);\nconsole.log('체인 :', Object.getPrototypeOf(a) === Course.prototype);\nconsole.log('constructor :', a.constructor === Course, '· instanceof :', a instanceof Course);\n"
+      "kind": "tweak", "title": "clearInterval을 지워 보기",
+      "brief": ["정리 함수의 clearInterval(timerId)을 지우고 Timer를 숨기면 정리 로그 뒤에도 tick이 계속 출력됩니다.", "다시 표시하면 새 interval까지 추가되어 tick이 더 자주 출력될 수 있습니다.", "실습 뒤에는 clearInterval 줄을 반드시 되돌려 중복 타이머를 남기지 마세요."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 7px 9px; }"] },
+      "code": "const { useEffect, useState } = React;\n\nfunction Timer() {\n  useEffect(() => {\n    console.log('타이머 시작');\n    const timerId = setInterval(() => console.log('tick'), 1000);\n\n    return () => {\n      console.log('타이머 정리');\n      clearInterval(timerId);\n    };\n  }, []);\n\n  return <p>타이머 실행 중</p>;\n}\n\nfunction App() {\n  const [visible, setVisible] = useState(true);\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setVisible(!visible)}>{visible ? '숨기기' : '표시하기'}</button>\n      {visible && <Timer />}\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     },
     {
-      "kind": "fill",
-      "title": "나눠 쓸 메서드 자리 채우기",
-      "brief": [
-        "생성자는 돼 있고 메서드를 두는 자리가 비어 있습니다.",
-        "null 자리를 채워 describe 를 모든 인스턴스가 나눠 쓰도록 만들어 주세요. '리액트 입문 · 8시간' 형태를 돌려줍니다.",
-        "생성자 안이 아니라 Course.prototype 에 넣어야 나눠 씁니다.",
-        "채우지 않고 실행하면 describe 가 없어 터집니다."
-      ],
-      "code": "function Course(name, hours) {\n  this.name = name;\n  this.hours = hours;\n}\n\nnull; // ← 여기를 채우세요\n\n// 이 함수는 그대로 두세요\nfunction report(name, hours, otherName, otherHours) {\n  const a = new Course(name, hours);\n  const b = new Course(otherName, otherHours);\n  return a.describe() + ' / ' + b.describe() + ' / 나눠 쓰는가: ' + (a.describe === b.describe);\n}\n",
-      "entry": "report",
-      "solutionCode": "function Course(name, hours) {\n  this.name = name;\n  this.hours = hours;\n}\n\nCourse.prototype.describe = function () {\n  return this.name + ' · ' + this.hours + '시간';\n};\n\n// 이 함수는 그대로 두세요\nfunction report(name, hours, otherName, otherHours) {\n  const a = new Course(name, hours);\n  const b = new Course(otherName, otherHours);\n  return a.describe() + ' / ' + b.describe() + ' / 나눠 쓰는가: ' + (a.describe === b.describe);\n}\n",
+      "kind": "fill", "title": "언마운트 때 실행할 정리 함수 반환하기",
+      "brief": ["Notice가 사라질 때 #cleanup의 글자가 '정리 완료'가 되도록 null을 정리 함수로 바꾸세요.", "effect가 반환하는 값은 나중에 React가 호출할 함수여야 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>", "<p id=\"cleanup\">정리 전</p>"], "css": [] },
+      "code": "const { useEffect, useState } = React;\n\nfunction Notice() {\n  useEffect(() => {\n    return null; // 정리 함수를 반환하세요\n  }, []);\n  return <p id=\"notice\">알림 표시 중</p>;\n}\n\nfunction App() {\n  const [visible, setVisible] = useState(true);\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setVisible(false)}>알림 닫기</button>\n      {visible && <Notice />}\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
+      "solutionCode": "const { useEffect, useState } = React;\n\nfunction Notice() {\n  useEffect(() => {\n    return () => {\n      document.querySelector('#cleanup').textContent = '정리 완료';\n    };\n  }, []);\n  return <p id=\"notice\">알림 표시 중</p>;\n}\n\nfunction App() {\n  const [visible, setVisible] = useState(true);\n  return (\n    <main>\n      <button type=\"button\" onClick={() => setVisible(false)}>알림 닫기</button>\n      {visible && <Notice />}\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
       "asserts": [
-        {
-          "type": "value",
-          "label": "둘 다 자기 값을 쓰고 메서드는 하나",
-          "args": [
-            "리액트 입문",
-            8,
-            "CSS 레이아웃",
-            6
-          ],
-          "expected": "리액트 입문 · 8시간 / CSS 레이아웃 · 6시간 / 나눠 쓰는가: true"
-        },
-        {
-          "type": "value",
-          "label": "다른 값으로도",
-          "args": [
-            "자바스크립트 기초",
-            12,
-            "접근성 기초",
-            4
-          ],
-          "expected": "자바스크립트 기초 · 12시간 / 접근성 기초 · 4시간 / 나눠 쓰는가: true"
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "생성자 함수 만들기",
-      "brief": [
-        "옛 코드에서 보는 꼴 그대로 생성자 함수를 만들어 주세요.",
-        "Course(name, hours) 는 new 로 부르는 함수입니다. 받은 값을 this 에 담습니다.",
-        "메서드 셋을 Course.prototype 에 두세요. 인스턴스마다 새로 만들어지면 안 됩니다.",
-        "describe() 는 '리액트 입문 · 8시간' 형태를 돌려줍니다. isLong() 은 시간이 10 이상이면 참을 돌려줍니다. addHours(n) 은 시간을 n 만큼 늘리고 자기 자신을 돌려줍니다.",
-        "그리고 안전장치를 하나 넣으세요. new 없이 불렸으면 스스로 new 로 다시 불러 그 결과를 돌려줍니다. 옛 라이브러리가 자주 쓰던 방법입니다.",
-        "판단은 this instanceof Course 로 합니다. new 로 불렸으면 참이고, 그냥 불렸으면 this 가 전역이라 거짓입니다.",
-        "report 는 그대로 두세요. 검사기가 이 함수를 부릅니다."
+        { "type": "dom", "label": "처음에는 알림이 보임", "select": "#notice", "count": 1 },
+        { "type": "dom", "label": "닫으면 cleanup이 실행됨", "actions": [{ "action": "click", "selector": "button" }], "select": "#cleanup", "text": ["정리 완료"] }
       ],
-      "code": "// Course 를 여기에 작성하세요\n\n// 이 함수는 그대로 두세요\nfunction report(name, hours, add) {\n  const withNew = new Course(name, hours);\n  const withoutNew = Course(name, hours);\n  return withNew.addHours(add).describe()\n    + ' / 긴 강의인가: ' + withNew.isLong()\n    + ' / new 없이도: ' + (withoutNew instanceof Course ? withoutNew.describe() : '실패')\n    + ' / 나눠 쓰는가: ' + (withNew.describe === withoutNew.describe);\n}\n",
-      "entry": "report",
-      "solutionCode": "function Course(name, hours) {\n  if (!(this instanceof Course)) {\n    return new Course(name, hours);\n  }\n\n  this.name = name;\n  this.hours = hours;\n}\n\nCourse.prototype.describe = function () {\n  return this.name + ' · ' + this.hours + '시간';\n};\n\nCourse.prototype.isLong = function () {\n  return this.hours >= 10;\n};\n\nCourse.prototype.addHours = function (n) {\n  this.hours += n;\n  return this;\n};\n\n// 이 함수는 그대로 두세요\nfunction report(name, hours, add) {\n  const withNew = new Course(name, hours);\n  const withoutNew = Course(name, hours);\n  return withNew.addHours(add).describe()\n    + ' / 긴 강의인가: ' + withNew.isLong()\n    + ' / new 없이도: ' + (withoutNew instanceof Course ? withoutNew.describe() : '실패')\n    + ' / 나눠 쓰는가: ' + (withNew.describe === withoutNew.describe);\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "시간을 늘리면 긴 강의가 됩니다",
-          "args": [
-            "리액트 입문",
-            8,
-            4
-          ],
-          "expected": "리액트 입문 · 12시간 / 긴 강의인가: true / new 없이도: 리액트 입문 · 8시간 / 나눠 쓰는가: true"
-        },
-        {
-          "type": "value",
-          "label": "짧은 강의",
-          "args": [
-            "CSS 레이아웃",
-            6,
-            1
-          ],
-          "expected": "CSS 레이아웃 · 7시간 / 긴 강의인가: false / new 없이도: CSS 레이아웃 · 6시간 / 나눠 쓰는가: true"
-        }
-      ]
+      "hints": ["return () => { ... }; 형태로 함수를 반환하세요.", "함수 안에서 #cleanup의 textContent를 '정리 완료'로 바꾸세요."]
     }
   ]
 }

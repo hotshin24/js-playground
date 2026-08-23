@@ -1,94 +1,40 @@
 {
-  "schemaVersion": 2,
-  "id": "t5-03",
-  "track": "T5",
-  "order": 3,
-  "runtime": "js",
-  "title": "어떻게 끝나든",
+  "schemaVersion": 2, "id": "t5-03", "track": "T5", "order": 3, "runtime": "react",
+  "title": "JSX를 JavaScript 값으로 다루기",
   "steps": [
     {
-      "kind": "read",
-      "title": "어느 길로 끝나도 해야 하는 일",
+      "kind": "read", "title": "JSX는 HTML 문자열이 아니라 React 요소를 만드는 표현식입니다",
       "brief": [
-        "앞의 두 레슨에서 try 로 감싸고 catch 로 받았습니다. 그런데 성공하든 실패하든 반드시 해야 하는 일이 있습니다.",
-        "'불러오는 중' 표시가 그렇습니다. 켰으면 반드시 꺼야 합니다. 성공했을 때만 끄면 실패했을 때 화면이 영원히 돌아갑니다. 사용자는 기다리다 새로고침을 누릅니다. 켠 것을 끄는 일, 잠근 것을 푸는 일, 잠시 멈춘 것을 다시 돌리는 일이 모두 같은 성질입니다.",
-        "try 끝과 catch 끝에 같은 줄을 두 번 쓰면 되기는 합니다. 그런데 나가는 길이 둘만 있는 것이 아닙니다. try 안에서 return 으로 빠져나갈 수도 있고, catch 안에서 또 던질 수도 있습니다. 길이 늘어날 때마다 같은 줄을 하나씩 더 붙여야 하고, 하나를 빠뜨리면 그 길로 나갔을 때만 표시가 남습니다. 어긋남이 한 갈래에서만 생기는 것이라 찾기도 어렵습니다.",
-        "finally 가 그 자리입니다. try { } catch (e) { } finally { } 형태이고, finally 안은 어느 길로 끝나든 실행됩니다. 성공해도 실행되고, 실패해서 catch 로 가도 실행되고, try 안에서 return 을 해도 돌아가기 직전에 실행됩니다.",
-        "catch 없이 try 와 finally 만 둘 수도 있습니다. 그러면 에러는 잡히지 않고 그대로 위로 올라가지만, 올라가기 전에 finally 는 실행됩니다. 여기서 처리할 방법은 모르지만 정리는 하고 넘기겠다는 뜻입니다. 앞 레슨의 '무엇을 할지 모르면 감싸지 마세요' 와 어긋나지 않습니다. 잡는 것과 정리하는 것은 다른 일입니다.",
-        "함정이 하나 있습니다. finally 안에 return 을 두면 try 의 return 을 덮어씁니다. try 에서 '성공값' 을 돌려주기로 했어도 finally 에 return 이 있으면 그쪽 값이 나갑니다. 실패도 마찬가지로 삼켜집니다. finally 에는 return 을 두지 마세요. 뒷정리만 두세요.",
-        "정리할 것이 없으면 finally 도 필요 없습니다. 어느 길로 끝나든 해야 하는 일이 있을 때만 씁니다."
+        "JSX는 JavaScript 안에서 화면 구조를 작성하는 문법입니다. HTML처럼 보이지만 브라우저가 그대로 읽는 HTML 문자열은 아닙니다.",
+        { "code": ["const title = <h2>파란 셔츠</h2>;", "root.render(title);"] },
+        "JSX 표현식은 React 요소라는 JavaScript 값을 만듭니다. 그래서 변수에 저장하고 함수에서 반환하며 다른 함수에 전달할 수 있습니다.",
+        "플레이그라운드는 JSX를 브라우저가 실행할 수 있는 JavaScript로 변환한 뒤 실행합니다. 실제 React 프로젝트에서는 Vite 같은 도구가 이 변환을 담당합니다.",
+        "JSX와 HTML의 세부 문법 차이는 다음 레슨부터 하나씩 배웁니다."
       ]
     },
     {
-      "kind": "fill",
-      "title": "표시를 끄는 자리 채우기",
-      "brief": [
-        "load 는 글자를 읽어 이름을 돌려줍니다. 시작할 때 '불러오는 중' 을 켜는데 끄는 자리가 비어 있습니다.",
-        "null 자리를 채워 log 에 '표시 끔' 을 넣어 주세요. log.push('표시 끔') 입니다.",
-        "성공 경로에는 return 이 있습니다. return 이 있어도 finally 는 실행됩니다.",
-        "채우지 않고 실행하면 성공했을 때도 실패했을 때도 표시가 켜진 채로 끝납니다."
-      ],
-      "code": "const log = [];\n\nfunction load(source) {\n  log.push('불러오는 중');\n  try {\n    const data = JSON.parse(source);\n    log.push('완료: ' + data.name);\n    return data.name;\n  } catch (e) {\n    log.push('실패: ' + e.name);\n    return null;\n  } finally {\n    null; // ← 여기를 채우세요\n  }\n}\n\n// 이 함수는 그대로 두세요\nfunction trace(source) {\n  log.length = 0;\n  load(source);\n  return log.join(' / ');\n}\n",
-      "entry": "trace",
-      "solutionCode": "const log = [];\n\nfunction load(source) {\n  log.push('불러오는 중');\n  try {\n    const data = JSON.parse(source);\n    log.push('완료: ' + data.name);\n    return data.name;\n  } catch (e) {\n    log.push('실패: ' + e.name);\n    return null;\n  } finally {\n    log.push('표시 끔');\n  }\n}\n\n// 이 함수는 그대로 두세요\nfunction trace(source) {\n  log.length = 0;\n  load(source);\n  return log.join(' / ');\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "성공해도 표시를 끕니다",
-          "args": [
-            "{ \"name\": \"리액트 입문\" }"
-          ],
-          "expected": "불러오는 중 / 완료: 리액트 입문 / 표시 끔"
-        },
-        {
-          "type": "value",
-          "label": "실패해도 표시를 끕니다",
-          "args": [
-            "{ 깨진 }"
-          ],
-          "expected": "불러오는 중 / 실패: SyntaxError / 표시 끔"
-        }
-      ]
+      "kind": "run", "title": "JSX 값을 변수에 저장해 렌더링하기",
+      "brief": ["productCard 변수에는 문자열이 아니라 React 요소 값이 들어 있습니다.", "typeof 결과는 object이고, render가 그 값을 실제 화면으로 반영합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const productCard = (\n  <article>\n    <h2>파란 셔츠</h2>\n    <p>39,000원</p>\n  </article>\n);\n\nconsole.log(typeof productCard);\n\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\nroot.render(productCard);\n"
     },
     {
-      "kind": "write",
-      "title": "어느 길로 끝나도 정리하기",
-      "brief": [
-        "글자를 읽어 코스 이름을 돌려주는 load 를 만들어 주세요. 남기는 기록이 정해져 있습니다.",
-        "시작할 때 log 에 '불러오는 중' 을 넣습니다. JSON.parse 로 읽어 성공하면 '완료: 리액트 입문' 형태를 넣고 그 이름을 돌려줍니다. 실패하면 '실패: SyntaxError' 형태로 e.name 을 넣고 null 을 돌려줍니다.",
-        "그리고 어느 쪽으로 끝나든 마지막에 '표시 끔' 을 넣습니다. 두 번 적지 말고 finally 로 두세요.",
-        "finally 에는 return 을 두지 마세요. 성공했을 때 이름이 돌아가야 합니다.",
-        "trace 는 그대로 두세요. 검사기가 이 함수를 부릅니다. 빈 글자를 읽으면 SyntaxError 가 납니다."
-      ],
-      "code": "const log = [];\n\n// load 를 여기에 작성하세요\n\n// 이 함수는 그대로 두세요\nfunction trace(source) {\n  log.length = 0;\n  const result = load(source);\n  return log.join(' / ') + ' → ' + result;\n}\n",
-      "entry": "trace",
-      "solutionCode": "const log = [];\n\nfunction load(source) {\n  log.push('불러오는 중');\n  try {\n    const data = JSON.parse(source);\n    log.push('완료: ' + data.name);\n    return data.name;\n  } catch (e) {\n    log.push('실패: ' + e.name);\n    return null;\n  } finally {\n    log.push('표시 끔');\n  }\n}\n\n// 이 함수는 그대로 두세요\nfunction trace(source) {\n  log.length = 0;\n  const result = load(source);\n  return log.join(' / ') + ' → ' + result;\n}\n",
+      "kind": "tweak", "title": "문자열과 JSX 결과 비교하기",
+      "brief": ["productCard를 '<h2>파란 셔츠</h2>'라는 문자열로 바꾸면 태그가 아니라 문자열 자체가 화면에 표시됩니다.", "React가 문자열을 안전하게 글자로 처리하기 때문입니다. JSX로 작성해야 React 요소가 됩니다.", "JSX를 변수에 저장할 수 있다는 사실은 뒤에서 조건에 따라 서로 다른 화면 값을 고를 때 사용됩니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const productCard = (\n  <article>\n    <h2>파란 셔츠</h2>\n    <p>39,000원</p>\n  </article>\n);\n\nconsole.log(typeof productCard);\n\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\nroot.render(productCard);\n"
+    },
+    {
+      "kind": "fill", "title": "JSX 값을 만들어 렌더링하기",
+      "brief": ["productCard의 null을 h2와 p가 들어 있는 article JSX로 바꾸세요.", "h2에는 '모자', p에는 '15,000원'을 적습니다. 문자열이 아니라 JSX 값을 만들어야 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const productCard = null; // JSX로 바꾸세요\n\nReactDOM.createRoot(document.querySelector('#root')).render(productCard);\n",
+      "solutionCode": "const productCard = (\n  <article>\n    <h2>모자</h2>\n    <p>15,000원</p>\n  </article>\n);\n\nReactDOM.createRoot(document.querySelector('#root')).render(productCard);\n",
       "asserts": [
-        {
-          "type": "value",
-          "label": "성공 경로",
-          "args": [
-            "{ \"name\": \"리액트 입문\" }"
-          ],
-          "expected": "불러오는 중 / 완료: 리액트 입문 / 표시 끔 → 리액트 입문"
-        },
-        {
-          "type": "value",
-          "label": "실패 경로",
-          "args": [
-            "{ 깨진 }"
-          ],
-          "expected": "불러오는 중 / 실패: SyntaxError / 표시 끔 → null"
-        },
-        {
-          "type": "value",
-          "label": "빈 글자도 실패입니다",
-          "args": [
-            ""
-          ],
-          "expected": "불러오는 중 / 실패: SyntaxError / 표시 끔 → null"
-        }
-      ]
+        { "type": "dom", "label": "article이 하나 렌더링됨", "select": "article", "count": 1 },
+        { "type": "dom", "label": "상품 이름과 가격이 표시됨", "select": "article h2, article p", "text": ["모자", "15,000원"] }
+      ],
+      "hints": ["null 자리에 <article>...</article>을 넣습니다.", "article 안에 <h2>모자</h2>와 <p>15,000원</p>을 넣으세요."]
     }
   ]
 }

@@ -1,215 +1,27 @@
 {
-  "schemaVersion": 2,
-  "id": "t2-13",
-  "track": "T2",
-  "order": 13,
-  "title": "열고 닫는 상태 알리기",
+  "schemaVersion": 2, "id": "t2-13", "track": "T2", "order": 13, "runtime": "js",
+  "title": "화살표 함수의 생략 규칙 읽기",
   "steps": [
     {
-      "kind": "read",
-      "title": "보이는 것과 전해지는 것",
+      "kind": "read", "title": "함수 표현식을 짧게 쓸 수 있습니다",
       "brief": [
-        "여기까지 T2 는 줄곧 한 가지를 다뤘습니다. 화면이 바뀐다는 것입니다. 클래스를 붙이고 글자를 바꾸고 목록을 다시 그렸습니다. 눈으로 보는 사람에게는 그것으로 충분합니다. 펼쳐진 높이와 화살표 방향만 봐도 열렸다는 것을 압니다.",
-        "화면을 보지 않는 사람에게는 아무 일도 일어나지 않은 것과 같습니다. 화면 낭독기는 클래스 이름을 읽어 주지 않습니다. is-open 이 붙었다는 사실은 그 사람에게 전해지지 않습니다. 이제부터 두 레슨은 바뀐 것을 어떻게 전할지를 다룹니다.",
-        "퍼블리싱을 하며 aria-expanded 를 본 적이 있을 것입니다. 이 버튼이 무언가를 열고 닫는다는 것과, 지금 열려 있는지를 알려 주는 속성입니다. 화면 낭독기는 이 값을 읽어 '접힘' 또는 '펼쳐짐' 이라고 말해 줍니다. 무엇을 여는지는 aria-controls 로 가리킵니다. 이 무대의 마크업에는 둘 다 이미 적혀 있습니다.",
-        "문제는 이 값이 한 번 적어 두는 것으로 끝나지 않는다는 것입니다. 상태가 바뀌는 것은 실행 중이고, 바꾸는 것은 우리 코드입니다. 마크업에 aria-expanded=\"false\" 라고만 적어 두면, 실제로 열려도 낭독기는 계속 '접힘' 이라고 말합니다. 보이는 것과 전해지는 것이 어긋납니다. 틀린 안내는 안내가 없는 것보다 나쁩니다.",
-        "그래서 화면을 바꾸는 그 자리에서 속성도 함께 바꿉니다. 속성을 쓰는 것은 앞에서 했습니다. setAttribute 입니다. 값은 문자열 'true' 와 'false' 를 씁니다. 불리언이 아니라 글자입니다."
+        "화살표 함수는 함수 표현식을 간단히 작성하는 문법입니다.",
+        { "code": ["const add = function (a, b) {", "  return a + b;", "};", "", "const addArrow = (a, b) => {", "  return a + b;", "};"] },
+        "function 대신 매개변수 뒤에 =>를 씁니다. 중괄호를 쓴다면 return도 직접 써야 합니다.",
+        "함수 본문이 반환식 하나라면 중괄호와 return을 함께 생략할 수 있습니다: const add = (a, b) => a + b;",
+        "매개변수가 하나일 때만 괄호를 생략할 수 있습니다. 처음에는 괄호를 유지하면 형태를 알아보기 쉽습니다.",
+        "화살표 함수의 this는 일반 함수와 다릅니다. 객체 메서드의 this를 배울 때 그 차이를 다시 다룹니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "두 상태를 나란히 보기",
-      "brief": [
-        "버튼을 누르면 패널이 열리고 닫힙니다. 열림 여부는 변수가 들고, 화면과 속성을 함께 갱신합니다.",
-        "실행한 뒤 미리보기에서 '코스 소개' 버튼을 여러 번 눌러 보세요. 패널이 열리고 닫힙니다.",
-        "콘솔에 두 줄이 함께 찍힙니다. 보이는 상태와 전해지는 상태입니다. 둘이 늘 같이 바뀌는지 보세요."
-      ],
-      "scaffold": {
-        "html": [
-          "<section class=\"acc\">",
-          "  <h3 class=\"acc__head\">",
-          "    <button class=\"acc__toggle\" type=\"button\" aria-expanded=\"false\" aria-controls=\"acc-panel\">코스 소개</button>",
-          "  </h3>",
-          "  <div class=\"acc__panel\" id=\"acc-panel\">",
-          "    <p>자바스크립트의 기본 문법을 처음부터 다룹니다. 12시간 과정입니다.</p>",
-          "  </div>",
-          "</section>"
-        ],
-        "css": [
-          ".acc { border: 1px solid var(--c-border); border-radius: 6px; padding: 8px; }",
-          ".acc__head { margin: 0; font-size: 1rem; }",
-          ".acc__panel { display: none; margin-top: 6px; }",
-          ".acc__panel.is-open { display: block; }",
-          ".acc__panel p { margin: 0; color: var(--c-text-muted); }"
-        ]
-      },
-      "code": "const toggle = document.querySelector('.acc__toggle');\nconst panel = document.querySelector('.acc__panel');\n\nlet open = false;\n\nconst render = () => {\n  if (open) {\n    panel.classList.add('is-open');\n  } else {\n    panel.classList.remove('is-open');\n  }\n\n  toggle.setAttribute('aria-expanded', String(open));\n\n  console.log('보이는 상태:', panel.classList.contains('is-open') ? '펼침' : '접힘');\n  console.log('전해지는 상태:', toggle.getAttribute('aria-expanded'));\n};\n\ntoggle.addEventListener('click', () => {\n  open = open ? false : true;\n  render();\n});\n"
+      "kind": "run", "title": "세 함수의 같은 결과 확인하기",
+      "brief": ["세 함수는 작성 모양이 다르지만 모두 받은 number에 2를 곱해 반환합니다.", "한 줄 화살표 함수에서는 number * 2 식의 결과가 자동으로 반환됩니다."],
+      "code": "function doubleA(number) {\n  return number * 2;\n}\n\nconst doubleB = (number) => {\n  return number * 2;\n};\n\nconst doubleC = (number) => number * 2;\n\nconsole.log(doubleA(5));\nconsole.log(doubleB(5));\nconsole.log(doubleC(5));\n"
     },
     {
-      "kind": "tweak",
-      "title": "일부러 어긋내 보기",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행하고 버튼을 눌러야 합니다.",
-        "① toggle.setAttribute 줄을 지워 보세요. 패널은 열리고 닫히는데 전해지는 상태는 계속 false 입니다. 눈으로 보는 사람에게는 멀쩡하고 낭독기를 쓰는 사람에게는 영영 접혀 있는 화면입니다. 마크업에 한 번 적어 두는 것으로 끝나지 않는 이유입니다.",
-        "② String(open) 을 open 으로 바꾸고, console.log('속성 값의 타입:', typeof toggle.getAttribute('aria-expanded')); 한 줄을 추가해 보세요. 화면 결과는 같아 보이지만 타입은 여전히 string 입니다. 속성 값은 무엇을 넣든 문자열로 저장됩니다.",
-        "③ 열린 상태에서 패널의 CSS 클래스만 지워 보세요. panel.classList.add('is-open') 을 지우면 됩니다. 이번에는 반대입니다. 화면은 닫혀 있는데 속성은 열렸다고 말합니다. 어느 쪽으로 어긋나든 틀린 안내입니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<section class=\"acc\">",
-          "  <h3 class=\"acc__head\">",
-          "    <button class=\"acc__toggle\" type=\"button\" aria-expanded=\"false\" aria-controls=\"acc-panel\">코스 소개</button>",
-          "  </h3>",
-          "  <div class=\"acc__panel\" id=\"acc-panel\">",
-          "    <p>자바스크립트의 기본 문법을 처음부터 다룹니다. 12시간 과정입니다.</p>",
-          "  </div>",
-          "</section>"
-        ],
-        "css": [
-          ".acc { border: 1px solid var(--c-border); border-radius: 6px; padding: 8px; }",
-          ".acc__head { margin: 0; font-size: 1rem; }",
-          ".acc__panel { display: none; margin-top: 6px; }",
-          ".acc__panel.is-open { display: block; }",
-          ".acc__panel p { margin: 0; color: var(--c-text-muted); }"
-        ]
-      },
-      "code": "const toggle = document.querySelector('.acc__toggle');\nconst panel = document.querySelector('.acc__panel');\n\nlet open = false;\n\nconst render = () => {\n  if (open) {\n    panel.classList.add('is-open');\n  } else {\n    panel.classList.remove('is-open');\n  }\n\n  toggle.setAttribute('aria-expanded', String(open));\n\n  console.log('보이는 상태:', panel.classList.contains('is-open') ? '펼침' : '접힘');\n  console.log('전해지는 상태:', toggle.getAttribute('aria-expanded'));\n};\n\ntoggle.addEventListener('click', () => {\n  open = open ? false : true;\n  render();\n});\n"
-    },
-    {
-      "kind": "fill",
-      "title": "전해지는 상태 채우기",
-      "brief": [
-        "패널을 여닫는 것까지는 돼 있습니다. 속성에 넣을 값만 비어 있습니다.",
-        "null 자리를 채워 열렸을 때 'true', 닫혔을 때 'false' 가 들어가게 해 주세요. 값은 문자열이어야 합니다.",
-        "검사가 버튼을 대신 눌러 두 상태를 모두 확인합니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<section class=\"acc\">",
-          "  <h3 class=\"acc__head\">",
-          "    <button class=\"acc__toggle\" type=\"button\" aria-expanded=\"false\" aria-controls=\"acc-panel\">코스 소개</button>",
-          "  </h3>",
-          "  <div class=\"acc__panel\" id=\"acc-panel\">",
-          "    <p>자바스크립트의 기본 문법을 처음부터 다룹니다. 12시간 과정입니다.</p>",
-          "  </div>",
-          "</section>"
-        ],
-        "css": [
-          ".acc { border: 1px solid var(--c-border); border-radius: 6px; padding: 8px; }",
-          ".acc__head { margin: 0; font-size: 1rem; }",
-          ".acc__panel { display: none; margin-top: 6px; }",
-          ".acc__panel.is-open { display: block; }",
-          ".acc__panel p { margin: 0; color: var(--c-text-muted); }"
-        ]
-      },
-      "code": "const toggle = document.querySelector('.acc__toggle');\nconst panel = document.querySelector('.acc__panel');\n\nlet open = false;\n\nconst render = () => {\n  if (open) {\n    panel.classList.add('is-open');\n  } else {\n    panel.classList.remove('is-open');\n  }\n\n  toggle.setAttribute('aria-expanded', null); // ← 여기를 채우세요\n\n  console.log('보이는 상태:', panel.classList.contains('is-open') ? '펼침' : '접힘');\n  console.log('전해지는 상태:', toggle.getAttribute('aria-expanded'));\n};\n\ntoggle.addEventListener('click', () => {\n  open = open ? false : true;\n  render();\n});\n",
-      "solutionCode": "const toggle = document.querySelector('.acc__toggle');\nconst panel = document.querySelector('.acc__panel');\n\nlet open = false;\n\nconst render = () => {\n  if (open) {\n    panel.classList.add('is-open');\n  } else {\n    panel.classList.remove('is-open');\n  }\n\n  toggle.setAttribute('aria-expanded', String(open));\n\n  console.log('보이는 상태:', panel.classList.contains('is-open') ? '펼침' : '접힘');\n  console.log('전해지는 상태:', toggle.getAttribute('aria-expanded'));\n};\n\ntoggle.addEventListener('click', () => {\n  open = open ? false : true;\n  render();\n});\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "열면 펼쳐짐으로 전해집니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".acc__toggle"
-            }
-          ],
-          "select": ".acc__toggle[aria-expanded=\"true\"]",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "다시 누르면 접힘으로 전해집니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".acc__toggle"
-            }
-          ],
-          "select": ".acc__toggle[aria-expanded=\"false\"]",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "여닫으며 함께 알리기",
-      "brief": [
-        "'코스 소개' 버튼을 누르면 패널이 열리고, 다시 누르면 닫히게 해 주세요. 패널을 보이게 하는 클래스 이름은 is-open 입니다.",
-        "여닫을 때마다 버튼의 aria-expanded 도 함께 바꿔 주세요. 열렸으면 'true', 닫혔으면 'false' 입니다. 처음에는 닫힌 상태입니다.",
-        "열림 여부는 변수가 들고 화면과 속성은 그 결과로 만드세요. 화면이나 속성에서 되읽지 마세요. 코드로 클릭을 일으키지 마세요."
-      ],
-      "scaffold": {
-        "html": [
-          "<section class=\"acc\">",
-          "  <h3 class=\"acc__head\">",
-          "    <button class=\"acc__toggle\" type=\"button\" aria-expanded=\"false\" aria-controls=\"acc-panel\">코스 소개</button>",
-          "  </h3>",
-          "  <div class=\"acc__panel\" id=\"acc-panel\">",
-          "    <p>자바스크립트의 기본 문법을 처음부터 다룹니다. 12시간 과정입니다.</p>",
-          "  </div>",
-          "</section>"
-        ],
-        "css": [
-          ".acc { border: 1px solid var(--c-border); border-radius: 6px; padding: 8px; }",
-          ".acc__head { margin: 0; font-size: 1rem; }",
-          ".acc__panel { display: none; margin-top: 6px; }",
-          ".acc__panel.is-open { display: block; }",
-          ".acc__panel p { margin: 0; color: var(--c-text-muted); }"
-        ]
-      },
-      "code": "// 여기를 채우세요\n",
-      "solutionCode": "const toggle = document.querySelector('.acc__toggle');\nconst panel = document.querySelector('.acc__panel');\n\nlet open = false;\n\nconst render = () => {\n  if (open) {\n    panel.classList.add('is-open');\n  } else {\n    panel.classList.remove('is-open');\n  }\n\n  toggle.setAttribute('aria-expanded', String(open));\n};\n\ntoggle.addEventListener('click', () => {\n  open = open ? false : true;\n  render();\n});\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "처음에는 패널이 닫혀 있습니다",
-          "select": ".acc__panel.is-open",
-          "count": 0
-        },
-        {
-          "type": "dom",
-          "label": "처음에는 접힘으로 전해집니다",
-          "select": ".acc__toggle[aria-expanded=\"false\"]",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "누르면 패널이 열립니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".acc__toggle"
-            }
-          ],
-          "select": ".acc__panel.is-open",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "열린 것이 함께 전해집니다",
-          "select": ".acc__toggle[aria-expanded=\"true\"]",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "다시 누르면 패널이 닫힙니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".acc__toggle"
-            }
-          ],
-          "select": ".acc__panel.is-open",
-          "count": 0
-        },
-        {
-          "type": "dom",
-          "label": "닫힌 것도 함께 전해집니다",
-          "select": ".acc__toggle[aria-expanded=\"false\"]",
-          "count": 1
-        }
-      ]
+      "kind": "tweak", "title": "중괄호와 return을 함께 다루기",
+      "brief": ["doubleC를 (number) => { number * 2; }로 바꾸면 undefined가 출력됩니다. 중괄호를 추가했지만 return은 추가하지 않았기 때문입니다.", "return number * 2;를 중괄호 안에 쓰면 다시 10이 반환됩니다.", "중괄호가 없는 한 줄 반환과 중괄호가 있는 여러 줄 본문을 섞어 기억하지 마세요."],
+      "code": "function doubleA(number) {\n  return number * 2;\n}\n\nconst doubleB = (number) => {\n  return number * 2;\n};\n\nconst doubleC = (number) => number * 2;\n\nconsole.log(doubleA(5));\nconsole.log(doubleB(5));\nconsole.log(doubleC(5));\n"
     }
   ]
 }

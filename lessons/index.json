@@ -1,721 +1,150 @@
 {
   "schemaVersion": 1,
   "tracks": [
-    {
-      "id": "T0",
-      "title": "시작하기"
-    },
-    {
-      "id": "T1",
-      "title": "기초 문법"
-    },
-    {
-      "id": "T2",
-      "title": "화면 다루기"
-    },
-    {
-      "id": "T3",
-      "title": "React 로 옮기기"
-    },
-    {
-      "id": "T4",
-      "title": "React 상태 다루기"
-    },
-    {
-      "id": "T5",
-      "title": "에러와 비동기"
-    },
-    {
-      "id": "T6",
-      "title": "React 앱"
-    },
-    {
-      "id": "T7",
-      "title": "JS 심화"
-    },
-    {
-      "id": "T8",
-      "title": "모듈 · 파일 분리"
-    }
+    { "id": "T0", "title": "실행과 값" },
+    { "id": "T1", "title": "자료형과 연산" },
+    { "id": "T2", "title": "조건 · 반복 · 함수 · 스코프" },
+    { "id": "T3", "title": "객체 · 배열 · 참조" },
+    { "id": "T4", "title": "브라우저 JavaScript와 비동기" },
+    { "id": "T5", "title": "React의 출발점" },
+    { "id": "T6", "title": "상태와 입력" },
+    { "id": "T7", "title": "라이프 사이클과 효과" },
+    { "id": "T8", "title": "복잡한 상태와 데이터 공급" },
+    { "id": "T9", "title": "렌더링 최적화와 저장" }
   ],
   "lessons": [
-    {
-      "id": "t0-01",
-      "track": "T0",
-      "order": 1,
-      "title": "값에 이름 붙이기"
-    },
-    {
-      "id": "t0-02",
-      "track": "T0",
-      "order": 2,
-      "title": "값을 눈으로 확인하기"
-    },
-    {
-      "id": "t0-03",
-      "track": "T0",
-      "order": 3,
-      "title": "입력을 받아 결과 돌려주기"
-    },
-    {
-      "id": "t1-01",
-      "track": "T1",
-      "order": 1,
-      "title": "값의 종류 알아보기"
-    },
-    {
-      "id": "t1-02",
-      "track": "T1",
-      "order": 2,
-      "title": "조건에 따라 갈라지기"
-    },
-    {
-      "id": "t1-03",
-      "track": "T1",
-      "order": 3,
-      "title": "객체로 값 묶기"
-    },
-    {
-      "id": "t1-04",
-      "track": "T1",
-      "order": 4,
-      "title": "값의 타입과 형변환 들여다보기"
-    },
-    {
-      "id": "t1-05",
-      "track": "T1",
-      "order": 5,
-      "title": "배열로 값 늘어놓기"
-    },
-    {
-      "id": "t1-06",
-      "track": "T1",
-      "order": 6,
-      "title": "목록을 훑으며 세기"
-    },
-    {
-      "id": "t1-07",
-      "track": "T1",
-      "order": 7,
-      "title": "함수를 값처럼 다루기"
-    },
-    {
-      "id": "t1-08",
-      "track": "T1",
-      "order": 8,
-      "title": "화살표로 함수 짧게 쓰기"
-    },
-    {
-      "id": "t1-09",
-      "track": "T1",
-      "order": 9,
-      "title": "각자 기억하는 카운터 두 개"
-    },
-    {
-      "id": "t1-10",
-      "track": "T1",
-      "order": 10,
-      "title": "map으로 배열 변환하기"
-    },
-    {
-      "id": "t1-11",
-      "track": "T1",
-      "order": 11,
-      "title": "filter로 골라내기"
-    },
-    {
-      "id": "t1-12",
-      "track": "T1",
-      "order": 12,
-      "title": "reduce로 하나로 합치기"
-    },
-    {
-      "id": "t1-13",
-      "track": "T1",
-      "order": 13,
-      "title": "구조 분해로 꺼내기"
-    },
-    {
-      "id": "t1-14",
-      "track": "T1",
-      "order": 14,
-      "title": "객체에서 필요한 것만 꺼내 새 객체 만들기"
-    },
-    {
-      "id": "t1-15",
-      "track": "T1",
-      "order": 15,
-      "title": "데이터에서 HTML 문자열 만들기"
-    },
-    {
-      "id": "t1-16",
-      "track": "T1",
-      "order": 16,
-      "title": "모듈 패턴으로 내부 상태 감추기"
-    },
-    {
-      "id": "t1-17",
-      "track": "T1",
-      "order": 17,
-      "title": "기다렸다가 결과 돌려주기"
-    },
-    {
-      "id": "t2-01",
-      "track": "T2",
-      "order": 1,
-      "title": "화면에서 요소 찾기"
-    },
-    {
-      "id": "t2-02",
-      "track": "T2",
-      "order": 2,
-      "title": "클래스 붙이고 떼기"
-    },
-    {
-      "id": "t2-03",
-      "track": "T2",
-      "order": 3,
-      "title": "속성 읽고 쓰기"
-    },
-    {
-      "id": "t2-04",
-      "track": "T2",
-      "order": 4,
-      "title": "클릭에 반응하기"
-    },
-    {
-      "id": "t2-05",
-      "track": "T2",
-      "order": 5,
-      "title": "어느 것을 눌렀는지 알기"
-    },
-    {
-      "id": "t2-06",
-      "track": "T2",
-      "order": 6,
-      "title": "목록을 한 번에 듣기"
-    },
-    {
-      "id": "t2-07",
-      "track": "T2",
-      "order": 7,
-      "title": "입력창의 값 읽기"
-    },
-    {
-      "id": "t2-08",
-      "track": "T2",
-      "order": 8,
-      "title": "수량 조절 만들기"
-    },
-    {
-      "id": "t2-09",
-      "track": "T2",
-      "order": 9,
-      "title": "데이터로 목록 그리기"
-    },
-    {
-      "id": "t2-10",
-      "track": "T2",
-      "order": 10,
-      "title": "없을 때를 처리하기"
-    },
-    {
-      "id": "t2-11",
-      "track": "T2",
-      "order": 11,
-      "title": "검색으로 걸러 그리기"
-    },
-    {
-      "id": "t2-12",
-      "track": "T2",
-      "order": 12,
-      "title": "정렬해 다시 그리기"
-    },
-    {
-      "id": "t2-13",
-      "track": "T2",
-      "order": 13,
-      "title": "열고 닫는 상태 알리기"
-    },
-    {
-      "id": "t2-14",
-      "track": "T2",
-      "order": 14,
-      "title": "포커스 옮기기"
-    },
-    {
-      "id": "t2-15",
-      "track": "T2",
-      "order": 15,
-      "title": "종합 — 걸러 정렬해 세기"
-    },
-    {
-      "id": "t3-01",
-      "track": "T3",
-      "order": 1,
-      "title": "마크업을 코드에 그대로 쓰기"
-    },
-    {
-      "id": "t3-02",
-      "track": "T3",
-      "order": 2,
-      "title": "HTML 과 이름이 다른 것들"
-    },
-    {
-      "id": "t3-03",
-      "track": "T3",
-      "order": 3,
-      "title": "하나만 돌려줄 수 있습니다"
-    },
-    {
-      "id": "t3-04",
-      "track": "T3",
-      "order": 4,
-      "title": "값을 끼워 넣기"
-    },
-    {
-      "id": "t3-05",
-      "track": "T3",
-      "order": 5,
-      "title": "첫 컴포넌트"
-    },
-    {
-      "id": "t3-06",
-      "track": "T3",
-      "order": 6,
-      "title": "값을 밖에서 받기"
-    },
-    {
-      "id": "t3-07",
-      "track": "T3",
-      "order": 7,
-      "title": "문자열이 아닌 값 넘기기"
-    },
-    {
-      "id": "t3-08",
-      "track": "T3",
-      "order": 8,
-      "title": "배열을 화면으로"
-    },
-    {
-      "id": "t3-09",
-      "track": "T3",
-      "order": 9,
-      "title": "무엇이 무엇인지 알려 주기"
-    },
-    {
-      "id": "t3-10",
-      "track": "T3",
-      "order": 10,
-      "title": "갈라 그리기"
-    },
-    {
-      "id": "t3-11",
-      "track": "T3",
-      "order": 11,
-      "title": "없을 때와 감출 때"
-    },
-    {
-      "id": "t3-12",
-      "track": "T3",
-      "order": 12,
-      "title": "안을 비워 두기"
-    },
-    {
-      "id": "t3-13",
-      "track": "T3",
-      "order": 13,
-      "title": "컴포넌트 안에 컴포넌트"
-    },
-    {
-      "id": "t3-14",
-      "track": "T3",
-      "order": 14,
-      "title": "어디서 자를 것인가"
-    },
-    {
-      "id": "t3-15",
-      "track": "T3",
-      "order": 15,
-      "title": "클래스를 어떻게 이을 것인가"
-    },
-    {
-      "id": "t3-16",
-      "track": "T3",
-      "order": 16,
-      "title": "종합 — 코스 그리드"
-    },
-    {
-      "id": "t4-01",
-      "track": "T4",
-      "order": 1,
-      "title": "스스로 바뀌는 화면"
-    },
-    {
-      "id": "t4-02",
-      "track": "T4",
-      "order": 2,
-      "title": "누르면 바뀝니다"
-    },
-    {
-      "id": "t4-03",
-      "track": "T4",
-      "order": 3,
-      "title": "이번 렌더의 값"
-    },
-    {
-      "id": "t4-04",
-      "track": "T4",
-      "order": 4,
-      "title": "이전 값에서 이어 가기"
-    },
-    {
-      "id": "t4-05",
-      "track": "T4",
-      "order": 5,
-      "title": "훅을 부르는 자리"
-    },
-    {
-      "id": "t4-06",
-      "track": "T4",
-      "order": 6,
-      "title": "객체를 갈아 끼우기"
-    },
-    {
-      "id": "t4-07",
-      "track": "T4",
-      "order": 7,
-      "title": "배열을 갈아 끼우기"
-    },
-    {
-      "id": "t4-08",
-      "track": "T4",
-      "order": 8,
-      "title": "입력창을 상태로 잡기"
-    },
-    {
-      "id": "t4-09",
-      "track": "T4",
-      "order": 9,
-      "title": "폼 여러 칸 다루기"
-    },
-    {
-      "id": "t4-10",
-      "track": "T4",
-      "order": 10,
-      "title": "파생 상태를 만들지 마세요"
-    },
-    {
-      "id": "t4-11",
-      "track": "T4",
-      "order": 11,
-      "title": "상태를 위로 올리기"
-    },
-    {
-      "id": "t4-12",
-      "track": "T4",
-      "order": 12,
-      "title": "필요 없는 useEffect"
-    },
-    {
-      "id": "t4-13",
-      "track": "T4",
-      "order": 13,
-      "title": "필요한 useEffect"
-    },
-    {
-      "id": "t4-14",
-      "track": "T4",
-      "order": 14,
-      "title": "정리하고 나가기"
-    },
-    {
-      "id": "t4-15",
-      "track": "T4",
-      "order": 15,
-      "title": "렌더와 무관한 값"
-    },
-    {
-      "id": "t4-16",
-      "track": "T4",
-      "order": 16,
-      "title": "멀리 있는 값 전하기"
-    },
-    {
-      "id": "t4-17",
-      "track": "T4",
-      "order": 17,
-      "title": "여러 갈래를 한 곳에서"
-    },
-    {
-      "id": "t4-18",
-      "track": "T4",
-      "order": 18,
-      "title": "되풀이되는 것을 훅으로"
-    },
-    {
-      "id": "t5-01",
-      "track": "T5",
-      "order": 1,
-      "title": "터지는 자리를 감싸기"
-    },
-    {
-      "id": "t5-02",
-      "track": "T5",
-      "order": 2,
-      "title": "직접 던지기"
-    },
-    {
-      "id": "t5-03",
-      "track": "T5",
-      "order": 3,
-      "title": "어떻게 끝나든"
-    },
-    {
-      "id": "t5-04",
-      "track": "T5",
-      "order": 4,
-      "title": "맡긴 일이 실패하면"
-    },
-    {
-      "id": "t5-05",
-      "track": "T5",
-      "order": 5,
-      "title": "기다린다고 쓰기"
-    },
-    {
-      "id": "t5-06",
-      "track": "T5",
-      "order": 6,
-      "title": "바깥에서 가져오기"
-    },
-    {
-      "id": "t5-07",
-      "track": "T5",
-      "order": 7,
-      "title": "응답이 왔다고 성공은 아닙니다"
-    },
-    {
-      "id": "t5-08",
-      "track": "T5",
-      "order": 8,
-      "title": "본문을 읽는 일"
-    },
-    {
-      "id": "t5-09",
-      "track": "T5",
-      "order": 9,
-      "title": "새어 나가는 에러"
-    },
-    {
-      "id": "t5-10",
-      "track": "T5",
-      "order": 10,
-      "title": "네 가지 얼굴"
-    },
-    {
-      "id": "t5-11",
-      "track": "T5",
-      "order": 11,
-      "title": "한꺼번에 보내기"
-    },
-    {
-      "id": "t5-12",
-      "track": "T5",
-      "order": 12,
-      "title": "하나가 실패해도"
-    },
-    {
-      "id": "t5-13",
-      "track": "T5",
-      "order": 13,
-      "title": "순서대로 vs 한꺼번에"
-    },
-    {
-      "id": "t6-01",
-      "track": "T6",
-      "order": 1,
-      "title": "화면이 열리면 가져옵니다"
-    },
-    {
-      "id": "t6-02",
-      "track": "T6",
-      "order": 2,
-      "title": "네 갈래를 상태로"
-    },
-    {
-      "id": "t6-03",
-      "track": "T6",
-      "order": 3,
-      "title": "갈래를 하나로 묶기"
-    },
-    {
-      "id": "t6-04",
-      "track": "T6",
-      "order": 4,
-      "title": "다시 불러오기"
-    },
-    {
-      "id": "t6-05",
-      "track": "T6",
-      "order": 5,
-      "title": "늦게 온 응답"
-    },
-    {
-      "id": "t6-06",
-      "track": "T6",
-      "order": 6,
-      "title": "가져오기를 훅으로"
-    },
-    {
-      "id": "t6-07",
-      "track": "T6",
-      "order": 7,
-      "title": "폼 만들기"
-    },
-    {
-      "id": "t6-08",
-      "track": "T6",
-      "order": 8,
-      "title": "제출 가로채기"
-    },
-    {
-      "id": "t6-09",
-      "track": "T6",
-      "order": 9,
-      "title": "무엇이 잘못됐는지"
-    },
-    {
-      "id": "t6-10",
-      "track": "T6",
-      "order": 10,
-      "title": "보내는 동안"
-    },
-    {
-      "id": "t6-11",
-      "track": "T6",
-      "order": 11,
-      "title": "화면을 바꾼다는 것"
-    },
-    {
-      "id": "t6-12",
-      "track": "T6",
-      "order": 12,
-      "title": "라우터 만들기"
-    },
-    {
-      "id": "t6-13",
-      "track": "T6",
-      "order": 13,
-      "title": "주소에 값 싣기"
-    },
-    {
-      "id": "t6-14",
-      "track": "T6",
-      "order": 14,
-      "title": "지금 어디에 있는지"
-    },
-    {
-      "id": "t7-01",
-      "track": "T7",
-      "order": 1,
-      "title": "읽기 위해 배웁니다"
-    },
-    {
-      "id": "t7-02",
-      "track": "T7",
-      "order": 2,
-      "title": "누가 불렀는가"
-    },
-    {
-      "id": "t7-03",
-      "track": "T7",
-      "order": 3,
-      "title": "화살표는 묻지 않습니다"
-    },
-    {
-      "id": "t7-04",
-      "track": "T7",
-      "order": 4,
-      "title": "고정해서 넘기기"
-    },
-    {
-      "id": "t7-05",
-      "track": "T7",
-      "order": 5,
-      "title": "물려받은 것"
-    },
-    {
-      "id": "t7-06",
-      "track": "T7",
-      "order": 6,
-      "title": "옛날 방식의 생성자"
-    },
-    {
-      "id": "t7-07",
-      "track": "T7",
-      "order": 7,
-      "title": "같은 것을 class 로"
-    },
-    {
-      "id": "t7-08",
-      "track": "T7",
-      "order": 8,
-      "title": "물려주기와 조립하기"
-    },
-    {
-      "id": "t7-09",
-      "track": "T7",
-      "order": 9,
-      "title": "붙어 있는 것들"
-    },
-    {
-      "id": "t8-01",
-      "track": "T8",
-      "order": 1,
-      "title": "나누면 보이지 않는다"
-    },
-    {
-      "id": "t8-02",
-      "track": "T8",
-      "order": 2,
-      "title": "이름을 맞추는 법"
-    },
-    {
-      "id": "t8-03",
-      "track": "T8",
-      "order": 3,
-      "title": "default 와 이름"
-    },
-    {
-      "id": "t8-04",
-      "track": "T8",
-      "order": 4,
-      "title": "경로와 확장자"
-    },
-    {
-      "id": "t8-05",
-      "track": "T8",
-      "order": 5,
-      "title": "컴포넌트를 파일로"
-    },
-    {
-      "id": "t8-06",
-      "track": "T8",
-      "order": 6,
-      "title": "나누는 기준"
-    },
-    {
-      "id": "t8-07",
-      "track": "T8",
-      "order": 7,
-      "title": "배럴 파일"
-    },
-    {
-      "id": "t8-08",
-      "track": "T8",
-      "order": 8,
-      "title": "서로를 부를 때"
-    }
+    { "id": "t0-01", "track": "T0", "order": 1, "title": "코드는 어떤 순서로 실행될까요" },
+    { "id": "t0-02", "track": "T0", "order": 2, "title": "값을 출력해 확인하기" },
+    { "id": "t0-03", "track": "T0", "order": 3, "title": "값에 이름 붙이기" },
+    { "id": "t0-04", "track": "T0", "order": 4, "title": "읽을 수 있는 이름 짓기" },
+    { "id": "t0-05", "track": "T0", "order": 5, "title": "오류 메시지에서 멈춘 자리 찾기" },
+    { "id": "t0-06", "track": "T0", "order": 6, "title": "입력을 받아 결과 반환하기" },
+    { "id": "t1-01", "track": "T1", "order": 1, "title": "JavaScript 값의 종류 한눈에 보기" },
+    { "id": "t1-02", "track": "T1", "order": 2, "title": "문자열로 글자 다루기" },
+    { "id": "t1-03", "track": "T1", "order": 3, "title": "숫자와 특별한 숫자 결과 이해하기" },
+    { "id": "t1-04", "track": "T1", "order": 4, "title": "참과 거짓으로 상태 나타내기" },
+    { "id": "t1-05", "track": "T1", "order": 5, "title": "undefined와 null 구분하기" },
+    { "id": "t1-06", "track": "T1", "order": 6, "title": "Symbol과 BigInt는 언제 쓸까요" },
+    { "id": "t1-07", "track": "T1", "order": 7, "title": "변수에 다른 종류의 값 넣기" },
+    { "id": "t1-08", "track": "T1", "order": 8, "title": "원하는 자료형으로 직접 바꾸기" },
+    { "id": "t1-09", "track": "T1", "order": 9, "title": "JavaScript가 자동으로 자료형을 바꿀 때" },
+    { "id": "t1-10", "track": "T1", "order": 10, "title": "계산하고 변수에 다시 저장하기" },
+    { "id": "t1-11", "track": "T1", "order": 11, "title": "두 값을 비교하기" },
+    { "id": "t1-12", "track": "T1", "order": 12, "title": "==와 === 구분하기" },
+    { "id": "t1-13", "track": "T1", "order": 13, "title": "여러 조건을 함께 확인하기" },
+    { "id": "t1-14", "track": "T1", "order": 14, "title": "truthy와 falsy 이해하기" },
+    { "id": "t1-15", "track": "T1", "order": 15, "title": "필요한 값만 골라서 사용하기" },
+    { "id": "t2-01", "track": "T2", "order": 1, "title": "if로 조건에 맞는 코드만 실행하기" },
+    { "id": "t2-02", "track": "T2", "order": 2, "title": "else if와 else로 여러 경우 나누기" },
+    { "id": "t2-03", "track": "T2", "order": 3, "title": "switch로 정해진 값별 코드 고르기" },
+    { "id": "t2-04", "track": "T2", "order": 4, "title": "삼항 조건 연산자로 값 하나 고르기" },
+    { "id": "t2-05", "track": "T2", "order": 5, "title": "for로 같은 코드를 반복하기" },
+    { "id": "t2-06", "track": "T2", "order": 6, "title": "break와 continue로 반복 제어하기" },
+    { "id": "t2-07", "track": "T2", "order": 7, "title": "반복되는 코드에 함수로 이름 붙이기" },
+    { "id": "t2-08", "track": "T2", "order": 8, "title": "함수를 선언하고 필요한 때 호출하기" },
+    { "id": "t2-09", "track": "T2", "order": 9, "title": "매개변수로 호출할 때마다 다른 값 받기" },
+    { "id": "t2-10", "track": "T2", "order": 10, "title": "return으로 함수의 결과 돌려주기" },
+    { "id": "t2-11", "track": "T2", "order": 11, "title": "함수를 값으로 변수에 담기" },
+    { "id": "t2-12", "track": "T2", "order": 12, "title": "콜백 함수 전달하고 호출하기" },
+    { "id": "t2-13", "track": "T2", "order": 13, "title": "화살표 함수의 생략 규칙 읽기" },
+    { "id": "t2-14", "track": "T2", "order": 14, "title": "중첩 함수가 바깥 값을 기억하는 이유" },
+    { "id": "t2-15", "track": "T2", "order": 15, "title": "변수를 사용할 수 있는 범위 이해하기" },
+    { "id": "t2-16", "track": "T2", "order": 16, "title": "선언 전에 사용할 수 있는 이름 구분하기" },
+    { "id": "t3-01", "track": "T3", "order": 1, "title": "객체로 관련 있는 값 묶기" },
+    { "id": "t3-02", "track": "T3", "order": 2, "title": "객체의 프로퍼티 읽고 바꾸기" },
+    { "id": "t3-03", "track": "T3", "order": 3, "title": "메서드와 this로 객체 자신의 값 사용하기" },
+    { "id": "t3-04", "track": "T3", "order": 4, "title": "배열로 값의 순서 저장하기" },
+    { "id": "t3-05", "track": "T3", "order": 5, "title": "원시값을 복사하면 서로 영향을 주지 않습니다" },
+    { "id": "t3-06", "track": "T3", "order": 6, "title": "객체를 할당하면 같은 객체를 가리킵니다" },
+    { "id": "t3-07", "track": "T3", "order": 7, "title": "전개 연산자로 새 객체 만들기" },
+    { "id": "t3-08", "track": "T3", "order": 8, "title": "구조 분해로 필요한 값 꺼내기" },
+    { "id": "t3-09", "track": "T3", "order": 9, "title": "rest와 spread 구분하기" },
+    { "id": "t3-10", "track": "T3", "order": 10, "title": "배열의 앞뒤에 값 추가하고 삭제하기" },
+    { "id": "t3-11", "track": "T3", "order": 11, "title": "forEach로 배열의 모든 값 사용하기" },
+    { "id": "t3-12", "track": "T3", "order": 12, "title": "map으로 같은 길이의 새 배열 만들기" },
+    { "id": "t3-13", "track": "T3", "order": 13, "title": "find와 findIndex로 원하는 값 찾기" },
+    { "id": "t3-14", "track": "T3", "order": 14, "title": "filter로 조건에 맞는 값만 남기기" },
+    { "id": "t3-15", "track": "T3", "order": 15, "title": "reduce로 배열을 값 하나로 합치기" },
+    { "id": "t3-16", "track": "T3", "order": 16, "title": "sort로 정렬할 때 원본 지키기" },
+    { "id": "t3-17", "track": "T3", "order": 17, "title": "Date 객체로 날짜와 시간 다루기" },
+    { "id": "t3-18", "track": "T3", "order": 18, "title": "export와 import로 파일 나누기" },
+    { "id": "t4-01", "track": "T4", "order": 1, "title": "DOM에서 HTML 요소 찾기" },
+    { "id": "t4-02", "track": "T4", "order": 2, "title": "요소의 글자·클래스·속성 바꾸기" },
+    { "id": "t4-03", "track": "T4", "order": 3, "title": "새 HTML 요소 만들어 추가하기" },
+    { "id": "t4-04", "track": "T4", "order": 4, "title": "이벤트가 발생했을 때 함수 실행하기" },
+    { "id": "t4-05", "track": "T4", "order": 5, "title": "이벤트 객체에서 발생한 요소 확인하기" },
+    { "id": "t4-06", "track": "T4", "order": 6, "title": "부모 요소에서 여러 자식의 이벤트 처리하기" },
+    { "id": "t4-07", "track": "T4", "order": 7, "title": "input과 change 이벤트로 입력값 읽기" },
+    { "id": "t4-08", "track": "T4", "order": 8, "title": "폼 제출을 JavaScript로 처리하기" },
+    { "id": "t4-09", "track": "T4", "order": 9, "title": "동기 코드와 비동기 코드의 실행 순서" },
+    { "id": "t4-10", "track": "T4", "order": 10, "title": "Promise의 세 가지 상태 이해하기" },
+    { "id": "t4-11", "track": "T4", "order": 11, "title": "then·catch·finally로 Promise 결과 사용하기" },
+    { "id": "t4-12", "track": "T4", "order": 12, "title": "async와 await로 Promise 기다리기" },
+    { "id": "t4-13", "track": "T4", "order": 13, "title": "throw와 try/catch로 오류 처리하기" },
+    { "id": "t4-14", "track": "T4", "order": 14, "title": "fetch로 JSON 응답 받아 사용하기" },
+    { "id": "t4-15", "track": "T4", "order": 15, "title": "여러 Promise를 함께 기다리기" },
+    { "id": "t4-16", "track": "T4", "order": 16, "title": "Web Storage에 브라우저 데이터 저장하기" },
+    { "id": "t5-01", "track": "T5", "order": 1, "title": "React가 화면을 만드는 방식 이해하기" },
+    { "id": "t5-02", "track": "T5", "order": 2, "title": "root를 만들고 React 화면 렌더링하기" },
+    { "id": "t5-03", "track": "T5", "order": 3, "title": "JSX를 JavaScript 값으로 다루기" },
+    { "id": "t5-04", "track": "T5", "order": 4, "title": "JSX를 하나의 부모로 묶기" },
+    { "id": "t5-05", "track": "T5", "order": 5, "title": "JSX에서 className과 htmlFor 사용하기" },
+    { "id": "t5-06", "track": "T5", "order": 6, "title": "JSX 중괄호 안에 JavaScript 값 넣기" },
+    { "id": "t5-07", "track": "T5", "order": 7, "title": "조건에 따라 다른 JSX 보여 주기" },
+    { "id": "t5-08", "track": "T5", "order": 8, "title": "className과 style 객체로 JSX 꾸미기" },
+    { "id": "t5-09", "track": "T5", "order": 9, "title": "함수 컴포넌트로 화면 조각 만들기" },
+    { "id": "t5-10", "track": "T5", "order": 10, "title": "부모와 자식 컴포넌트로 화면 나누기" },
+    { "id": "t5-11", "track": "T5", "order": 11, "title": "props로 부모의 값을 자식에게 전달하기" },
+    { "id": "t5-12", "track": "T5", "order": 12, "title": "객체·함수·JSX를 props로 전달하기" },
+    { "id": "t5-13", "track": "T5", "order": 13, "title": "children으로 감싼 JSX 전달하기" },
+    { "id": "t5-14", "track": "T5", "order": 14, "title": "React 이벤트에 실행할 함수 전달하기" },
+    { "id": "t5-15", "track": "T5", "order": 15, "title": "React 이벤트 객체에서 입력값 읽기" },
+    { "id": "t5-16", "track": "T5", "order": 16, "title": "배열을 JSX 목록으로 렌더링하기" },
+    { "id": "t6-01", "track": "T6", "order": 1, "title": "일반 변수를 바꿔도 화면이 그대로인 이유" },
+    { "id": "t6-02", "track": "T6", "order": 2, "title": "useState로 값을 기억하고 화면 갱신하기" },
+    { "id": "t6-03", "track": "T6", "order": 3, "title": "렌더마다 고정된 state 스냅샷 이해하기" },
+    { "id": "t6-04", "track": "T6", "order": 4, "title": "이전 state로 안전하게 다음 값 계산하기" },
+    { "id": "t6-05", "track": "T6", "order": 5, "title": "훅을 컴포넌트 최상위에서 호출하기" },
+    { "id": "t6-06", "track": "T6", "order": 6, "title": "이벤트에서 state를 바꾸고 다시 렌더링하기" },
+    { "id": "t6-07", "track": "T6", "order": 7, "title": "제어 컴포넌트로 입력값과 state 연결하기" },
+    { "id": "t6-08", "track": "T6", "order": 8, "title": "객체 state로 여러 입력값 관리하기" },
+    { "id": "t6-09", "track": "T6", "order": 9, "title": "객체 state를 새 객체로 갱신하기" },
+    { "id": "t6-10", "track": "T6", "order": 10, "title": "배열 state를 새 배열로 갱신하기" },
+    { "id": "t6-11", "track": "T6", "order": 11, "title": "props와 state의 소유권 구분하기" },
+    { "id": "t6-12", "track": "T6", "order": 12, "title": "공유할 state를 공통 부모로 올리기" },
+    { "id": "t6-13", "track": "T6", "order": 13, "title": "state에서 바로 계산할 수 있는 값 구분하기" },
+    { "id": "t6-14", "track": "T6", "order": 14, "title": "로딩·오류·빈 화면·내용 상태 나누기" },
+    { "id": "t6-15", "track": "T6", "order": 15, "title": "useRef로 DOM 요소와 렌더와 무관한 값 기억하기" },
+    { "id": "t7-01", "track": "T7", "order": 1, "title": "컴포넌트의 마운트·업데이트·언마운트 구분하기" },
+    { "id": "t7-02", "track": "T7", "order": 2, "title": "렌더링과 외부 시스템 동기화 구분하기" },
+    { "id": "t7-03", "track": "T7", "order": 3, "title": "useEffect로 렌더 뒤 코드 실행하기" },
+    { "id": "t7-04", "track": "T7", "order": 4, "title": "의존성 배열로 effect 실행 시점 정하기" },
+    { "id": "t7-05", "track": "T7", "order": 5, "title": "effect가 사용하는 여러 값을 의존성에 넣기" },
+    { "id": "t7-06", "track": "T7", "order": 6, "title": "정리 함수로 이전 effect 끝내기" },
+    { "id": "t7-07", "track": "T7", "order": 7, "title": "마운트 때 구독하고 언마운트 때 해제하기" },
+    { "id": "t7-08", "track": "T7", "order": 8, "title": "effect 없이 계산할 수 있는 값 찾기" },
+    { "id": "t7-09", "track": "T7", "order": 9, "title": "effect에서 데이터를 불러와 화면 상태 바꾸기" },
+    { "id": "t7-10", "track": "T7", "order": 10, "title": "늦게 끝난 이전 요청 결과 무시하기" },
+    { "id": "t7-11", "track": "T7", "order": 11, "title": "커스텀 훅으로 state와 effect 재사용하기" },
+    { "id": "t8-01", "track": "T8", "order": 1, "title": "여러 state 변경 규칙이 흩어질 때의 문제" },
+    { "id": "t8-02", "track": "T8", "order": 2, "title": "reducer 함수로 다음 state 계산하기" },
+    { "id": "t8-03", "track": "T8", "order": 3, "title": "useReducer와 dispatch로 action 보내기" },
+    { "id": "t8-04", "track": "T8", "order": 4, "title": "action의 type과 payload 설계하기" },
+    { "id": "t8-05", "track": "T8", "order": 5, "title": "useState와 useReducer 중 알맞은 도구 고르기" },
+    { "id": "t8-06", "track": "T8", "order": 6, "title": "props drilling이 생기는 구조 확인하기" },
+    { "id": "t8-07", "track": "T8", "order": 7, "title": "Context로 깊은 자식에게 값 공급하기" },
+    { "id": "t8-08", "track": "T8", "order": 8, "title": "Context로 state와 변경 함수 함께 공급하기" },
+    { "id": "t8-09", "track": "T8", "order": 9, "title": "Context를 값과 변경 함수로 나누기" },
+    { "id": "t8-10", "track": "T8", "order": 10, "title": "reducer와 Context를 함께 사용할 때 판단하기" },
+    { "id": "t9-01", "track": "T9", "order": 1, "title": "컴포넌트가 다시 렌더링되는 이유 찾기" },
+    { "id": "t9-02", "track": "T9", "order": 2, "title": "최적화 전에 느린 계산 측정하기" },
+    { "id": "t9-03", "track": "T9", "order": 3, "title": "useMemo로 계산 결과 재사용하기" },
+    { "id": "t9-04", "track": "T9", "order": 4, "title": "React.memo로 같은 props의 자식 렌더 건너뛰기" },
+    { "id": "t9-05", "track": "T9", "order": 5, "title": "렌더마다 새로 만들어지는 함수 참조 이해하기" },
+    { "id": "t9-06", "track": "T9", "order": 6, "title": "useCallback으로 함수 참조 재사용하기" },
+    { "id": "t9-07", "track": "T9", "order": 7, "title": "메모이제이션의 비용과 사용하지 않을 때 판단하기" },
+    { "id": "t9-08", "track": "T9", "order": 8, "title": "React state를 localStorage에 저장하기" },
+    { "id": "t9-09", "track": "T9", "order": 9, "title": "useState 초기화 함수로 저장된 값 복원하기" },
+    { "id": "t9-10", "track": "T9", "order": 10, "title": "effect로 state와 localStorage 동기화하기" }
   ]
 }

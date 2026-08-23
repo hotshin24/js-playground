@@ -3,166 +3,38 @@
   "id": "t2-04",
   "track": "T2",
   "order": 4,
-  "title": "클릭에 반응하기",
+  "runtime": "js",
+  "title": "삼항 조건 연산자로 값 하나 고르기",
   "steps": [
     {
       "kind": "read",
-      "title": "맡겨 두고 물러나기",
+      "title": "조건에 따라 두 값 중 하나를 만듭니다",
       "brief": [
-        "여기까지 코드는 한 번 실행되고 끝났습니다. 요소를 찾고, 글자나 클래스를 바꾸고, 그것으로 끝이었습니다. 화면은 코드가 실행되는 그 순간에 한 번 정해졌습니다.",
-        "이벤트는 다릅니다. '지금 이렇게 바꿔라'가 아니라 '나중에 이런 일이 생기면 이걸 해라'를 등록해 두고 코드는 물러납니다. 등록하는 시점과 실행되는 시점이 갈라집니다. 등록은 즉시 끝나고, 실행은 사용자가 버튼을 누를 때 일어납니다.",
-        "비동기 레슨에서 setTimeout 에 함수를 맡기고 다음 줄로 넘어갔던 것과 같은 구조입니다. 그때는 '얼마 뒤에' 불러 달라고 맡겼고, 여기서는 '이 버튼이 눌리면' 불러 달라고 맡깁니다. 부르는 쪽이 내가 아니라 브라우저라는 점도 같습니다. 붙잡은 요소에 addEventListener('click', 맡길함수) 라고 씁니다."
+        "삼항 조건 연산자는 조건에 따라 두 값 중 하나를 고릅니다.",
+        { "code": ["const result = age >= 18 ? '성인' : '미성년자';"] },
+        "? 앞에는 조건, ? 뒤에는 조건이 true일 때의 값, : 뒤에는 false일 때의 값을 씁니다.",
+        "삼항 조건 연산자 전체가 값 하나를 만들기 때문에 변수에 바로 할당하거나 함수에서 반환할 수 있습니다.",
+        "여러 작업을 실행하거나 조건이 복잡하다면 if가 읽기 쉽습니다. 간단한 조건으로 값 하나를 고를 때 삼항 연산자가 알맞습니다."
       ]
     },
     {
       "kind": "run",
-      "title": "등록과 실행을 갈라 보기",
+      "title": "배송비 값 고르기",
       "brief": [
-        "아래는 담기 버튼에 함수를 맡기기만 합니다. 누르는 것은 코드가 하지 않습니다.",
-        "실행 버튼을 눌러 보세요. 콘솔에 '등록만 했습니다: 0개 담김' 한 줄만 찍히고 화면은 그대로입니다. 맡기는 것만으로는 아무 일도 일어나지 않습니다.",
-        "이제 미리보기에서 셔츠 카드의 담기 버튼을 눌러 보세요. 그제야 글자가 바뀌고 콘솔에 한 줄이 더 찍힙니다. 등록은 실행할 때, 실행은 누를 때 일어납니다."
+        "price가 30000 이상이므로 shippingFee에는 0이 들어갑니다.",
+        "if와 달리 중괄호 안의 명령을 고르는 것이 아니라 0과 3000이라는 값 중 하나를 고릅니다."
       ],
-      "scaffold": {
-        "html": [
-          "<p id=\"picked\">0개 담김</p>",
-          "",
-          "<ul class=\"cards\">",
-          "  <li class=\"card\"><h3 class=\"card__title\">셔츠</h3><button class=\"card__pick\">담기</button></li>",
-          "  <li class=\"card\"><h3 class=\"card__title\">모자</h3><button class=\"card__pick\">담기</button></li>",
-          "  <li class=\"card\"><h3 class=\"card__title\">양말</h3><button class=\"card__pick\">담기</button></li>",
-          "</ul>"
-        ],
-        "css": [
-          ".card { padding: 4px 0; }"
-        ]
-      },
-      "code": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nconsole.log('등록만 했습니다:', picked.textContent);\n\nbutton.addEventListener('click', () => {\n  picked.textContent = '1개 담김';\n  console.log('맡긴 함수가 불렸습니다');\n});\n"
+      "code": "const price = 39000;\nconst shippingFee = price >= 30000 ? 0 : 3000;\n\nconsole.log(shippingFee);\nconsole.log('배송비: ' + shippingFee + '원');\n"
     },
     {
       "kind": "tweak",
-      "title": "눌러 보며 확인하기",
+      "title": "조건과 두 결과 확인하기",
       "brief": [
-        "먼저 실행한 뒤 셔츠 카드의 담기 버튼을 여러 번 눌러 보세요. 콘솔에 누른 횟수만큼 찍힙니다. 등록은 한 번인데 실행은 여러 번입니다.",
-        "이번에는 모자 카드의 담기 버튼을 눌러 보세요. 아무 일도 일어나지 않습니다. querySelector 는 조건에 맞는 첫 하나만 붙잡으므로 나머지 두 버튼에는 맡겨 둔 것이 없습니다.",
-        "addEventListener 덩어리를 통째로 지우고 다시 실행한 뒤 눌러 보세요. 셔츠 버튼도 반응하지 않습니다. 맡긴 것이 없으면 브라우저가 부를 것도 없습니다."
+        "price를 29000으로 바꾸면 조건이 false가 되어 shippingFee에 3000이 들어갑니다.",
+        "? 뒤의 0과 : 뒤의 3000을 서로 바꾸면 조건의 뜻과 결과가 맞지 않게 됩니다. 코드를 읽을 때 세 부분을 나눠 확인하세요.",
+        "삼항 연산자를 여러 번 겹치면 읽기 어려워집니다. 경우가 셋 이상이라면 if 또는 switch를 먼저 고려하세요."
       ],
-      "scaffold": {
-        "html": [
-          "<p id=\"picked\">0개 담김</p>",
-          "",
-          "<ul class=\"cards\">",
-          "  <li class=\"card\"><h3 class=\"card__title\">셔츠</h3><button class=\"card__pick\">담기</button></li>",
-          "  <li class=\"card\"><h3 class=\"card__title\">모자</h3><button class=\"card__pick\">담기</button></li>",
-          "  <li class=\"card\"><h3 class=\"card__title\">양말</h3><button class=\"card__pick\">담기</button></li>",
-          "</ul>"
-        ],
-        "css": [
-          ".card { padding: 4px 0; }"
-        ]
-      },
-      "code": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nconsole.log('등록만 했습니다:', picked.textContent);\n\nbutton.addEventListener('click', () => {\n  picked.textContent = '1개 담김';\n  console.log('맡긴 함수가 불렸습니다');\n});\n"
-    },
-    {
-      "kind": "fill",
-      "title": "맡길 일 채우기",
-      "brief": [
-        "버튼에 함수를 맡기는 것까지는 돼 있고, 그 안에서 넣을 글자가 비어 있습니다.",
-        "null 자리에 '1개 담김' 을 넣어 보세요. 이 줄은 등록할 때가 아니라 클릭이 일어난 뒤에 실행됩니다.",
-        "검사가 셔츠 카드의 담기 버튼을 대신 눌러 확인합니다. 미리보기에서 직접 눌러 봐도 됩니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<p id=\"picked\">0개 담김</p>",
-          "",
-          "<ul class=\"cards\">",
-          "  <li class=\"card\"><h3 class=\"card__title\">셔츠</h3><button class=\"card__pick\">담기</button></li>",
-          "  <li class=\"card\"><h3 class=\"card__title\">모자</h3><button class=\"card__pick\">담기</button></li>",
-          "  <li class=\"card\"><h3 class=\"card__title\">양말</h3><button class=\"card__pick\">담기</button></li>",
-          "</ul>"
-        ],
-        "css": [
-          ".card { padding: 4px 0; }"
-        ]
-      },
-      "code": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nbutton.addEventListener('click', () => {\n  picked.textContent = null; // ← 여기를 채우세요\n});\n",
-      "solutionCode": "const button = document.querySelector('.card__pick');\nconst picked = document.querySelector('#picked');\n\nbutton.addEventListener('click', () => {\n  picked.textContent = '1개 담김';\n});\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "클릭 뒤 담긴 개수가 표시됩니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".card__pick"
-            }
-          ],
-          "select": "#picked",
-          "text": [
-            "1개 담김"
-          ]
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "담을 때마다 세기",
-      "brief": [
-        "카드마다 담기 버튼이 있습니다. 어느 버튼을 누르든 담긴 개수가 1 씩 늘어나고, 그 수가 위쪽 줄에 '2개 담김' 형태로 보이게 해 주세요.",
-        "버튼이 셋이므로 셋 모두에 맡겨야 합니다. 개수는 클릭 사이에도 남아 있어야 하니 맡긴 함수 바깥에 두어야 합니다.",
-        "코드로 클릭을 일으키지 마세요. 검사가 세 카드를 차례로 눌러 확인합니다. 미리보기에서 직접 눌러 봐도 됩니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<p id=\"picked\">0개 담김</p>",
-          "",
-          "<ul class=\"cards\">",
-          "  <li class=\"card\"><h3 class=\"card__title\">셔츠</h3><button class=\"card__pick\">담기</button></li>",
-          "  <li class=\"card\"><h3 class=\"card__title\">모자</h3><button class=\"card__pick\">담기</button></li>",
-          "  <li class=\"card\"><h3 class=\"card__title\">양말</h3><button class=\"card__pick\">담기</button></li>",
-          "</ul>"
-        ],
-        "css": [
-          ".card { padding: 4px 0; }"
-        ]
-      },
-      "code": "// 여기를 채우세요\n",
-      "solutionCode": "const picked = document.querySelector('#picked');\n\nlet count = 0;\n\nfor (const button of document.querySelectorAll('.card__pick')) {\n  button.addEventListener('click', () => {\n    count = count + 1;\n    picked.textContent = `${count}개 담김`;\n  });\n}\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "하나 담으면 1개 담김",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".card:nth-child(1) .card__pick"
-            }
-          ],
-          "select": "#picked",
-          "text": [
-            "1개 담김"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "다른 카드를 담으면 2개 담김 — 앞의 수가 남아 있어야 합니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".card:nth-child(2) .card__pick"
-            }
-          ],
-          "select": "#picked",
-          "text": [
-            "2개 담김"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "버튼은 그대로 세 개입니다",
-          "select": ".card__pick",
-          "count": 3
-        }
-      ]
+      "code": "const price = 39000;\nconst shippingFee = price >= 30000 ? 0 : 3000;\n\nconsole.log(shippingFee);\nconsole.log('배송비: ' + shippingFee + '원');\n"
     }
   ]
 }

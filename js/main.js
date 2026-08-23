@@ -14,14 +14,8 @@ import { loadIndex } from './lessons.js';
 import { checkBuild } from './build-info.js';
 import { policyOf, labelOf } from './steps.js';
 import { readLastPosition } from './storage.js';
-import { isV2Preview } from './curriculum.js';
 
 const el = (id) => document.querySelector('#' + id);
-
-if (isV2Preview) {
-  el('curriculum-preview').hidden = false;
-  document.title = '새 커리큘럼 미리보기 · JS·React 학습 플레이그라운드';
-}
 
 const theme = createTheme({ button: el('theme-toggle'), labelEl: el('theme-toggle-label') });
 const runButton = el('run');

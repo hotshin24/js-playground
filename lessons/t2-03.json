@@ -3,100 +3,38 @@
   "id": "t2-03",
   "track": "T2",
   "order": 3,
-  "title": "속성 읽고 쓰기",
+  "runtime": "js",
+  "title": "switch로 정해진 값별 코드 고르기",
   "steps": [
     {
       "kind": "read",
-      "title": "태그에 적어 둔 값 다루기",
+      "title": "하나의 값을 여러 case와 비교합니다",
       "brief": [
-        "태그에는 클래스 말고도 여러 값이 붙습니다. 이미지의 src 와 alt, 링크의 href 같은 것들입니다. 마크업에 직접 적어 두는 그 값들을 속성(attribute)이라고 합니다.",
-        "속성도 코드로 읽고 쓸 수 있습니다. 붙잡은 요소에 getAttribute('alt') 로 지금 값을 읽고, setAttribute('alt', '셔츠') 로 새 값을 넣습니다. 없는 속성을 읽으면 null 이 나옵니다.",
-        "클래스만 classList 라는 전용 통로를 씁니다. 클래스는 여러 개를 붙였다 뗐다 하는 일이 잦아서 그렇습니다. 나머지 속성은 값이 하나뿐이라 읽고 쓰는 두 가지로 충분합니다."
+        "switch는 하나의 값을 여러 정해진 값과 비교할 때 사용합니다. 각 비교값은 case 뒤에 씁니다.",
+        { "code": ["switch (grade) {", "  case 'A':", "    console.log('우수');", "    break;", "  default:", "    console.log('일반');", "}"] },
+        "grade와 같은 case를 만나면 그 아래 코드를 실행합니다. break는 switch 실행을 끝냅니다.",
+        "맞는 case가 없으면 default가 실행됩니다. default는 if문의 마지막 else와 비슷한 역할을 합니다.",
+        "switch는 ===처럼 값과 자료형이 같은지 비교합니다. 숫자 1과 문자열 '1'은 서로 다른 case입니다."
       ]
     },
     {
-      "kind": "fill",
-      "title": "대체 텍스트 채우기",
+      "kind": "run",
+      "title": "배송 상태에 맞는 메시지 고르기",
       "brief": [
-        "첫 카드의 이미지에 alt 가 비어 있습니다. 화면을 못 보는 사용자에게 이 이미지가 무엇인지 알려 줄 글자가 필요합니다.",
-        "null 자리에 넣을 글자를 채워 보세요. 카드 제목과 같은 '셔츠' 입니다.",
-        "채우지 않고 실행하면 alt 가 'null' 이라는 글자가 되어 검사가 실패합니다."
+        "status는 'shipping'이므로 둘째 case가 선택되고 배송 중이 출력됩니다.",
+        "break를 만나면 switch를 빠져나가므로 아래 case는 실행되지 않습니다."
       ],
-      "scaffold": {
-        "html": [
-          "<ul class=\"cards\">",
-          "  <li class=\"card\">",
-          "    <a class=\"card__link\" href=\"/product/shirt\"><img class=\"card__image\" src=\"shirt.png\" alt=\"\"></a>",
-          "    <h3 class=\"card__title\">셔츠</h3>",
-          "  </li>",
-          "  <li class=\"card\">",
-          "    <a class=\"card__link\" href=\"/product/cap\"><img class=\"card__image\" src=\"cap.png\" alt=\"\"></a>",
-          "    <h3 class=\"card__title\">모자</h3>",
-          "  </li>",
-          "</ul>"
-        ],
-        "css": [
-          ".card__image { width: 40px; height: 40px; }"
-        ]
-      },
-      "code": "const image = document.querySelector('.card__image');\n\nconst altText = null; // ← 여기를 채우세요\n\nimage.setAttribute('alt', altText);\n",
-      "solutionCode": "const image = document.querySelector('.card__image');\n\nconst altText = '셔츠';\n\nimage.setAttribute('alt', altText);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "셔츠 이미지에 대체 텍스트가 붙습니다",
-          "select": "img[alt=\"셔츠\"]",
-          "count": 1
-        }
-      ]
+      "code": "const status = 'shipping';\n\nswitch (status) {\n  case 'ready':\n    console.log('상품 준비 중');\n    break;\n  case 'shipping':\n    console.log('배송 중');\n    break;\n  case 'done':\n    console.log('배송 완료');\n    break;\n  default:\n    console.log('알 수 없는 상태');\n}\n"
     },
     {
-      "kind": "write",
-      "title": "모든 이미지에 대체 텍스트 넣기",
+      "kind": "tweak",
+      "title": "break가 없을 때 확인하기",
       "brief": [
-        "카드마다 이미지의 alt 를 그 카드의 제목으로 채워 주세요. 제목은 카드 안 .card__title 에 있습니다.",
-        "카드가 몇 개인지 세지 말고, 카드를 전부 훑으면서 각 카드 안에서 이미지와 제목을 찾아 짝지어 주세요.",
-        "비어 있는 alt 가 하나도 남지 않아야 합니다."
+        "shipping case의 break를 지우고 실행해 보세요. 배송 중 다음에 배송 완료까지 출력됩니다.",
+        "case가 선택된 뒤에는 다음 case의 비교를 다시 하지 않고 break를 만날 때까지 계속 실행하기 때문입니다.",
+        "일부러 여러 case를 함께 처리하는 경우가 아니라면 각 case 끝에 break가 있는지 확인하세요."
       ],
-      "scaffold": {
-        "html": [
-          "<ul class=\"cards\">",
-          "  <li class=\"card\">",
-          "    <a class=\"card__link\" href=\"/product/shirt\"><img class=\"card__image\" src=\"shirt.png\" alt=\"\"></a>",
-          "    <h3 class=\"card__title\">셔츠</h3>",
-          "  </li>",
-          "  <li class=\"card\">",
-          "    <a class=\"card__link\" href=\"/product/cap\"><img class=\"card__image\" src=\"cap.png\" alt=\"\"></a>",
-          "    <h3 class=\"card__title\">모자</h3>",
-          "  </li>",
-          "</ul>"
-        ],
-        "css": [
-          ".card__image { width: 40px; height: 40px; }"
-        ]
-      },
-      "code": "// 여기를 채우세요\n",
-      "solutionCode": "for (const card of document.querySelectorAll('.card')) {\n  const title = card.querySelector('.card__title').textContent;\n\n  card.querySelector('.card__image').setAttribute('alt', title);\n}\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "셔츠 이미지에 제목이 들어갑니다",
-          "select": "img[alt=\"셔츠\"]",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "모자 이미지에도 들어갑니다",
-          "select": "img[alt=\"모자\"]",
-          "count": 1
-        },
-        {
-          "type": "dom",
-          "label": "비어 있는 대체 텍스트가 남지 않습니다",
-          "select": "img[alt=\"\"]",
-          "count": 0
-        }
-      ]
+      "code": "const status = 'shipping';\n\nswitch (status) {\n  case 'ready':\n    console.log('상품 준비 중');\n    break;\n  case 'shipping':\n    console.log('배송 중');\n    break;\n  case 'done':\n    console.log('배송 완료');\n    break;\n  default:\n    console.log('알 수 없는 상태');\n}\n"
     }
   ]
 }

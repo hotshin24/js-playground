@@ -1,356 +1,40 @@
 {
-  "schemaVersion": 2,
-  "id": "t6-07",
-  "track": "T6",
-  "order": 7,
-  "runtime": "react",
-  "title": "폼 만들기",
+  "schemaVersion": 2, "id": "t6-07", "track": "T6", "order": 7, "runtime": "react",
+  "title": "제어 컴포넌트로 입력값과 state 연결하기",
   "steps": [
     {
-      "kind": "read",
-      "title": "칸이 늘어날 때",
+      "kind": "read", "title": "value는 state에서 받고 onChange로 state를 바꿉니다",
       "brief": [
-        "t4-08 에서 입력창 하나를 상태로 잡았고 t4-09 에서 체크박스와 셀렉트를 다뤘습니다. 둘 다 칸 하나씩이었습니다. 실제 폼은 칸이 여럿입니다.",
-        "칸마다 useState 를 하나씩 두면 어떻게 될까요. 칸이 넷이면 상태가 넷이고 핸들러도 넷입니다. 칸이 하나 늘 때마다 두 줄이 늘고, 폼 전체를 초기화하려면 넷을 각각 되돌려야 합니다. 서버로 보낼 때도 넷을 다시 모아야 합니다.",
-        "그래서 폼의 값들은 객체 하나에 담습니다. { title: '', hours: '0', level: '입문', open: false } 처럼 한 덩어리로 둡니다. 함께 움직이고 함께 쓰이는 값들이기 때문입니다. t4-17 에서 세운 기준 그대로입니다.",
-        "객체 상태를 바꾸는 법은 t4-06 에서 배웠습니다. 원래 객체를 고치지 않고 새 객체를 만들어 넣습니다. 펼쳐 담고 바꿀 것만 덮어씁니다. setForm({ ...form, title: '새 제목' }) 입니다.",
-        "핸들러도 하나면 됩니다. 어느 칸에서 온 변화인지는 이벤트가 알고 있습니다. 마크업의 name 속성이 그 통로입니다. e.target.name 이 'title' 이면 title 을 바꾸면 됩니다.",
-        "키를 값으로 정하는 문법이 필요합니다. { [name]: value } 처럼 대괄호를 씌우면 name 에 담긴 글자가 키가 됩니다. 대괄호가 없으면 'name' 이라는 이름의 키가 만들어집니다.",
-        "체크박스만 다릅니다. t4-09 에서 봤듯 체크박스가 알려 주는 것은 value 가 아니라 checked 입니다. 그래서 type 을 보고 갈라 담습니다.",
-        "언제나 객체 하나가 옳은 것은 아닙니다. 서로 아무 상관 없는 값이라면 나눠 두는 편이 읽기 좋습니다. 기준은 함께 움직이는가입니다.",
-        "이 레슨은 값을 담는 데까지만 합니다. 제출은 다음 레슨입니다."
+        "입력 요소의 value를 React state로 정하고, 사용자가 입력할 때 onChange에서 state를 갱신하는 방식을 제어 컴포넌트라고 합니다.",
+        { "code": ["<input", "  value={name}", "  onChange={(event) => setName(event.currentTarget.value)}", "/>" ] },
+        "화면의 입력값은 name state가 결정합니다. 사용자가 입력하면 onChange가 새 문자열을 받아 setName에 전달합니다.",
+        "설정 뒤 다시 렌더링되면 input의 value가 새 name과 맞춰집니다. 따라서 state가 입력값의 기준이 됩니다.",
+        "value만 주고 onChange를 주지 않으면 사용자가 입력해도 state를 바꿀 방법이 없어 읽기 전용처럼 동작합니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "칸 넷을 객체 하나로",
-      "brief": [
-        "코스를 등록하는 폼입니다. 칸이 넷인데 상태는 하나이고 핸들러도 하나입니다.",
-        "실행해 보세요. 미리보기에서 각 칸을 바꿔 보면 아래 요약이 따라 바뀝니다.",
-        "change 를 보세요. e.target 에서 name 과 value 와 type 과 checked 를 꺼내 씁니다. 칸이 넷이어도 이 함수 하나가 다 받습니다.",
-        "마크업의 name 속성이 상태 객체의 키와 같아야 합니다. 그 둘이 맞아떨어져야 이 방식이 성립합니다."
-      ],
-      "env": [
-        "// 이 무대의 폼 장치입니다.",
-        "// 이 실행 틀은 폼 기본 제출이 막혀 있어 submit 이벤트가 아예 발생하지 않습니다.",
-        "// 그래서 무대가 대신 쏘아 줍니다. 기본 동작(페이지 새로고침)은 흉내 내지 않습니다.",
-        "(() => {",
-        "  const fire = (form) => {",
-        "    if (!form) return;",
-        "    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));",
-        "  };",
-        "",
-        "  document.addEventListener('click', (e) => {",
-        "    const btn = e.target && e.target.closest ? e.target.closest('button, input[type=\"submit\"]') : null;",
-        "    if (!btn) return;",
-        "    const type = (btn.getAttribute('type') || 'submit').toLowerCase();",
-        "    if (type !== 'submit') return;",
-        "    fire(btn.form);",
-        "  }, true);",
-        "",
-        "  document.addEventListener('keydown', (e) => {",
-        "    if (e.key !== 'Enter') return;",
-        "    const el = e.target;",
-        "    if (!el || el.tagName !== 'INPUT') return;",
-        "    const type = (el.getAttribute('type') || 'text').toLowerCase();",
-        "    if (['checkbox', 'radio', 'button', 'submit'].indexOf(type) >= 0) return;",
-        "    fire(el.form);",
-        "  }, true);",
-        "})();"
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".field { display: block; margin-bottom: 6px; }",
-          ".field__input { width: 180px; }",
-          ".preview, .result { margin: 8px 0 0; color: var(--c-text-muted); }",
-          ".err { margin: 2px 0 6px; color: var(--c-text-error); font-size: 0.875rem; }",
-          ".go { margin-top: 6px; }"
-        ]
-      },
-      "code": "const { useState } = React;\n\nfunction CourseForm() {\n  const [form, setForm] = useState({ title: '', hours: '0', level: '입문', open: false });\n\n  const change = (e) => {\n    const { name, value, type, checked } = e.target;\n    setForm({ ...form, [name]: type === 'checkbox' ? checked : value });\n  };\n\n  return (\n    <div>\n      <label className=\"field\" htmlFor=\"title\">제목</label>\n      <input className=\"field__input\" id=\"title\" name=\"title\" value={form.title} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"hours\">시간</label>\n      <input className=\"field__input\" id=\"hours\" name=\"hours\" type=\"number\" value={form.hours} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"level\">난이도</label>\n      <select className=\"field__input\" id=\"level\" name=\"level\" value={form.level} onChange={change}>\n        <option value=\"입문\">입문</option>\n        <option value=\"심화\">심화</option>\n      </select>\n\n      <label className=\"field\" htmlFor=\"open\">\n        <input id=\"open\" name=\"open\" type=\"checkbox\" checked={form.open} onChange={change} /> 공개\n      </label>\n\n      <p className=\"preview\">\n        {form.title === '' ? '제목 없음' : form.title} · {form.hours}시간 · {form.level} · {form.open ? '공개' : '비공개'}\n      </p>\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseForm />);\n"
+      "kind": "run", "title": "입력값과 미리보기 함께 갱신하기",
+      "brief": ["입력할 때마다 name state가 바뀌고 input과 미리보기가 같은 state를 사용해 함께 갱신됩니다.", "입력창을 직접 querySelector로 선택하거나 textContent를 바꾸지 않습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["label { display: grid; gap: 6px; max-width: 280px; }", "input { padding: 8px; }"] },
+      "code": "const { useState } = React;\n\nfunction NameForm() {\n  const [name, setName] = useState('');\n\n  return (\n    <section>\n      <label>\n        상품 이름\n        <input\n          value={name}\n          onChange={(event) => setName(event.currentTarget.value)}\n        />\n      </label>\n      <p>미리보기: {name || '이름을 입력하세요'}</p>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<NameForm />);\n"
     },
     {
-      "kind": "tweak",
-      "title": "펼치지 않으면 · 직접 고치면 · name 이 없으면",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 되돌리고 다시 실행해야 합니다.",
-        "① setForm({ ...form, [name]: ... }) 에서 ...form 을 지워 보세요. 제목을 한 글자 치는 순간 나머지 칸이 전부 사라집니다. 새 객체에 그 키 하나만 들어 있기 때문입니다. 미리보기에도 undefined 가 나옵니다. t4-06 에서 본 그대로입니다.",
-        "② 되돌린 뒤 form[name] = value; setForm(form); 두 줄로 바꿔 보세요. 이번에는 아무것도 바뀌지 않습니다. 같은 객체를 그대로 다시 넣었으므로 React 는 바뀐 것이 없다고 봅니다. 값은 실제로 바뀌었는데 화면만 모릅니다.",
-        "③ 되돌린 뒤 제목 input 의 name=\"title\" 을 지워 보세요. 제목을 쳐도 미리보기가 그대로입니다. name 이 빈 글자라 { '': '리' } 라는 엉뚱한 키가 만들어지고 title 은 건드려지지 않습니다."
-      ],
-      "env": [
-        "// 이 무대의 폼 장치입니다.",
-        "// 이 실행 틀은 폼 기본 제출이 막혀 있어 submit 이벤트가 아예 발생하지 않습니다.",
-        "// 그래서 무대가 대신 쏘아 줍니다. 기본 동작(페이지 새로고침)은 흉내 내지 않습니다.",
-        "(() => {",
-        "  const fire = (form) => {",
-        "    if (!form) return;",
-        "    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));",
-        "  };",
-        "",
-        "  document.addEventListener('click', (e) => {",
-        "    const btn = e.target && e.target.closest ? e.target.closest('button, input[type=\"submit\"]') : null;",
-        "    if (!btn) return;",
-        "    const type = (btn.getAttribute('type') || 'submit').toLowerCase();",
-        "    if (type !== 'submit') return;",
-        "    fire(btn.form);",
-        "  }, true);",
-        "",
-        "  document.addEventListener('keydown', (e) => {",
-        "    if (e.key !== 'Enter') return;",
-        "    const el = e.target;",
-        "    if (!el || el.tagName !== 'INPUT') return;",
-        "    const type = (el.getAttribute('type') || 'text').toLowerCase();",
-        "    if (['checkbox', 'radio', 'button', 'submit'].indexOf(type) >= 0) return;",
-        "    fire(el.form);",
-        "  }, true);",
-        "})();"
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".field { display: block; margin-bottom: 6px; }",
-          ".field__input { width: 180px; }",
-          ".preview, .result { margin: 8px 0 0; color: var(--c-text-muted); }",
-          ".err { margin: 2px 0 6px; color: var(--c-text-error); font-size: 0.875rem; }",
-          ".go { margin-top: 6px; }"
-        ]
-      },
-      "code": "const { useState } = React;\n\nfunction CourseForm() {\n  const [form, setForm] = useState({ title: '', hours: '0', level: '입문', open: false });\n\n  const change = (e) => {\n    const { name, value, type, checked } = e.target;\n    setForm({ ...form, [name]: type === 'checkbox' ? checked : value });\n  };\n\n  return (\n    <div>\n      <label className=\"field\" htmlFor=\"title\">제목</label>\n      <input className=\"field__input\" id=\"title\" name=\"title\" value={form.title} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"hours\">시간</label>\n      <input className=\"field__input\" id=\"hours\" name=\"hours\" type=\"number\" value={form.hours} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"level\">난이도</label>\n      <select className=\"field__input\" id=\"level\" name=\"level\" value={form.level} onChange={change}>\n        <option value=\"입문\">입문</option>\n        <option value=\"심화\">심화</option>\n      </select>\n\n      <label className=\"field\" htmlFor=\"open\">\n        <input id=\"open\" name=\"open\" type=\"checkbox\" checked={form.open} onChange={change} /> 공개\n      </label>\n\n      <p className=\"preview\">\n        {form.title === '' ? '제목 없음' : form.title} · {form.hours}시간 · {form.level} · {form.open ? '공개' : '비공개'}\n      </p>\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseForm />);\n"
+      "kind": "tweak", "title": "onChange를 지워 보기",
+      "brief": ["onChange 줄을 지우고 입력해 보세요. value가 빈 name으로 고정되어 글자를 입력할 수 없습니다.", "value를 지우면 브라우저가 입력값을 직접 관리하지만 React state와 미리보기가 연결되지 않습니다.", "제어 입력에서는 value와 onChange를 한 쌍으로 작성합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["label { display: grid; gap: 6px; max-width: 280px; }", "input { padding: 8px; }"] },
+      "code": "const { useState } = React;\n\nfunction NameForm() {\n  const [name, setName] = useState('');\n\n  return (\n    <section>\n      <label>\n        상품 이름\n        <input\n          value={name}\n          onChange={(event) => setName(event.currentTarget.value)}\n        />\n      </label>\n      <p>미리보기: {name || '이름을 입력하세요'}</p>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<NameForm />);\n"
     },
     {
-      "kind": "fill",
-      "title": "한 핸들러 채우기",
-      "brief": [
-        "칸 넷과 상태는 돼 있고 값을 담는 자리가 비어 있습니다.",
-        "null 자리를 채워 어느 칸에서 왔든 그 칸의 값만 바꾼 새 객체를 넣어 주세요.",
-        "e.target 에서 name·value·type·checked 를 꺼내고, 체크박스면 checked 를 아니면 value 를 담으면 됩니다. 나머지 칸은 펼쳐서 그대로 두세요.",
-        "채우지 않고 실행하면 어느 칸을 쳐도 미리보기가 그대로입니다."
-      ],
-      "env": [
-        "// 이 무대의 폼 장치입니다.",
-        "// 이 실행 틀은 폼 기본 제출이 막혀 있어 submit 이벤트가 아예 발생하지 않습니다.",
-        "// 그래서 무대가 대신 쏘아 줍니다. 기본 동작(페이지 새로고침)은 흉내 내지 않습니다.",
-        "(() => {",
-        "  const fire = (form) => {",
-        "    if (!form) return;",
-        "    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));",
-        "  };",
-        "",
-        "  document.addEventListener('click', (e) => {",
-        "    const btn = e.target && e.target.closest ? e.target.closest('button, input[type=\"submit\"]') : null;",
-        "    if (!btn) return;",
-        "    const type = (btn.getAttribute('type') || 'submit').toLowerCase();",
-        "    if (type !== 'submit') return;",
-        "    fire(btn.form);",
-        "  }, true);",
-        "",
-        "  document.addEventListener('keydown', (e) => {",
-        "    if (e.key !== 'Enter') return;",
-        "    const el = e.target;",
-        "    if (!el || el.tagName !== 'INPUT') return;",
-        "    const type = (el.getAttribute('type') || 'text').toLowerCase();",
-        "    if (['checkbox', 'radio', 'button', 'submit'].indexOf(type) >= 0) return;",
-        "    fire(el.form);",
-        "  }, true);",
-        "})();"
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".field { display: block; margin-bottom: 6px; }",
-          ".field__input { width: 180px; }",
-          ".preview, .result { margin: 8px 0 0; color: var(--c-text-muted); }",
-          ".err { margin: 2px 0 6px; color: var(--c-text-error); font-size: 0.875rem; }",
-          ".go { margin-top: 6px; }"
-        ]
-      },
-      "code": "const { useState } = React;\n\nfunction CourseForm() {\n  const [form, setForm] = useState({ title: '', hours: '0', level: '입문', open: false });\n\n  const change = (e) => {\n    null; // ← 여기를 채우세요\n  };\n\n  return (\n    <div>\n      <label className=\"field\" htmlFor=\"title\">제목</label>\n      <input className=\"field__input\" id=\"title\" name=\"title\" value={form.title} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"hours\">시간</label>\n      <input className=\"field__input\" id=\"hours\" name=\"hours\" type=\"number\" value={form.hours} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"level\">난이도</label>\n      <select className=\"field__input\" id=\"level\" name=\"level\" value={form.level} onChange={change}>\n        <option value=\"입문\">입문</option>\n        <option value=\"심화\">심화</option>\n      </select>\n\n      <label className=\"field\" htmlFor=\"open\">\n        <input id=\"open\" name=\"open\" type=\"checkbox\" checked={form.open} onChange={change} /> 공개\n      </label>\n\n      <p className=\"preview\">\n        {form.title === '' ? '제목 없음' : form.title} · {form.hours}시간 · {form.level} · {form.open ? '공개' : '비공개'}\n      </p>\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseForm />);\n",
-      "solutionCode": "const { useState } = React;\n\nfunction CourseForm() {\n  const [form, setForm] = useState({ title: '', hours: '0', level: '입문', open: false });\n\n  const change = (e) => {\n    const { name, value, type, checked } = e.target;\n    setForm({ ...form, [name]: type === 'checkbox' ? checked : value });\n  };\n\n  return (\n    <div>\n      <label className=\"field\" htmlFor=\"title\">제목</label>\n      <input className=\"field__input\" id=\"title\" name=\"title\" value={form.title} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"hours\">시간</label>\n      <input className=\"field__input\" id=\"hours\" name=\"hours\" type=\"number\" value={form.hours} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"level\">난이도</label>\n      <select className=\"field__input\" id=\"level\" name=\"level\" value={form.level} onChange={change}>\n        <option value=\"입문\">입문</option>\n        <option value=\"심화\">심화</option>\n      </select>\n\n      <label className=\"field\" htmlFor=\"open\">\n        <input id=\"open\" name=\"open\" type=\"checkbox\" checked={form.open} onChange={change} /> 공개\n      </label>\n\n      <p className=\"preview\">\n        {form.title === '' ? '제목 없음' : form.title} · {form.hours}시간 · {form.level} · {form.open ? '공개' : '비공개'}\n      </p>\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseForm />);\n",
+      "kind": "fill", "title": "입력값을 state와 연결하기",
+      "brief": ["input의 value에는 name을, onChange에서는 현재 입력값을 setName에 전달하세요.", "검사가 입력창에 '셔츠'를 입력했을 때 input과 미리보기가 함께 바뀌어야 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useState } = React;\n\nfunction NameForm() {\n  const [name, setName] = useState('');\n\n  return (\n    <section>\n      <input value={null} onChange={(event) => setName(null)} />\n      <p id=\"preview\">{name}</p>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<NameForm />);\n",
+      "solutionCode": "const { useState } = React;\n\nfunction NameForm() {\n  const [name, setName] = useState('');\n\n  return (\n    <section>\n      <input value={name} onChange={(event) => setName(event.currentTarget.value)} />\n      <p id=\"preview\">{name}</p>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<NameForm />);\n",
       "asserts": [
-        {
-          "type": "dom",
-          "label": "제목을 치면 반영됩니다",
-          "select": ".preview",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#title",
-              "value": "리액트 입문"
-            }
-          ],
-          "text": [
-            "리액트 입문 · 0시간 · 입문 · 비공개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "시간 칸은 제목을 지우지 않습니다",
-          "select": ".preview",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#hours",
-              "value": "8"
-            }
-          ],
-          "text": [
-            "리액트 입문 · 8시간 · 입문 · 비공개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "셀렉트도 같은 핸들러로",
-          "select": ".preview",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#level",
-              "value": "심화"
-            }
-          ],
-          "text": [
-            "리액트 입문 · 8시간 · 심화 · 비공개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "체크박스는 checked 를 봅니다",
-          "select": ".preview",
-          "actions": [
-            {
-              "action": "click",
-              "selector": "#open"
-            }
-          ],
-          "text": [
-            "리액트 입문 · 8시간 · 심화 · 공개"
-          ]
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "코스 등록 폼 만들기",
-      "brief": [
-        "칸 넷을 객체 상태 하나로 다루는 CourseForm 을 만들어 주세요.",
-        "상태의 처음 값은 { title: '', hours: '0', level: '입문', open: false } 입니다.",
-        "칸은 넷입니다. 제목은 text, 시간은 number, 난이도는 select(입문·심화), 공개는 checkbox 입니다. 각 칸에 name 을 상태의 키와 같게 주세요.",
-        "각 칸에 label 을 htmlFor 로 연결하고 id 는 title·hours·level·open 으로 하세요. label 의 클래스는 field, 입력 요소의 클래스는 field__input 입니다. 체크박스는 label 안에 두고 글자는 '공개' 로 하세요.",
-        "핸들러는 하나만 만드세요. name 으로 어느 칸인지 가르고, 체크박스면 checked 를 담습니다.",
-        "맨 아래에 preview 클래스로 요약 한 줄을 보여 주세요. '리액트 입문 · 8시간 · 심화 · 공개' 형태이고, 제목이 비었으면 '제목 없음' 으로, 공개가 꺼져 있으면 '비공개' 로 씁니다.",
-        "맨 아래에서 ReactDOM.createRoot(document.querySelector('#root')).render(<CourseForm />) 로 그리세요."
+        { "type": "dom", "label": "입력값이 state에 반영됨", "actions": [{ "action": "fill", "selector": "input", "value": "셔츠" }], "select": "input", "text": ["셔츠"] },
+        { "type": "dom", "label": "같은 state가 미리보기에 표시됨", "select": "#preview", "text": ["셔츠"] }
       ],
-      "env": [
-        "// 이 무대의 폼 장치입니다.",
-        "// 이 실행 틀은 폼 기본 제출이 막혀 있어 submit 이벤트가 아예 발생하지 않습니다.",
-        "// 그래서 무대가 대신 쏘아 줍니다. 기본 동작(페이지 새로고침)은 흉내 내지 않습니다.",
-        "(() => {",
-        "  const fire = (form) => {",
-        "    if (!form) return;",
-        "    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));",
-        "  };",
-        "",
-        "  document.addEventListener('click', (e) => {",
-        "    const btn = e.target && e.target.closest ? e.target.closest('button, input[type=\"submit\"]') : null;",
-        "    if (!btn) return;",
-        "    const type = (btn.getAttribute('type') || 'submit').toLowerCase();",
-        "    if (type !== 'submit') return;",
-        "    fire(btn.form);",
-        "  }, true);",
-        "",
-        "  document.addEventListener('keydown', (e) => {",
-        "    if (e.key !== 'Enter') return;",
-        "    const el = e.target;",
-        "    if (!el || el.tagName !== 'INPUT') return;",
-        "    const type = (el.getAttribute('type') || 'text').toLowerCase();",
-        "    if (['checkbox', 'radio', 'button', 'submit'].indexOf(type) >= 0) return;",
-        "    fire(el.form);",
-        "  }, true);",
-        "})();"
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".field { display: block; margin-bottom: 6px; }",
-          ".field__input { width: 180px; }",
-          ".preview, .result { margin: 8px 0 0; color: var(--c-text-muted); }",
-          ".err { margin: 2px 0 6px; color: var(--c-text-error); font-size: 0.875rem; }",
-          ".go { margin-top: 6px; }"
-        ]
-      },
-      "code": "const { useState } = React;\n\n// CourseForm 을 여기에 작성하세요\n",
-      "solutionCode": "const { useState } = React;\n\nfunction CourseForm() {\n  const [form, setForm] = useState({ title: '', hours: '0', level: '입문', open: false });\n\n  const change = (e) => {\n    const { name, value, type, checked } = e.target;\n    setForm({ ...form, [name]: type === 'checkbox' ? checked : value });\n  };\n\n  return (\n    <div>\n      <label className=\"field\" htmlFor=\"title\">제목</label>\n      <input className=\"field__input\" id=\"title\" name=\"title\" value={form.title} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"hours\">시간</label>\n      <input className=\"field__input\" id=\"hours\" name=\"hours\" type=\"number\" value={form.hours} onChange={change} />\n\n      <label className=\"field\" htmlFor=\"level\">난이도</label>\n      <select className=\"field__input\" id=\"level\" name=\"level\" value={form.level} onChange={change}>\n        <option value=\"입문\">입문</option>\n        <option value=\"심화\">심화</option>\n      </select>\n\n      <label className=\"field\" htmlFor=\"open\">\n        <input id=\"open\" name=\"open\" type=\"checkbox\" checked={form.open} onChange={change} /> 공개\n      </label>\n\n      <p className=\"preview\">\n        {form.title === '' ? '제목 없음' : form.title} · {form.hours}시간 · {form.level} · {form.open ? '공개' : '비공개'}\n      </p>\n    </div>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<CourseForm />);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "제목을 치면 반영됩니다",
-          "select": ".preview",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#title",
-              "value": "리액트 입문"
-            }
-          ],
-          "text": [
-            "리액트 입문 · 0시간 · 입문 · 비공개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "시간 칸은 제목을 지우지 않습니다",
-          "select": ".preview",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#hours",
-              "value": "8"
-            }
-          ],
-          "text": [
-            "리액트 입문 · 8시간 · 입문 · 비공개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "셀렉트도 같은 핸들러로",
-          "select": ".preview",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#level",
-              "value": "심화"
-            }
-          ],
-          "text": [
-            "리액트 입문 · 8시간 · 심화 · 비공개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "체크박스는 checked 를 봅니다",
-          "select": ".preview",
-          "actions": [
-            {
-              "action": "click",
-              "selector": "#open"
-            }
-          ],
-          "text": [
-            "리액트 입문 · 8시간 · 심화 · 공개"
-          ]
-        }
-      ]
+      "hints": ["value={name}으로 연결하세요.", "setName(event.currentTarget.value)로 새 입력 문자열을 전달하세요."]
     }
   ]
 }

@@ -1,204 +1,26 @@
 {
-  "schemaVersion": 2,
-  "id": "t4-09",
-  "track": "T4",
-  "order": 9,
-  "runtime": "react",
-  "title": "폼 여러 칸 다루기",
+  "schemaVersion": 2, "id": "t4-09", "track": "T4", "order": 9, "runtime": "js",
+  "title": "동기 코드와 비동기 코드의 실행 순서",
   "steps": [
     {
-      "kind": "read",
-      "title": "칸마다 보는 곳이 다릅니다",
+      "kind": "read", "title": "기다리는 동안 다음 코드를 실행할 수 있습니다",
       "brief": [
-        "앞 레슨의 방식은 칸이 여럿이어도 그대로입니다. 상태가 값을 쥐고, 칸은 그 값을 보여 주고, onChange 로 받아 상태를 고칩니다. 다만 칸의 종류마다 볼 자리가 다릅니다.",
-        "글자를 받는 칸과 셀렉트는 value 를 봅니다. 셀렉트는 <select value={level} onChange={...}> 처럼 쓰고 안의 <option> 에는 value 만 적습니다. selected 를 적지 않습니다. 어느 것이 골라졌는지는 셀렉트의 value 가 정합니다.",
-        "체크박스는 다릅니다. value 가 아니라 checked 를 봅니다. 켜졌는지 꺼졌는지가 값이기 때문입니다. 받을 때도 event.target.checked 를 읽습니다. event.target.value 를 읽으면 'on' 이라는 쓸모없는 값이 나옵니다. 우리가 정한 적 없는 브라우저의 기본값입니다.",
-        "체크박스도 value 만 주고 onChange 를 빠뜨리면 앞 레슨과 같은 경고가 뜹니다. 다만 문구가 checked 로 바뀝니다.",
-        "체크박스가 여러 개일 때는 고른 것들을 배열 상태로 다룹니다. 켜면 배열에 넣고 끄면 뺍니다. 앞 레슨에서 배운 그대로입니다. 넣을 때는 전개, 뺄 때는 filter 입니다. 어느 칸이 켜져 있는지는 배열에 그 이름이 들어 있는지로 정합니다.",
-        "어느 칸이 눌렸는지는 name 으로 알아냅니다. <input name={topic}> 처럼 심어 두면 event.target.name 으로 읽을 수 있습니다. 앞 트랙에서 data 속성에 심어 두고 dataset 으로 읽던 것과 같은 방식입니다."
+        "동기 코드는 한 작업이 끝난 뒤 다음 작업을 실행합니다. 시간이 걸리는 작업을 그대로 기다리면 그동안 화면도 반응하지 못합니다.",
+        "비동기 작업은 완료를 기다리는 동안 다음 코드를 실행할 수 있게 합니다. 타이머, 네트워크 요청, 사용자 이벤트가 대표적인 예입니다.",
+        { "code": ["console.log('시작');", "setTimeout(() => console.log('타이머'), 0);", "console.log('끝');"] },
+        "지연 시간이 0이어도 콜백이 즉시 실행되지는 않습니다. 현재 실행 중인 동기 코드가 모두 끝난 뒤 실행 기회를 얻습니다.",
+        "따라서 출력 순서는 시작, 끝, 타이머입니다. 코드에 적힌 줄 순서와 완료 순서가 달라질 수 있습니다."
       ]
     },
     {
-      "kind": "fill",
-      "title": "켜고 끄기 채우기",
-      "brief": [
-        "검색어와 난이도는 돼 있습니다. 체크박스를 켜고 끌 때 넣을 값만 비어 있습니다.",
-        "null 두 자리를 채워 주세요. 켜졌으면 배열에 그 이름을 더하고, 꺼졌으면 그 이름만 빼면 됩니다.",
-        "어느 칸인지는 topic 에 들어 있습니다. 원래 배열을 고치지 마세요."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".form { display: grid; gap: 8px; max-width: 320px; }",
-          ".field { font-size: 0.875rem; color: var(--c-text-muted); }",
-          ".field__input, .field__select { width: 100%; }",
-          ".checks { display: flex; flex-wrap: wrap; gap: 10px; }",
-          ".check { display: flex; align-items: center; gap: 4px; font-size: 0.875rem; }",
-          ".summary { margin: 0; padding: 8px; border: 1px solid var(--c-border); border-radius: 6px;",
-          "  font-size: 0.875rem; }"
-        ]
-      },
-      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst topics = ['자바스크립트', '리액트', 'CSS'];\n\nconst Filter = () => {\n  const [picked, setPicked] = useState([]);\n\n  const toggle = (event) => {\n    const topic = event.target.name;\n\n    if (event.target.checked) {\n      setPicked(null); // ← 켤 때 (여기를 채우세요)\n    } else {\n      setPicked(null); // ← 끌 때 (여기를 채우세요)\n    }\n  };\n\n  return (\n    <div className=\"form\">\n      <div className=\"checks\">\n        {topics.map((topic) => (\n          <label className=\"check\" key={topic}>\n            <input type=\"checkbox\" name={topic}\n              checked={picked.includes(topic)} onChange={toggle} />\n            {topic}\n          </label>\n        ))}\n      </div>\n      <p className=\"summary\">{picked.length === 0 ? '분야 없음' : picked.join(', ')}</p>\n    </div>\n  );\n};\n\nroot.render(<Filter />);\n",
-      "solutionCode": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst topics = ['자바스크립트', '리액트', 'CSS'];\n\nconst Filter = () => {\n  const [picked, setPicked] = useState([]);\n\n  const toggle = (event) => {\n    const topic = event.target.name;\n\n    if (event.target.checked) {\n      setPicked([...picked, topic]);\n    } else {\n      setPicked(picked.filter((one) => one !== topic));\n    }\n  };\n\n  return (\n    <div className=\"form\">\n      <div className=\"checks\">\n        {topics.map((topic) => (\n          <label className=\"check\" key={topic}>\n            <input type=\"checkbox\" name={topic}\n              checked={picked.includes(topic)} onChange={toggle} />\n            {topic}\n          </label>\n        ))}\n      </div>\n      <p className=\"summary\">{picked.length === 0 ? '분야 없음' : picked.join(', ')}</p>\n    </div>\n  );\n};\n\nroot.render(<Filter />);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "처음에는 고른 분야가 없습니다",
-          "select": ".summary",
-          "text": [
-            "분야 없음"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "하나를 켜면 그것만 들어갑니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".checks .check:nth-child(2) input"
-            }
-          ],
-          "select": ".summary",
-          "text": [
-            "리액트"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "하나를 더 켜면 둘이 됩니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".checks .check:nth-child(1) input"
-            }
-          ],
-          "select": ".summary",
-          "text": [
-            "리액트, 자바스크립트"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "끄면 그것만 빠집니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".checks .check:nth-child(2) input"
-            }
-          ],
-          "select": ".summary",
-          "text": [
-            "자바스크립트"
-          ]
-        }
-      ]
+      "kind": "run", "title": "타이머 앞뒤의 출력 확인하기",
+      "brief": ["주문 시작과 주문 접수가 먼저 연속으로 출력됩니다. 약 1초 뒤 결제 확인이 출력됩니다.", "setTimeout은 기다림 자체를 멈추는 명령이 아니라, 시간이 지난 뒤 호출할 함수를 등록하는 기능입니다."],
+      "code": "console.log('주문 시작');\n\nsetTimeout(() => {\n  console.log('결제 확인');\n}, 1000);\n\nconsole.log('주문 접수');\n"
     },
     {
-      "kind": "write",
-      "title": "필터 폼 만들기",
-      "brief": [
-        "코스 필터 폼을 만들어 주세요. 바깥은 <div className=\"form\"> 입니다. 상태 셋을 씁니다. 검색어(처음 빈 문자열), 난이도(처음 '전체'), 고른 분야(처음 빈 배열)입니다.",
-        "검색어는 <label className=\"field\" htmlFor=\"q\">코스 검색</label> 과 <input className=\"field__input\" id=\"q\" type=\"search\"> 입니다.",
-        "난이도는 <label className=\"field\" htmlFor=\"lv\">난이도</label> 와 <select className=\"field__select\" id=\"lv\"> 입니다. 안에 '전체' · '입문' · '보통' 세 <option> 을 두고 value 는 글자와 같게 하세요.",
-        "분야는 <div className=\"checks\"> 안에 주어진 topics 로 <label className=\"check\"> 을 만들고 그 안에 체크박스와 이름을 넣습니다. 체크박스에는 name 을 심어 두세요. 줄마다 key 가 필요합니다.",
-        "맨 아래 <p className=\"summary\"> 에 '리액트 · 입문 · 자바스크립트, CSS' 형태로 보여 주세요. 검색어가 비었으면 '전체', 고른 분야가 없으면 '분야 없음' 이라고 적습니다. 가운뎃점 앞뒤로 공백 하나씩이고 분야는 쉼표와 공백으로 잇습니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".form { display: grid; gap: 8px; max-width: 320px; }",
-          ".field { font-size: 0.875rem; color: var(--c-text-muted); }",
-          ".field__input, .field__select { width: 100%; }",
-          ".checks { display: flex; flex-wrap: wrap; gap: 10px; }",
-          ".check { display: flex; align-items: center; gap: 4px; font-size: 0.875rem; }",
-          ".summary { margin: 0; padding: 8px; border: 1px solid var(--c-border); border-radius: 6px;",
-          "  font-size: 0.875rem; }"
-        ]
-      },
-      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst topics = ['자바스크립트', '리액트', 'CSS'];\n\n// 여기를 채우세요\n",
-      "solutionCode": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst topics = ['자바스크립트', '리액트', 'CSS'];\n\nconst Filter = () => {\n  const [keyword, setKeyword] = useState('');\n  const [level, setLevel] = useState('전체');\n  const [picked, setPicked] = useState([]);\n\n  const toggle = (event) => {\n    const topic = event.target.name;\n\n    if (event.target.checked) {\n      setPicked([...picked, topic]);\n    } else {\n      setPicked(picked.filter((one) => one !== topic));\n    }\n  };\n\n  return (\n    <div className=\"form\">\n      <label className=\"field\" htmlFor=\"q\">코스 검색</label>\n      <input className=\"field__input\" id=\"q\" type=\"search\" value={keyword}\n        onChange={(event) => setKeyword(event.target.value)} />\n\n      <label className=\"field\" htmlFor=\"lv\">난이도</label>\n      <select className=\"field__select\" id=\"lv\" value={level}\n        onChange={(event) => setLevel(event.target.value)}>\n        <option value=\"전체\">전체</option>\n        <option value=\"입문\">입문</option>\n        <option value=\"보통\">보통</option>\n      </select>\n\n      <div className=\"checks\">\n        {topics.map((topic) => (\n          <label className=\"check\" key={topic}>\n            <input type=\"checkbox\" name={topic}\n              checked={picked.includes(topic)} onChange={toggle} />\n            {topic}\n          </label>\n        ))}\n      </div>\n\n      <p className=\"summary\">\n        {keyword === '' ? '전체' : keyword} · {level} · {picked.length === 0 ? '분야 없음' : picked.join(', ')}\n      </p>\n    </div>\n  );\n};\n\nroot.render(<Filter />);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "처음 요약이 맞습니다",
-          "select": ".summary",
-          "text": [
-            "전체 · 전체 · 분야 없음"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "검색어를 치면 반영됩니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#q",
-              "value": "리액트"
-            }
-          ],
-          "select": ".summary",
-          "text": [
-            "리액트 · 전체 · 분야 없음"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "난이도를 고르면 반영됩니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#lv",
-              "value": "입문"
-            }
-          ],
-          "select": ".summary",
-          "text": [
-            "리액트 · 입문 · 분야 없음"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "분야를 켜면 들어갑니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".checks .check:nth-child(1) input"
-            },
-            {
-              "action": "click",
-              "selector": ".checks .check:nth-child(3) input"
-            }
-          ],
-          "select": ".summary",
-          "text": [
-            "리액트 · 입문 · 자바스크립트, CSS"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "끄면 빠집니다",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".checks .check:nth-child(1) input"
-            }
-          ],
-          "select": ".summary",
-          "text": [
-            "리액트 · 입문 · CSS"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "체크박스는 셋입니다",
-          "select": ".checks input",
-          "count": 3
-        }
-      ]
+      "kind": "tweak", "title": "지연 시간을 0으로 바꿔 보기",
+      "brief": ["1000을 0으로 바꿔도 주문 접수가 결제 확인보다 먼저 출력됩니다.", "콜백 안의 코드가 다음 줄로 이동한 것이 아닙니다. 타이머가 콜백을 보관했다가 현재 코드가 끝난 뒤 호출합니다.", "비동기 실행 순서를 예측할 때는 먼저 동기 코드를 끝까지 보고, 나중에 실행될 콜백을 따로 확인하세요."],
+      "code": "console.log('주문 시작');\n\nsetTimeout(() => {\n  console.log('결제 확인');\n}, 1000);\n\nconsole.log('주문 접수');\n"
     }
   ]
 }

@@ -69,10 +69,10 @@ const allAssertsPass = (events, expectedCount) => {
 };
 
 async function audit() {
-  const index = await fetch('lessons-v2/index.json', { cache: 'no-store' }).then((response) => response.json());
+  const index = await fetch('lessons/index.json', { cache: 'no-store' }).then((response) => response.json());
 
   for (const item of index.lessons) {
-    const raw = await fetch(`lessons-v2/${item.id}.json`, { cache: 'no-store' }).then((response) => response.json());
+    const raw = await fetch(`lessons/${item.id}.json`, { cache: 'no-store' }).then((response) => response.json());
     const lesson = validateLesson(raw, item.id);
 
     for (const [stepIndex, step] of lesson.steps.entries()) {

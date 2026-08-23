@@ -1,130 +1,28 @@
 {
-  "schemaVersion": 2,
-  "id": "t7-02",
-  "track": "T7",
-  "order": 2,
-  "runtime": "js",
-  "title": "누가 불렀는가",
+  "schemaVersion": 2, "id": "t7-02", "track": "T7", "order": 2, "runtime": "react",
+  "title": "렌더링과 외부 시스템 동기화 구분하기",
   "steps": [
     {
-      "kind": "read",
-      "title": "네 가지 부르는 방식",
+      "kind": "read", "title": "렌더는 화면 계산, effect는 외부와 맞추는 일입니다",
       "brief": [
-        "앞 레슨에서 this 는 부르는 순간에 정해진다고 했습니다. 그러면 정하는 규칙이 있어야 합니다. 규칙은 부르는 방식에 따라 넷으로 갈립니다. 이 트랙의 나머지 전부가 이 넷 위에 섭니다.",
-        "첫째, 그냥 부르는 경우입니다. whoAmI() 처럼 점 앞에 아무것도 없습니다. 이때 this 는 전역 객체입니다. 이 도구에서는 window 이고, 엄격 모드에서는 undefined 입니다.",
-        "둘째, 메서드로 부르는 경우입니다. course.whoAmI() 처럼 점 앞에 객체가 있습니다. 이때 this 는 점 앞의 그것입니다. 규칙을 한 문장으로 줄이면 '점 앞에 있는 것이 this' 입니다.",
-        "셋째, call 이나 apply 나 bind 로 직접 지정하는 경우입니다. 다음 레슨의 주제입니다.",
-        "넷째, new 로 부르는 경우입니다. 이때 this 는 새로 만들어진 빈 객체이고, 그 객체가 결과로 나옵니다. 생성자 함수 레슨에서 다시 봅니다.",
-        "여기서 가장 자주 사고가 나는 자리가 있습니다. 메서드를 다른 곳에 넘기는 경우입니다.",
-        "list.forEach(course.describe) 처럼 넘기면 forEach 는 그 함수를 받아 그냥 부릅니다. 점 앞이 사라졌으니 this 도 사라집니다. 넘길 때 함수만 넘어가고 점 앞은 따라가지 않습니다.",
-        "이것은 T2 에서 이벤트 핸들러를 등록할 때 이미 마주친 적 있는 모양입니다. 그때는 화살표 함수를 써서 넘겼기 때문에 문제가 되지 않았습니다. 왜 그것으로 해결됐는지가 다음 레슨입니다.",
-        "규칙을 외우려 하지 말고 물어보세요. 이 함수를 부르는 그 줄에서, 점 앞에 무엇이 있는가. 아무것도 없으면 전역이고, 객체가 있으면 그 객체이고, new 가 붙어 있으면 새 객체입니다."
+        "컴포넌트 렌더링은 props와 state로 JSX를 계산하는 과정입니다. 같은 입력에는 같은 화면을 계산해야 합니다.",
+        "문서 제목 변경, 타이머, 이벤트 구독, 네트워크 요청처럼 React 바깥 시스템과 맞추는 작업은 렌더 결과 계산과 역할이 다릅니다.",
+        "이런 작업을 사이드 이펙트라고 하며 React에서는 effect로 렌더가 끝난 뒤 실행합니다.",
+        { "code": ["렌더: count로 JSX 계산", "effect: document.title을 count와 동기화"] },
+        "버튼 클릭처럼 특정 사용자 행동 때문에 실행하는 코드는 이벤트 처리 함수에 둡니다. 렌더되었다는 이유로 외부 시스템을 맞춰야 할 때 effect를 사용합니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "네 가지를 한 번에",
-      "brief": [
-        "완전히 같은 함수 whoAmI 를 네 가지 방식으로 부릅니다. 마지막은 콜백으로 넘긴 경우입니다.",
-        "실행해 보세요. 다섯 줄이 각각 다른 것을 가리킵니다.",
-        "①과 ⑤가 같다는 점을 보세요. 콜백으로 넘기는 것은 결국 '그냥 부르는 것' 입니다. 받은 쪽이 점 없이 부르기 때문입니다.",
-        "②만 course 를 가리킵니다. 점 앞에 course 가 있는 유일한 줄입니다."
-      ],
-      "code": "function whoAmI() {\n  return this;\n}\n\nconst course = {\n  name: '리액트 입문',\n  whoAmI: whoAmI,\n};\n\nfunction Maker(name) {\n  this.name = name;\n}\n\nconsole.log('① 그냥 부르면 :', whoAmI() === window ? 'window' : String(whoAmI()));\nconsole.log('② 메서드로 부르면 :', course.whoAmI() === course ? 'course 객체' : '아님');\nconsole.log('③ call 로 넘기면 :', whoAmI.call({ name: '넘긴 것' }).name);\nconsole.log('④ new 로 부르면 :', new Maker('새것').name);\n\nconst list = ['a', 'b'];\nlist.forEach(function () {\n  console.log('⑤ 콜백으로 넘기면 :', this === window ? 'window' : String(this));\n});\n"
+      "kind": "run", "title": "렌더 중 문서 제목을 직접 바꿔 보기",
+      "brief": ["현재 코드는 컴포넌트 본문에서 document.title을 바꿉니다. 화면은 동작하지만 렌더 계산 중 외부 브라우저 상태를 변경하고 있습니다.", "다음 레슨에서 이 줄을 useEffect로 옮겨 렌더가 끝난 뒤 실행되게 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
+      "code": "const { useState } = React;\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  document.title = '클릭 ' + count + '회';\n\n  return (\n    <button type=\"button\" onClick={() => setCount(count + 1)}>\n      클릭 {count}회\n    </button>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n"
     },
     {
-      "kind": "tweak",
-      "title": "점 앞을 옮겨 보기",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 되돌리고 다시 실행해야 합니다.",
-        "① ②번 줄을 const f = course.whoAmI; 로 먼저 담은 뒤 f() 로 불러 보세요. course 가 아니라 window 가 나옵니다. 담는 순간 점 앞이 떨어져 나갑니다.",
-        "② 되돌린 뒤 course 객체에 second: course.whoAmI 를 추가하고 course.second() 를 찍어 보세요. 여전히 course 입니다. 이름이 무엇이든 점 앞이 course 이면 this 는 course 입니다.",
-        "③ 되돌린 뒤 ④번 줄에서 new 만 지워 보세요. Maker('새것') 이 되고 결과는 undefined 입니다. this 가 새 객체가 아니라 window 라서 window.name 에 '새것' 이 들어가고, 함수는 아무것도 돌려주지 않기 때문입니다. new 를 빠뜨리면 조용히 전역을 더럽힙니다."
-      ],
-      "code": "function whoAmI() {\n  return this;\n}\n\nconst course = {\n  name: '리액트 입문',\n  whoAmI: whoAmI,\n};\n\nfunction Maker(name) {\n  this.name = name;\n}\n\nconsole.log('① 그냥 부르면 :', whoAmI() === window ? 'window' : String(whoAmI()));\nconsole.log('② 메서드로 부르면 :', course.whoAmI() === course ? 'course 객체' : '아님');\nconsole.log('③ call 로 넘기면 :', whoAmI.call({ name: '넘긴 것' }).name);\nconsole.log('④ new 로 부르면 :', new Maker('새것').name);\n\nconst list = ['a', 'b'];\nlist.forEach(function () {\n  console.log('⑤ 콜백으로 넘기면 :', this === window ? 'window' : String(this));\n});\n"
-    },
-    {
-      "kind": "tweak",
-      "title": "넘기면 잃어버립니다",
-      "brief": [
-        "이 단계는 코드가 다릅니다. 메서드를 다른 곳에 넘기는 자리만 떼어 놓았습니다.",
-        "먼저 실행해 보세요. 점을 찍어 부른 쪽은 '상자' 가 나오고, forEach 에 넘긴 쪽은 undefined 가 나옵니다. 같은 함수인데 결과가 다릅니다.",
-        "넘긴 것은 show 라는 함수뿐입니다. box 는 따라가지 않았습니다. forEach 는 받은 함수를 점 없이 그냥 부르므로 앞 단계의 ①번 경우가 됩니다.",
-        "① items.forEach(box.show) 를 items.forEach(() => box.show()) 로 바꿔 보세요. '상자' 가 나옵니다. 화살표 안에서 점을 찍어 불렀기 때문입니다. 넘긴 것은 화살표이고, 점 앞은 그 안에 그대로 남아 있습니다.",
-        "② 되돌린 뒤 items.forEach(box.show, box) 처럼 둘째 인자로 box 를 넘겨 보세요. 이번에도 '상자' 가 나옵니다. forEach 는 둘째 인자로 받은 것을 this 로 삼아 콜백을 부르도록 만들어져 있습니다. 배열 메서드마다 이런 자리가 있는 것은 아니니 있는 것만 씁니다.",
-        "③ 되돌린 뒤 items.forEach(box.show.bind(box)) 로 바꿔 보세요. 역시 '상자' 입니다. bind 가 점 앞을 함수에 붙여 둔 것이고, 그것이 다음 레슨의 주제입니다."
-      ],
-      "code": "const box = {\n  tag: '상자',\n  show() {\n    console.log('불린 곳의 this.tag =', this && this.tag);\n  },\n};\n\nconst items = ['하나'];\n\nconsole.log('— 점을 찍어 부르면 —');\nbox.show();\n\nconsole.log('— 콜백으로 넘기면 —');\nitems.forEach(box.show);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "점 앞을 지켜 부르기",
-      "brief": [
-        "메서드를 목록마다 불러 이름을 모으는 함수입니다. 부르는 자리가 비어 있습니다.",
-        "null 자리를 채워 각 코스의 describe() 를 불러 그 결과를 모아 주세요.",
-        "map 에 course.describe 를 그대로 넘기면 점 앞이 떨어져 나갑니다. 화살표 안에서 점을 찍어 부르세요.",
-        "채우지 않고 실행하면 null 에서 join 을 부르려다 실패합니다."
-      ],
-      "code": "const courses = [\n  { name: '리액트 입문', hours: 8, describe() { return this.name + ' · ' + this.hours + '시간'; } },\n  { name: 'CSS 레이아웃', hours: 6, describe() { return this.name + ' · ' + this.hours + '시간'; } },\n];\n\nfunction listAll() {\n  const lines = null; // ← 여기를 채우세요\n\n  return lines.join(' / ');\n}\n",
-      "entry": "listAll",
-      "solutionCode": "const courses = [\n  { name: '리액트 입문', hours: 8, describe() { return this.name + ' · ' + this.hours + '시간'; } },\n  { name: 'CSS 레이아웃', hours: 6, describe() { return this.name + ' · ' + this.hours + '시간'; } },\n];\n\nfunction listAll() {\n  const lines = courses.map((course) => course.describe());\n\n  return lines.join(' / ');\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "둘 다 자기 값을 씁니다",
-          "args": [],
-          "expected": "리액트 입문 · 8시간 / CSS 레이아웃 · 6시간"
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "부르는 방식을 가려내기",
-      "brief": [
-        "부르는 방식에 따라 this 가 어떻게 달라지는지 확인하는 tell 을 만들어 주세요. 남의 코드를 읽을 때 스스로 판단하는 훈련입니다.",
-        "먼저 tag 를 돌려주는 함수 하나를 만드세요. this 가 없거나 tag 가 없으면 '없음' 을 돌려줍니다. this && this.tag ? this.tag : '없음' 형태면 됩니다.",
-        "tell(kind) 는 kind 에 따라 그 함수를 다르게 불러 결과를 돌려줍니다.",
-        "'plain' 이면 그냥 부릅니다. 'method' 면 { tag: '메서드' } 객체의 메서드로 만들어 부릅니다. 'new' 면 new 로 부르고, 그 경우에는 만들어진 객체의 tag 를 돌려주세요. 생성자 안에서 this.tag = '새것' 을 넣으면 됩니다.",
-        "이 도구는 엄격 모드가 아니므로 'plain' 은 window 를 this 로 받습니다. window 에는 tag 가 없으니 '없음' 이 나옵니다.",
-        "그 밖의 값이 오면 '모르는 방식' 을 돌려주세요."
-      ],
-      "code": "// tell 을 여기에 작성하세요\n",
-      "entry": "tell",
-      "solutionCode": "function whoseTag() {\n  return this && this.tag ? this.tag : '없음';\n}\n\nfunction Maker() {\n  this.tag = '새것';\n}\n\nfunction tell(kind) {\n  if (kind === 'plain') {\n    return whoseTag();\n  }\n\n  if (kind === 'method') {\n    const holder = { tag: '메서드', ask: whoseTag };\n    return holder.ask();\n  }\n\n  if (kind === 'new') {\n    return new Maker().tag;\n  }\n\n  return '모르는 방식';\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "그냥 부르면 전역이라 tag 가 없습니다",
-          "args": [
-            "plain"
-          ],
-          "expected": "없음"
-        },
-        {
-          "type": "value",
-          "label": "메서드로 부르면 점 앞",
-          "args": [
-            "method"
-          ],
-          "expected": "메서드"
-        },
-        {
-          "type": "value",
-          "label": "new 로 부르면 새 객체",
-          "args": [
-            "new"
-          ],
-          "expected": "새것"
-        },
-        {
-          "type": "value",
-          "label": "모르는 값",
-          "args": [
-            "bind"
-          ],
-          "expected": "모르는 방식"
-        }
-      ]
+      "kind": "tweak", "title": "렌더가 일어날 때마다 외부 변경도 실행되는지 보기",
+      "brief": ["document.title 줄 위에 console.log('제목 변경')을 추가하면 Counter가 렌더될 때마다 출력됩니다.", "렌더는 React가 필요에 따라 다시 실행할 수 있으므로 외부 변경을 렌더 본문에 섞지 않습니다.", "단순 계산은 렌더 안에서 하고, React 바깥 상태를 맞추는 코드는 다음 레슨의 effect로 옮깁니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { padding: 8px 10px; }"] },
+      "code": "const { useState } = React;\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  document.title = '클릭 ' + count + '회';\n\n  return (\n    <button type=\"button\" onClick={() => setCount(count + 1)}>\n      클릭 {count}회\n    </button>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Counter />);\n"
     }
   ]
 }

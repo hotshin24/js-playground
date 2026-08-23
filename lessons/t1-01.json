@@ -3,180 +3,38 @@
   "id": "t1-01",
   "track": "T1",
   "order": 1,
-  "title": "값의 종류 알아보기",
+  "runtime": "js",
+  "title": "JavaScript 값의 종류 한눈에 보기",
   "steps": [
     {
       "kind": "read",
-      "title": "값에도 종류가 있습니다",
+      "title": "자료형은 값의 종류입니다",
       "brief": [
-        "앞에서 변수로 값에 이름을 붙이고, console.log로 값을 들여다보고, 함수로 값을 주고받아 봤습니다. 세 번 다 '값'을 다뤘습니다. 이제 그 값이 어떤 종류인지 봅니다. 여기서부터가 문법을 하나씩 익히는 구간입니다.",
-        "자주 쓰는 종류는 셋입니다. 문자열(string — 따옴표로 감싼 글자), 숫자(number), 불리언(boolean — 참이나 거짓 둘 중 하나). 12000은 숫자, '셔츠'는 문자열, true는 불리언입니다.",
-        "값의 종류를 알고 싶을 때는 typeof를 앞에 붙입니다. 종류를 물으면 종류의 이름이 글자로 나옵니다.",
-        {
-          "code": [
-            "const price = 12000;",
-            "const label = '12000';",
-            "",
-            "console.log(typeof price);            // number",
-            "console.log(typeof label);            // string",
-            "console.log(price + 1);               // 12001",
-            "console.log(label + 1);               // 120001",
-            "console.log(typeof (label + 1));      // string",
-            "",
-            "console.log(price > 10000);           // true",
-            "console.log(typeof (price > 10000));  // boolean"
-          ]
-        },
-        "price 와 label 은 화면에 똑같이 12000 으로 보이지만 종류가 다릅니다. 그래서 1을 더했을 때 하나는 12001 이 되고 다른 하나는 120001 이 됩니다. 숫자에 1을 더하면 계산이지만, 글자에 1을 더하면 뒤에 붙이기입니다.",
-        "마지막 줄을 봐 주세요. 120001 도 화면에는 숫자처럼 보입니다. 눈으로는 구분할 수 없고 typeof 로 물어야 알 수 있습니다. 종류를 확인하는 습관이 필요한 이유입니다.",
-        "마지막 두 줄은 종류를 확인하는 것이 아니라 값을 비교합니다. 크다·작다·같다를 물으면 그 답이 true 나 false 로 나오고, 그 답의 종류가 불리언입니다. 불리언은 우리가 직접 적기보다 이렇게 비교의 결과로 만들어 쓰는 일이 훨씬 많습니다."
+        "자료형(data type)은 값의 종류를 뜻합니다. 값의 종류에 따라 할 수 있는 일이 달라집니다. 숫자는 더할 수 있고, 문자열은 글자 수를 셀 수 있습니다.",
+        "JavaScript의 자료형은 크게 원시 타입과 객체 타입으로 나뉩니다. 원시 타입에는 string, number, boolean, undefined, null, symbol, bigint가 있습니다. 객체 타입에는 객체, 배열, 함수 등이 있습니다.",
+        { "code": ["const name = '민수';       // string", "const price = 12000;      // number", "const soldOut = false;    // boolean", "const product = { name: '민수' }; // object"] },
+        "지금 이 이름을 모두 외울 필요는 없습니다. 이번 트랙에서 값을 하나씩 실행해 보며 차이를 확인합니다.",
+        "원시값과 객체의 중요한 차이는 T3에서 복사와 참조를 배울 때 자세히 다룹니다. 여기서는 '값의 종류가 하나뿐은 아니다'라는 점만 이해하면 됩니다."
       ]
     },
     {
       "kind": "run",
-      "title": "종류를 확인해 보기",
+      "title": "typeof로 종류 확인하기",
       "brief": [
-        "아래에는 값 세 개가 있습니다. 각각에 typeof를 붙여 종류를 출력합니다.",
-        "실행 버튼을 눌러 보세요. number, string, boolean 세 줄이 나옵니다.",
-        "따옴표가 붙은 '12000'과 따옴표가 없는 12000은 다른 종류입니다. 눈에는 비슷해 보여도 자바스크립트에게는 다른 값입니다."
+        "typeof를 값 앞에 쓰면 자료형을 나타내는 문자열이 나옵니다.",
+        "실행하면 string, number, boolean, object가 차례로 출력됩니다. 마지막 값은 중괄호로 만든 객체입니다."
       ],
-      "code": "console.log(typeof 12000);\nconsole.log(typeof '셔츠');\nconsole.log(typeof true);\n"
+      "code": "console.log(typeof '민수');\nconsole.log(typeof 12000);\nconsole.log(typeof false);\nconsole.log(typeof { name: '민수' });\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꿔 보기",
+      "title": "값을 바꾸면 결과도 바뀝니다",
       "brief": [
-        "첫 줄의 12000에 따옴표를 붙여 '12000'으로 바꾸고 실행해 보세요. 출력되는 종류가 달라집니다.",
-        "숫자처럼 보이는 글자도 따옴표 안에 있으면 문자열입니다. 따옴표가 종류를 정합니다.",
-        "다른 값도 넣어 보세요. 통과·실패는 없습니다."
+        "첫째 줄의 '민수'를 42로 바꾸고 실행해 보세요. 결과가 string에서 number로 바뀝니다.",
+        "따옴표를 붙인 '42'는 문자열이고, 따옴표가 없는 42는 숫자입니다. 사람이 보기에 비슷해도 JavaScript는 서로 다른 종류의 값으로 처리합니다.",
+        "typeof는 변수를 검사하는 전용 명령이 아닙니다. 지금처럼 값에 직접 사용할 수도 있습니다."
       ],
-      "code": "console.log(typeof 12000);\nconsole.log(typeof '셔츠');\nconsole.log(typeof true);\n"
-    },
-    {
-      "kind": "run",
-      "title": "비교해서 불리언 만들기",
-      "brief": [
-        "불리언은 true나 false를 직접 적어서 만들 수도 있지만, 실제 코드에서는 두 값을 비교한 결과로 자주 만듭니다.",
-        "크다는 >, 작다는 <, 같다는 ===로 비교합니다. 비교식(comparison expression — 두 값을 비교해 true나 false를 만드는 식)은 언제나 불리언 값 하나가 됩니다.",
-        "실행해 보세요. 첫 비교는 참, 둘째와 셋째 비교는 거짓입니다. 마지막 줄은 세 결과의 타입이 모두 boolean인지 확인합니다."
-      ],
-      "code": "const price = 12000;\n\nconst over5000 = price > 5000;\nconst under5000 = price < 5000;\nconst exactly5000 = price === 5000;\n\nconsole.log(over5000);\nconsole.log(under5000);\nconsole.log(exactly5000);\nconsole.log(typeof over5000, typeof under5000, typeof exactly5000);\n"
-    },
-    {
-      "kind": "tweak",
-      "title": "경계값 비교하기",
-      "brief": [
-        "price를 5000으로 바꾸고 실행해 보세요. > 5000은 false이고 === 5000은 true가 됩니다.",
-        ">를 >=로 바꾸면 5000도 true가 됩니다. >=는 크거나 같다는 비교입니다. 반대로 <=는 작거나 같다는 비교입니다.",
-        "문제에서 '초과'라고 하면 >, '이상'이라고 하면 >=를 씁니다. 경계에 있는 값 하나를 직접 넣어 보는 습관이 비교식의 실수를 줄입니다."
-      ],
-      "code": "const price = 12000;\n\nconsole.log(price > 5000);\nconsole.log(price === 5000);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "참과 거짓 만들기",
-      "brief": [
-        "두 값을 비교하면 불리언이 나옵니다. 12000 > 5000은 true, 3 > 10은 false입니다. 크다는 >, 작다는 <, 같다는 ===를 씁니다.",
-        "null 자리에 price가 5000보다 큰지 묻는 비교를 넣어 보세요. price라는 이름을 그대로 쓰면 됩니다.",
-        "채우지 않고 실행하면 실제값이 null로 나옵니다. 기대값은 검사 결과에서 확인할 수 있습니다."
-      ],
-      "code": "const price = 12000;\n\nconst isExpensive = null; // ← 여기를 채우세요\n\nfunction getAnswer() {\n  return isExpensive;\n}\n",
-      "entry": "getAnswer",
-      "solutionCode": "const price = 12000;\n\nconst isExpensive = price > 5000;\n\nfunction getAnswer() {\n  return isExpensive;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "12000은 5000보다 큽니다",
-          "args": [],
-          "expected": true
-        }
-      ],
-      "hints": [
-        "비교 기호를 쓰면 그 자리에 참 또는 거짓이 남습니다. 지금 null 자리에 값을 하나 적으려 하고 있다면, 적어야 할 것은 값이 아니라 비교 그 자체입니다."
-      ]
-    },
-    {
-      "kind": "wrap",
-      "title": "어떤 값에도 통하게",
-      "brief": [
-        "앞 단계에서 만든 비교가 그대로 함수 안에 들어가 있습니다. 다만 아직 12000 이라는 정해진 값만 봅니다.",
-        "함수가 받는 값의 이름은 value 입니다. 표시된 줄을 지우고, 본문에서 price 라고 쓴 곳을 value 로 바꿔 보세요.",
-        "검사는 세 건입니다. 고치지 않고 실행하면 첫 건만 통과합니다. 나머지 둘은 다른 값을 넣기 때문입니다."
-      ],
-      "code": "function isBig(value) {\n  const price = 12000; // ← 이 줄을 지우고 value 를 쓰세요\n\n  return price > 5000;\n}\n",
-      "entry": "isBig",
-      "solutionCode": "function isBig(value) {\n  return value > 5000;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "12000 은 5000 보다 큽니다",
-          "args": [
-            12000
-          ],
-          "expected": true
-        },
-        {
-          "type": "value",
-          "label": "3000 은 크지 않습니다",
-          "args": [
-            3000
-          ],
-          "expected": false
-        },
-        {
-          "type": "value",
-          "label": "5000 자기 자신은 크지 않습니다 — 경계값",
-          "args": [
-            5000
-          ],
-          "expected": false
-        }
-      ],
-      "hints": [
-        "함수가 받은 값은 괄호 안에 적힌 이름으로 부릅니다. 지금 비교하고 있는 것은 그 이름이 아니라 위에 적어 둔 숫자입니다."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "비싼지 판단하는 함수",
-      "brief": [
-        "isExpensive 함수를 완성해 보세요. 가격을 받아 5만 원보다 비싸면 true, 아니면 false를 반환합니다.",
-        "if 문은 아직 필요하지 않습니다. 비교 자체가 이미 불리언이라 그 결과를 그대로 반환하면 됩니다.",
-        "5만 원 딱 그 값은 '비싸다'에 넣지 않습니다. 어떤 비교 기호를 쓸지 여기서 갈립니다."
-      ],
-      "code": "function isExpensive(price) {\n  // 여기를 채우세요\n}\n",
-      "entry": "isExpensive",
-      "solutionCode": "function isExpensive(price) {\n  return price > 50000;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "60000원은 비쌉니다",
-          "args": [
-            60000
-          ],
-          "expected": true
-        },
-        {
-          "type": "value",
-          "label": "딱 50000원은 비싸지 않습니다 — 경계값",
-          "args": [
-            50000
-          ],
-          "expected": false
-        },
-        {
-          "type": "value",
-          "label": "0원도 비싸지 않습니다",
-          "args": [
-            0
-          ],
-          "expected": false
-        }
-      ],
-      "hints": [
-        "read 에서 본 대로 비교는 그 자체가 참·거짓입니다. if 로 갈라 true 와 false 를 각각 반환하고 있다면 한 줄로 줄일 수 있습니다.",
-        "5만 원 딱 그 값이 어느 쪽에 들어가야 하는지 지문을 다시 보세요. 기호 하나가 그것을 정합니다."
-      ]
+      "code": "console.log(typeof '민수');\nconsole.log(typeof 12000);\nconsole.log(typeof false);\nconsole.log(typeof { name: '민수' });\n"
     }
   ]
 }

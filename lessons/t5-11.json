@@ -1,281 +1,40 @@
 {
-  "schemaVersion": 2,
-  "id": "t5-11",
-  "track": "T5",
-  "order": 11,
-  "runtime": "js",
-  "title": "한꺼번에 보내기",
+  "schemaVersion": 2, "id": "t5-11", "track": "T5", "order": 11, "runtime": "react",
+  "title": "props로 부모의 값을 자식에게 전달하기",
   "steps": [
     {
-      "kind": "read",
-      "title": "서로 기다릴 필요가 없을 때",
+      "kind": "read", "title": "부모가 JSX 속성으로 값을 전달합니다",
       "brief": [
-        "t5-05 에서 코스를 찾고 그 코스의 강사를 찾았습니다. 강사를 찾으려면 코스 번호가 필요했으므로 순서대로 기다릴 수밖에 없었습니다. 뒤의 것이 앞의 것에 기댈 때는 그것이 맞습니다.",
-        "그런데 서로 상관없는 요청을 순서대로 기다리는 경우가 훨씬 많습니다. 코스 목록과 공지 목록과 내 정보를 각각 받아 한 화면에 그린다고 해 봅시다. 셋은 서로를 필요로 하지 않습니다. 그런데 await 를 세 줄 이어 쓰면 첫째가 끝나야 둘째가 출발합니다. 기다리는 시간이 더해집니다.",
-        "Promise.all 이 그 자리입니다. Promise.all([a, b, c]) 라고 쓰면 셋을 한꺼번에 맡기고, 셋이 다 끝났을 때 결과를 배열로 돌려줍니다. await 한 번으로 셋을 받습니다.",
-        "결과의 순서는 넣은 순서와 같습니다. 완료된 순서가 아닙니다. 느린 것을 먼저 넣었으면 결과에서도 그것이 먼저입니다. 그래서 구조 분해로 const [코스, 공지, 내정보] = await Promise.all([...]) 처럼 받아 쓸 수 있습니다.",
-        "핵심은 실패할 때입니다. 하나라도 실패하면 Promise.all 전체가 실패합니다. 성공한 것이 둘이어도 결과를 받지 못합니다. 거부되는 순간 곧바로 그 에러를 던지고, 나머지가 끝나기를 기다리지도 않습니다. 받는 쪽 입장에서는 실패 하나가 전부를 무효로 만듭니다.",
-        "여기서 오해하기 쉬운 것이 있습니다. 나머지 요청이 취소되는 것은 아닙니다. 이미 보낸 요청은 그대로 진행되고 결과만 버려집니다. 자바스크립트에는 이미 시작한 Promise 를 되돌리는 방법이 없습니다.",
-        "그래서 Promise.all 은 '전부 있어야 화면을 그릴 수 있을 때' 쓰는 것입니다. 셋 중 하나가 없으면 그 화면이 의미가 없다면 맞는 선택입니다. 하나가 빠져도 나머지를 보여 줘야 한다면 다른 것이 필요하고, 그것이 다음 레슨입니다.",
-        "한 가지 더. Promise.all 에 넘기는 것은 이미 시작된 Promise 들입니다. count('/api/courses') 라고 쓰는 순간 요청은 이미 나갑니다. Promise.all 이 요청을 보내는 것이 아니라, 이미 나간 것들을 한데 모아 기다려 주는 것입니다."
+        "props는 부모 컴포넌트가 자식 컴포넌트에 전달하는 값입니다.",
+        { "code": ["<ProductCard name=\"셔츠\" price={39000} />", "", "function ProductCard(props) {", "  return <p>{props.name}: {props.price}원</p>;", "}"] },
+        "JSX 속성 이름이 props 객체의 프로퍼티 이름이 됩니다. 문자열은 따옴표로, 숫자 같은 JavaScript 값은 중괄호로 전달합니다.",
+        "함수 매개변수에서 const { name, price } = props와 같은 구조 분해를 바로 사용할 수도 있습니다: function ProductCard({ name, price }).",
+        "props는 부모에서 자식 방향으로 전달됩니다. 자식은 받은 props를 직접 변경하지 않고 필요한 새 값을 부모가 전달하게 합니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "둘을 한꺼번에",
-      "brief": [
-        "두 주소의 코스 개수를 한꺼번에 받아 합칩니다.",
-        "실행해 보세요. 두 결과가 함께 나옵니다.",
-        "구조 분해로 받는 것을 보세요. 넣은 순서가 그대로 유지되므로 a 는 언제나 첫째 주소의 결과입니다."
-      ],
-      "env": [
-        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
-        "(() => {",
-        "  const COURSES = [",
-        "    { id: 1, name: '리액트 입문', hours: 8 },",
-        "    { id: 2, name: 'CSS 레이아웃', hours: 6 },",
-        "    { id: 3, name: '자바스크립트 기초', hours: 12 },",
-        "  ];",
-        "",
-        "  const json = (data, status, statusText) => new Response(JSON.stringify(data), {",
-        "    status,",
-        "    statusText,",
-        "    headers: { 'Content-Type': 'application/json' },",
-        "  });",
-        "",
-        "  window.fetch = (url) => new Promise((resolve, reject) => {",
-        "    const key = String(url);",
-        "    setTimeout(() => {",
-        "      if (key === '/api/down') { reject(new TypeError('Failed to fetch')); return; }",
-        "      if (key === '/api/courses') { resolve(json(COURSES, 200, 'OK')); return; }",
-        "      if (key === '/api/none') { resolve(json([], 200, 'OK')); return; }",
-        "      if (key === '/api/broken') { resolve(json({ message: '서버가 잠시 멈췄습니다' }, 500, 'Internal Server Error')); return; }",
-        "      resolve(new Response('<!doctype html><h1>Not Found</h1>', {",
-        "        status: 404,",
-        "        statusText: 'Not Found',",
-        "        headers: { 'Content-Type': 'text/html' },",
-        "      }));",
-        "    }, 60);",
-        "  });",
-        "})();"
-      ],
-      "code": "// 이 함수는 그대로 두세요\nasync function count(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  const list = await res.json();\n  return list.length;\n}\n\nasync function main() {\n  const [a, b] = await Promise.all([\n    count('/api/courses'),\n    count('/api/none'),\n  ]);\n\n  console.log('코스 목록:', a + '개');\n  console.log('빈 목록:', b + '개');\n  console.log('합계:', a + b);\n}\n\nmain();\n"
+      "kind": "run", "title": "한 컴포넌트에 다른 props 전달하기",
+      "brief": ["ProductCard 코드는 하나지만 첫 호출은 셔츠와 39000, 둘째 호출은 모자와 15000을 전달합니다.", "자식 컴포넌트는 전달받은 값으로 서로 다른 화면을 반환합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".card { margin: 6px 0; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }"] },
+      "code": "function ProductCard({ name, price }) {\n  return (\n    <article className=\"card\">\n      <b>{name}</b>\n      <span> {price}원</span>\n    </article>\n  );\n}\n\nfunction App() {\n  return (\n    <main>\n      <ProductCard name=\"셔츠\" price={39000} />\n      <ProductCard name=\"모자\" price={15000} />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     },
     {
-      "kind": "tweak",
-      "title": "하나가 실패하면 · 받지 않으면 · 순서는",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
-        "① '/api/none' 을 '/api/broken' 으로 바꾸고, main 안을 try 와 catch 로 감싸 catch 에서 console.log('실패:', e.message) 를 찍어 보세요. '실패: 불러오지 못했습니다 (500)' 만 나옵니다. 첫째 주소는 성공했는데 그 결과는 어디에도 오지 않습니다. 하나가 전부를 무효로 만든다는 것이 이 뜻입니다.",
-        "② 그 상태에서 try 와 catch 를 걷어내 보세요. 콘솔에 Uncaught (in promise) 가 남고 아무 줄도 찍히지 않습니다. Promise.all 의 실패도 앞 레슨의 그 실패와 같습니다. 반드시 받아야 합니다.",
-        "③ 되돌린 뒤 두 주소의 순서를 서로 바꿔 보세요. 출력의 a 와 b 가 함께 바뀝니다. 결과는 언제나 넣은 순서를 따릅니다. 어느 쪽이 먼저 끝났는지는 상관이 없습니다."
-      ],
-      "env": [
-        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
-        "(() => {",
-        "  const COURSES = [",
-        "    { id: 1, name: '리액트 입문', hours: 8 },",
-        "    { id: 2, name: 'CSS 레이아웃', hours: 6 },",
-        "    { id: 3, name: '자바스크립트 기초', hours: 12 },",
-        "  ];",
-        "",
-        "  const json = (data, status, statusText) => new Response(JSON.stringify(data), {",
-        "    status,",
-        "    statusText,",
-        "    headers: { 'Content-Type': 'application/json' },",
-        "  });",
-        "",
-        "  window.fetch = (url) => new Promise((resolve, reject) => {",
-        "    const key = String(url);",
-        "    setTimeout(() => {",
-        "      if (key === '/api/down') { reject(new TypeError('Failed to fetch')); return; }",
-        "      if (key === '/api/courses') { resolve(json(COURSES, 200, 'OK')); return; }",
-        "      if (key === '/api/none') { resolve(json([], 200, 'OK')); return; }",
-        "      if (key === '/api/broken') { resolve(json({ message: '서버가 잠시 멈췄습니다' }, 500, 'Internal Server Error')); return; }",
-        "      resolve(new Response('<!doctype html><h1>Not Found</h1>', {",
-        "        status: 404,",
-        "        statusText: 'Not Found',",
-        "        headers: { 'Content-Type': 'text/html' },",
-        "      }));",
-        "    }, 60);",
-        "  });",
-        "})();"
-      ],
-      "code": "// 이 함수는 그대로 두세요\nasync function count(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  const list = await res.json();\n  return list.length;\n}\n\nasync function main() {\n  const [a, b] = await Promise.all([\n    count('/api/courses'),\n    count('/api/none'),\n  ]);\n\n  console.log('코스 목록:', a + '개');\n  console.log('빈 목록:', b + '개');\n  console.log('합계:', a + b);\n}\n\nmain();\n"
+      "kind": "tweak", "title": "문자열과 숫자 props 비교하기",
+      "brief": ["첫 price={39000}을 price=\"39000\"으로 바꿔 보세요. 화면은 같아 보여도 자식이 받는 자료형은 문자열로 바뀝니다.", "ProductCard 안에서 console.log(typeof price)를 추가해 확인하세요.", "가격 계산이 필요하다면 숫자 props를 전달해야 합니다. JSX에서도 값의 자료형이 사라지지 않습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".card { margin: 6px 0; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }"] },
+      "code": "function ProductCard({ name, price }) {\n  return (\n    <article className=\"card\">\n      <b>{name}</b>\n      <span> {price}원</span>\n    </article>\n  );\n}\n\nfunction App() {\n  return (\n    <main>\n      <ProductCard name=\"셔츠\" price={39000} />\n      <ProductCard name=\"모자\" price={15000} />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     },
     {
-      "kind": "fill",
-      "title": "한꺼번에 기다리는 줄 채우기",
-      "brief": [
-        "세 주소를 각각 세는 것은 돼 있고 한꺼번에 기다리는 자리가 비어 있습니다.",
-        "null 자리를 채워 세 요청을 한꺼번에 기다리고 결과 배열을 받아 주세요. 순서는 courses · none · courses 입니다.",
-        "채우지 않고 실행하면 null 을 구조 분해하려다 실패합니다."
-      ],
-      "env": [
-        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
-        "(() => {",
-        "  const COURSES = [",
-        "    { id: 1, name: '리액트 입문', hours: 8 },",
-        "    { id: 2, name: 'CSS 레이아웃', hours: 6 },",
-        "    { id: 3, name: '자바스크립트 기초', hours: 12 },",
-        "  ];",
-        "",
-        "  const json = (data, status, statusText) => new Response(JSON.stringify(data), {",
-        "    status,",
-        "    statusText,",
-        "    headers: { 'Content-Type': 'application/json' },",
-        "  });",
-        "",
-        "  window.fetch = (url) => new Promise((resolve, reject) => {",
-        "    const key = String(url);",
-        "    setTimeout(() => {",
-        "      if (key === '/api/down') { reject(new TypeError('Failed to fetch')); return; }",
-        "      if (key === '/api/courses') { resolve(json(COURSES, 200, 'OK')); return; }",
-        "      if (key === '/api/none') { resolve(json([], 200, 'OK')); return; }",
-        "      if (key === '/api/broken') { resolve(json({ message: '서버가 잠시 멈췄습니다' }, 500, 'Internal Server Error')); return; }",
-        "      resolve(new Response('<!doctype html><h1>Not Found</h1>', {",
-        "        status: 404,",
-        "        statusText: 'Not Found',",
-        "        headers: { 'Content-Type': 'text/html' },",
-        "      }));",
-        "    }, 60);",
-        "  });",
-        "})();"
-      ],
-      "code": "// 이 함수는 그대로 두세요\nasync function count(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  const list = await res.json();\n  return list.length;\n}\n\nasync function totals() {\n  const [a, b, c] = null; // ← 여기를 채우세요\n\n  return { a, b, c, sum: a + b + c };\n}\n",
-      "entry": "totals",
-      "solutionCode": "// 이 함수는 그대로 두세요\nasync function count(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  const list = await res.json();\n  return list.length;\n}\n\nasync function totals() {\n  const [a, b, c] = await Promise.all([\n    count('/api/courses'),\n    count('/api/none'),\n    count('/api/courses'),\n  ]);\n\n  return { a, b, c, sum: a + b + c };\n}\n",
+      "kind": "fill", "title": "받은 props를 JSX에 표시하기",
+      "brief": ["ProductCard가 받은 name과 price를 화면에 표시하도록 두 문자열을 중괄호 표현식으로 바꾸세요.", "부모가 전달하는 셔츠와 숫자 39000을 자식 안에서 사용해야 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "function ProductCard({ name, price }) {\n  return <p><b>이름</b>: <span>가격</span>원</p>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(\n  <ProductCard name=\"셔츠\" price={39000} />\n);\n",
+      "solutionCode": "function ProductCard({ name, price }) {\n  return <p><b>{name}</b>: <span>{price}</span>원</p>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(\n  <ProductCard name=\"셔츠\" price={39000} />\n);\n",
       "asserts": [
-        {
-          "type": "value",
-          "label": "셋을 한꺼번에 받습니다",
-          "args": [],
-          "expected": {
-            "a": 3,
-            "b": 0,
-            "c": 3,
-            "sum": 6
-          }
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "모아서 한 번에",
-      "brief": [
-        "주소 목록을 받아 개수를 한꺼번에 세는 countAll 을 만들어 주세요.",
-        "count 는 주어져 있습니다. 주소마다 count 를 부르고 그것들을 한꺼번에 기다리세요. 한 줄씩 await 하면 안 됩니다.",
-        "성공하면 { total: 전체 합계, counts: 주소별 개수 배열 } 을 돌려주세요. counts 의 순서는 받은 주소 순서와 같아야 합니다.",
-        "하나라도 실패하면 { error: 에러 메시지 } 를 돌려주세요. 실패는 던지지 말고 여기서 잡아 처리합니다.",
-        "빈 목록을 받으면 { total: 0, counts: [] } 입니다."
+        { "type": "dom", "label": "name props가 표시됨", "select": "b", "text": ["셔츠"] },
+        { "type": "dom", "label": "price props가 표시됨", "select": "span", "text": ["39000"] }
       ],
-      "env": [
-        "// 이 무대의 서버입니다. 진짜 서버는 없습니다.",
-        "(() => {",
-        "  const COURSES = [",
-        "    { id: 1, name: '리액트 입문', hours: 8 },",
-        "    { id: 2, name: 'CSS 레이아웃', hours: 6 },",
-        "    { id: 3, name: '자바스크립트 기초', hours: 12 },",
-        "  ];",
-        "",
-        "  const json = (data, status, statusText) => new Response(JSON.stringify(data), {",
-        "    status,",
-        "    statusText,",
-        "    headers: { 'Content-Type': 'application/json' },",
-        "  });",
-        "",
-        "  window.fetch = (url) => new Promise((resolve, reject) => {",
-        "    const key = String(url);",
-        "    setTimeout(() => {",
-        "      if (key === '/api/down') { reject(new TypeError('Failed to fetch')); return; }",
-        "      if (key === '/api/courses') { resolve(json(COURSES, 200, 'OK')); return; }",
-        "      if (key === '/api/none') { resolve(json([], 200, 'OK')); return; }",
-        "      if (key === '/api/broken') { resolve(json({ message: '서버가 잠시 멈췄습니다' }, 500, 'Internal Server Error')); return; }",
-        "      resolve(new Response('<!doctype html><h1>Not Found</h1>', {",
-        "        status: 404,",
-        "        statusText: 'Not Found',",
-        "        headers: { 'Content-Type': 'text/html' },",
-        "      }));",
-        "    }, 60);",
-        "  });",
-        "})();"
-      ],
-      "code": "// 이 함수는 그대로 두세요\nasync function count(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  const list = await res.json();\n  return list.length;\n}\n\n// countAll 을 여기에 작성하세요\n",
-      "entry": "countAll",
-      "solutionCode": "// 이 함수는 그대로 두세요\nasync function count(url) {\n  const res = await fetch(url);\n  if (!res.ok) {\n    throw new Error('불러오지 못했습니다 (' + res.status + ')');\n  }\n  const list = await res.json();\n  return list.length;\n}\n\nasync function countAll(urls) {\n  try {\n    const counts = await Promise.all(urls.map((url) => count(url)));\n    const total = counts.reduce((sum, n) => sum + n, 0);\n    return { total, counts };\n  } catch (e) {\n    return { error: e.message };\n  }\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "둘 다 성공",
-          "args": [
-            [
-              "/api/courses",
-              "/api/none"
-            ]
-          ],
-          "expected": {
-            "total": 3,
-            "counts": [
-              3,
-              0
-            ]
-          }
-        },
-        {
-          "type": "value",
-          "label": "순서를 지킵니다",
-          "args": [
-            [
-              "/api/none",
-              "/api/courses"
-            ]
-          ],
-          "expected": {
-            "total": 3,
-            "counts": [
-              0,
-              3
-            ]
-          }
-        },
-        {
-          "type": "value",
-          "label": "하나가 실패하면 전체가 실패",
-          "args": [
-            [
-              "/api/courses",
-              "/api/broken"
-            ]
-          ],
-          "expected": {
-            "error": "불러오지 못했습니다 (500)"
-          }
-        },
-        {
-          "type": "value",
-          "label": "닿지 못한 요청도 마찬가지",
-          "args": [
-            [
-              "/api/down",
-              "/api/courses"
-            ]
-          ],
-          "expected": {
-            "error": "Failed to fetch"
-          }
-        },
-        {
-          "type": "value",
-          "label": "빈 목록",
-          "args": [
-            []
-          ],
-          "expected": {
-            "total": 0,
-            "counts": []
-          }
-        }
-      ]
+      "hints": ["글자 이름을 {name}으로 바꾸세요.", "글자 가격을 {price}로 바꾸세요."]
     }
   ]
 }

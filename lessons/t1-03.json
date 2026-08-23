@@ -3,205 +3,38 @@
   "id": "t1-03",
   "track": "T1",
   "order": 3,
-  "title": "객체로 값 묶기",
+  "runtime": "js",
+  "title": "숫자와 특별한 숫자 결과 이해하기",
   "steps": [
     {
       "kind": "read",
-      "title": "흩어진 값을 하나로 묶기",
+      "title": "정수와 소수는 모두 number입니다",
       "brief": [
-        "상품 하나를 다루려면 이름, 가격, 재고가 함께 필요합니다. 변수를 셋으로 나눠 두면 상품이 둘이 되는 순간 여섯 개가 되고, 어느 이름이 어느 가격과 짝인지 코드만 봐서는 알 수 없습니다.",
-        "객체(object — 이름이 붙은 값들의 묶음)는 그 값들을 하나로 묶습니다. 중괄호 안에 이름과 값을 콜론으로 짝지어 쉼표로 나열합니다. 이렇게 이름이 붙은 값 하나하나를 프로퍼티(property — 객체가 가진 이름 붙은 값)라고 합니다. 꺼낼 때는 점을 찍고 그 이름을 적습니다. 이것을 프로퍼티에 접근한다고도 합니다.",
-        {
-          "code": [
-            "const product = { name: '셔츠', price: 39000, stock: 3 };",
-            "",
-            "console.log(product.name);   // 셔츠",
-            "",
-            "const label = product.name + ' ' + product.price + '원';",
-            "console.log(label);          // 셔츠 39000원",
-            "",
-            "const total = product.price * product.stock;",
-            "console.log(total);          // 117000"
-          ]
-        },
-        "꺼낸 값은 보통 그대로 쓰지 않고 다른 것과 엮습니다. 화면에 보여줄 글자로 잇거나, 다른 값과 계산합니다. 묶어 두면 product 하나만 넘겨도 그 안의 것을 모두 쓸 수 있습니다.",
-        "프로퍼티 이름은 적힌 그대로 써야 합니다. price 와 Price 는 다른 이름입니다. 없는 이름을 꺼내면 undefined 가 나오는데, 이건 '그런 값이 없다'는 뜻입니다."
+        "JavaScript에서는 12와 같은 정수도, 3.5와 같은 소수도 number 타입입니다.",
+        { "code": ["console.log(typeof 12);  // number", "console.log(typeof 3.5); // number"] },
+        "+, -, *, /로 더하기, 빼기, 곱하기, 나누기를 할 수 있습니다. %는 나눈 뒤의 나머지를 구합니다.",
+        "숫자 계산이 정상적인 숫자로 끝나지 못할 때 NaN이 나올 수 있습니다. NaN은 Not a Number의 줄임말이지만, typeof NaN의 결과는 number입니다. JavaScript 숫자 체계 안에서 실패한 계산 결과를 나타내기 때문입니다.",
+        "0으로 나눈 결과처럼 값이 끝없이 커질 때는 Infinity가 나옵니다. NaN과 Infinity도 number 타입에 속합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "묶고 꺼내 보기",
+      "title": "계산 결과를 직접 확인하기",
       "brief": [
-        "아래에서 상품 하나를 객체로 만들고, 점을 찍어 값을 하나씩 꺼내 출력합니다.",
-        "실행 버튼을 눌러 보세요. 세 줄이 나옵니다. 마지막 줄은 객체 자체를 출력한 것이라 묶음 전체가 보입니다.",
-        "객체 하나에 프로퍼티가 세 개 있고, 점 뒤에 적은 이름대로 값이 나옵니다."
+        "10 / 4는 2.5, 10 % 4는 2입니다.",
+        "문자열 '사과'를 숫자로 바꾸려 하면 NaN이 나옵니다. Number는 T1-08에서 자세히 배웁니다. 지금은 실패 결과만 확인하세요."
       ],
-      "code": "const product = {\n  name: '셔츠',\n  price: 39000,\n  stock: 3,\n};\n\nconsole.log(product.name);\nconsole.log(product.price);\nconsole.log(product);\n"
+      "code": "console.log(10 / 4);\nconsole.log(10 % 4);\nconsole.log(Number('사과'));\nconsole.log(1 / 0);\nconsole.log(typeof NaN);\n"
     },
     {
       "kind": "tweak",
-      "title": "없는 이름을 꺼내 보기",
+      "title": "NaN인지 안전하게 확인하기",
       "brief": [
-        "console.log(product.name); 을 console.log(product.color); 로 바꾸고 실행해 보세요. undefined가 나옵니다.",
-        "오류가 나지 않는다는 점이 중요합니다. 자바스크립트는 없는 이름을 꺼내도 멈추지 않고 undefined를 반환합니다. 오타를 내도 조용히 지나간다는 뜻입니다.",
-        "객체에 color: '파랑' 을 추가하고 다시 실행해 보세요. 이번에는 값이 나옵니다."
+        "Number('사과')를 Number('42')로 바꾸면 42가 출력됩니다. 숫자 모양의 문자열은 숫자로 바꿀 수 있기 때문입니다.",
+        "맨 아래에 console.log(Number.isNaN(Number('사과')));를 추가해 보세요. 결과는 true입니다.",
+        "값이 NaN인지 확인할 때는 Number.isNaN을 사용합니다. NaN과 직접 비교하는 방법은 올바르게 작동하지 않습니다."
       ],
-      "code": "const product = {\n  name: '셔츠',\n  price: 39000,\n  stock: 3,\n};\n\nconsole.log(product.name);\nconsole.log(product.price);\nconsole.log(product);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "골라서 새로 묶기",
-      "brief": [
-        "화면에 쓸 것은 이름과 가격뿐입니다. 재고는 빼고 둘만 담은 새 객체를 만들어야 합니다.",
-        "null 자리에 name 과 price 두 프로퍼티를 가진 객체를 넣어 보세요. 값은 product 에서 꺼내 옵니다.",
-        "채우지 않고 실행하면 실제값이 null 로 나옵니다."
-      ],
-      "code": "const product = {\n  name: '모자',\n  price: 19000,\n  stock: 7,\n};\n\nconst card = null; // ← 여기를 채우세요\n\nfunction getCard() {\n  return card;\n}\n",
-      "entry": "getCard",
-      "solutionCode": "const product = {\n  name: '모자',\n  price: 19000,\n  stock: 7,\n};\n\nconst card = { name: product.name, price: product.price };\n\nfunction getCard() {\n  return card;\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "이름과 가격만 담깁니다",
-          "args": [],
-          "expected": {
-            "name": "모자",
-            "price": 19000
-          }
-        }
-      ],
-      "hints": [
-        "꺼내는 것과 묶는 것을 한 줄에서 같이 합니다. 중괄호를 열고 프로퍼티 이름을 적은 뒤, 그 값 자리에 product 에서 점을 찍어 꺼낸 것을 놓으세요."
-      ]
-    },
-    {
-      "kind": "wrap",
-      "title": "어떤 상품에도 통하게",
-      "brief": [
-        "앞 단계에서 만든 새 객체가 그대로 함수 안에 들어가 있습니다. 다만 아직 정해진 상품 하나만 봅니다.",
-        "함수가 받는 값의 이름은 item 입니다. 표시된 줄을 지우고, 본문에서 product 라고 쓴 곳을 item 으로 바꿔 보세요.",
-        "검사는 세 건입니다. 고치지 않고 실행하면 첫 건만 통과합니다. 재고가 0인 상품과 쓸데없는 필드가 섞인 상품이 함께 들어옵니다."
-      ],
-      "code": "function toCard(item) {\n  const product = { name: '모자', price: 19000, stock: 7 }; // ← 이 줄을 지우고 item 을 쓰세요\n\n  return { name: product.name, price: product.price };\n}\n",
-      "entry": "toCard",
-      "solutionCode": "function toCard(item) {\n  return { name: item.name, price: item.price };\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "이름과 가격만 남습니다",
-          "args": [
-            {
-              "name": "모자",
-              "price": 19000,
-              "stock": 7
-            }
-          ],
-          "expected": {
-            "name": "모자",
-            "price": 19000
-          }
-        },
-        {
-          "type": "value",
-          "label": "재고가 0이어도 상관없습니다",
-          "args": [
-            {
-              "name": "셔츠",
-              "price": 39000,
-              "stock": 0
-            }
-          ],
-          "expected": {
-            "name": "셔츠",
-            "price": 39000
-          }
-        },
-        {
-          "type": "value",
-          "label": "모르는 필드는 버립니다",
-          "args": [
-            {
-              "name": "양말",
-              "price": 4000,
-              "memo": "내부용"
-            }
-          ],
-          "expected": {
-            "name": "양말",
-            "price": 4000
-          }
-        }
-      ],
-      "hints": [
-        "고칠 곳이 두 군데입니다. 점 왼쪽에 적힌 이름이 함수가 받은 값이어야 합니다."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "화면에 쓸 것만 골라 묶기",
-      "brief": [
-        "summarize 함수를 완성해 보세요. 상품 객체를 받아 화면에 필요한 것만 담은 새 객체를 반환합니다.",
-        "새 객체에는 name, price, hasStock 세 개만 담습니다. name과 price는 받은 값을 그대로 옮기고, hasStock은 재고가 0보다 큰지를 참·거짓으로 담습니다.",
-        "받은 객체에 memo 같은 다른 프로퍼티가 있어도 새 객체에는 옮기지 않습니다."
-      ],
-      "code": "function summarize(product) {\n  // 여기를 채우세요\n}\n",
-      "entry": "summarize",
-      "solutionCode": "function summarize(product) {\n  return {\n    name: product.name,\n    price: product.price,\n    hasStock: product.stock > 0,\n  };\n}\n",
-      "asserts": [
-        {
-          "type": "value",
-          "label": "필요한 것만 담깁니다 — memo는 빠져야 합니다",
-          "args": [
-            {
-              "name": "셔츠",
-              "price": 39000,
-              "stock": 3,
-              "memo": "내부용"
-            }
-          ],
-          "expected": {
-            "name": "셔츠",
-            "price": 39000,
-            "hasStock": true
-          }
-        },
-        {
-          "type": "value",
-          "label": "재고가 0이면 hasStock은 거짓입니다 — 경계값",
-          "args": [
-            {
-              "name": "모자",
-              "price": 19000,
-              "stock": 0
-            }
-          ],
-          "expected": {
-            "name": "모자",
-            "price": 19000,
-            "hasStock": false
-          }
-        },
-        {
-          "type": "value",
-          "label": "가격이 0이어도 그대로 옮깁니다",
-          "args": [
-            {
-              "name": "사은품",
-              "price": 0,
-              "stock": 5
-            }
-          ],
-          "expected": {
-            "name": "사은품",
-            "price": 0,
-            "hasStock": true
-          }
-        }
-      ],
-      "hints": [
-        "받은 객체를 고치는 것이 아니라 새 객체를 만들어 반환하는 일입니다. 중괄호를 열고 필요한 세 가지만 적으면 나머지는 저절로 빠집니다.",
-        "hasStock 은 재고 숫자가 아니라 참·거짓입니다. t1-01 에서 본 비교가 그 자리에 그대로 들어갑니다."
-      ]
+      "code": "console.log(10 / 4);\nconsole.log(10 % 4);\nconsole.log(Number('사과'));\nconsole.log(1 / 0);\nconsole.log(typeof NaN);\n"
     }
   ]
 }

@@ -3,171 +3,38 @@
   "id": "t2-07",
   "track": "T2",
   "order": 7,
-  "title": "입력창의 값 읽기",
+  "runtime": "js",
+  "title": "반복되는 코드에 함수로 이름 붙이기",
   "steps": [
     {
       "kind": "read",
-      "title": "친 값은 글자로 남지 않습니다",
+      "title": "같은 작업을 여러 번 적지 않습니다",
       "brief": [
-        "지금까지 화면의 글자는 textContent 로 읽었습니다. 입력창은 다릅니다. 마크업에 있는 것은 <input> 태그 하나뿐이고 그 안에는 글자가 없습니다. 사용자가 아무리 쳐도 textContent 는 빈 문자열입니다. 친 값은 요소의 value 에 들어갑니다.",
-        "언제 읽을지도 문제입니다. 클릭은 누르는 순간이 분명한데 입력은 계속 이어집니다. input 이벤트는 값이 바뀔 때마다 불립니다. 한 글자 칠 때마다 한 번씩입니다. 지우는 것도 값이 바뀌는 것이므로 지울 때도 불립니다.",
-        "앞 레슨에서 본 이벤트 객체는 여기서도 옵니다. event.target 이 그 입력창이므로 event.target.value 로도 같은 값을 읽을 수 있습니다. 붙잡아 둔 변수로 읽든 event.target 으로 읽든 결과는 같습니다."
+        "함수는 여러 줄의 작업을 하나로 묶고 이름을 붙인 것입니다. 같은 작업이 반복될 때 함수를 만들면 중복을 줄일 수 있습니다.",
+        { "code": ["function printOrder() {", "  console.log('상품 확인');", "  console.log('결제 확인');", "}", "", "printOrder();"] },
+        "함수를 만들었다고 안의 코드가 바로 실행되지는 않습니다. printOrder()처럼 호출해야 실행됩니다.",
+        "함수 이름은 어떤 일을 하는지 설명해야 합니다. printOrder처럼 동작을 나타내는 동사로 시작하면 역할을 알아보기 쉽습니다.",
+        "중복이 없더라도 복잡한 작업에 이름을 붙이면 코드를 읽는 데 도움이 됩니다. 다만 한 줄마다 무조건 함수로 나눌 필요는 없습니다."
       ]
     },
     {
       "kind": "run",
-      "title": "쳐 보며 확인하기",
+      "title": "하나의 함수를 두 번 호출하기",
       "brief": [
-        "검색창에 input 이벤트를 맡기고 값을 콘솔에 찍기만 합니다.",
-        "실행 버튼을 누르면 아무것도 찍히지 않습니다. 값이 바뀐 적이 없기 때문입니다.",
-        "미리보기의 검색창을 눌러 직접 쳐 보세요. 한 글자마다 한 줄씩 찍힙니다. 한 글자를 지워도 한 줄 찍힙니다."
+        "printReceipt 함수는 한 번만 선언했지만 두 번 호출했습니다.",
+        "호출할 때마다 함수 안의 두 줄이 위에서 아래로 실행되므로 영수증 내용이 두 번 출력됩니다."
       ],
-      "scaffold": {
-        "html": [
-          "<label class=\"field\" for=\"search\">코스 검색</label>",
-          "<input id=\"search\" class=\"field__input\" type=\"search\" placeholder=\"코스 이름\">",
-          "",
-          "<p id=\"result\">전체 코스</p>"
-        ],
-        "css": [
-          ".field { display: block; margin-bottom: 4px; }",
-          ".field__input { width: 200px; }"
-        ]
-      },
-      "code": "const search = document.querySelector('#search');\n\nsearch.addEventListener('input', () => {\n  console.log('지금 값:', search.value);\n});\n"
+      "code": "function printReceipt() {\n  console.log('상품: 셔츠');\n  console.log('가격: 39000원');\n}\n\nprintReceipt();\nprintReceipt();\n"
     },
     {
       "kind": "tweak",
-      "title": "어디서 읽고 언제 불리는지",
+      "title": "함수 한 곳만 고쳐 보기",
       "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행하고 검색창에 쳐 봐야 합니다.",
-        "① search.value 를 search.textContent 로 바꿔 보세요. 무엇을 쳐도 빈 문자열입니다. 친 값은 글자로 남지 않습니다.",
-        "② 매개변수를 (event) 로 열고 search.value 를 event.target.value 로 바꿔 보세요. 결과가 같습니다. event.target 이 바로 그 검색창입니다.",
-        "③ 'input' 을 'change' 로 바꿔 보세요. 칠 때는 조용합니다. 검색창 밖을 눌러 포커스가 빠질 때 한 번만 찍힙니다. 같은 입력창인데 언제 불리는지가 다릅니다."
+        "함수 안의 셔츠를 모자로 바꾸면 두 호출의 결과가 모두 바뀝니다.",
+        "아래쪽 printReceipt() 하나를 지우면 영수증은 한 번만 출력됩니다. 선언은 작업의 내용이고 호출은 실행 횟수를 정합니다.",
+        "서로 다른 상품을 출력하려면 함수를 복사하는 대신 다음 레슨에서 배울 매개변수로 값을 받는 편이 좋습니다."
       ],
-      "scaffold": {
-        "html": [
-          "<label class=\"field\" for=\"search\">코스 검색</label>",
-          "<input id=\"search\" class=\"field__input\" type=\"search\" placeholder=\"코스 이름\">",
-          "",
-          "<p id=\"result\">전체 코스</p>"
-        ],
-        "css": [
-          ".field { display: block; margin-bottom: 4px; }",
-          ".field__input { width: 200px; }"
-        ]
-      },
-      "code": "const search = document.querySelector('#search');\n\nsearch.addEventListener('input', () => {\n  console.log('지금 값:', search.value);\n});\n"
-    },
-    {
-      "kind": "fill",
-      "title": "글자 수 세기",
-      "brief": [
-        "검색창에 함수를 맡기는 것까지는 돼 있습니다. 아래 문단에 넣을 값이 비어 있습니다.",
-        "친 글자 수를 '3글자' 형태로 보여 주세요. 문자열의 길이는 .length 로 얻습니다.",
-        "검사가 검색창에 '리액트' 를 대신 쳐 넣어 확인합니다. 미리보기에서 직접 쳐 봐도 됩니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<label class=\"field\" for=\"search\">코스 검색</label>",
-          "<input id=\"search\" class=\"field__input\" type=\"search\" placeholder=\"코스 이름\">",
-          "",
-          "<p id=\"result\">전체 코스</p>"
-        ],
-        "css": [
-          ".field { display: block; margin-bottom: 4px; }",
-          ".field__input { width: 200px; }"
-        ]
-      },
-      "code": "const search = document.querySelector('#search');\nconst result = document.querySelector('#result');\n\nsearch.addEventListener('input', () => {\n  result.textContent = null; // ← 여기를 채우세요\n});\n",
-      "solutionCode": "const search = document.querySelector('#search');\nconst result = document.querySelector('#result');\n\nsearch.addEventListener('input', () => {\n  result.textContent = `${search.value.length}글자`;\n});\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "세 글자를 치면 3글자로 표시됩니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#search",
-              "value": "리액트"
-            }
-          ],
-          "select": "#result",
-          "text": [
-            "3글자"
-          ]
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "검색어 보여 주기",
-      "brief": [
-        "검색창에 친 값을 아래 문단에 '검색어: 리액트' 형태로 보여 주세요.",
-        "다만 검색창이 비어 있을 때는 '전체 코스' 로 보여야 합니다. 다 지웠을 때도 input 이 불리므로 그 경우를 나눠 주면 됩니다.",
-        "검사가 값을 대신 쳐 넣고, 지웠다가 다시 쳐서 확인합니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<label class=\"field\" for=\"search\">코스 검색</label>",
-          "<input id=\"search\" class=\"field__input\" type=\"search\" placeholder=\"코스 이름\">",
-          "",
-          "<p id=\"result\">전체 코스</p>"
-        ],
-        "css": [
-          ".field { display: block; margin-bottom: 4px; }",
-          ".field__input { width: 200px; }"
-        ]
-      },
-      "code": "// 여기를 채우세요\n",
-      "solutionCode": "const search = document.querySelector('#search');\nconst result = document.querySelector('#result');\n\nsearch.addEventListener('input', () => {\n  if (search.value === '') {\n    result.textContent = '전체 코스';\n  } else {\n    result.textContent = `검색어: ${search.value}`;\n  }\n});\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "친 값이 검색어로 표시됩니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#search",
-              "value": "리액트"
-            }
-          ],
-          "select": "#result",
-          "text": [
-            "검색어: 리액트"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "다 지우면 전체 코스로 돌아갑니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#search",
-              "value": ""
-            }
-          ],
-          "select": "#result",
-          "text": [
-            "전체 코스"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "다시 치면 그 값이 표시됩니다",
-          "actions": [
-            {
-              "action": "fill",
-              "selector": "#search",
-              "value": "CSS"
-            }
-          ],
-          "select": "#result",
-          "text": [
-            "검색어: CSS"
-          ]
-        }
-      ]
+      "code": "function printReceipt() {\n  console.log('상품: 셔츠');\n  console.log('가격: 39000원');\n}\n\nprintReceipt();\nprintReceipt();\n"
     }
   ]
 }

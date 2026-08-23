@@ -1,165 +1,26 @@
 {
-  "schemaVersion": 2,
-  "id": "t3-06",
-  "track": "T3",
-  "order": 6,
-  "runtime": "react",
-  "title": "값을 밖에서 받기",
+  "schemaVersion": 2, "id": "t3-06", "track": "T3", "order": 6, "runtime": "js",
+  "title": "객체를 할당하면 같은 객체를 가리킵니다",
   "steps": [
     {
-      "kind": "read",
-      "title": "쓰는 쪽이 값을 정합니다",
+      "kind": "read", "title": "객체 변수에는 객체를 찾는 참조가 들어 있습니다",
       "brief": [
-        "앞 레슨의 컴포넌트는 언제나 같은 카드를 돌려줬습니다. 세 번 써도 세 장이 똑같았습니다. 실제 목록은 그렇지 않습니다. 카드마다 제목과 가격이 다릅니다.",
-        "앞 트랙의 cardOf 함수는 코스 하나를 받아 그 값으로 문자열을 만들었습니다. 컴포넌트도 같습니다. 값을 밖에서 받습니다. 다만 받는 방법이 조금 다릅니다.",
-        "컴포넌트를 쓸 때 <Card title=\"울 코트\" price=\"590,000원\" /> 처럼 속성을 적습니다. HTML 속성처럼 보이지만 여기서는 함수에 넘기는 값입니다. 이것을 props 라고 부릅니다.",
-        "받는 쪽에서는 매개변수 하나로 옵니다. 적은 것이 몇 개든 객체 하나에 담겨 옵니다. { title: '울 코트', price: '590,000원' } 같은 모양입니다.",
-        "그래서 앞 트랙에서 배운 구조 분해를 그대로 씁니다. ({ title, price }) 라고 매개변수 자리에 적으면 필요한 것만 꺼내 쓸 수 있습니다. props 라는 이름으로 통째로 받아 props.title 로 꺼내도 되지만, 구조 분해가 짧고 무엇을 쓰는지 한눈에 보입니다."
+        "객체를 다른 변수에 할당하면 객체 전체가 새로 복사되지 않습니다. 두 변수가 같은 객체를 가리키게 됩니다.",
+        { "code": ["const original = { price: 12000 };", "const copied = original;", "copied.price = 39000;"] },
+        "copied를 통해 price를 바꾸면 original.price도 39000으로 보입니다. 실제로는 객체 하나를 두 이름으로 사용하고 있기 때문입니다.",
+        "객체가 있는 위치를 가리키는 값을 참조라고 합니다. 배열과 함수도 객체 타입이므로 같은 특징을 가집니다.",
+        "original === copied는 true입니다. 두 변수가 정확히 같은 객체를 가리키는지 비교한 결과입니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "카드마다 다른 값",
-      "brief": [
-        "컴포넌트는 하나인데 카드 세 장의 내용이 모두 다릅니다.",
-        "실행해 보세요. 마크업은 한 번만 적혀 있고 값만 세 번 다르게 넘어갑니다.",
-        "받는 쪽의 ({ title, price }) 를 보세요. 매개변수 자리에서 바로 꺼내 쓰고 있습니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          "#root { display: grid; gap: 8px; }",
-          ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
-          ".card__price { margin: 0; color: var(--c-text-muted); }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = ({ title, price }) => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">{title}</h3>\n    <p className=\"card__price\">{price}</p>\n  </article>\n);\n\nroot.render(\n  <>\n    <Card title=\"오버사이즈 셔츠\" price=\"189,000원\" />\n    <Card title=\"니트 베스트\" price=\"245,000원\" />\n    <Card title=\"울 코트\" price=\"590,000원\" />\n  </>\n);\n"
+      "kind": "run", "title": "두 변수가 공유하는 객체 확인하기",
+      "brief": ["copied.price를 바꾼 뒤 original.price와 copied.price가 모두 42000으로 출력됩니다.", "const는 original이나 copied를 다른 객체로 재할당하지 못하게 할 뿐, 공유 객체의 프로퍼티 변경을 막지 않습니다."],
+      "code": "const original = { name: '셔츠', price: 39000 };\nconst copied = original;\n\ncopied.price = 42000;\n\nconsole.log(original.price);\nconsole.log(copied.price);\nconsole.log(original === copied);\n"
     },
     {
-      "kind": "tweak",
-      "title": "무엇이 어떻게 오는지 보기",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행해야 합니다.",
-        "① 받는 쪽을 (props) 로 바꾸고 함수 안 첫 줄에 console.log(props); 를 넣어 보세요. 중괄호와 return 이 필요합니다. 콘솔에 { title: ..., price: ... } 객체가 카드 수만큼 찍힙니다. 속성을 몇 개 적든 객체 하나로 옵니다. 이때 {title} 은 {props.title} 로 고쳐야 합니다.",
-        "② 다시 구조 분해로 되돌린 뒤, 마지막 카드에서 price 속성을 지워 보세요. 그 카드의 가격 줄이 빈 줄이 됩니다. 넘기지 않은 값은 undefined 이고, undefined 는 화면에 아무 글자도 남기지 않습니다.",
-        "③ 받는 쪽을 ({ title, price = '가격 미정' }) 으로 바꿔 보세요. 지웠던 자리에 '가격 미정' 이 나옵니다. 구조 분해의 기본값이 그대로 동작합니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          "#root { display: grid; gap: 8px; }",
-          ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
-          ".card__price { margin: 0; color: var(--c-text-muted); }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = ({ title, price }) => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">{title}</h3>\n    <p className=\"card__price\">{price}</p>\n  </article>\n);\n\nroot.render(\n  <>\n    <Card title=\"오버사이즈 셔츠\" price=\"189,000원\" />\n    <Card title=\"니트 베스트\" price=\"245,000원\" />\n    <Card title=\"울 코트\" price=\"590,000원\" />\n  </>\n);\n"
-    },
-    {
-      "kind": "fill",
-      "title": "두 번째 카드 넘기기",
-      "brief": [
-        "받는 쪽은 다 돼 있습니다. 화면에 붙일 두 번째 카드만 비어 있습니다.",
-        "null 자리를 채워 제목 '니트 베스트', 가격 '245,000원' 인 카드가 나오게 해 주세요.",
-        "컴포넌트를 쓸 때 속성처럼 적으면 그 값이 넘어갑니다. 받는 쪽이 어떤 이름으로 꺼내 쓰는지 보고 맞추세요."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          "#root { display: grid; gap: 8px; }",
-          ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
-          ".card__price { margin: 0; color: var(--c-text-muted); }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = ({ title, price }) => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">{title}</h3>\n    <p className=\"card__price\">{price}</p>\n  </article>\n);\n\nconst second = null; // ← 여기를 채우세요\n\nroot.render(\n  <>\n    <Card title=\"오버사이즈 셔츠\" price=\"189,000원\" />\n    {second}\n  </>\n);\n",
-      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = ({ title, price }) => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">{title}</h3>\n    <p className=\"card__price\">{price}</p>\n  </article>\n);\n\nconst second = <Card title=\"니트 베스트\" price=\"245,000원\" />;\n\nroot.render(\n  <>\n    <Card title=\"오버사이즈 셔츠\" price=\"189,000원\" />\n    {second}\n  </>\n);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "카드가 두 장 나옵니다",
-          "select": ".card",
-          "count": 2
-        },
-        {
-          "type": "dom",
-          "label": "제목이 카드마다 다릅니다",
-          "select": ".card__title",
-          "text": [
-            "오버사이즈 셔츠",
-            "니트 베스트"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "가격도 카드마다 다릅니다",
-          "select": ".card__price",
-          "text": [
-            "189,000원",
-            "245,000원"
-          ]
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "네 상품을 한 컴포넌트로",
-      "brief": [
-        "카드 컴포넌트 Card 를 만들고 상품 네 개를 그려 주세요. 마크업은 한 번만 적습니다.",
-        "카드 하나는 <article className=\"card\"> 안에 제목(card__title)과 가격(card__price)이 들어갑니다. 값은 title 과 price 라는 이름으로 받으세요.",
-        "앞의 셋은 '오버사이즈 셔츠' 189,000원, '니트 베스트' 245,000원, '울 코트' 590,000원 입니다. 순서도 그대로 두세요.",
-        "네 번째는 '미공개 상품' 이고 가격을 넘기지 않습니다. 그 카드에는 '가격 미정' 이 나와야 합니다. 구조 분해의 기본값을 쓰면 받는 쪽 한 곳만 고쳐도 됩니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          "#root { display: grid; gap: 8px; }",
-          ".card { padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 4px; font-size: 1rem; }",
-          ".card__price { margin: 0; color: var(--c-text-muted); }"
-        ]
-      },
-      "code": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 여기를 채우세요\n",
-      "solutionCode": "const root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Card = ({ title, price = '가격 미정' }) => (\n  <article className=\"card\">\n    <h3 className=\"card__title\">{title}</h3>\n    <p className=\"card__price\">{price}</p>\n  </article>\n);\n\nroot.render(\n  <>\n    <Card title=\"오버사이즈 셔츠\" price=\"189,000원\" />\n    <Card title=\"니트 베스트\" price=\"245,000원\" />\n    <Card title=\"울 코트\" price=\"590,000원\" />\n    <Card title=\"미공개 상품\" />\n  </>\n);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "제목이 순서대로 들어갑니다",
-          "select": ".card__title",
-          "text": [
-            "오버사이즈 셔츠",
-            "니트 베스트",
-            "울 코트",
-            "미공개 상품"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "가격이 순서대로 들어갑니다",
-          "select": ".card__price",
-          "text": [
-            "189,000원",
-            "245,000원",
-            "590,000원",
-            "가격 미정"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "카드가 그리드 칸에 직접 놓입니다",
-          "select": "#root > *",
-          "count": 4
-        }
-      ]
+      "kind": "tweak", "title": "새 객체와 같은 객체 비교하기",
+      "brief": ["const another = { name: '셔츠', price: 42000 };를 추가하고 original === another를 출력해 보세요. 내용이 같아 보여도 false입니다.", "객체 비교는 프로퍼티 내용을 하나씩 비교하지 않고 같은 객체를 가리키는지 확인합니다.", "React가 객체 상태의 변경을 알아차리는 과정에서도 이 참조 차이가 중요합니다."],
+      "code": "const original = { name: '셔츠', price: 39000 };\nconst copied = original;\n\ncopied.price = 42000;\n\nconsole.log(original.price);\nconsole.log(copied.price);\nconsole.log(original === copied);\n"
     }
   ]
 }

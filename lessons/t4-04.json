@@ -1,213 +1,40 @@
 {
-  "schemaVersion": 2,
-  "id": "t4-04",
-  "track": "T4",
-  "order": 4,
-  "runtime": "react",
-  "title": "이전 값에서 이어 가기",
+  "schemaVersion": 2, "id": "t4-04", "track": "T4", "order": 4, "runtime": "js",
+  "title": "이벤트가 발생했을 때 함수 실행하기",
   "steps": [
     {
-      "kind": "read",
-      "title": "값 대신 함수를 건네기",
+      "kind": "read", "title": "addEventListener에 이벤트 이름과 콜백을 전달합니다",
       "brief": [
-        "앞 레슨에서 막힌 자리가 있었습니다. 한 번 눌러 2 를 올리려고 setCount(count + 1) 을 두 번 썼더니 1 만 올랐습니다. 두 줄이 같은 사진을 보고 있어서 둘 다 같은 값을 부탁했기 때문입니다. 그때는 setCount(count + 2) 로 한 번에 계산해 넘어갔습니다.",
-        "그 방법이 늘 통하지는 않습니다. 두 번의 갱신이 서로 다른 곳에서 일어나거나, 시간차를 두고 일어나면 한 줄로 합칠 수 없습니다. 그럴 때 쓰는 방법이 따로 있습니다.",
-        "setCount 에 값 대신 함수를 건넬 수 있습니다. setCount((c) => c + 1) 처럼요. 이렇게 쓰면 React 가 그 함수를 부르면서 그 시점의 최신 값을 c 자리에 넣어 줍니다. 우리가 사진을 보고 계산하는 것이 아니라, React 가 자기가 아는 최신 값을 건네주는 것입니다.",
-        "그래서 두 번 부르면 차례로 쌓입니다. 첫 번째는 1 을 받아 2 를 돌려주고, 두 번째는 그 2 를 받아 3 을 돌려줍니다. 몇 번을 부르든 순서대로 이어집니다. 이런 함수를 업데이터 함수라고 부릅니다.",
-        "언제나 이렇게 써야 하는 것은 아닙니다. 이전 값에 기대는 갱신일 때만 필요합니다. setCount(0) 처럼 이전 값과 상관없이 새 값을 정하는 경우에는 그냥 값을 넘기면 됩니다. 기준은 간단합니다. 새 값을 정하는 데 옛 값이 필요한가."
+        "이벤트는 클릭, 입력, 제출처럼 브라우저에서 일어난 일을 뜻합니다.",
+        "addEventListener는 특정 이벤트가 발생했을 때 실행할 콜백 함수를 등록합니다.",
+        { "code": ["button.addEventListener('click', handleClick);"] },
+        "'click'은 기다릴 이벤트 이름이고 handleClick은 클릭 뒤 브라우저가 호출할 함수입니다.",
+        "handleClick()이라고 쓰면 등록할 때 함수를 즉시 실행한 결과를 전달하게 됩니다. 이벤트 콜백은 괄호 없이 함수 자체를 전달합니다."
       ]
     },
     {
-      "kind": "run",
-      "title": "두 번 부르면 두 번 오릅니다",
-      "brief": [
-        "+2 버튼이 setCount 를 두 번 부릅니다. 이번에는 값이 아니라 함수를 건넵니다.",
-        "실행한 뒤 +2 를 눌러 보세요. 1 에서 3 으로 오릅니다. 앞 레슨에서 같은 모양으로 값을 넘겼을 때는 1 만 올랐습니다.",
-        "콘솔의 렌더 로그를 보세요. 1 다음에 바로 3 입니다. 두 부탁이 쌓여 한 번에 반영됐습니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".card { max-width: 300px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 6px; font-size: 1rem; }",
-          ".qty { display: flex; align-items: center; gap: 8px; }",
-          ".qty__value { min-width: 48px; text-align: center; }"
-        ]
-      },
-      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Qty = () => {\n  const [count, setCount] = useState(1);\n\n  console.log('그려집니다. 이번 렌더의 count =', count);\n\n  const addTwo = () => {\n    setCount((c) => c + 1);\n    setCount((c) => c + 1);\n  };\n\n  return (\n    <article className=\"card\">\n      <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n      <div className=\"qty\">\n        <button className=\"qty__up2\" type=\"button\" onClick={addTwo}>+2</button>\n        <span className=\"qty__value\">{count}개</span>\n      </div>\n    </article>\n  );\n};\n\nroot.render(<Qty />);\n"
+      "kind": "run", "title": "버튼을 누를 때 횟수 바꾸기",
+      "brief": ["버튼을 누를 때마다 handleClick이 실행되고 count가 1씩 증가합니다.", "count를 바꾼 뒤 textContent에 새 값을 넣어 화면을 다시 표시합니다."],
+      "scaffold": { "html": ["<p>구매 수량: <strong id=\"count\">0</strong></p>", "<button id=\"add\" type=\"button\">한 개 추가</button>"], "css": ["button { padding: 8px 12px; }"] },
+      "code": "const countText = document.querySelector('#count');\nconst addButton = document.querySelector('#add');\nlet count = 0;\n\nfunction handleClick() {\n  count += 1;\n  countText.textContent = count;\n}\n\naddButton.addEventListener('click', handleClick);\n"
     },
     {
-      "kind": "tweak",
-      "title": "값과 함수를 바꿔 가며",
-      "brief": [
-        "먼저 실행한 뒤 아래 셋을 해 보세요. 매번 다시 실행하고 +2 를 눌러야 합니다.",
-        "① 두 줄을 setCount(count + 1) 로 되돌려 보세요. 다시 1 만 오릅니다. 앞 레슨에서 본 그대로입니다. 함수를 건네느냐 값을 건네느냐의 차이입니다.",
-        "② 업데이터로 되돌린 뒤 한 줄을 더해 세 번 불러 보세요. 3 이 오릅니다. 부른 만큼 쌓입니다.",
-        "③ 버튼을 하나 더 만들어 onClick={() => setCount(0)} 을 맡겨 보세요. 이 갱신은 옛 값이 필요 없습니다. 업데이터로 써도 되지만 쓸 이유가 없습니다. 이전 값에 기대는 갱신에만 쓰면 됩니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".card { max-width: 300px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 6px; font-size: 1rem; }",
-          ".qty { display: flex; align-items: center; gap: 8px; }",
-          ".qty__value { min-width: 48px; text-align: center; }"
-        ]
-      },
-      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Qty = () => {\n  const [count, setCount] = useState(1);\n\n  console.log('그려집니다. 이번 렌더의 count =', count);\n\n  const addTwo = () => {\n    setCount((c) => c + 1);\n    setCount((c) => c + 1);\n  };\n\n  return (\n    <article className=\"card\">\n      <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n      <div className=\"qty\">\n        <button className=\"qty__up2\" type=\"button\" onClick={addTwo}>+2</button>\n        <span className=\"qty__value\">{count}개</span>\n      </div>\n    </article>\n  );\n};\n\nroot.render(<Qty />);\n"
+      "kind": "tweak", "title": "호출과 함수 전달 비교하기",
+      "brief": ["마지막 handleClick을 handleClick()으로 바꾸면 화면을 열자마자 count가 1이 되고, 클릭할 때는 오류가 날 수 있습니다.", "addEventListener에는 함수가 필요하지만 handleClick()의 결과는 undefined이기 때문입니다.", "다시 괄호를 지운 뒤 count += 1을 count += 2로 바꾸면 클릭마다 2씩 증가합니다."],
+      "scaffold": { "html": ["<p>구매 수량: <strong id=\"count\">0</strong></p>", "<button id=\"add\" type=\"button\">한 개 추가</button>"], "css": ["button { padding: 8px 12px; }"] },
+      "code": "const countText = document.querySelector('#count');\nconst addButton = document.querySelector('#add');\nlet count = 0;\n\nfunction handleClick() {\n  count += 1;\n  countText.textContent = count;\n}\n\naddButton.addEventListener('click', handleClick);\n"
     },
     {
-      "kind": "fill",
-      "title": "업데이터 채우기",
-      "brief": [
-        "+2 버튼이 setCount 를 두 번 부릅니다. 무엇을 건넬지만 비어 있습니다.",
-        "null 자리를 채워 한 번 누를 때 2 가 오르게 해 주세요. 값이 아니라 함수를 건넵니다. 받는 값의 이름은 c 로 쓰세요.",
-        "검사가 +2 를 두 번 눌러 확인합니다. 1 에서 3, 다시 5 가 되어야 합니다."
-      ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".card { max-width: 300px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 6px; font-size: 1rem; }",
-          ".qty { display: flex; align-items: center; gap: 8px; }",
-          ".qty__value { min-width: 48px; text-align: center; }"
-        ]
-      },
-      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Qty = () => {\n  const [count, setCount] = useState(1);\n\n  const bump = null; // ← 여기를 채우세요\n\n  const addTwo = () => {\n    setCount(bump);\n    setCount(bump);\n  };\n\n  return (\n    <article className=\"card\">\n      <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n      <div className=\"qty\">\n        <button className=\"qty__up2\" type=\"button\" onClick={addTwo}>+2</button>\n        <span className=\"qty__value\">{count}개</span>\n      </div>\n    </article>\n  );\n};\n\nroot.render(<Qty />);\n",
-      "solutionCode": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Qty = () => {\n  const [count, setCount] = useState(1);\n\n  const bump = (c) => c + 1;\n\n  const addTwo = () => {\n    setCount(bump);\n    setCount(bump);\n  };\n\n  return (\n    <article className=\"card\">\n      <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n      <div className=\"qty\">\n        <button className=\"qty__up2\" type=\"button\" onClick={addTwo}>+2</button>\n        <span className=\"qty__value\">{count}개</span>\n      </div>\n    </article>\n  );\n};\n\nroot.render(<Qty />);\n",
+      "kind": "fill", "title": "클릭 콜백 등록하기",
+      "brief": ["버튼을 누를 때 handleClick이 실행되도록 마지막 줄의 두 null을 바꾸세요.", "이벤트 이름은 문자열로, 콜백은 괄호 없이 함수 자체를 전달합니다."],
+      "scaffold": { "html": ["<p>수량: <strong id=\"count\">0</strong></p>", "<button id=\"add\" type=\"button\">추가</button>"], "css": ["button { padding: 8px 12px; }"] },
+      "code": "const countText = document.querySelector('#count');\nconst addButton = document.querySelector('#add');\nlet count = 0;\n\nfunction handleClick() {\n  count += 1;\n  countText.textContent = count;\n}\n\naddButton.addEventListener(null, null);\n",
+      "solutionCode": "const countText = document.querySelector('#count');\nconst addButton = document.querySelector('#add');\nlet count = 0;\n\nfunction handleClick() {\n  count += 1;\n  countText.textContent = count;\n}\n\naddButton.addEventListener('click', handleClick);\n",
       "asserts": [
-        {
-          "type": "dom",
-          "label": "처음에는 1개입니다",
-          "select": ".qty__value",
-          "text": [
-            "1개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "한 번 누르면 3개",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".qty__up2"
-            }
-          ],
-          "select": ".qty__value",
-          "text": [
-            "3개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "두 번 누르면 5개",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".qty__up2"
-            }
-          ],
-          "select": ".qty__value",
-          "text": [
-            "5개"
-          ]
-        }
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "쌓이는 갱신과 아닌 갱신",
-      "brief": [
-        "수량 조절을 만들어 주세요. <article className=\"card\"> 안에 제목 '오버사이즈 셔츠'(card__title)와 <div className=\"qty\"> 가 들어갑니다.",
-        "qty 안에는 <button className=\"qty__up\">+1</button>, <span className=\"qty__value\">1개</span>, <button className=\"qty__up3\">+3</button>, <button className=\"qty__reset\">초기화</button> 순으로 넣으세요.",
-        "처음 수량은 1 입니다. +1 은 1 오릅니다. +3 은 setCount 를 세 번 불러서 3 을 올리세요. 한 줄로 합치지 마세요. 초기화는 1 로 되돌립니다.",
-        "이전 값이 필요한 갱신에는 업데이터 함수를 쓰고, 필요 없는 갱신에는 값을 그냥 넘기세요."
+        { "type": "dom", "label": "한 번 누르면 수량 1", "actions": [{ "action": "click", "selector": "#add" }], "select": "#count", "text": ["1"] },
+        { "type": "dom", "label": "다시 누르면 수량 2", "actions": [{ "action": "click", "selector": "#add" }], "select": "#count", "text": ["2"] }
       ],
-      "scaffold": {
-        "html": [
-          "<div id=\"root\"></div>"
-        ],
-        "css": [
-          ".card { max-width: 300px; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }",
-          ".card__title { margin: 0 0 6px; font-size: 1rem; }",
-          ".qty { display: flex; align-items: center; gap: 8px; }",
-          ".qty__value { min-width: 48px; text-align: center; }"
-        ]
-      },
-      "code": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\n// 여기를 채우세요\n",
-      "solutionCode": "const { useState } = React;\nconst root = ReactDOM.createRoot(document.querySelector('#root'));\n\nconst Qty = () => {\n  const [count, setCount] = useState(1);\n\n  const addThree = () => {\n    setCount((c) => c + 1);\n    setCount((c) => c + 1);\n    setCount((c) => c + 1);\n  };\n\n  return (\n    <article className=\"card\">\n      <h3 className=\"card__title\">오버사이즈 셔츠</h3>\n      <div className=\"qty\">\n        <button className=\"qty__up\" type=\"button\" onClick={() => setCount((c) => c + 1)}>+1</button>\n        <span className=\"qty__value\">{count}개</span>\n        <button className=\"qty__up3\" type=\"button\" onClick={addThree}>+3</button>\n        <button className=\"qty__reset\" type=\"button\" onClick={() => setCount(1)}>초기화</button>\n      </div>\n    </article>\n  );\n};\n\nroot.render(<Qty />);\n",
-      "asserts": [
-        {
-          "type": "dom",
-          "label": "처음에는 1개입니다",
-          "select": ".qty__value",
-          "text": [
-            "1개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "+1 을 누르면 2개",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".qty__up"
-            }
-          ],
-          "select": ".qty__value",
-          "text": [
-            "2개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "+3 을 누르면 5개",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".qty__up3"
-            }
-          ],
-          "select": ".qty__value",
-          "text": [
-            "5개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "+3 을 한 번 더 누르면 8개",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".qty__up3"
-            }
-          ],
-          "select": ".qty__value",
-          "text": [
-            "8개"
-          ]
-        },
-        {
-          "type": "dom",
-          "label": "초기화하면 1개",
-          "actions": [
-            {
-              "action": "click",
-              "selector": ".qty__reset"
-            }
-          ],
-          "select": ".qty__value",
-          "text": [
-            "1개"
-          ]
-        }
-      ]
+      "hints": ["첫 null에는 'click'을 넣습니다.", "둘째 null에는 handleClick을 괄호 없이 넣습니다."]
     }
   ]
 }
