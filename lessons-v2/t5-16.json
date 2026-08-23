@@ -23,6 +23,18 @@
       "brief": ["li의 key를 지우고 실행하면 목록 항목마다 고유한 key가 필요하다는 React 경고가 콘솔에 나타납니다.", "key={product.name}도 현재 데이터에서는 가능하지만 이름이 중복될 수 있다면 안전하지 않습니다.", "key는 화면에 표시할 순번이 아니라 데이터 항목의 정체성을 나타내는 값이어야 합니다."],
       "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".list { display: grid; gap: 6px; padding-left: 20px; }"] },
       "code": "const products = [\n  { id: 'shirt', name: '셔츠' },\n  { id: 'hat', name: '모자' },\n  { id: 'shoes', name: '신발' },\n];\n\nfunction ProductList() {\n  return (\n    <ul className=\"list\">\n      {products.map((product) => (\n        <li key={product.id}>{product.name}</li>\n      ))}\n    </ul>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductList />);\n"
+    },
+    {
+      "kind": "write", "title": "데이터 배열을 JSX 목록으로 바꾸기",
+      "brief": ["ProductList가 products를 받아 각 객체를 li로 표시하도록 작성하세요.", "map을 사용하고 각 li의 key에는 product.id, 글자에는 product.name을 사용합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const products = [\n  { id: 'shirt', name: '셔츠' },\n  { id: 'hat', name: '모자' },\n  { id: 'shoes', name: '신발' },\n];\n\nfunction ProductList({ products }) {\n  return <ul></ul>; // 목록을 작성하세요\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(\n  <ProductList products={products} />\n);\n",
+      "solutionCode": "const products = [\n  { id: 'shirt', name: '셔츠' },\n  { id: 'hat', name: '모자' },\n  { id: 'shoes', name: '신발' },\n];\n\nfunction ProductList({ products }) {\n  return (\n    <ul>\n      {products.map((product) => (\n        <li key={product.id}>{product.name}</li>\n      ))}\n    </ul>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(\n  <ProductList products={products} />\n);\n",
+      "asserts": [
+        { "type": "dom", "label": "상품 수만큼 li가 렌더링됨", "select": "ul li", "count": 3 },
+        { "type": "dom", "label": "세 상품 이름이 순서대로 표시됨", "select": "ul li", "text": ["셔츠", "모자", "신발"] }
+      ],
+      "hints": ["ul 안에서 {products.map(...)}을 사용하세요.", "콜백은 <li key={product.id}>{product.name}</li>를 반환합니다."]
     }
   ]
 }

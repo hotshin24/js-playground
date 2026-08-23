@@ -23,6 +23,18 @@
       "brief": ["ProductCard 함수와 JSX 태그 이름을 productCard로 바꾸면 React는 <productCard>를 사용자 컴포넌트가 아니라 알 수 없는 HTML 태그로 취급합니다.", "다시 대문자로 되돌리면 함수가 호출되어 카드 내용이 나타납니다.", "파일 이름도 ProductCard.js처럼 컴포넌트 이름과 맞추는 관례가 있지만, 이 레슨은 아직 한 파일 안에서 컴포넌트를 나눕니다."],
       "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".list { display: grid; gap: 8px; }", ".card { padding: 12px; border: 1px solid var(--c-border); border-radius: 8px; }"] },
       "code": "function ProductCard() {\n  return (\n    <article className=\"card\">\n      <h2>파란 셔츠</h2>\n      <p>39,000원</p>\n    </article>\n  );\n}\n\nfunction App() {\n  return (\n    <main className=\"list\">\n      <ProductCard />\n      <ProductCard />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "write", "title": "상품 배지를 컴포넌트로 만들기",
+      "brief": ["ProductBadge 컴포넌트를 작성해 <span className=\"badge\">신상품</span>을 반환하세요.", "컴포넌트 이름은 대문자로 시작해야 하며, 아래 render 코드는 이미 완성되어 있습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".badge { padding: 4px 8px; border-radius: 999px; background: #e7f5ff; }"] },
+      "code": "// ProductBadge 컴포넌트를 작성하세요\n\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductBadge />);\n",
+      "solutionCode": "function ProductBadge() {\n  return <span className=\"badge\">신상품</span>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductBadge />);\n",
+      "asserts": [
+        { "type": "dom", "label": "badge 클래스를 가진 span이 렌더링됨", "select": "span.badge", "count": 1 },
+        { "type": "dom", "label": "신상품 글자가 표시됨", "select": "span.badge", "text": ["신상품"] }
+      ],
+      "hints": ["function ProductBadge() { ... } 형태로 시작하세요.", "함수 안에서 span JSX를 return으로 반환하세요."]
     }
   ]
 }

@@ -23,6 +23,18 @@
       "brief": ["첫 price={39000}을 price=\"39000\"으로 바꿔 보세요. 화면은 같아 보여도 자식이 받는 자료형은 문자열로 바뀝니다.", "ProductCard 안에서 console.log(typeof price)를 추가해 확인하세요.", "가격 계산이 필요하다면 숫자 props를 전달해야 합니다. JSX에서도 값의 자료형이 사라지지 않습니다."],
       "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [".card { margin: 6px 0; padding: 10px; border: 1px solid var(--c-border); border-radius: 8px; }"] },
       "code": "function ProductCard({ name, price }) {\n  return (\n    <article className=\"card\">\n      <b>{name}</b>\n      <span> {price}원</span>\n    </article>\n  );\n}\n\nfunction App() {\n  return (\n    <main>\n      <ProductCard name=\"셔츠\" price={39000} />\n      <ProductCard name=\"모자\" price={15000} />\n    </main>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "fill", "title": "받은 props를 JSX에 표시하기",
+      "brief": ["ProductCard가 받은 name과 price를 화면에 표시하도록 두 문자열을 중괄호 표현식으로 바꾸세요.", "부모가 전달하는 셔츠와 숫자 39000을 자식 안에서 사용해야 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "function ProductCard({ name, price }) {\n  return <p><b>이름</b>: <span>가격</span>원</p>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(\n  <ProductCard name=\"셔츠\" price={39000} />\n);\n",
+      "solutionCode": "function ProductCard({ name, price }) {\n  return <p><b>{name}</b>: <span>{price}</span>원</p>;\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(\n  <ProductCard name=\"셔츠\" price={39000} />\n);\n",
+      "asserts": [
+        { "type": "dom", "label": "name props가 표시됨", "select": "b", "text": ["셔츠"] },
+        { "type": "dom", "label": "price props가 표시됨", "select": "span", "text": ["39000"] }
+      ],
+      "hints": ["글자 이름을 {name}으로 바꾸세요.", "글자 가격을 {price}로 바꾸세요."]
     }
   ]
 }
