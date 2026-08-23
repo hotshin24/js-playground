@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t7-11", "track": "T7", "order": 11, "runtime": "react",
+  "title": "커스텀 훅으로 state와 effect 재사용하기",
+  "steps": [
+    {
+      "kind": "read", "title": "커스텀 훅은 훅을 사용하는 JavaScript 함수입니다",
+      "brief": [
+        "여러 컴포넌트에서 같은 state와 effect 흐름을 사용한다면 커스텀 훅으로 묶을 수 있습니다.",
+        "커스텀 훅 이름은 use로 시작해야 합니다. 그래야 훅 호출 규칙이 적용되는 함수임을 사람과 검사 도구가 알 수 있습니다.",
+        { "code": ["function useWindowWidth() {", "  const [width, setWidth] = useState(window.innerWidth);", "  useEffect(() => { /* 구독 */ }, []);", "  return width;", "}"] },
+        "커스텀 훅은 state 자체를 여러 컴포넌트가 공유하게 하지 않습니다. 호출한 컴포넌트마다 독립된 state와 effect가 생깁니다.",
+        "UI 모양을 재사용하는 것은 컴포넌트, 상태가 있는 로직을 재사용하는 것은 커스텀 훅의 역할입니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "창 너비 감시 로직 재사용하기",
+      "brief": ["useWindowWidth가 state 생성, resize 구독, cleanup을 모두 맡고 현재 width만 반환합니다.", "WidthText와 WidthCategory는 같은 훅을 각각 호출해 자신의 독립된 구독과 state를 가집니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useEffect, useState } = React;\n\nfunction useWindowWidth() {\n  const [width, setWidth] = useState(window.innerWidth);\n\n  useEffect(() => {\n    function handleResize() { setWidth(window.innerWidth); }\n    window.addEventListener('resize', handleResize);\n    return () => window.removeEventListener('resize', handleResize);\n  }, []);\n\n  return width;\n}\n\nfunction WidthText() {\n  const width = useWindowWidth();\n  return <p>너비: {width}px</p>;\n}\n\nfunction WidthCategory() {\n  const width = useWindowWidth();\n  return <p>{width < 500 ? '좁은 화면' : '넓은 화면'}</p>;\n}\n\nfunction App() { return <><WidthText /><WidthCategory /></>; }\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "tweak", "title": "일반 함수 이름으로 바꿔 보기",
+      "brief": ["useWindowWidth 이름을 getWindowWidth로 바꾸면 내부에서 훅을 사용한다는 사실이 이름에 드러나지 않고 훅 검사 규칙도 올바르게 적용하기 어렵습니다.", "use로 시작하도록 되돌리세요. 커스텀 훅도 컴포넌트와 마찬가지로 최상위에서 호출합니다.", "두 컴포넌트가 반드시 하나의 width state를 공유해야 한다면 훅을 각각 호출하는 대신 공통 부모나 Context에서 한 번 소유하는 방법을 고려합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": [] },
+      "code": "const { useEffect, useState } = React;\n\nfunction useWindowWidth() {\n  const [width, setWidth] = useState(window.innerWidth);\n\n  useEffect(() => {\n    function handleResize() { setWidth(window.innerWidth); }\n    window.addEventListener('resize', handleResize);\n    return () => window.removeEventListener('resize', handleResize);\n  }, []);\n\n  return width;\n}\n\nfunction WidthText() {\n  const width = useWindowWidth();\n  return <p>너비: {width}px</p>;\n}\n\nfunction WidthCategory() {\n  const width = useWindowWidth();\n  return <p>{width < 500 ? '좁은 화면' : '넓은 화면'}</p>;\n}\n\nfunction App() { return <><WidthText /><WidthCategory /></>; }\n\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    }
+  ]
+}

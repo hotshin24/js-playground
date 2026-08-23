@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2, "id": "t7-10", "track": "T7", "order": 10, "runtime": "react",
+  "title": "늦게 끝난 이전 요청 결과 무시하기",
+  "steps": [
+    {
+      "kind": "read", "title": "요청을 시작한 순서와 끝나는 순서는 다를 수 있습니다",
+      "brief": [
+        "검색어가 바뀔 때마다 요청하면 이전 요청이 새 요청보다 늦게 끝날 수 있습니다. 늦게 온 이전 결과가 최신 화면을 덮는 문제를 경쟁 조건이라고 합니다.",
+        "effect마다 ignore 변수를 만들고 cleanup에서 true로 바꾸면 해당 effect가 더 이상 최신이 아닐 때 결과를 무시할 수 있습니다.",
+        { "code": ["useEffect(() => {", "  let ignore = false;", "  load().then((result) => {", "    if (!ignore) setData(result);", "  });", "  return () => { ignore = true; };", "}, [query]);"] },
+        "query가 바뀌면 이전 effect의 cleanup이 먼저 실행되어 이전 요청의 ignore가 true가 됩니다.",
+        "요청 자체를 취소할 수 있다면 AbortController도 사용할 수 있습니다. 여기서는 결과를 무시하는 기본 원리를 먼저 확인합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "느린 첫 요청과 빠른 둘째 요청 비교하기",
+      "brief": ["셔츠를 누르고 곧바로 모자를 누르세요. 셔츠 요청은 1초, 모자는 0.2초 뒤 끝납니다.", "모자가 먼저 표시된 뒤 늦은 셔츠 결과는 cleanup의 ignore 때문에 화면을 덮지 않습니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { useEffect, useState } = React;\n\nfunction requestProduct(name) {\n  const delay = name === '셔츠' ? 1000 : 200;\n  return new Promise((resolve) => setTimeout(() => resolve(name + ' 결과'), delay));\n}\n\nfunction Search() {\n  const [query, setQuery] = useState('');\n  const [result, setResult] = useState('선택하세요');\n\n  useEffect(() => {\n    if (query === '') return;\n    let ignore = false;\n\n    requestProduct(query).then((nextResult) => {\n      if (!ignore) setResult(nextResult);\n    });\n\n    return () => { ignore = true; };\n  }, [query]);\n\n  return (\n    <section>\n      <button type=\"button\" onClick={() => setQuery('셔츠')}>셔츠</button>\n      <button type=\"button\" onClick={() => setQuery('모자')}>모자</button>\n      <p>{result}</p>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Search />);\n"
+    },
+    {
+      "kind": "tweak", "title": "ignore 검사를 지워 보기",
+      "brief": ["if (!ignore) 조건을 지우고 같은 순서로 셔츠와 모자를 빠르게 누르세요. 모자 결과가 먼저 보인 뒤 늦은 셔츠 결과가 화면을 덮습니다.", "조건을 되돌리면 현재 query의 effect가 아닌 이전 effect 결과는 무시됩니다.", "로딩 state도 이전 요청이 최신 요청의 로딩을 잘못 끝내지 않도록 같은 기준으로 보호해야 합니다."],
+      "scaffold": { "html": ["<div id=\"root\"></div>"], "css": ["button { margin-right: 6px; padding: 7px 9px; }"] },
+      "code": "const { useEffect, useState } = React;\n\nfunction requestProduct(name) {\n  const delay = name === '셔츠' ? 1000 : 200;\n  return new Promise((resolve) => setTimeout(() => resolve(name + ' 결과'), delay));\n}\n\nfunction Search() {\n  const [query, setQuery] = useState('');\n  const [result, setResult] = useState('선택하세요');\n\n  useEffect(() => {\n    if (query === '') return;\n    let ignore = false;\n\n    requestProduct(query).then((nextResult) => {\n      if (!ignore) setResult(nextResult);\n    });\n\n    return () => { ignore = true; };\n  }, [query]);\n\n  return (\n    <section>\n      <button type=\"button\" onClick={() => setQuery('셔츠')}>셔츠</button>\n      <button type=\"button\" onClick={() => setQuery('모자')}>모자</button>\n      <p>{result}</p>\n    </section>\n  );\n}\n\nReactDOM.createRoot(document.querySelector('#root')).render(<Search />);\n"
+    }
+  ]
+}
