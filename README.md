@@ -77,7 +77,7 @@
 
 레슨은 전부 **JSON 데이터**입니다. 레슨 하나를 추가하는 비용은 JSON 파일 1개와 목록 1줄이고, 앱 코드는 건드리지 않습니다. 다중 파일 레슨은 단계에 `files[]` 를 둡니다 — 33개 단계가 그렇습니다.
 
-자세한 동작은 [`docs/SPEC.md`](docs/SPEC.md), 설계 근거는 [`docs/PRD.md`](docs/PRD.md), 측정 기록과 시행착오는 [`docs/FINDINGS.md`](docs/FINDINGS.md) 에 있습니다.
+현재 학습 순서는 [`docs/CURRICULUM.md`](docs/CURRICULUM.md), 앱 동작은 [`docs/SPEC.md`](docs/SPEC.md)에 있습니다. 이전 과정의 설계와 시행착오는 역사 기록으로 보존합니다. 문서별 역할은 [`docs/README.md`](docs/README.md)에서 확인할 수 있습니다.
 
 ## 실측 지표
 
