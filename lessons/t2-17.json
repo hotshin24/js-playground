@@ -4,28 +4,29 @@
   "track": "T2",
   "order": 17,
   "runtime": "js",
-  "title": "종합 문제 1: 짝수의 합 계산하기",
+  "title": "종합 문제 1: 조건에 맞는 값만 반복해서 누적하기",
   "steps": [
     {
       "kind": "read",
-      "title": "조건·반복·함수를 한 문제에서 사용합니다",
+      "title": "3의 배수 합계를 구하는 과정 읽기",
       "brief": [
-        "sumEven(limit)는 1부터 limit까지 반복하면서 짝수만 더해 반환하는 함수입니다.",
-        "for로 숫자를 하나씩 확인하고, 홀수에서는 continue로 이번 반복을 건너뜁니다.",
+        "1부터 limit까지 반복하며 3의 배수만 더할 수 있습니다.",
         {
           "code": [
-            "sumEven(6);",
-            "// 2 + 4 + 6이므로 12"
+            "sumMultiplesOfThree(7);",
+            "// 3 + 6이므로 9"
           ]
         },
-        "합계를 저장할 변수는 반복문 밖에서 let으로 선언해야 반복이 끝난 뒤에도 반환할 수 있습니다.",
-        "짝수는 number % 2 === 0으로 확인할 수 있습니다. %는 나눈 나머지를 구합니다."
+        "조건에 맞지 않으면 continue로 이번 반복을 건너뜁니다."
       ]
     },
     {
-      "kind": "run", "title": "반복 중 홀수 건너뛰기",
-      "brief": ["1부터 6까지 반복하며 홀수를 건너뛰고 짝수만 total에 더하는 과정을 실행해 보세요."],
-      "code": "let total = 0;\nfor (let number = 1; number <= 6; number += 1) {\n  if (number % 2 !== 0) continue;\n  total += number;\n}\nconsole.log(total);\n"
+      "kind": "run",
+      "title": "홀수만 골라 합계 구하기",
+      "brief": [
+        "1부터 7까지 반복하며 짝수는 건너뛰고 홀수만 더하세요."
+      ],
+      "code": "let oddTotal = 0;\nfor (let value = 1; value <= 7; value += 1) {\n  if (value % 2 === 0) continue;\n  oddTotal += value;\n}\nconsole.log(oddTotal);\n"
     },
     {
       "kind": "write",
