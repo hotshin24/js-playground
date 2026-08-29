@@ -4,7 +4,7 @@
   "track": "T5",
   "order": 17,
   "runtime": "react",
-  "title": "종합 연습: 컴포넌트와 props로 조건부 목록 렌더링하기",
+  "title": "종합 문제 1: 컴포넌트와 props로 조건부 목록 렌더링하기",
   "steps": [
     {
       "kind": "read",
@@ -17,9 +17,18 @@
       ]
     },
     {
-      "kind": "run", "title": "강의 배열을 컴포넌트 목록으로 렌더링하기",
-      "brief": ["CourseItem은 강의 하나를 표현하고, App은 courses를 map으로 순회합니다.", "마감된 강의에는 '신청 마감', 신청 가능한 강의에는 강사 이름을 표시하는 흐름을 확인하세요."],
-      "scaffold": {"html":["<div id=\"root\"></div>"],"css":[]},
+      "kind": "run",
+      "title": "강의 배열을 컴포넌트 목록으로 렌더링하기",
+      "brief": [
+        "CourseItem은 강의 하나를 표현하고, App은 courses를 map으로 순회합니다.",
+        "마감된 강의에는 '신청 마감', 신청 가능한 강의에는 강사 이름을 표시하는 흐름을 확인하세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": []
+      },
       "code": "const courses = [\n  { courseId: 11, title: 'JavaScript 기초', teacher: '민수', closed: false },\n  { courseId: 12, title: 'React 시작', teacher: '지수', closed: true },\n];\n\nfunction CourseItem({ course }) {\n  return <li>{course.title}: {course.closed ? '신청 마감' : course.teacher}</li>;\n}\nfunction App() {\n  return <ul>{courses.map((course) => <CourseItem key={course.courseId} course={course} />)}</ul>;\n}\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     },
     {
@@ -54,7 +63,9 @@
           "type": "dom",
           "label": "목록을 ul로 묶음",
           "select": "ul",
-          "text": ["셔츠: 30000원모자: 품절"]
+          "text": [
+            "셔츠: 30000원모자: 품절"
+          ]
         }
       ],
       "hints": [
