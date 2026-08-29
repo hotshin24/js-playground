@@ -4,28 +4,30 @@
   "track": "T1",
   "order": 16,
   "runtime": "js",
-  "title": "종합 문제 1: 입력값을 안전하게 정리하기",
+  "title": "종합 문제 1: 입력값의 자료형과 기본값 정리하기",
   "steps": [
     {
       "kind": "read",
-      "title": "자료형과 연산 규칙을 함께 사용합니다",
+      "title": "설정값을 원하는 자료형으로 정리하는 과정 읽기",
       "brief": [
-        "사용자가 입력한 값은 원하는 자료형과 다를 수 있습니다. 이번 문제에서는 문자열, 숫자 변환, 비교, 논리 연산자, null 기본값을 한꺼번에 사용합니다.",
-        "normalizeUser는 name이 null이나 undefined이면 '손님'을 사용하고, age를 숫자로 바꿉니다.",
-        "변환한 나이가 19 이상이면 adult는 true, 아니면 false가 되어야 합니다.",
+        "입력값은 화면이나 서버에서 예상과 다른 자료형으로 들어올 수 있습니다.",
+        "설정값에서는 theme가 null이면 '기본'을 사용하고, pageSize를 숫자로 바꾼 뒤 50 이상인지 비교할 수 있습니다.",
         {
           "code": [
-            "normalizeUser(null, '20');",
-            "// { name: '손님', age: 20, adult: true }"
+            "normalizeSettings(null, '50');",
+            "// { theme: '기본', pageSize: 50, large: true }"
           ]
         },
-        "빈 문자열 이름은 사용자가 넣은 값이므로 그대로 보존해야 합니다. 따라서 이름의 기본값에는 ||가 아니라 ??를 사용하세요."
+        "빈 문자열을 보존해야 할 때는 ||가 아니라 ??를 사용합니다."
       ]
     },
     {
-      "kind": "run", "title": "입력값을 원하는 자료형으로 정리하기",
-      "brief": ["??로 이름을 정하고 Number로 나이를 바꾼 뒤 비교 결과를 객체에 넣는 순서를 확인하세요."],
-      "code": "const name = null;\nconst age = '20';\nconst normalizedName = name ?? '손님';\nconst normalizedAge = Number(age);\nconsole.log({ name: normalizedName, age: normalizedAge, adult: normalizedAge >= 19 });\n"
+      "kind": "run",
+      "title": "예약 입력값 정리하기",
+      "brief": [
+        "예약자 이름의 기본값, 문자열 인원수의 숫자 변환, 단체 여부 비교를 차례로 확인하세요."
+      ],
+      "code": "const guest = null;\nconst people = '4';\nconst guestName = guest ?? '예약자 없음';\nconst guestCount = Number(people);\nconsole.log({ guest: guestName, people: guestCount, group: guestCount >= 4 });\n"
     },
     {
       "kind": "write",
