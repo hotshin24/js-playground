@@ -8,30 +8,75 @@
   "steps": [
     {
       "kind": "read",
-      "title": "&&와 ||는 불리언만 반환하지 않습니다",
+      "title": "논리 연산자는 값 자체를 반환합니다",
       "brief": [
-        "&&와 ||는 왼쪽 값만으로 결과를 정할 수 있으면 오른쪽을 확인하지 않습니다. 이를 단락 평가라고 합니다.",
-        "||는 왼쪽이 truthy면 왼쪽 값을, falsy면 오른쪽 값을 반환합니다. &&는 왼쪽이 falsy면 왼쪽 값을, truthy면 오른쪽 값을 반환합니다.",
-        { "code": ["'민수' || '손님'; // '민수'", "'' || '손님';     // '손님'", "true && '표시';   // '표시'"] },
-        "??는 왼쪽이 null 또는 undefined일 때만 오른쪽 값을 반환하는 null 병합 연산자입니다.",
-        "0과 빈 문자열을 정상 값으로 유지해야 한다면 || 대신 ??를 사용합니다."
+        "앞 레슨에서는 값을 truthy와 falsy로 판단하는 규칙을 배웠습니다. &&와 ||는 그 판단을 이용해 두 값 중 하나를 반환합니다.",
+        "||는 왼쪽 값이 truthy면 왼쪽 값을 반환합니다. 왼쪽 값이 falsy면 오른쪽 값을 반환합니다.",
+        "&&는 왼쪽 값이 falsy면 왼쪽 값을 반환합니다. 왼쪽 값이 truthy면 오른쪽 값을 반환합니다.",
+        { "code": ["'민수' || '손님';  // '민수'", "'' || '손님';      // '손님'", "'로그인됨' && '주문하기'; // '주문하기'", "0 && '주문하기';          // 0"] },
+        "중요한 점은 결과가 반드시 true나 false인 것은 아니라는 사실입니다. 연산에 사용한 문자열, 숫자, null 같은 값 자체가 결과가 됩니다.",
+        "왼쪽 값만 보고 결과를 정할 수 있으면 오른쪽은 아예 실행하지 않습니다. 중간에서 계산을 멈춘다고 해서 이를 단락 평가라고 합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "||와 ?? 결과 비교하기",
+      "title": "||로 사용할 값 하나 고르기",
       "brief": [
-        "0 || 10은 10이지만 0 ?? 10은 0입니다. 0은 falsy지만 null이나 undefined는 아니기 때문입니다.",
-        "null에서는 두 연산자 모두 오른쪽 값 10을 반환합니다."
+        "||는 왼쪽부터 확인하다가 처음 만난 truthy 값을 반환합니다. 왼쪽이 falsy면 오른쪽 값을 대신 사용합니다.",
+        "첫 번째 줄은 savedName이 truthy이므로 '민수'를 반환합니다. 두 번째 줄은 빈 문자열이 falsy이므로 '손님'을 반환합니다.",
+        "결과가 true나 false가 아니라 실제 이름 문자열이라는 점을 확인하세요."
       ],
-      "code": "console.log(0 || 10);\nconsole.log(0 ?? 10);\nconsole.log('' || '기본값');\nconsole.log('' ?? '기본값');\nconsole.log(null || 10);\nconsole.log(null ?? 10);\n"
+      "code": "const savedName = '민수';\nconst emptyName = '';\n\nconsole.log(savedName || '손님');\nconsole.log(emptyName || '손님');\nconsole.log(null || '손님');\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "||가 정상 값까지 바꾸는 경우 확인하기",
+      "brief": [
+        "||는 '값이 비었는가'를 확인하지 않습니다. 왼쪽 값이 falsy인가를 확인합니다.",
+        "stock은 실제 재고 수량 0이고 label은 사용자가 입력한 빈 문자열입니다. 둘 다 사용할 수 있는 값이지만 falsy이므로 ||는 오른쪽 기본값을 반환합니다.",
+        "stock을 5로, label을 '품절'로 바꿔 보세요. truthy 값이 되면 왼쪽 값이 그대로 나옵니다.",
+        "0이나 빈 문자열을 보존해야 하는 자리에서는 ||가 알맞지 않을 수 있습니다."
+      ],
+      "code": "const stock = 0;\nconst label = '';\n\nconsole.log(stock || 10);\nconsole.log(label || '표시 없음');\n"
+    },
+    {
+      "kind": "run",
+      "title": "&&로 조건이 맞을 때만 다음 값 사용하기",
+      "brief": [
+        "&&는 왼쪽이 truthy일 때 오른쪽 값을 반환합니다. 왼쪽이 falsy면 그 값에서 멈춥니다.",
+        "isLoggedIn이 true인 첫 번째 줄은 오른쪽의 '주문하기'까지 갑니다. false인 두 번째 줄은 왼쪽의 false에서 멈춥니다.",
+        "&&도 불리언만 반환하지 않습니다. 왼쪽 조건이 맞으면 오른쪽에 적힌 실제 값이 결과가 됩니다."
+      ],
+      "code": "const isLoggedIn = true;\nconst isAdmin = false;\n\nconsole.log(isLoggedIn && '주문하기');\nconsole.log(isAdmin && '관리자 메뉴');\nconsole.log('회원' && 3000);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "오른쪽 코드가 실행되지 않는 모습 확인하기",
+      "brief": [
+        "showMessage를 호출하면 콘솔에 '함수를 실행했습니다'가 먼저 출력됩니다.",
+        "첫 번째 식은 왼쪽이 false라서 바로 멈춥니다. 오른쪽의 showMessage()는 호출되지 않습니다.",
+        "두 번째 식은 왼쪽이 true라서 오른쪽 함수까지 실행합니다.",
+        "첫 번째 false를 true로 바꾸고 다시 실행해 보세요. 함수 실행 문구가 두 번 출력됩니다. 이것이 단락 평가가 실행 여부에도 영향을 주는 모습입니다."
+      ],
+      "code": "function showMessage() {\n  console.log('함수를 실행했습니다');\n  return '완료';\n}\n\nconsole.log(false && showMessage());\nconsole.log(true && showMessage());\n"
+    },
+    {
+      "kind": "run",
+      "title": "??로 null과 undefined만 기본값으로 바꾸기",
+      "brief": [
+        "??는 왼쪽 값이 null 또는 undefined일 때만 오른쪽 값을 반환합니다. 그 밖의 값은 falsy여도 그대로 둡니다.",
+        "그래서 0 ?? 10은 0이고, 빈 문자열 ?? '손님'은 빈 문자열입니다. null과 undefined에서만 기본값이 나옵니다.",
+        "||는 falsy 값 여섯 가지를 대상으로 하고, ??는 null과 undefined 두 가지만 대상으로 한다고 구분하면 됩니다."
+      ],
+      "code": "console.log(0 ?? 10);\nconsole.log('' ?? '손님');\nconsole.log(false ?? true);\nconsole.log(null ?? '손님');\nconsole.log(undefined ?? '손님');\n\nconsole.log(0 || 10);\nconsole.log('' || '손님');\n"
     },
     {
       "kind": "fill",
       "title": "기본값을 고르는 함수 완성하기",
       "brief": [
         "displayName이 null이나 undefined일 때만 '손님'을 반환하고, 그 밖의 값은 그대로 반환하세요.",
-        "빈 문자열도 사용자가 넣은 값으로 유지해야 하므로 ||가 아니라 ??를 사용해야 합니다."
+        "빈 문자열과 숫자 0도 사용자가 전달한 값으로 유지해야 합니다.",
+        "||를 쓰면 두 값이 모두 기본값으로 바뀝니다. 이번 조건에 맞는 것은 ??입니다."
       ],
       "code": "function chooseName(displayName) {\n  return null; // 이 줄을 바꾸세요\n}\n",
       "entry": "chooseName",

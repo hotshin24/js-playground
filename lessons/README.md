@@ -22,7 +22,7 @@ JavaScript 기초부터 React까지 이어지는 정식 커리큘럼 디렉터�
 - T0~T9의 133개 JSON과 `index.json` 일치 확인
 - 직접 작성 단계의 solution 통과·starter 실패 확인
 - 기본 앱 진입점 정상 로드 확인
-- 브라우저 실행 검사 197 / 197 통과
+- 브라우저 실행 검사 199 / 199 통과
 - 저장 키 `js-playground:v2`, revision 3으로 전환
 
 ## 전수 검사
