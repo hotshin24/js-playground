@@ -4,28 +4,23 @@
   "track": "T3",
   "order": 19,
   "runtime": "js",
-  "title": "종합 문제 1: 상품 목록 보고서 만들기",
+  "title": "종합 문제 1: 배열을 고르고 바꾸고 합쳐 보고서 만들기",
   "steps": [
     {
       "kind": "read",
-      "title": "객체와 배열 메서드를 연결합니다",
+      "title": "근무 기록을 가공하는 흐름 읽기",
       "brief": [
-        "상품 객체 배열에서 재고가 있는 상품만 골라 새 보고서 객체를 만듭니다.",
-        "filter로 stock이 0보다 큰 상품을 남기고, map으로 이름 배열을 만들고, reduce로 전체 재고 금액을 계산합니다.",
-        "전체 재고 금액은 각 상품의 price * stock을 모두 더한 값입니다.",
-        {
-          "code": [
-            "makeStockReport(products);",
-            "// { names: ['셔츠', '신발'], totalValue: 80000 }"
-          ]
-        },
-        "filter, map, reduce는 원본 배열을 바꾸지 않습니다. 입력받은 products를 그대로 유지하세요."
+        "출근한 기록만 filter로 고르고, 이름은 map으로 바꾸고, 근무 시간은 reduce로 합칠 수 있습니다.",
+        "세 메서드가 각각 고르기·바꾸기·합치기 중 어떤 역할인지 구분하세요."
       ]
     },
     {
-      "kind": "run", "title": "고르기·바꾸기·합치기 연결하기",
-      "brief": ["재고가 있는 상품을 filter로 남긴 뒤 map과 reduce를 차례로 적용합니다."],
-      "code": "const products = [{ name: '셔츠', price: 20000, stock: 2 }, { name: '모자', price: 10000, stock: 0 }];\nconst active = products.filter((product) => product.stock > 0);\nconsole.log(active.map((product) => product.name));\nconsole.log(active.reduce((total, product) => total + product.price * product.stock, 0));\n"
+      "kind": "run",
+      "title": "완료한 작업의 시간 보고서 만들기",
+      "brief": [
+        "완료한 작업만 남긴 뒤 제목 배열과 전체 소요 시간을 구하세요."
+      ],
+      "code": "const tasks = [{ title: '검수', minutes: 20, done: true }, { title: '포장', minutes: 15, done: false }, { title: '발송', minutes: 10, done: true }];\nconst doneTasks = tasks.filter((task) => task.done);\nconsole.log(doneTasks.map((task) => task.title));\nconsole.log(doneTasks.reduce((total, task) => total + task.minutes, 0));\n"
     },
     {
       "kind": "write",
