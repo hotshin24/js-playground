@@ -4,23 +4,23 @@
   "track": "T5",
   "order": 17,
   "runtime": "react",
-  "title": "종합 연습: 상품 목록 컴포넌트 만들기",
+  "title": "종합 연습: 컴포넌트와 props로 조건부 목록 렌더링하기",
   "steps": [
     {
       "kind": "read",
-      "title": "JSX·컴포넌트·props·목록을 조합합니다",
+      "title": "직원 목록으로 컴포넌트 조합 과정 읽기",
       "brief": [
-        "ProductItem은 상품 하나를 props로 받고 li를 반환합니다. App은 상품 배열을 map으로 순회해 ProductItem 목록을 만듭니다.",
-        "재고가 0이면 '품절', 아니면 가격을 표시하세요. JSX 안에서 삼항 조건 연산자를 사용할 수 있습니다.",
-        "목록의 각 ProductItem에는 상품 id를 key로 전달해야 합니다.",
+        "EmployeeRow는 직원 한 명을 props로 받고 li를 반환합니다. EmployeeList는 employees 배열을 map으로 순회해 EmployeeRow 목록을 만듭니다.",
+        "재직 중이면 부서를 표시하고, 아니면 '퇴사'를 표시한다고 가정합니다. JSX 안에서 삼항 조건 연산자를 사용할 수 있습니다.",
+        "목록의 각 EmployeeRow에는 직원의 employeeId를 key로 전달합니다. key는 React가 목록의 각 항목을 구분하는 데 사용합니다.",
         "React 이벤트와 state는 다음 트랙에서 다룹니다. 이번 문제는 데이터를 컴포넌트와 JSX로 정확히 표현하는 데 집중합니다."
       ]
     },
     {
-      "kind": "run", "title": "props로 받은 상품을 조건부 렌더링하기",
-      "brief": ["상품 하나를 받는 컴포넌트와 배열을 map으로 바꾸는 컴포넌트의 역할을 나눠 봅니다."],
+      "kind": "run", "title": "강의 배열을 컴포넌트 목록으로 렌더링하기",
+      "brief": ["CourseItem은 강의 하나를 표현하고, App은 courses를 map으로 순회합니다.", "마감된 강의에는 '신청 마감', 신청 가능한 강의에는 강사 이름을 표시하는 흐름을 확인하세요."],
       "scaffold": {"html":["<div id=\"root\"></div>"],"css":[]},
-      "code": "function Item({ name, soldOut }) { return <li>{name}: {soldOut ? '품절' : '판매 중'}</li>; }\nfunction App() { return <ul><Item name=\"셔츠\" soldOut={false} /><Item name=\"모자\" soldOut={true} /></ul>; }\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+      "code": "const courses = [\n  { courseId: 11, title: 'JavaScript 기초', teacher: '민수', closed: false },\n  { courseId: 12, title: 'React 시작', teacher: '지수', closed: true },\n];\n\nfunction CourseItem({ course }) {\n  return <li>{course.title}: {course.closed ? '신청 마감' : course.teacher}</li>;\n}\nfunction App() {\n  return <ul>{courses.map((course) => <CourseItem key={course.courseId} course={course} />)}</ul>;\n}\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     },
     {
       "kind": "write",
