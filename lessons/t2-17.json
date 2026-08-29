@@ -4,7 +4,7 @@
   "track": "T2",
   "order": 17,
   "runtime": "js",
-  "title": "종합 연습: 짝수의 합 계산하기",
+  "title": "종합 문제 1: 짝수의 합 계산하기",
   "steps": [
     {
       "kind": "read",
