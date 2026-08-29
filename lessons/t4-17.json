@@ -4,23 +4,30 @@
   "track": "T4",
   "order": 17,
   "runtime": "js",
-  "title": "종합 문제 1: 장바구니 버튼 연결하기",
+  "title": "종합 문제 1: 요소를 찾아 클릭할 때 숫자 변경하기",
   "steps": [
     {
       "kind": "read",
-      "title": "DOM 찾기부터 이벤트 처리까지 연결합니다",
+      "title": "좋아요 수를 늘리는 화면 흐름 읽기",
       "brief": [
-        "HTML에는 수량을 보여 주는 strong 요소와 추가 버튼이 있습니다. JavaScript로 두 요소를 찾고 클릭 이벤트를 연결하세요.",
-        "클릭할 때마다 현재 수량을 숫자로 바꿔 1을 더하고, 다시 textContent에 저장합니다.",
-        "querySelector, addEventListener, 이벤트 콜백, Number, textContent를 한 문제에서 사용합니다.",
-        "버튼을 여러 번 눌렀을 때 이전 값에서 계속 증가해야 합니다. 별도 변수보다 화면의 현재 글자를 읽어 계산해 보세요."
+        ".like-count와 .like-button을 찾고 click 이벤트에서 현재 글자를 숫자로 바꿔 1을 더할 수 있습니다.",
+        "화면에 적힌 현재 값을 다시 읽어 계산하면 여러 번 클릭해도 계속 증가합니다."
       ]
     },
     {
-      "kind": "run", "title": "버튼과 글자를 찾아 이벤트 연결하기",
-      "brief": ["완성된 버튼을 누르며 querySelector, addEventListener, textContent가 연결되는 모습을 확인하세요."],
-      "scaffold": {"html":["<strong class=\"count\">0</strong>","<button class=\"add\" type=\"button\">추가</button>"],"css":[]},
-      "code": "const count = document.querySelector('.count');\nconst button = document.querySelector('.add');\nbutton.addEventListener('click', () => { count.textContent = Number(count.textContent) + 1; });\n"
+      "kind": "run",
+      "title": "방문자 수 확인 버튼 연결하기",
+      "brief": [
+        "버튼을 누를 때 방문자 숫자가 1씩 증가하는 예제를 실행하세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<strong class=\"visitor-count\">10</strong>",
+          "<button class=\"check-button\" type=\"button\">방문 확인</button>"
+        ],
+        "css": []
+      },
+      "code": "const visitorCount = document.querySelector('.visitor-count');\nconst checkButton = document.querySelector('.check-button');\ncheckButton.addEventListener('click', () => { visitorCount.textContent = Number(visitorCount.textContent) + 1; });\n"
     },
     {
       "kind": "write",
@@ -46,7 +53,9 @@
           "type": "dom",
           "label": "처음 수량은 0",
           "select": ".cart-count",
-          "text": ["0"]
+          "text": [
+            "0"
+          ]
         },
         {
           "type": "dom",
@@ -58,7 +67,9 @@
             }
           ],
           "select": ".cart-count",
-          "text": ["1"]
+          "text": [
+            "1"
+          ]
         },
         {
           "type": "dom",
@@ -74,7 +85,9 @@
             }
           ],
           "select": ".cart-count",
-          "text": ["3"]
+          "text": [
+            "3"
+          ]
         }
       ],
       "hints": [
