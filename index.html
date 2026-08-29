@@ -70,15 +70,17 @@
     </section>
 
     <section class="pane pane--result">
-      <div id="result-block" class="result-block">
-        <h2 class="pane__title">검사 결과</h2>
+      <h2 class="pane__title">내 코드 실행 결과</h2>
+      <p class="result-help">내가 작성한 <code>console.log</code>의 출력과 코드 오류가 아래에 표시됩니다.</p>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+      <ol id="log" class="log" role="log" aria-label="내 코드 실행 결과"></ol>
+
+      <details id="result-block" class="result-block result-details">
+        <summary>완료 판정용 추가 검사</summary>
+        <p class="result-help">현재 코드의 호출문과 별개로, 작성한 함수가 다른 값에서도 동작하는지 확인합니다. 실패했을 때만 자동으로 펼쳐집니다.</p>
         <p id="assert-summary" class="status" role="status" aria-live="polite"></p>
         <ol id="asserts" class="assert-list"></ol>
-      </div>
-
-      <h2 class="pane__title">콘솔</h2>
-      <p id="status" class="status" role="status" aria-live="polite"></p>
-      <ol id="log" class="log" role="log" aria-label="콘솔 출력"></ol>
+      </details>
     </section>
   </main>
 
