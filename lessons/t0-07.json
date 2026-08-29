@@ -4,27 +4,30 @@
   "track": "T0",
   "order": 7,
   "runtime": "js",
-  "title": "종합 문제 1: 주문 금액 안내 만들기",
+  "title": "종합 문제 1: 계산 결과를 안내 문장으로 만들기",
   "steps": [
     {
       "kind": "read",
-      "title": "배운 것을 한 함수에 모아 봅니다",
+      "title": "카페 주문으로 계산과 반환의 흐름 읽기",
       "brief": [
-        "이번 문제에서는 값, 변수, 함수, 매개변수, 반환을 함께 사용합니다.",
-        "함수는 상품 가격과 개수를 입력받아 전체 금액을 계산하고 안내 문장을 반환해야 합니다.",
+        "값, 변수, 함수, 매개변수, 반환을 한 흐름으로 연결해 봅니다.",
+        "카페 주문에서는 cupPrice와 cupCount를 곱해 음료 금액을 구할 수 있습니다.",
         {
           "code": [
-            "makeOrderMessage(3000, 2);",
-            "// '총 6000원입니다.'"
+            "makeCafeMessage(4500, 2);",
+            "// '음료 금액은 9000원입니다.'"
           ]
         },
-        "console.log로 출력하는 것이 아니라 return으로 결과를 돌려줘야 자동 검사가 확인할 수 있습니다.",
-        "먼저 price * quantity를 변수에 저장하고, 그 변수를 문장에 넣어 반환하세요."
+        "계산한 값을 변수에 담은 뒤 템플릿 리터럴에 넣으면 계산과 문장 만들기를 나누어 읽을 수 있습니다.",
+        "console.log는 값을 화면에서 확인할 때 사용하고, return은 함수 밖으로 결과를 돌려줄 때 사용합니다."
       ]
     },
     {
-      "kind": "run", "title": "입장권 금액을 문장으로 반환하기",
-      "brief": ["입장권 가격과 인원수로 합계를 구해 문장으로 반환합니다. 다음 쓰기에서는 같은 순서를 상품 주문에 적용합니다."],
+      "kind": "run",
+      "title": "입장권 금액을 문장으로 반환하기",
+      "brief": [
+        "입장권 가격과 인원수로 합계를 구해 문장으로 반환합니다. 다음 쓰기에서는 같은 순서를 상품 주문에 적용합니다."
+      ],
       "code": "function makeTicketMessage(ticketPrice, people) {\n  const ticketTotal = ticketPrice * people;\n  return `입장료는 ${ticketTotal}원입니다.`;\n}\nconsole.log(makeTicketMessage(8000, 3));\n"
     },
     {
