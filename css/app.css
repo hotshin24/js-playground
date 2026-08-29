@@ -369,17 +369,37 @@ body {
 .overlay__head h2 { margin: 0; font-size: 1rem; font-weight: 600; }
 .overlay__body { padding: 0 var(--sp-6) var(--sp-6); overflow: auto; }
 
-.overlay-group {
-  margin: var(--sp-6) 0 var(--sp-2);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--c-text-muted);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.lesson-accordion {
+  border-bottom: 1px solid var(--c-border);
 }
-.overlay-group:first-child { margin-top: 0; }
+.lesson-accordion:last-child { border-bottom: 0; }
 
-.overlay-list { margin: 0; padding: 0; list-style: none; }
+.overlay-group {
+  margin: 0;
+}
+
+.track-toggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  padding: var(--sp-4) var(--sp-2);
+  border: 0;
+  background: transparent;
+  color: var(--c-text-strong);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.track-toggle:hover { color: var(--c-accent); }
+.track-toggle__count { color: var(--c-text-muted); font-size: 0.8rem; font-weight: 400; }
+.track-toggle__arrow { color: var(--c-text-muted); transition: transform 120ms ease; }
+.track-toggle[aria-expanded="true"] .track-toggle__arrow { transform: rotate(180deg); }
+
+.overlay-list { margin: 0; padding: 0 0 var(--sp-3); list-style: none; }
+.overlay-list[hidden] { display: none; }
 
 .lesson-link {
   display: flex;

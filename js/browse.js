@@ -27,7 +27,7 @@ export function createBrowse({ listEl, chipsEl, overlayRoot, trigger, closeButto
     closeButton,
     // 레슨이 20개로 늘면 오버레이 안에도 스크롤이 생긴다. 열자마자 현재 레슨이 보여야 한다.
     onOpen: () => {
-      const current = nav.currentEl();
+      const current = nav.revealCurrent();
       if (current) current.scrollIntoView({ block: 'center' });
       return current;
     },

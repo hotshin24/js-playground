@@ -5,7 +5,25 @@ const STATUS_TEXT = { done: '완료', partial: '진행 중' };
  * @param {{ listEl: HTMLElement, onSelect: (id: string) => void }} options
  */
 export function createNav({ listEl, onSelect }) {
+  let expandedTrackId = null;
+
+  const setExpanded = (trackId) => {
+    expandedTrackId = trackId;
+    listEl.querySelectorAll('[data-track-id]').forEach((button) => {
+      const expanded = button.dataset.trackId === trackId;
+      button.setAttribute('aria-expanded', String(expanded));
+      const panel = document.getElementById(button.getAttribute('aria-controls'));
+      if (panel) panel.hidden = !expanded;
+    });
+  };
+
   const handleClick = (event) => {
+    const trackButton = event.target.closest('button[data-track-id]');
+    if (trackButton) {
+      const next = trackButton.dataset.trackId === expandedTrackId ? null : trackButton.dataset.trackId;
+      setExpanded(next);
+      return;
+    }
     const button = event.target.closest('button[data-lesson-id]');
     if (button) onSelect(button.dataset.lessonId);
   };
@@ -18,17 +36,48 @@ export function createNav({ listEl, onSelect }) {
    */
   const render = (index, { currentId, statusOf }) => {
     const groups = index.tracks.length ? index.tracks : [{ id: null, title: '레슨' }];
+    const currentLesson = index.lessons.find((entry) => entry.id === currentId);
+    const trackIds = groups.map((track, groupIndex) => track.id || 'group-' + groupIndex);
+    if (!trackIds.includes(expandedTrackId)) {
+      expandedTrackId = (currentLesson && currentLesson.track) || trackIds[0] || null;
+    }
+
     listEl.replaceChildren(
-      ...groups.flatMap((track) => {
+      ...groups.map((track, groupIndex) => {
         const lessons = index.lessons.filter((entry) => !track.id || entry.track === track.id);
-        if (!lessons.length) return [];
+        if (!lessons.length) return document.createDocumentFragment();
+
+        const trackId = track.id || 'group-' + groupIndex;
+        const section = document.createElement('section');
+        section.className = 'lesson-accordion';
 
         const heading = document.createElement('h3');
         heading.className = 'overlay-group';
-        heading.textContent = track.title; // 화면에는 우리말만. T0/T1 은 내부 이름이다
+
+        const toggle = document.createElement('button');
+        const panelId = 'lesson-track-' + trackId.toLowerCase();
+        toggle.type = 'button';
+        toggle.className = 'track-toggle';
+        toggle.dataset.trackId = trackId;
+        toggle.setAttribute('aria-controls', panelId);
+        toggle.setAttribute('aria-expanded', String(trackId === expandedTrackId));
+
+        const title = document.createElement('span');
+        title.textContent = track.title; // 화면에는 우리말만. T0/T1 은 내부 이름이다
+        const count = document.createElement('span');
+        count.className = 'track-toggle__count';
+        count.textContent = lessons.length + '개';
+        const arrow = document.createElement('span');
+        arrow.className = 'track-toggle__arrow';
+        arrow.setAttribute('aria-hidden', 'true');
+        arrow.textContent = '⌄';
+        toggle.append(title, count, arrow);
+        heading.appendChild(toggle);
 
         const list = document.createElement('ol');
         list.className = 'overlay-list';
+        list.id = panelId;
+        list.hidden = trackId !== expandedTrackId;
         list.replaceChildren(
           ...lessons.map((entry) => {
             const li = document.createElement('li');
@@ -54,14 +103,24 @@ export function createNav({ listEl, onSelect }) {
             return li;
           })
         );
-        return [heading, list];
+        section.append(heading, list);
+        return section;
       })
     );
+  };
+
+  const revealCurrent = () => {
+    const current = listEl.querySelector('[aria-current="true"]');
+    const section = current && current.closest('.lesson-accordion');
+    const toggle = section && section.querySelector('[data-track-id]');
+    if (toggle) setExpanded(toggle.dataset.trackId);
+    return current;
   };
 
   return {
     render,
     currentEl: () => listEl.querySelector('[aria-current="true"]'),
+    revealCurrent,
     dispose: () => listEl.removeEventListener('click', handleClick),
   };
 }
