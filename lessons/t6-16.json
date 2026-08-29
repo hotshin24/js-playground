@@ -4,7 +4,7 @@
   "track": "T6",
   "order": 16,
   "runtime": "react",
-  "title": "종합 연습: 입력한 상품을 목록에 추가하기",
+  "title": "종합 문제 1: 입력 state와 배열 state 연결하기",
   "steps": [
     {
       "kind": "read",
@@ -17,9 +17,17 @@
       ]
     },
     {
-      "kind": "run", "title": "입력 state와 목록 state 연결하기",
-      "brief": ["입력값을 state로 기억하고 버튼을 누르면 새 배열을 만드는 짧은 예제를 실행해 보세요."],
-      "scaffold": {"html":["<div id=\"root\"></div>"],"css":[]},
+      "kind": "run",
+      "title": "입력 state와 목록 state 연결하기",
+      "brief": [
+        "입력값을 state로 기억하고 버튼을 누르면 새 배열을 만드는 짧은 예제를 실행해 보세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": []
+      },
       "code": "const { useState } = React;\nfunction App() { const [items, setItems] = useState(['셔츠']); return <><button onClick={() => setItems((old) => [...old, '모자'])}>추가</button><ul>{items.map((item) => <li key={item}>{item}</li>)}</ul></>; }\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     },
     {
@@ -70,7 +78,9 @@
           "type": "dom",
           "label": "추가 뒤 입력창 비움",
           "select": "input",
-          "text": [""]
+          "text": [
+            ""
+          ]
         }
       ],
       "hints": [
