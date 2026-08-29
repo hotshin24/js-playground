@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 2,
+  "id": "t1-16",
+  "track": "T1",
+  "order": 16,
+  "runtime": "js",
+  "title": "종합 연습: 입력값을 안전하게 정리하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "자료형과 연산 규칙을 함께 사용합니다",
+      "brief": [
+        "사용자가 입력한 값은 원하는 자료형과 다를 수 있습니다. 이번 문제에서는 문자열, 숫자 변환, 비교, 논리 연산자, null 기본값을 한꺼번에 사용합니다.",
+        "normalizeUser는 name이 null이나 undefined이면 '손님'을 사용하고, age를 숫자로 바꿉니다.",
+        "변환한 나이가 19 이상이면 adult는 true, 아니면 false가 되어야 합니다.",
+        {
+          "code": [
+            "normalizeUser(null, '20');",
+            "// { name: '손님', age: 20, adult: true }"
+          ]
+        },
+        "빈 문자열 이름은 사용자가 넣은 값이므로 그대로 보존해야 합니다. 따라서 이름의 기본값에는 ||가 아니라 ??를 사용하세요."
+      ]
+    },
+    {
+      "kind": "run", "title": "입력값을 원하는 자료형으로 정리하기",
+      "brief": ["??로 이름을 정하고 Number로 나이를 바꾼 뒤 비교 결과를 객체에 넣는 순서를 확인하세요."],
+      "code": "const name = null;\nconst age = '20';\nconst normalizedName = name ?? '손님';\nconst normalizedAge = Number(age);\nconsole.log({ name: normalizedName, age: normalizedAge, adult: normalizedAge >= 19 });\n"
+    },
+    {
+      "kind": "write",
+      "title": "사용자 정보 정리 함수 작성하기",
+      "brief": [
+        "normalizeUser(name, age)를 작성해 name, age, adult 프로퍼티가 있는 객체를 반환하세요.",
+        "name에는 ??로 기본값을 적용하고 age에는 Number를 사용하세요.",
+        "adult에는 변환한 나이가 19 이상인지 비교한 결과를 넣으세요."
+      ],
+      "code": "// normalizeUser 함수를 작성하세요.\n",
+      "entry": "normalizeUser",
+      "solutionCode": "function normalizeUser(name, age) {\n  const normalizedName = name ?? '손님';\n  const normalizedAge = Number(age);\n  const adult = normalizedAge >= 19;\n  return { name: normalizedName, age: normalizedAge, adult };\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "문자열 나이를 숫자로 변환",
+          "args": [
+            "민수",
+            "20"
+          ],
+          "expected": {
+            "name": "민수",
+            "age": 20,
+            "adult": true
+          }
+        },
+        {
+          "type": "value",
+          "label": "null 이름에 기본값 적용",
+          "args": [
+            null,
+            "17"
+          ],
+          "expected": {
+            "name": "손님",
+            "age": 17,
+            "adult": false
+          }
+        },
+        {
+          "type": "value",
+          "label": "빈 문자열 이름 보존",
+          "args": [
+            "",
+            "19"
+          ],
+          "expected": {
+            "name": "",
+            "age": 19,
+            "adult": true
+          }
+        }
+      ],
+      "hints": [
+        "name ?? '손님'과 Number(age)를 각각 변수에 저장하세요.",
+        "adult는 normalizedAge >= 19의 결과를 그대로 넣으면 됩니다."
+      ]
+    }
+  ]
+}

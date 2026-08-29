@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "id": "t9-11",
+  "track": "T9",
+  "order": 11,
+  "runtime": "react",
+  "title": "종합 연습: 저장되는 장바구니 합계 만들기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "초기화·계산·저장의 시점을 나눕니다",
+      "brief": [
+        "수량 state의 초깃값은 useState 초기화 함수에서 localStorage를 읽어 정합니다.",
+        "전체 금액은 quantity와 price로 계산하며 useMemo로 계산 결과를 재사용합니다.",
+        "quantity가 바뀐 뒤에는 useEffect가 새 값을 localStorage에 저장합니다.",
+        "불필요한 state를 늘리지 마세요. total은 기존 값으로 계산할 수 있으므로 별도 state가 아닙니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "복원·계산·저장 역할 나누기",
+      "brief": ["초기화 함수, useMemo, useEffect가 각각 언제 실행되는지 확인하세요."],
+      "scaffold": {"html":["<div id=\"root\"></div>"],"css":[]},
+      "code": "const { useEffect, useMemo, useState } = React;\nfunction App() { const [count, setCount] = useState(() => 1); const doubled = useMemo(() => count * 2, [count]); useEffect(() => console.log('저장:', count), [count]); return <button onClick={() => setCount(count + 1)}>{doubled}</button>; }\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "write",
+      "title": "복원·계산·저장을 연결하기",
+      "brief": [
+        "quantity를 저장값에서 복원하는 초기화 함수를 작성하세요. 저장값이 없으면 1을 사용합니다.",
+        "total을 useMemo로 계산하고 quantity가 바뀔 때 localStorage에 저장하세요.",
+        "+ 버튼으로 수량을 늘리고 화면에 수량과 전체 금액을 표시하세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "button { padding: 7px 11px; }"
+        ]
+      },
+      "code": "const { useEffect, useMemo, useState } = React;\nconst price = 12000;\n\n// CartTotal을 작성하고 #root에 렌더링하세요.\n",
+      "solutionCode": "const { useEffect, useMemo, useState } = React;\nconst price = 12000;\nfunction CartTotal() {\n  const [quantity, setQuantity] = useState(() => Number(localStorage.getItem('quantity') ?? 1));\n  const total = useMemo(() => price * quantity, [quantity]);\n  useEffect(() => { localStorage.setItem('quantity', String(quantity)); }, [quantity]);\n  return <section><p>수량: {quantity}개</p><strong>합계: {total}원</strong><button type=\"button\" onClick={() => setQuantity((previous) => previous + 1)}>+</button></section>;\n}\nReactDOM.createRoot(document.querySelector('#root')).render(<CartTotal />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음 수량과 합계",
+          "select": "section",
+          "text": ["수량: 1개합계: 12000원+"]
+        },
+        {
+          "type": "dom",
+          "label": "수량을 늘리면 합계 갱신",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "button"
+            }
+          ],
+          "select": "section",
+          "text": ["수량: 2개합계: 24000원+"]
+        }
+      ],
+      "hints": [
+        "useState(() => Number(localStorage.getItem('quantity') ?? 1))로 초기화하세요.",
+        "useMemo의 의존성은 quantity이고 useEffect에서도 quantity가 바뀔 때 저장하세요."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 2,
+  "id": "t7-12",
+  "track": "T7",
+  "order": 12,
+  "runtime": "react",
+  "title": "종합 연습: 온라인 상태 구독 훅 만들기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "effect의 시작과 정리를 한 쌍으로 작성합니다",
+      "brief": [
+        "useOnlineStatus는 브라우저의 online과 offline 이벤트를 구독하는 커스텀 훅입니다.",
+        "마운트할 때 이벤트 리스너를 등록하고, 언마운트할 때 같은 함수로 제거해야 합니다.",
+        "커스텀 훅은 use로 시작하며 state와 effect를 사용할 수 있습니다.",
+        "effect의 의존성 배열은 빈 배열입니다. 구독은 마운트 때 한 번 시작하고 언마운트 때 한 번 끝냅니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "effect에서 구독하고 정리하기",
+      "brief": ["온라인 이벤트 하나를 구독하고 같은 함수로 해제하는 가장 작은 예제를 확인하세요."],
+      "scaffold": {"html":["<div id=\"root\"></div>"],"css":[]},
+      "code": "const { useEffect } = React;\nfunction App() { useEffect(() => { const log = () => console.log('온라인'); window.addEventListener('online', log); return () => window.removeEventListener('online', log); }, []); return <p>구독 중</p>; }\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "write",
+      "title": "구독과 정리가 있는 커스텀 훅 작성하기",
+      "brief": [
+        "useOnlineStatus를 작성해 현재 온라인 여부를 반환하세요.",
+        "online 이벤트에서는 true, offline 이벤트에서는 false로 state를 바꾸세요.",
+        "Status 컴포넌트에서 훅을 사용해 '온라인' 또는 '오프라인'을 표시하세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": []
+      },
+      "code": "const { useEffect, useState } = React;\n\n// useOnlineStatus와 Status를 작성하고 #root에 렌더링하세요.\n",
+      "solutionCode": "const { useEffect, useState } = React;\n\nfunction useOnlineStatus() {\n  const [online, setOnline] = useState(navigator.onLine);\n  useEffect(() => {\n    const handleOnline = () => setOnline(true);\n    const handleOffline = () => setOnline(false);\n    window.addEventListener('online', handleOnline);\n    window.addEventListener('offline', handleOffline);\n    return () => {\n      window.removeEventListener('online', handleOnline);\n      window.removeEventListener('offline', handleOffline);\n    };\n  }, []);\n  return online;\n}\nfunction Status() {\n  const online = useOnlineStatus();\n  return <p>{online ? '온라인' : '오프라인'}</p>;\n}\nReactDOM.createRoot(document.querySelector('#root')).render(<Status />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "현재 연결 상태 표시",
+          "select": "p",
+          "text": ["온라인"]
+        },
+        {
+          "type": "dom",
+          "label": "상태 문구 요소 렌더링",
+          "select": "#root p",
+          "text": ["온라인"]
+        }
+      ],
+      "hints": [
+        "useState(navigator.onLine)으로 시작하고 useEffect 안에 두 이벤트 리스너를 등록하세요.",
+        "effect에서 반환하는 함수 안에서 removeEventListener를 각각 호출하세요."
+      ]
+    }
+  ]
+}

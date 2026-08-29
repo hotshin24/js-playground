@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 2,
+  "id": "t5-17",
+  "track": "T5",
+  "order": 17,
+  "runtime": "react",
+  "title": "종합 연습: 상품 목록 컴포넌트 만들기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "JSX·컴포넌트·props·목록을 조합합니다",
+      "brief": [
+        "ProductItem은 상품 하나를 props로 받고 li를 반환합니다. App은 상품 배열을 map으로 순회해 ProductItem 목록을 만듭니다.",
+        "재고가 0이면 '품절', 아니면 가격을 표시하세요. JSX 안에서 삼항 조건 연산자를 사용할 수 있습니다.",
+        "목록의 각 ProductItem에는 상품 id를 key로 전달해야 합니다.",
+        "React 이벤트와 state는 다음 트랙에서 다룹니다. 이번 문제는 데이터를 컴포넌트와 JSX로 정확히 표현하는 데 집중합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "props로 받은 상품을 조건부 렌더링하기",
+      "brief": ["상품 하나를 받는 컴포넌트와 배열을 map으로 바꾸는 컴포넌트의 역할을 나눠 봅니다."],
+      "scaffold": {"html":["<div id=\"root\"></div>"],"css":[]},
+      "code": "function Item({ name, soldOut }) { return <li>{name}: {soldOut ? '품절' : '판매 중'}</li>; }\nfunction App() { return <ul><Item name=\"셔츠\" soldOut={false} /><Item name=\"모자\" soldOut={true} /></ul>; }\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "write",
+      "title": "상품 카드 목록 렌더링하기",
+      "brief": [
+        "ProductItem({ product })과 App 컴포넌트를 작성하세요.",
+        "각 li에는 상품 이름과 가격 또는 '품절'을 표시하세요.",
+        "products.map으로 목록을 만들고 key={product.id}를 사용하세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "li { margin: 6px 0; }"
+        ]
+      },
+      "code": "const products = [\n  { id: 1, name: '셔츠', price: 30000, stock: 2 },\n  { id: 2, name: '모자', price: 15000, stock: 0 },\n];\n\n// ProductItem과 App을 작성하고 #root에 렌더링하세요.\n",
+      "solutionCode": "const products = [\n  { id: 1, name: '셔츠', price: 30000, stock: 2 },\n  { id: 2, name: '모자', price: 15000, stock: 0 },\n];\n\nfunction ProductItem({ product }) {\n  return <li>{product.name}: {product.stock === 0 ? '품절' : `${product.price}원`}</li>;\n}\nfunction App() {\n  return <ul>{products.map((product) => <ProductItem key={product.id} product={product} />)}</ul>;\n}\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "상품 두 개 렌더링",
+          "select": "li",
+          "text": [
+            "셔츠: 30000원",
+            "모자: 품절"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "목록을 ul로 묶음",
+          "select": "ul",
+          "text": ["셔츠: 30000원모자: 품절"]
+        }
+      ],
+      "hints": [
+        "ProductItem은 function ProductItem({ product }) 형태로 시작하세요.",
+        "App에서 products.map((product) => <ProductItem key={product.id} product={product} />)을 반환하세요."
+      ]
+    }
+  ]
+}

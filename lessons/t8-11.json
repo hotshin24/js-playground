@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 2,
+  "id": "t8-11",
+  "track": "T8",
+  "order": 11,
+  "runtime": "react",
+  "title": "종합 연습: 장바구니 상태를 깊은 자식에서 바꾸기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "reducer와 Context의 역할을 함께 확인합니다",
+      "brief": [
+        "reducer는 add와 clear action에 따라 다음 장바구니 state를 계산합니다.",
+        "Provider는 useReducer를 호출하고 state와 dispatch를 Context로 공급합니다.",
+        "깊은 자식인 CartButton은 props 없이 dispatch를 가져와 add action을 보냅니다.",
+        "CartSummary는 같은 Context에서 state를 읽어 현재 수량을 표시합니다."
+      ]
+    },
+    {
+      "kind": "run", "title": "action으로 다음 state 계산하기",
+      "brief": ["reducer가 현재 state와 action을 받아 새 객체를 반환하는 기본 흐름을 먼저 확인하세요."],
+      "code": "function reducer(state, action) {\n  if (action.type === 'add') return { count: state.count + 1 };\n  return state;\n}\nconsole.log(reducer({ count: 0 }, { type: 'add' }));\n"
+    },
+    {
+      "kind": "write",
+      "title": "reducer·Provider·깊은 버튼 연결하기",
+      "brief": [
+        "cartReducer에서 add와 clear action을 처리하세요.",
+        "CartProvider에서 useReducer를 호출해 Context.Provider로 state와 dispatch를 공급하세요.",
+        "추가와 비우기 버튼이 각각 올바른 action을 보내게 하세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "button { margin-right: 5px; padding: 7px; }"
+        ]
+      },
+      "code": "const { createContext, useContext, useReducer } = React;\nconst CartContext = createContext(null);\n\n// reducer, Provider, 화면 컴포넌트를 작성하세요.\n",
+      "solutionCode": "const { createContext, useContext, useReducer } = React;\nconst CartContext = createContext(null);\nfunction cartReducer(state, action) {\n  if (action.type === 'add') return { count: state.count + 1 };\n  if (action.type === 'clear') return { count: 0 };\n  return state;\n}\nfunction CartProvider({ children }) {\n  const [state, dispatch] = useReducer(cartReducer, { count: 0 });\n  return <CartContext.Provider value={{ state, dispatch }}>{children}</CartContext.Provider>;\n}\nfunction CartSummary() { const { state } = useContext(CartContext); return <p>장바구니: {state.count}개</p>; }\nfunction CartButtons() { const { dispatch } = useContext(CartContext); return <><button onClick={() => dispatch({ type: 'add' })}>추가</button><button onClick={() => dispatch({ type: 'clear' })}>비우기</button></>; }\nfunction App() { return <CartProvider><CartSummary /><CartButtons /></CartProvider>; }\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음 수량은 0",
+          "select": "p",
+          "text": ["장바구니: 0개"]
+        },
+        {
+          "type": "dom",
+          "label": "두 번 추가하면 2",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "button:first-of-type"
+            },
+            {
+              "action": "click",
+              "selector": "button:first-of-type"
+            }
+          ],
+          "select": "p",
+          "text": ["장바구니: 2개"]
+        },
+        {
+          "type": "dom",
+          "label": "비우면 0",
+          "actions": [
+            {
+              "action": "click",
+              "selector": "button:last-of-type"
+            }
+          ],
+          "select": "p",
+          "text": ["장바구니: 0개"]
+        }
+      ],
+      "hints": [
+        "reducer는 action.type에 따라 새 { count } 객체를 반환하세요.",
+        "Provider의 value에 { state, dispatch }를 넣고 자식에서 useContext로 꺼내세요."
+      ]
+    }
+  ]
+}

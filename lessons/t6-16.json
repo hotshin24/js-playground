@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "id": "t6-16",
+  "track": "T6",
+  "order": 16,
+  "runtime": "react",
+  "title": "종합 연습: 입력한 상품을 목록에 추가하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "state·입력·불변 갱신을 연결합니다",
+      "brief": [
+        "하나의 컴포넌트가 입력값과 상품 배열 두 state를 소유합니다.",
+        "input은 value와 onChange를 연결한 제어 입력으로 만들고, 추가 버튼에서는 이전 배열을 펼쳐 새 상품을 넣습니다.",
+        "추가한 뒤에는 입력 state를 빈 문자열로 되돌립니다.",
+        "배열에 push를 사용하지 말고 setProducts((previous) => [...previous, 새 객체]) 형태로 새 배열을 만드세요."
+      ]
+    },
+    {
+      "kind": "run", "title": "입력 state와 목록 state 연결하기",
+      "brief": ["입력값을 state로 기억하고 버튼을 누르면 새 배열을 만드는 짧은 예제를 실행해 보세요."],
+      "scaffold": {"html":["<div id=\"root\"></div>"],"css":[]},
+      "code": "const { useState } = React;\nfunction App() { const [items, setItems] = useState(['셔츠']); return <><button onClick={() => setItems((old) => [...old, '모자'])}>추가</button><ul>{items.map((item) => <li key={item}>{item}</li>)}</ul></>; }\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
+    },
+    {
+      "kind": "write",
+      "title": "제어 입력과 목록 추가 구현하기",
+      "brief": [
+        "ProductForm 컴포넌트를 완성해 #root에 렌더링하세요.",
+        "입력한 이름을 버튼 클릭으로 목록에 추가하고 입력창을 비우세요.",
+        "각 항목에는 중복되지 않는 id와 key가 필요합니다."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": [
+          "input, button { padding: 7px; margin-right: 5px; }"
+        ]
+      },
+      "code": "const { useState } = React;\n\n// ProductForm을 작성하고 #root에 렌더링하세요.\n",
+      "solutionCode": "const { useState } = React;\n\nfunction ProductForm() {\n  const [name, setName] = useState('');\n  const [products, setProducts] = useState([]);\n  function addProduct() {\n    if (!name) return;\n    setProducts((previous) => [...previous, { id: previous.length + 1, name }]);\n    setName('');\n  }\n  return (\n    <section>\n      <input aria-label=\"상품 이름\" value={name} onChange={(event) => setName(event.target.value)} />\n      <button type=\"button\" onClick={addProduct}>추가</button>\n      <ul>{products.map((product) => <li key={product.id}>{product.name}</li>)}</ul>\n    </section>\n  );\n}\nReactDOM.createRoot(document.querySelector('#root')).render(<ProductForm />);\n",
+      "asserts": [
+        {
+          "type": "dom",
+          "label": "처음 목록은 비어 있음",
+          "select": "li",
+          "text": []
+        },
+        {
+          "type": "dom",
+          "label": "입력한 상품 추가",
+          "actions": [
+            {
+              "action": "fill",
+              "selector": "input",
+              "value": "셔츠"
+            },
+            {
+              "action": "click",
+              "selector": "button"
+            }
+          ],
+          "select": "li",
+          "text": [
+            "셔츠"
+          ]
+        },
+        {
+          "type": "dom",
+          "label": "추가 뒤 입력창 비움",
+          "select": "input",
+          "text": [""]
+        }
+      ],
+      "hints": [
+        "useState를 입력 문자열과 상품 배열에 각각 사용하세요.",
+        "onChange에서는 event.target.value를 저장하고 버튼에서는 새 배열을 만든 뒤 setName('')을 호출하세요."
+      ]
+    }
+  ]
+}
