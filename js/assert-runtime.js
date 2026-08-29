@@ -22,6 +22,11 @@ export const ASSERT_RUNTIME = `
   const describe = (err) => (err && err.name ? err.name + ': ' + err.message : String(err));
   const isThenable = (value) => Boolean(value) && typeof value.then === 'function';
 
+  window.__reportAssertError = (label, message) => {
+    rt.post({ type: 'assert', index: 0, label: label, status: 'error', message: message });
+    return Promise.resolve();
+  };
+
   // assert 는 파싱 도중 실행된다. 학습자가 DOMContentLoaded 로 코드를 감싸면
   // 핸들러가 붙기 전에 클릭이 날아가 정답인데도 전부 실패한다.
   const domReady = () =>

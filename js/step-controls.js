@@ -1,5 +1,5 @@
 import { policyOf, isChecked } from './steps.js';
-import { buildAssertScript } from './validator.js';
+import { buildCurrentCallAssertPlan } from './validator.js';
 
 /**
  * 단계의 조작부 — 실행·되돌리기 버튼의 상태와 그 두 동작.
@@ -37,11 +37,13 @@ export function createStepControls({
     const changed = progress.isCurrentCodeChanged();
     const react = lesson.runtime === 'react';
     const specs = specsOf(step);
+    const code = workspace.getCode();
+    const currentCallPlan = step.files ? null : buildCurrentCallAssertPlan(step, code, { react });
     // files 단계는 코드가 문서에 인라인으로 들어가지 않는다. 조립을 러너가 갈라 맡는다.
     const forFiles = step.files ? { files: workspace.getFiles(), entry: step.entry, specs } : {};
-    session.run(workspace.getCode(), {
-      assertScript: step.files ? '' : buildAssertScript(step, { react }),
-      total: specs.length,
+    session.run(code, {
+      assertScript: step.files ? '' : currentCallPlan.script,
+      total: step.files ? specs.length : currentCallPlan.total,
       scaffold: step.scaffold,
       env: step.env,
       preview: preview.isOn(step, layout.isEditable()),

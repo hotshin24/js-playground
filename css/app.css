@@ -314,9 +314,6 @@ body {
 .assert--error { color: var(--c-text-warn); }
 .result-help { margin: 0 0 var(--sp-2); color: var(--c-text-muted); font-size: 0.85rem; line-height: 1.55; }
 .result-help code { color: var(--c-text); }
-.result-details { margin-top: var(--sp-5); border-top: 1px solid var(--c-border); padding-top: var(--sp-3); }
-.result-details > summary { cursor: pointer; color: var(--c-text-muted); font-size: 0.9rem; font-weight: 650; }
-.result-details[open] > summary { margin-bottom: var(--sp-2); color: var(--c-text); }
 
 .status { min-height: 1.6em; margin: 0 0 var(--sp-3); color: var(--c-text-muted); font-size: 0.9rem; }
 .status--pass { color: var(--c-text-ok); }

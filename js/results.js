@@ -5,12 +5,9 @@ import { formatAssert } from './validator.js';
  * @param {{ listEl: HTMLElement, summaryEl: HTMLElement }} options
  */
 export function createResultPanel({ listEl, summaryEl }) {
-  const detailsEl = listEl.closest('details');
-
   const setSummary = (text, kind) => {
     summaryEl.textContent = text;
     summaryEl.className = 'status' + (kind ? ' status--' + kind : '');
-    if (detailsEl && (kind === 'fail' || kind === 'error')) detailsEl.open = true;
   };
 
   const clear = () => {
@@ -31,9 +28,7 @@ export function createResultPanel({ listEl, summaryEl }) {
       });
 
     const passed = events.filter((event) => event.status === 'pass').length;
-    const allPassed = passed === total;
-    setSummary(passed + ' / ' + total + ' 통과', allPassed ? 'pass' : 'fail');
-    if (detailsEl && allPassed) detailsEl.open = false;
+    setSummary(passed + ' / ' + total + ' 통과', passed === total ? 'pass' : 'fail');
     return passed;
   };
 

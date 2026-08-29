@@ -61,7 +61,7 @@ export function createSession({ mount, previewMount, logEl, statusEl, listEl, su
       if (event.type === 'done') {
         // 프레임이 뜨지 못한 경우에는 감시할 대상도 없다. 같은 문구를 쓰면 거짓이 된다.
         panel.setStatus(
-          event.started === false ? '실행하지 못했습니다' : '내 코드 실행 완료 (' + event.ms + 'ms) · 감시 중'
+          event.started === false ? '실행하지 못했습니다' : '실행·검사 완료 (' + event.ms + 'ms) · 감시 중'
         );
         settle();
         return;
