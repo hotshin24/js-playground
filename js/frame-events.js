@@ -41,6 +41,7 @@ export function toEvent(msg, lineOffset, filesMode) {
       index: msg.index,
       status: msg.status,
       label: msg.label,
+      input: msg.input,
       expected: msg.expected,
       actual: msg.actual,
       message: msg.message,

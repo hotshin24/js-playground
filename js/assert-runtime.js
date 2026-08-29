@@ -142,6 +142,9 @@ export const ASSERT_RUNTIME = `
         const want = spec.count !== undefined ? spec.count : spec.text;
         rt.post(Object.assign({}, base, {
           status: deepEqual(seen, want) ? 'pass' : 'fail',
+          input: spec.actions && spec.actions.length
+            ? '화면 동작 ' + rt.fmt(spec.actions) + ' 뒤 ' + spec.select + ' 확인'
+            : '화면에서 ' + spec.select + ' 확인',
           expected: rt.fmt(want),
           actual: rt.fmt(seen),
         }));
@@ -165,6 +168,7 @@ export const ASSERT_RUNTIME = `
 
       rt.post(Object.assign({}, base, {
         status: deepEqual(actual, spec.expected) ? 'pass' : 'fail',
+        input: rt.fmt(spec.args || []),
         expected: rt.fmt(spec.expected),
         actual: rt.fmt(actual),
       }));

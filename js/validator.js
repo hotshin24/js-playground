@@ -26,14 +26,18 @@ export function buildAssertScript(lesson, { react = false } = {}) {
 
 /** assert 이벤트 → 결과 목록에 그릴 한 줄 */
 export function formatAssert(event) {
+  const details = event.input === undefined
+    ? ''
+    : '\n  검사 입력: ' + event.input + '\n  기대 결과: ' + event.expected + '\n  실제 결과: ' + event.actual;
+
   if (event.status === 'pass') {
-    return { status: 'pass', text: '통과 — ' + event.label };
+    return { status: 'pass', text: '통과 — ' + event.label + details };
   }
   if (event.status === 'error') {
     return { status: 'error', text: '오류 — ' + event.label + ' · ' + event.message };
   }
   return {
     status: 'fail',
-    text: '실패 — ' + event.label + '\n  기대: ' + event.expected + '\n  실제: ' + event.actual,
+    text: '실패 — ' + event.label + details,
   };
 }
