@@ -4,7 +4,7 @@
   "track": "T0",
   "order": 7,
   "runtime": "js",
-  "title": "종합 연습: 주문 금액 안내 만들기",
+  "title": "종합 문제 1: 주문 금액 안내 만들기",
   "steps": [
     {
       "kind": "read",
