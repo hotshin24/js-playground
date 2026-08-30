@@ -11,7 +11,7 @@ import { buildCurrentCallAssertPlan } from './validator.js';
 export function createStepControls({
   runButton, resetButton, tabs, workspace, session, progress, preview, layout, current, onRan,
 }) {
-  const specsOf = (step) => (step.asserts || []).filter((spec) => spec.type === 'value' || spec.type === 'dom');
+  const specsOf = (step) => (step.asserts || []).filter((spec) => ['value', 'dom', 'console'].includes(spec.type));
 
   const applyPolicy = (editable) => {
     const { step } = current();

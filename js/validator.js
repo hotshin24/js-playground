@@ -65,7 +65,7 @@ export function findEntryCalls(code, entry) {
  * @returns {string} assert 가 없으면 빈 문자열
  */
 export function buildAssertScript(lesson, { react = false } = {}) {
-  const specs = (lesson.asserts || []).filter((spec) => spec.type === 'value' || spec.type === 'dom');
+  const specs = (lesson.asserts || []).filter((spec) => ['value', 'dom', 'console'].includes(spec.type));
   if (!specs.length) return '';
 
   const needsEntry = specs.some((spec) => spec.type === 'value');
@@ -84,7 +84,7 @@ export function buildAssertScript(lesson, { react = false } = {}) {
 
 /** 편집 코드에 작성된 함수 호출을 같은 입력의 정답 함수와 비교하는 검사 계획. */
 export function buildCurrentCallAssertPlan(lesson, code, { react = false } = {}) {
-  const specs = (lesson.asserts || []).filter((spec) => spec.type === 'value' || spec.type === 'dom');
+  const specs = (lesson.asserts || []).filter((spec) => ['value', 'dom', 'console'].includes(spec.type));
   const valueSpecs = specs.filter((spec) => spec.type === 'value');
   if (!valueSpecs.length || !IDENTIFIER.test(lesson.entry || '')) {
     return { script: buildAssertScript(lesson, { react }), total: specs.length };
@@ -100,9 +100,9 @@ export function buildCurrentCallAssertPlan(lesson, code, { react = false } = {})
     };
   }
 
-  const domSpecs = specs.filter((spec) => spec.type === 'dom');
+  const directSpecs = specs.filter((spec) => spec.type !== 'value');
   const callsJson = JSON.stringify(calls).replace(/</g, '\\u003c');
-  const domJson = JSON.stringify(domSpecs).replace(/</g, '\\u003c');
+  const directJson = JSON.stringify(directSpecs).replace(/</g, '\\u003c');
   const solutionJson = JSON.stringify(lesson.solutionCode || '').replace(/</g, '\\u003c');
   const entryJson = JSON.stringify(lesson.entry);
   const lookup = '(() => { try { return ' + lesson.entry + '; } catch (e) { return undefined; } })()';
@@ -112,7 +112,7 @@ export function buildCurrentCallAssertPlan(lesson, code, { react = false } = {})
     '  const __entryName = ' + entryJson + ';',
     '  const __solution = ' + solutionJson + ';',
     "  const __reference = (0, eval)('(function () {\\n' + __solution + '\\n; return ' + __entryName + ';\\n})()');",
-    '  const __specs = ' + domJson + ';',
+    '  const __specs = ' + directJson + ';',
     '  for (let __index = 0; __index < __calls.length; __index += 1) {',
     "    const __args = eval('[' + __calls[__index] + ']');",
     '    const __expected = await __reference.apply(null, __args);',
@@ -121,7 +121,7 @@ export function buildCurrentCallAssertPlan(lesson, code, { react = false } = {})
     '  return window.__runAsserts(__specs, ' + lookup + ', ' + (react ? 'true' : 'false') + ');',
     '})();',
   ].join('\n');
-  return { script, total: domSpecs.length + calls.length };
+  return { script, total: directSpecs.length + calls.length };
 }
 
 /** assert 이벤트 → 결과 목록에 그릴 한 줄 */

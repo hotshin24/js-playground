@@ -35,6 +35,12 @@ const checkAsserts = (step, where) => {
   if (!Array.isArray(asserts)) fail(where + ' 의 asserts 는 배열이어야 합니다');
   asserts.forEach((spec, i) => {
     if (!spec || typeof spec.type !== 'string') fail(where + ' asserts[' + i + '] 에 type 이 없습니다');
+    if (spec.type === 'console') {
+      if (!Array.isArray(spec.expected) || spec.expected.some((line) => typeof line !== 'string')) {
+        fail(where + ' asserts[' + i + '] 의 console expected 는 문자열 배열이어야 합니다');
+      }
+      return;
+    }
     if (spec.type !== 'dom') return;
     const at = where + ' asserts[' + i + ']';
     if (typeof spec.select !== 'string') fail(at + ' 의 dom assert 에는 select 가 필요합니다');

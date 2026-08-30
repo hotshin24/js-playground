@@ -135,6 +135,17 @@ export const ASSERT_RUNTIME = `
       const spec = specs[index];
       const base = { type: 'assert', index: index, label: spec.label };
 
+      if (spec.type === 'console') {
+        const seen = rt.consoleLines();
+        rt.post(Object.assign({}, base, {
+          status: deepEqual(seen, spec.expected) ? 'pass' : 'fail',
+          input: '내가 실행한 console.log 출력',
+          expected: rt.fmt(spec.expected),
+          actual: rt.fmt(seen),
+        }));
+        continue;
+      }
+
       if (spec.type === 'dom') {
         // 액션 대상이 없으면 fail 이 아니라 error 다. 학습자가 볼 곳이 다르다.
         let seen;

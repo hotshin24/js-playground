@@ -28,7 +28,7 @@ const runner = createRunner({
   },
 });
 
-const specsOf = (step) => step.asserts.filter((spec) => spec.type === 'value' || spec.type === 'dom');
+const specsOf = (step) => step.asserts.filter((spec) => ['value', 'dom', 'console'].includes(spec.type));
 const filesWith = (step, solution) =>
   step.files && step.files.map((file) => ({ ...file, code: solution && file.solutionCode ? file.solutionCode : file.code }));
 

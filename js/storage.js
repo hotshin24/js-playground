@@ -52,13 +52,20 @@ const applyRevision = (lessons, revision) => {
   return {};
 };
 
-const moveLessonProgress = (lessons) => {
+const NEW_T0_SIGNATURE = 'read-run-tweak-write';
+
+const moveLessonProgress = (lessons, lastLessonId) => {
   const moved = { ...lessons };
+  let movedLastLessonId = lastLessonId || null;
   Object.entries(MOVED_LESSON_IDS).forEach(([oldId, newId]) => {
-    if (moved[oldId] && !moved[newId]) moved[newId] = moved[oldId];
+    const oldEntry = moved[oldId];
+    // 새 T0 종합 문제의 기록은 그대로 둔다. 옛 문제는 단계 구성이 달라 구별할 수 있다.
+    if (!oldEntry || oldEntry.signature === NEW_T0_SIGNATURE) return;
+    if (!moved[newId]) moved[newId] = oldEntry;
     delete moved[oldId];
+    if (movedLastLessonId === oldId) movedLastLessonId = newId;
   });
-  return moved;
+  return { lessons: moved, lastLessonId: movedLastLessonId };
 };
 
 // 손상된 JSON 도 프라이빗 모드 예외도 결말은 같다: 빈 상태로 학습을 계속한다.
@@ -72,11 +79,13 @@ export function readState() {
     Object.entries(parsed.lessons || {}).forEach(([id, entry]) => {
       lessons[id] = migrateLesson(entry);
     });
+    const revised = applyRevision(lessons, parsed.revision);
+    const moved = moveLessonProgress(revised, parsed.lastLessonId);
     return {
       ...empty(),
       ...parsed,
-      lessons: moveLessonProgress(applyRevision(lessons, parsed.revision)),
-      lastLessonId: MOVED_LESSON_IDS[parsed.lastLessonId] || parsed.lastLessonId || null,
+      lessons: moved.lessons,
+      lastLessonId: moved.lastLessonId,
       settings: parsed.settings || {},
       revision: REVISION,
     };

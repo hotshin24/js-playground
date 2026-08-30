@@ -81,11 +81,14 @@ export const PRELUDE = `
   };
 
   const toArgs = (args) => Array.prototype.map.call(args, (a) => fmt(a, 0, new Set()));
+  const consoleLines = [];
 
   ['log', 'info', 'warn', 'error', 'debug'].forEach((level) => {
     const original = console[level];
     console[level] = function () {
-      post({ type: 'console', level: level, args: toArgs(arguments) });
+      const args = toArgs(arguments);
+      if (level === 'log') consoleLines.push(args.join(' '));
+      post({ type: 'console', level: level, args: args });
       if (typeof original === 'function') original.apply(console, arguments);
     };
   });
@@ -136,6 +139,7 @@ export const PRELUDE = `
   window.__pgRuntime = {
     post: post,
     fmt: (value) => fmt(value, 0, new Set()),
+    consoleLines: () => consoleLines.slice(),
     setFiles: (map) => { fileNames = map; },
   };
 
