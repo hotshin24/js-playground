@@ -7,6 +7,15 @@ const SCHEMA_VERSION = 1;
 // 3: 2026 새 커리큘럼으로 전체 레슨을 교체했다.
 const REVISION = 3;
 
+// T0의 옛 종합 문제 15개는 내용상 T1에 속하므로 번호만 옮겼다.
+// 이미 푼 기록은 새 레슨 ID로 이어져야 한다.
+const MOVED_LESSON_IDS = Object.fromEntries(
+  Array.from({ length: 15 }, (_, index) => [
+    `t0-${String(index + 7).padStart(2, '0')}`,
+    `t1-${String(index + 31).padStart(2, '0')}`,
+  ]),
+);
+
 const empty = () => ({
   schemaVersion: SCHEMA_VERSION,
   revision: REVISION,
@@ -43,6 +52,15 @@ const applyRevision = (lessons, revision) => {
   return {};
 };
 
+const moveLessonProgress = (lessons) => {
+  const moved = { ...lessons };
+  Object.entries(MOVED_LESSON_IDS).forEach(([oldId, newId]) => {
+    if (moved[oldId] && !moved[newId]) moved[newId] = moved[oldId];
+    delete moved[oldId];
+  });
+  return moved;
+};
+
 // 손상된 JSON 도 프라이빗 모드 예외도 결말은 같다: 빈 상태로 학습을 계속한다.
 export function readState() {
   try {
@@ -57,7 +75,8 @@ export function readState() {
     return {
       ...empty(),
       ...parsed,
-      lessons: applyRevision(lessons, parsed.revision),
+      lessons: moveLessonProgress(applyRevision(lessons, parsed.revision)),
+      lastLessonId: MOVED_LESSON_IDS[parsed.lastLessonId] || parsed.lastLessonId || null,
       settings: parsed.settings || {},
       revision: REVISION,
     };
