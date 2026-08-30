@@ -281,6 +281,20 @@
     { "id": "t9-08", "track": "T9", "order": 8, "title": "React state를 localStorage에 저장하기" },
     { "id": "t9-09", "track": "T9", "order": 9, "title": "useState 초기화 함수로 저장된 값 복원하기" },
     { "id": "t9-10", "track": "T9", "order": 10, "title": "effect로 state와 localStorage 동기화하기" },
-    { "id": "t9-11", "track": "T9", "order": 11, "title": "종합 연습: 저장되는 장바구니 합계 만들기" }
+    { "id": "t9-11", "track": "T9", "order": 11, "title": "종합 문제 1: 장바구니 합계를 계산하고 저장하기" },
+    { "id": "t9-12", "track": "T9", "order": 12, "title": "종합 문제 2: 다시 렌더링되는 원인 구분하기" },
+    { "id": "t9-13", "track": "T9", "order": 13, "title": "종합 문제 3: 최적화 전에 계산 결과와 비용 확인하기" },
+    { "id": "t9-14", "track": "T9", "order": 14, "title": "종합 문제 4: useMemo로 의존성이 같을 때 계산 결과 재사용하기" },
+    { "id": "t9-15", "track": "T9", "order": 15, "title": "종합 문제 5: React.memo로 같은 props의 자식 렌더 건너뛰기" },
+    { "id": "t9-16", "track": "T9", "order": 16, "title": "종합 문제 6: 렌더마다 새 함수 참조가 만들어지는 이유 이해하기" },
+    { "id": "t9-17", "track": "T9", "order": 17, "title": "종합 문제 7: useCallback으로 함수 참조 재사용하기" },
+    { "id": "t9-18", "track": "T9", "order": 18, "title": "종합 문제 8: 단순한 계산에는 메모이제이션을 사용하지 않기" },
+    { "id": "t9-19", "track": "T9", "order": 19, "title": "종합 문제 9: 버튼 동작으로 state를 localStorage에 저장하기" },
+    { "id": "t9-20", "track": "T9", "order": 20, "title": "종합 문제 10: useState 초기화 함수에서 저장값 한 번 읽기" },
+    { "id": "t9-21", "track": "T9", "order": 21, "title": "종합 문제 11: effect로 state 변화와 localStorage 동기화하기" },
+    { "id": "t9-22", "track": "T9", "order": 22, "title": "종합 문제 12: 객체와 배열을 JSON 문자열로 저장하기" },
+    { "id": "t9-23", "track": "T9", "order": 23, "title": "종합 문제 13: 잘못된 저장값에 안전한 기본값 사용하기" },
+    { "id": "t9-24", "track": "T9", "order": 24, "title": "종합 문제 14: 저장과 복원을 커스텀 훅으로 묶기" },
+    { "id": "t9-25", "track": "T9", "order": 25, "title": "종합 문제 15: 메모이제이션과 저장을 필요한 곳에만 함께 적용하기" }
   ]
 }

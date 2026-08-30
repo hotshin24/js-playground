@@ -4,7 +4,7 @@
   "track": "T9",
   "order": 11,
   "runtime": "react",
-  "title": "종합 연습: 저장되는 장바구니 합계 만들기",
+  "title": "종합 문제 1: 장바구니 합계를 계산하고 저장하기",
   "steps": [
     {
       "kind": "read",
@@ -17,9 +17,17 @@
       ]
     },
     {
-      "kind": "run", "title": "복원·계산·저장 역할 나누기",
-      "brief": ["초기화 함수, useMemo, useEffect가 각각 언제 실행되는지 확인하세요."],
-      "scaffold": {"html":["<div id=\"root\"></div>"],"css":[]},
+      "kind": "run",
+      "title": "복원·계산·저장 역할 나누기",
+      "brief": [
+        "초기화 함수, useMemo, useEffect가 각각 언제 실행되는지 확인하세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": []
+      },
       "code": "const { useEffect, useMemo, useState } = React;\nfunction App() { const [count, setCount] = useState(() => 1); const doubled = useMemo(() => count * 2, [count]); useEffect(() => console.log('저장:', count), [count]); return <button onClick={() => setCount(count + 1)}>{doubled}</button>; }\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     },
     {
@@ -45,7 +53,9 @@
           "type": "dom",
           "label": "처음 수량과 합계",
           "select": "section",
-          "text": ["수량: 1개합계: 12000원+"]
+          "text": [
+            "수량: 1개합계: 12000원+"
+          ]
         },
         {
           "type": "dom",
@@ -57,7 +67,9 @@
             }
           ],
           "select": "section",
-          "text": ["수량: 2개합계: 24000원+"]
+          "text": [
+            "수량: 2개합계: 24000원+"
+          ]
         }
       ],
       "hints": [
