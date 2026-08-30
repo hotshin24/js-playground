@@ -1,1 +1,108 @@
-{"schemaVersion":2,"id":"t2-05","track":"T2","order":5,"runtime":"js","title":"for로 같은 코드를 반복하기","steps":[{"kind":"read","title":"시작값, 계속할 조건, 값의 변화를 적습니다","brief":["반복문은 같은 코드를 여러 번 실행합니다. for의 괄호 안에는 초기식, 조건식, 증감식을 세미콜론으로 나누어 씁니다.",{"code":["for (let count = 1; count <= 3; count += 1) {","  console.log(count);","}"]},"let count = 1은 반복을 시작하기 전에 한 번 실행됩니다. count <= 3이 true인 동안 중괄호 안을 실행합니다.","한 번 실행한 뒤 count += 1로 count를 1 늘리고 조건을 다시 확인합니다. 따라서 1, 2, 3이 출력됩니다.","count 값이 바뀌어야 반복이 끝날 수 있으므로 const가 아니라 let을 사용합니다."]},{"kind":"run","title":"반복 순서 따라가기","brief":["count는 1에서 시작해 5 이하인 동안 출력됩니다. 각 반복 뒤에 1씩 증가합니다.","count가 6이 되면 조건이 false가 되어 반복이 끝나고 완료가 출력됩니다."],"code":"for (let count = 1; count <= 5; count += 1) {\n  console.log(count);\n}\n\nconsole.log('완료');\n"},{"kind":"tweak","title":"시작값과 증가 폭 바꿔 보기","brief":["시작값 1을 0으로 바꾸면 0부터 5까지 여섯 번 실행됩니다.","count += 1을 count += 2로 바꾸면 1, 3, 5가 출력됩니다. 한 번 반복할 때마다 2씩 증가하기 때문입니다.","증감식을 지우면 count가 계속 1이라 조건이 항상 true입니다. 끝나지 않는 반복을 피하려면 조건이 언젠가 false가 되는지 확인해야 합니다."],"code":"for (let count = 1; count <= 5; count += 1) {\n  console.log(count);\n}\n\nconsole.log('완료');\n"},{"kind":"write","title":"1부터 입력값까지 모두 더하기","brief":["sumTo(limit)를 작성하세요. for로 1부터 limit까지 반복하며 합계를 반환하세요.","함수를 작성한 뒤 직접 호출하는 console.log도 추가해 검사 결과에서 입력값과 결과를 확인하세요."],"code":"// sumTo 함수를 작성하세요.\n// 작성한 뒤 console.log(sumTo(...))로 직접 호출하세요.\n","entry":"sumTo","solutionCode":"function sumTo(limit) {\n  let total = 0;\n  for (let number = 1; number <= limit; number += 1) total += number;\n  return total;\n}","asserts":[{"type":"value","label":"예시 1","args":[5],"expected":15},{"type":"value","label":"예시 2","args":[1],"expected":1}],"hints":["function sumTo(...) { ... } 형태 또는 요구된 함수 표현식으로 시작하세요.","조건과 계산을 한꺼번에 쓰기 어렵다면 중간 결과를 변수에 저장하세요."]},{"kind":"write","title":"시작값부터 끝값까지 일정 간격으로 더하기","brief":["sumByStep(start, end, step)을 작성하세요. start부터 end 이하까지 step만큼 증가시키며 모든 값을 더하세요.","함수를 작성한 뒤 직접 호출하는 console.log도 추가해 검사 결과에서 입력값과 결과를 확인하세요."],"code":"// sumByStep 함수를 작성하세요.\n// 작성한 뒤 console.log(sumByStep(...))로 직접 호출하세요.\n","entry":"sumByStep","solutionCode":"function sumByStep(start, end, step) {\n  let total = 0;\n  for (let number = start; number <= end; number += step) total += number;\n  return total;\n}","asserts":[{"type":"value","label":"예시 1","args":[1,9,2],"expected":25},{"type":"value","label":"예시 2","args":[2,8,2],"expected":20}],"hints":["function sumByStep(...) { ... } 형태 또는 요구된 함수 표현식으로 시작하세요.","조건과 계산을 한꺼번에 쓰기 어렵다면 중간 결과를 변수에 저장하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t2-05",
+  "track": "T2",
+  "order": 5,
+  "runtime": "js",
+  "title": "for로 같은 코드를 반복하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "시작값, 계속할 조건, 값의 변화를 적습니다",
+      "brief": [
+        "반복문은 같은 코드를 여러 번 실행합니다. for의 괄호 안에는 초기식, 조건식, 증감식을 세미콜론으로 나누어 씁니다.",
+        {
+          "code": [
+            "for (let count = 1; count <= 3; count += 1) {",
+            "  console.log(count);",
+            "}"
+          ]
+        },
+        "let count = 1은 반복을 시작하기 전에 한 번 실행됩니다. count <= 3이 true인 동안 중괄호 안을 실행합니다.",
+        "한 번 실행한 뒤 count += 1로 count를 1 늘리고 조건을 다시 확인합니다. 따라서 1, 2, 3이 출력됩니다.",
+        "count 값이 바뀌어야 반복이 끝날 수 있으므로 const가 아니라 let을 사용합니다.",
+        "for를 실행 순서대로 풀면 초기식은 한 번, 조건식은 매 반복 직전, 본문은 조건이 true일 때, 증감식은 본문 직후에 실행됩니다.",
+        {
+          "code": [
+            "for (let number = 1; number <= 3; number += 1) {",
+            "  console.log(number);",
+            "}"
+          ]
+        },
+        "number가 1일 때 조건 확인 → 1 출력 → 2로 증가합니다. 같은 과정을 2와 3에서 반복하고, 4가 되면 4 <= 3이 false라 끝납니다.",
+        "반복 횟수가 하나 많거나 적다면 시작값과 <= 또는 <를 함께 확인하세요. 시작값 0과 1의 차이, 이하와 미만의 차이가 경계에서 결과를 바꿉니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "반복 순서 따라가기",
+      "brief": [
+        "count는 1에서 시작해 5 이하인 동안 출력됩니다. 각 반복 뒤에 1씩 증가합니다.",
+        "count가 6이 되면 조건이 false가 되어 반복이 끝나고 완료가 출력됩니다."
+      ],
+      "code": "for (let count = 1; count <= 5; count += 1) {\n  console.log(count);\n}\n\nconsole.log('완료');\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "시작값과 증가 폭 바꿔 보기",
+      "brief": [
+        "시작값 1을 0으로 바꾸면 0부터 5까지 여섯 번 실행됩니다.",
+        "count += 1을 count += 2로 바꾸면 1, 3, 5가 출력됩니다. 한 번 반복할 때마다 2씩 증가하기 때문입니다.",
+        "증감식을 지우면 count가 계속 1이라 조건이 항상 true입니다. 끝나지 않는 반복을 피하려면 조건이 언젠가 false가 되는지 확인해야 합니다."
+      ],
+      "code": "for (let count = 1; count <= 5; count += 1) {\n  console.log(count);\n}\n\nconsole.log('완료');\n"
+    },
+    {
+      "kind": "write",
+      "title": "1부터 4까지 차례로 출력하기",
+      "brief": [
+        "for문을 작성해 1, 2, 3, 4를 한 줄씩 출력하세요.",
+        "반복 변수 number는 1에서 시작하고 4 이하인 동안 1씩 증가합니다."
+      ],
+      "code": "// for문을 작성하세요.\n",
+      "solutionCode": "for (let number = 1; number <= 4; number += 1) {\n  console.log(number);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "1부터 4까지 출력",
+          "expected": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "hints": [
+        "초기식은 let number = 1입니다.",
+        "조건식은 number <= 4, 증감식은 number += 1입니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "2씩 증가하는 번호 출력하기",
+      "brief": [
+        "for문을 작성해 2, 4, 6, 8을 한 줄씩 출력하세요.",
+        "number는 2에서 시작하고 8 이하인 동안 반복하며 한 번마다 2씩 증가합니다."
+      ],
+      "code": "// 2씩 증가하는 for문을 작성하세요.\n",
+      "solutionCode": "for (let number = 2; number <= 8; number += 2) {\n  console.log(number);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "2부터 8까지 2씩 증가",
+          "expected": [
+            "2",
+            "4",
+            "6",
+            "8"
+          ]
+        }
+      ],
+      "hints": [
+        "시작값은 2이고 끝 경계는 8입니다.",
+        "증감식에 number += 2를 씁니다."
+      ]
+    }
+  ]
+}

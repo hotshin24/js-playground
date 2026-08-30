@@ -1,1 +1,112 @@
-{"schemaVersion":2,"id":"t2-02","track":"T2","order":2,"runtime":"js","title":"else if와 else로 여러 경우 나누기","steps":[{"kind":"read","title":"위에서부터 조건을 확인합니다","brief":["else if는 앞의 조건이 false일 때 다른 조건을 확인합니다. else는 앞의 모든 조건이 false일 때 실행됩니다.",{"code":["if (score >= 90) {","  console.log('A');","} else if (score >= 80) {","  console.log('B');","} else {","  console.log('C');","}"]},"조건은 위에서부터 확인합니다. true인 조건을 만나면 그 부분만 실행하고 나머지는 확인하지 않습니다.","score가 95이면 첫 조건에서 끝납니다. score가 85이면 첫 조건은 false이고 둘째 조건이 true이므로 B가 출력됩니다.","넓은 조건을 위에 쓰면 아래 조건이 실행될 기회를 잃을 수 있습니다. 범위와 순서를 함께 확인해야 합니다."]},{"kind":"run","title":"점수 구간 확인하기","brief":["score가 85이므로 첫 조건은 false, 둘째 조건은 true입니다. B만 출력됩니다.","else if 여러 개를 사용해도 선택되는 부분은 하나입니다."],"code":"const score = 85;\n\nif (score >= 90) {\n  console.log('A');\n} else if (score >= 80) {\n  console.log('B');\n} else {\n  console.log('C');\n}\n"},{"kind":"tweak","title":"경계값과 조건 순서 바꿔 보기","brief":["score를 90, 80, 79로 바꾸며 결과를 확인하세요. 경계값에서 >=가 어떻게 작동하는지 볼 수 있습니다.","첫 조건을 score >= 80, 둘째 조건을 score >= 90으로 바꾸면 95도 A가 아니라 첫 번째 부분에서 처리됩니다.","더 높은 점수처럼 범위가 좁은 조건을 먼저 확인해야 각 구간을 올바르게 나눌 수 있습니다."],"code":"const score = 85;\n\nif (score >= 90) {\n  console.log('A');\n} else if (score >= 80) {\n  console.log('B');\n} else {\n  console.log('C');\n}\n"},{"kind":"write","title":"재고 수량을 세 단계로 분류하기","brief":["getStockLevel(stock)을 작성하세요. 10 이상은 '충분', 1 이상은 '부족', 나머지는 '품절'을 반환하세요.","함수를 작성한 뒤 직접 호출하는 console.log도 추가해 검사 결과에서 입력값과 결과를 확인하세요."],"code":"// getStockLevel 함수를 작성하세요.\n// 작성한 뒤 console.log(getStockLevel(...))로 직접 호출하세요.\n","entry":"getStockLevel","solutionCode":"function getStockLevel(stock) {\n  if (stock >= 10) return '충분';\n  else if (stock >= 1) return '부족';\n  else return '품절';\n}","asserts":[{"type":"value","label":"예시 1","args":[15],"expected":"충분"},{"type":"value","label":"예시 2","args":[4],"expected":"부족"},{"type":"value","label":"예시 3","args":[0],"expected":"품절"}],"hints":["function getStockLevel(...) { ... } 형태 또는 요구된 함수 표현식으로 시작하세요.","조건과 계산을 한꺼번에 쓰기 어렵다면 중간 결과를 변수에 저장하세요."]},{"kind":"write","title":"배송 지연 시간을 네 단계로 나누기","brief":["getDelayLevel(minutes)를 작성하세요. 120 이상 '심각', 60 이상 '지연', 1 이상 '주의', 0은 '정상'을 반환하세요.","함수를 작성한 뒤 직접 호출하는 console.log도 추가해 검사 결과에서 입력값과 결과를 확인하세요."],"code":"// getDelayLevel 함수를 작성하세요.\n// 작성한 뒤 console.log(getDelayLevel(...))로 직접 호출하세요.\n","entry":"getDelayLevel","solutionCode":"function getDelayLevel(minutes) {\n  if (minutes >= 120) return '심각';\n  else if (minutes >= 60) return '지연';\n  else if (minutes >= 1) return '주의';\n  else return '정상';\n}","asserts":[{"type":"value","label":"예시 1","args":[150],"expected":"심각"},{"type":"value","label":"예시 2","args":[70],"expected":"지연"},{"type":"value","label":"예시 3","args":[10],"expected":"주의"},{"type":"value","label":"예시 4","args":[0],"expected":"정상"}],"hints":["function getDelayLevel(...) { ... } 형태 또는 요구된 함수 표현식으로 시작하세요.","조건과 계산을 한꺼번에 쓰기 어렵다면 중간 결과를 변수에 저장하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t2-02",
+  "track": "T2",
+  "order": 2,
+  "runtime": "js",
+  "title": "else if와 else로 여러 경우 나누기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "위에서부터 조건을 확인합니다",
+      "brief": [
+        "else if는 앞의 조건이 false일 때 다른 조건을 확인합니다. else는 앞의 모든 조건이 false일 때 실행됩니다.",
+        {
+          "code": [
+            "if (score >= 90) {",
+            "  console.log('A');",
+            "} else if (score >= 80) {",
+            "  console.log('B');",
+            "} else {",
+            "  console.log('C');",
+            "}"
+          ]
+        },
+        "조건은 위에서부터 확인합니다. true인 조건을 만나면 그 부분만 실행하고 나머지는 확인하지 않습니다.",
+        "score가 95이면 첫 조건에서 끝납니다. score가 85이면 첫 조건은 false이고 둘째 조건이 true이므로 B가 출력됩니다.",
+        "넓은 조건을 위에 쓰면 아래 조건이 실행될 기회를 잃을 수 있습니다. 범위와 순서를 함께 확인해야 합니다.",
+        "else if와 else는 각각 따로 실행되는 if문이 아니라 하나의 조건 묶음입니다. 그래서 여러 조건이 true여도 가장 먼저 만난 true 부분 하나만 실행됩니다.",
+        {
+          "code": [
+            "const stock = 4;",
+            "",
+            "if (stock >= 10) {",
+            "  console.log('충분');",
+            "} else if (stock >= 1) {",
+            "  console.log('부족');",
+            "} else {",
+            "  console.log('품절');",
+            "}"
+          ]
+        },
+        "stock이 4이면 첫 조건은 false, 둘째 조건은 true입니다. 부족을 출력한 뒤 묶음 전체를 빠져나가므로 else는 실행하지 않습니다.",
+        "10 이상을 먼저, 1 이상을 나중에 둔 이유도 중요합니다. 1 이상을 먼저 두면 12도 첫 조건에서 잡혀 충분 구간에 도달하지 못합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "점수 구간 확인하기",
+      "brief": [
+        "score가 85이므로 첫 조건은 false, 둘째 조건은 true입니다. B만 출력됩니다.",
+        "else if 여러 개를 사용해도 선택되는 부분은 하나입니다."
+      ],
+      "code": "const score = 85;\n\nif (score >= 90) {\n  console.log('A');\n} else if (score >= 80) {\n  console.log('B');\n} else {\n  console.log('C');\n}\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "경계값과 조건 순서 바꿔 보기",
+      "brief": [
+        "score를 90, 80, 79로 바꾸며 결과를 확인하세요. 경계값에서 >=가 어떻게 작동하는지 볼 수 있습니다.",
+        "첫 조건을 score >= 80, 둘째 조건을 score >= 90으로 바꾸면 95도 A가 아니라 첫 번째 부분에서 처리됩니다.",
+        "더 높은 점수처럼 범위가 좁은 조건을 먼저 확인해야 각 구간을 올바르게 나눌 수 있습니다."
+      ],
+      "code": "const score = 85;\n\nif (score >= 90) {\n  console.log('A');\n} else if (score >= 80) {\n  console.log('B');\n} else {\n  console.log('C');\n}\n"
+    },
+    {
+      "kind": "write",
+      "title": "재고 수량을 세 단계로 분류하기",
+      "brief": [
+        "const stock에 7을 담으세요.",
+        "10 이상은 '충분', 1 이상은 '부족', 나머지는 '품절'을 출력하는 if·else if·else를 작성하세요."
+      ],
+      "code": "const stock = 7;\n\n// 세 구간을 나누어 출력하세요.\n",
+      "solutionCode": "const stock = 7;\n\nif (stock >= 10) {\n  console.log('충분');\n} else if (stock >= 1) {\n  console.log('부족');\n} else {\n  console.log('품절');\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "7개 재고는 부족으로 분류",
+          "expected": [
+            "부족"
+          ]
+        }
+      ],
+      "hints": [
+        "범위가 좁은 stock >= 10부터 확인하세요.",
+        "마지막 경우는 조건 없이 else를 씁니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "배송 지연 시간을 네 단계로 나누기",
+      "brief": [
+        "const delayMinutes에 75를 담으세요.",
+        "120 이상 '심각', 60 이상 '지연', 1 이상 '주의', 나머지는 '정상'을 출력하세요."
+      ],
+      "code": "const delayMinutes = 75;\n\n// 네 구간을 나누어 출력하세요.\n",
+      "solutionCode": "const delayMinutes = 75;\n\nif (delayMinutes >= 120) {\n  console.log('심각');\n} else if (delayMinutes >= 60) {\n  console.log('지연');\n} else if (delayMinutes >= 1) {\n  console.log('주의');\n} else {\n  console.log('정상');\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "75분 지연은 지연으로 분류",
+          "expected": [
+            "지연"
+          ]
+        }
+      ],
+      "hints": [
+        "120, 60, 1처럼 큰 경계값부터 내려옵니다.",
+        "어느 조건에도 맞지 않는 0은 else가 처리합니다."
+      ]
+    }
+  ]
+}

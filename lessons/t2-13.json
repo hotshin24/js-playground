@@ -1,1 +1,138 @@
-{"schemaVersion":2,"id":"t2-13","track":"T2","order":13,"runtime":"js","title":"화살표 함수의 생략 규칙 읽기","steps":[{"kind":"read","title":"함수 표현식을 짧게 쓸 수 있습니다","brief":["화살표 함수는 함수 표현식을 간단히 작성하는 문법입니다.",{"code":["const add = function (a, b) {","  return a + b;","};","","const addArrow = (a, b) => {","  return a + b;","};"]},"function 대신 매개변수 뒤에 =>를 씁니다. 중괄호를 쓴다면 return도 직접 써야 합니다.","함수 본문이 반환식 하나라면 중괄호와 return을 함께 생략할 수 있습니다: const add = (a, b) => a + b;","매개변수가 하나일 때만 괄호를 생략할 수 있습니다. 처음에는 괄호를 유지하면 형태를 알아보기 쉽습니다.","화살표 함수의 this는 일반 함수와 다릅니다. 객체 메서드의 this를 배울 때 그 차이를 다시 다룹니다."]},{"kind":"run","title":"세 함수의 같은 결과 확인하기","brief":["세 함수는 작성 모양이 다르지만 모두 받은 number에 2를 곱해 반환합니다.","한 줄 화살표 함수에서는 number * 2 식의 결과가 자동으로 반환됩니다."],"code":"function doubleA(number) {\n  return number * 2;\n}\n\nconst doubleB = (number) => {\n  return number * 2;\n};\n\nconst doubleC = (number) => number * 2;\n\nconsole.log(doubleA(5));\nconsole.log(doubleB(5));\nconsole.log(doubleC(5));\n"},{"kind":"tweak","title":"중괄호와 return을 함께 다루기","brief":["doubleC를 (number) => { number * 2; }로 바꾸면 undefined가 출력됩니다. 중괄호를 추가했지만 return은 추가하지 않았기 때문입니다.","return number * 2;를 중괄호 안에 쓰면 다시 10이 반환됩니다.","중괄호가 없는 한 줄 반환과 중괄호가 있는 여러 줄 본문을 섞어 기억하지 마세요."],"code":"function doubleA(number) {\n  return number * 2;\n}\n\nconst doubleB = (number) => {\n  return number * 2;\n};\n\nconst doubleC = (number) => number * 2;\n\nconsole.log(doubleA(5));\nconsole.log(doubleB(5));\nconsole.log(doubleC(5));\n"},{"kind":"write","title":"한 줄 화살표 함수 작성하기","brief":["double을 화살표 함수로 작성해 입력값의 두 배를 반환하세요.","함수를 작성한 뒤 직접 호출하는 console.log도 추가해 검사 결과에서 입력값과 결과를 확인하세요."],"code":"// double 함수를 작성하세요.\n// 작성한 뒤 console.log(double(...))로 직접 호출하세요.\n","entry":"double","solutionCode":"const double = value => value * 2;\n","asserts":[{"type":"value","label":"예시 1","args":[4],"expected":8},{"type":"value","label":"예시 2","args":[0],"expected":0}],"hints":["function double(...) { ... } 형태 또는 요구된 함수 표현식으로 시작하세요.","조건과 계산을 한꺼번에 쓰기 어렵다면 중간 결과를 변수에 저장하세요."]},{"kind":"write","title":"객체를 반환하는 화살표 함수 작성하기","brief":["makeProduct(name, price)를 화살표 함수로 작성해 { name, price } 객체를 반환하세요. 객체 괄호를 잊지 마세요.","함수를 작성한 뒤 직접 호출하는 console.log도 추가해 검사 결과에서 입력값과 결과를 확인하세요."],"code":"// makeProduct 함수를 작성하세요.\n// 작성한 뒤 console.log(makeProduct(...))로 직접 호출하세요.\n","entry":"makeProduct","solutionCode":"const makeProduct = (name, price) => ({ name, price });\n","asserts":[{"type":"value","label":"예시 1","args":["컵",8000],"expected":{"name":"컵","price":8000}},{"type":"value","label":"예시 2","args":["노트",3000],"expected":{"name":"노트","price":3000}}],"hints":["function makeProduct(...) { ... } 형태 또는 요구된 함수 표현식으로 시작하세요.","조건과 계산을 한꺼번에 쓰기 어렵다면 중간 결과를 변수에 저장하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t2-13",
+  "track": "T2",
+  "order": 13,
+  "runtime": "js",
+  "title": "화살표 함수의 생략 규칙 읽기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "함수 표현식을 짧게 쓸 수 있습니다",
+      "brief": [
+        "화살표 함수는 함수 표현식을 간단히 작성하는 문법입니다.",
+        {
+          "code": [
+            "const add = function (a, b) {",
+            "  return a + b;",
+            "};",
+            "",
+            "const addArrow = (a, b) => {",
+            "  return a + b;",
+            "};"
+          ]
+        },
+        "function 대신 매개변수 뒤에 =>를 씁니다. 중괄호를 쓴다면 return도 직접 써야 합니다.",
+        "함수 본문이 반환식 하나라면 중괄호와 return을 함께 생략할 수 있습니다: const add = (a, b) => a + b;",
+        "매개변수가 하나일 때만 괄호를 생략할 수 있습니다. 처음에는 괄호를 유지하면 형태를 알아보기 쉽습니다.",
+        "화살표 함수의 this는 일반 함수와 다릅니다. 객체 메서드의 this를 배울 때 그 차이를 다시 다룹니다.",
+        "화살표 왼쪽은 입력, 오른쪽은 실행할 내용입니다. 표현식 하나만 오른쪽에 쓰면 그 계산 결과가 자동으로 반환됩니다.",
+        {
+          "code": [
+            "const double = (number) => number * 2;",
+            "console.log(double(5));",
+            "",
+            "const doubleBlock = (number) => {",
+            "  return number * 2;",
+            "};"
+          ]
+        },
+        "두 함수는 모두 10을 반환합니다. 하지만 중괄호를 여는 순간 자동 반환이 사라지므로 return을 직접 작성해야 합니다.",
+        "처음에는 짧게 만드는 것보다 생략된 것이 무엇인지 구분하는 편이 중요합니다. 매개변수 괄호, 본문 중괄호, return을 한 번에 모두 생략하지 말고 하나씩 비교하세요."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "세 함수의 같은 결과 확인하기",
+      "brief": [
+        "세 함수는 작성 모양이 다르지만 모두 받은 number에 2를 곱해 반환합니다.",
+        "한 줄 화살표 함수에서는 number * 2 식의 결과가 자동으로 반환됩니다."
+      ],
+      "code": "function doubleA(number) {\n  return number * 2;\n}\n\nconst doubleB = (number) => {\n  return number * 2;\n};\n\nconst doubleC = (number) => number * 2;\n\nconsole.log(doubleA(5));\nconsole.log(doubleB(5));\nconsole.log(doubleC(5));\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "중괄호와 return을 함께 다루기",
+      "brief": [
+        "doubleC를 (number) => { number * 2; }로 바꾸면 undefined가 출력됩니다. 중괄호를 추가했지만 return은 추가하지 않았기 때문입니다.",
+        "return number * 2;를 중괄호 안에 쓰면 다시 10이 반환됩니다.",
+        "중괄호가 없는 한 줄 반환과 중괄호가 있는 여러 줄 본문을 섞어 기억하지 마세요."
+      ],
+      "code": "function doubleA(number) {\n  return number * 2;\n}\n\nconst doubleB = (number) => {\n  return number * 2;\n};\n\nconst doubleC = (number) => number * 2;\n\nconsole.log(doubleA(5));\nconsole.log(doubleB(5));\nconsole.log(doubleC(5));\n"
+    },
+    {
+      "kind": "write",
+      "title": "한 줄 화살표 함수 작성하기",
+      "brief": [
+        "double을 화살표 함수로 작성해 입력값의 두 배를 반환하세요.",
+        "함수를 작성한 뒤 직접 호출하는 console.log도 추가해 검사 결과에서 입력값과 결과를 확인하세요."
+      ],
+      "code": "// double 함수를 작성하세요.\n// 작성한 뒤 console.log(double(...))로 직접 호출하세요.\n",
+      "entry": "double",
+      "solutionCode": "const double = value => value * 2;\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "예시 1",
+          "args": [
+            4
+          ],
+          "expected": 8
+        },
+        {
+          "type": "value",
+          "label": "예시 2",
+          "args": [
+            0
+          ],
+          "expected": 0
+        }
+      ],
+      "hints": [
+        "function double(...) { ... } 형태 또는 요구된 함수 표현식으로 시작하세요.",
+        "조건과 계산을 한꺼번에 쓰기 어렵다면 중간 결과를 변수에 저장하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "객체를 반환하는 화살표 함수 작성하기",
+      "brief": [
+        "makeProduct(name, price)를 화살표 함수로 작성해 { name, price } 객체를 반환하세요. 객체 괄호를 잊지 마세요.",
+        "함수를 작성한 뒤 직접 호출하는 console.log도 추가해 검사 결과에서 입력값과 결과를 확인하세요."
+      ],
+      "code": "// makeProduct 함수를 작성하세요.\n// 작성한 뒤 console.log(makeProduct(...))로 직접 호출하세요.\n",
+      "entry": "makeProduct",
+      "solutionCode": "const makeProduct = (name, price) => ({ name, price });\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "예시 1",
+          "args": [
+            "컵",
+            8000
+          ],
+          "expected": {
+            "name": "컵",
+            "price": 8000
+          }
+        },
+        {
+          "type": "value",
+          "label": "예시 2",
+          "args": [
+            "노트",
+            3000
+          ],
+          "expected": {
+            "name": "노트",
+            "price": 3000
+          }
+        }
+      ],
+      "hints": [
+        "function makeProduct(...) { ... } 형태 또는 요구된 함수 표현식으로 시작하세요.",
+        "조건과 계산을 한꺼번에 쓰기 어렵다면 중간 결과를 변수에 저장하세요."
+      ]
+    }
+  ]
+}

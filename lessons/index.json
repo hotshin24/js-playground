@@ -1,305 +1,1775 @@
 {
   "schemaVersion": 1,
   "tracks": [
-    { "id": "T0", "title": "실행과 값" },
-    { "id": "T1", "title": "자료형과 연산" },
-    { "id": "T2", "title": "조건 · 반복 · 함수 · 스코프" },
-    { "id": "T3", "title": "객체 · 배열 · 참조" },
-    { "id": "T4", "title": "브라우저 JavaScript와 비동기" },
-    { "id": "T5", "title": "React의 출발점" },
-    { "id": "T6", "title": "상태와 입력" },
-    { "id": "T7", "title": "라이프 사이클과 효과" },
-    { "id": "T8", "title": "복잡한 상태와 데이터 공급" },
-    { "id": "T9", "title": "렌더링 최적화와 저장" }
+    {
+      "id": "T0",
+      "title": "실행과 값"
+    },
+    {
+      "id": "T1",
+      "title": "자료형과 연산"
+    },
+    {
+      "id": "T2",
+      "title": "조건 · 반복 · 함수 · 스코프"
+    },
+    {
+      "id": "T3",
+      "title": "객체 · 배열 · 참조"
+    },
+    {
+      "id": "T4",
+      "title": "브라우저 JavaScript와 비동기"
+    },
+    {
+      "id": "T5",
+      "title": "React의 출발점"
+    },
+    {
+      "id": "T6",
+      "title": "상태와 입력"
+    },
+    {
+      "id": "T7",
+      "title": "라이프 사이클과 효과"
+    },
+    {
+      "id": "T8",
+      "title": "복잡한 상태와 데이터 공급"
+    },
+    {
+      "id": "T9",
+      "title": "렌더링 최적화와 저장"
+    }
   ],
   "lessons": [
-    { "id": "t0-01", "track": "T0", "order": 1, "title": "코드는 어떤 순서로 실행될까요" },
-    { "id": "t0-02", "track": "T0", "order": 2, "title": "값을 출력해 확인하기" },
-    { "id": "t0-03", "track": "T0", "order": 3, "title": "값에 이름 붙이기" },
-    { "id": "t0-04", "track": "T0", "order": 4, "title": "읽을 수 있는 이름 짓기" },
-    { "id": "t0-05", "track": "T0", "order": 5, "title": "오류 메시지에서 멈춘 자리 찾기" },
-    { "id": "t0-06", "track": "T0", "order": 6, "title": "입력을 받아 결과 반환하기" },
-    { "id": "t0-07", "track": "T0", "order": 7, "title": "종합 문제 1: 작업 순서를 차례로 출력하기" },
-    { "id": "t0-08", "track": "T0", "order": 8, "title": "종합 문제 2: 서로 다른 값을 줄마다 출력하기" },
-    { "id": "t0-09", "track": "T0", "order": 9, "title": "종합 문제 3: 변수에 담긴 값을 출력하기" },
-    { "id": "t0-10", "track": "T0", "order": 10, "title": "종합 문제 4: 바뀌기 전과 후의 값 출력하기" },
-    { "id": "t0-11", "track": "T0", "order": 11, "title": "종합 문제 5: 주문 정보를 읽기 좋은 순서로 출력하기" },
-    { "id": "t1-01", "track": "T1", "order": 1, "title": "JavaScript 값의 종류 한눈에 보기" },
-    { "id": "t1-02", "track": "T1", "order": 2, "title": "문자열로 글자 다루기" },
-    { "id": "t1-03", "track": "T1", "order": 3, "title": "숫자와 특별한 숫자 결과 이해하기" },
-    { "id": "t1-04", "track": "T1", "order": 4, "title": "참과 거짓으로 상태 나타내기" },
-    { "id": "t1-05", "track": "T1", "order": 5, "title": "undefined와 null 구분하기" },
-    { "id": "t1-06", "track": "T1", "order": 6, "title": "Symbol과 BigInt는 언제 쓸까요" },
-    { "id": "t1-07", "track": "T1", "order": 7, "title": "변수에 다른 종류의 값 넣기" },
-    { "id": "t1-08", "track": "T1", "order": 8, "title": "원하는 자료형으로 직접 바꾸기" },
-    { "id": "t1-09", "track": "T1", "order": 9, "title": "JavaScript가 자동으로 자료형을 바꿀 때" },
-    { "id": "t1-10", "track": "T1", "order": 10, "title": "계산하고 변수에 다시 저장하기" },
-    { "id": "t1-11", "track": "T1", "order": 11, "title": "두 값을 비교하기" },
-    { "id": "t1-12", "track": "T1", "order": 12, "title": "==와 === 구분하기" },
-    { "id": "t1-13", "track": "T1", "order": 13, "title": "여러 조건을 함께 확인하기" },
-    { "id": "t1-14", "track": "T1", "order": 14, "title": "truthy와 falsy 이해하기" },
-    { "id": "t1-15", "track": "T1", "order": 15, "title": "필요한 값만 골라서 사용하기" },
-    { "id": "t1-16", "track": "T1", "order": 16, "title": "종합 문제 1: 입력값의 자료형과 기본값을 문장으로 정리하기" },
-    { "id": "t1-17", "track": "T1", "order": 17, "title": "종합 문제 2: 문자열 숫자를 변환해 금액 계산하기" },
-    { "id": "t1-18", "track": "T1", "order": 18, "title": "종합 문제 3: 식별 번호를 문자열로 통일하기" },
-    { "id": "t1-19", "track": "T1", "order": 19, "title": "종합 문제 4: 값의 입력 여부를 불리언으로 확인하기" },
-    { "id": "t1-20", "track": "T1", "order": 20, "title": "종합 문제 5: 값과 자료형을 함께 비교하기" },
-    { "id": "t1-21", "track": "T1", "order": 21, "title": "종합 문제 6: 두 조건이 모두 맞는지 확인하기" },
-    { "id": "t1-22", "track": "T1", "order": 22, "title": "종합 문제 7: 두 조건 중 하나라도 맞는지 확인하기" },
-    { "id": "t1-23", "track": "T1", "order": 23, "title": "종합 문제 8: null과 undefined에만 기본값 적용하기" },
-    { "id": "t1-24", "track": "T1", "order": 24, "title": "종합 문제 9: falsy 값에 표시용 기본값 적용하기" },
-    { "id": "t1-25", "track": "T1", "order": 25, "title": "종합 문제 10: 문자열 비율을 숫자로 바꿔 계산하기" },
-    { "id": "t1-26", "track": "T1", "order": 26, "title": "종합 문제 11: 계산 결과를 제한값과 비교하기" },
-    { "id": "t1-27", "track": "T1", "order": 27, "title": "종합 문제 12: 숫자로 변환할 수 없는 입력 찾기" },
-    { "id": "t1-28", "track": "T1", "order": 28, "title": "종합 문제 13: 0을 보존하며 기본값 적용하기" },
-    { "id": "t1-29", "track": "T1", "order": 29, "title": "종합 문제 14: 조건이 맞을 때만 값 선택하기" },
-    { "id": "t1-30", "track": "T1", "order": 30, "title": "종합 문제 15: 여러 입력값을 변환·계산해 문장 만들기" },
-    { "id": "t1-31", "track": "T1", "order": 31, "title": "종합 문제 16: 계산 결과를 안내 문장으로 만들기" },
-    { "id": "t1-32", "track": "T1", "order": 32, "title": "종합 문제 17: 서로 다른 단위를 하나로 합치기" },
-    { "id": "t1-33", "track": "T1", "order": 33, "title": "종합 문제 18: 기준값에서 사용한 만큼 빼기" },
-    { "id": "t1-34", "track": "T1", "order": 34, "title": "종합 문제 19: 두 값을 더해 안내 문장 만들기" },
-    { "id": "t1-35", "track": "T1", "order": 35, "title": "종합 문제 20: 값과 비율을 곱해 일부 금액 구하기" },
-    { "id": "t1-36", "track": "T1", "order": 36, "title": "종합 문제 21: 들어온 수와 나간 수로 남은 값 구하기" },
-    { "id": "t1-37", "track": "T1", "order": 37, "title": "종합 문제 22: 가로와 세로를 곱해 넓이 구하기" },
-    { "id": "t1-38", "track": "T1", "order": 38, "title": "종합 문제 23: 값을 다른 단위로 변환하기" },
-    { "id": "t1-39", "track": "T1", "order": 39, "title": "종합 문제 24: 단가와 수량으로 전체 금액 구하기" },
-    { "id": "t1-40", "track": "T1", "order": 40, "title": "종합 문제 25: 세 값을 더해 평균 구하기" },
-    { "id": "t1-41", "track": "T1", "order": 41, "title": "종합 문제 26: 정해진 계산식으로 값 변환하기" },
-    { "id": "t1-42", "track": "T1", "order": 42, "title": "종합 문제 27: 두 문자열을 이어 하나의 문장 만들기" },
-    { "id": "t1-43", "track": "T1", "order": 43, "title": "종합 문제 28: 기본 금액과 추가 금액 합치기" },
-    { "id": "t1-44", "track": "T1", "order": 44, "title": "종합 문제 29: 한 번의 값과 횟수로 전체 값 구하기" },
-    { "id": "t1-45", "track": "T1", "order": 45, "title": "종합 문제 30: 여러 입력값을 계산해 완료 문장 만들기" },
-    { "id": "t2-01", "track": "T2", "order": 1, "title": "if로 조건에 맞는 코드만 실행하기" },
-    { "id": "t2-02", "track": "T2", "order": 2, "title": "else if와 else로 여러 경우 나누기" },
-    { "id": "t2-03", "track": "T2", "order": 3, "title": "switch로 정해진 값별 코드 고르기" },
-    { "id": "t2-04", "track": "T2", "order": 4, "title": "삼항 조건 연산자로 값 하나 고르기" },
-    { "id": "t2-05", "track": "T2", "order": 5, "title": "for로 같은 코드를 반복하기" },
-    { "id": "t2-06", "track": "T2", "order": 6, "title": "break와 continue로 반복 제어하기" },
-    { "id": "t2-07", "track": "T2", "order": 7, "title": "반복되는 코드에 함수로 이름 붙이기" },
-    { "id": "t2-08", "track": "T2", "order": 8, "title": "함수를 선언하고 필요한 때 호출하기" },
-    { "id": "t2-09", "track": "T2", "order": 9, "title": "매개변수로 호출할 때마다 다른 값 받기" },
-    { "id": "t2-10", "track": "T2", "order": 10, "title": "return으로 함수의 결과 돌려주기" },
-    { "id": "t2-11", "track": "T2", "order": 11, "title": "함수를 값으로 변수에 담기" },
-    { "id": "t2-12", "track": "T2", "order": 12, "title": "콜백 함수 전달하고 호출하기" },
-    { "id": "t2-13", "track": "T2", "order": 13, "title": "화살표 함수의 생략 규칙 읽기" },
-    { "id": "t2-14", "track": "T2", "order": 14, "title": "중첩 함수가 바깥 값을 기억하는 이유" },
-    { "id": "t2-15", "track": "T2", "order": 15, "title": "변수를 사용할 수 있는 범위 이해하기" },
-    { "id": "t2-16", "track": "T2", "order": 16, "title": "선언 전에 사용할 수 있는 이름 구분하기" },
-    { "id": "t2-17", "track": "T2", "order": 17, "title": "종합 문제 1: 조건에 맞는 값만 반복해서 누적하기" },
-    { "id": "t2-18", "track": "T2", "order": 18, "title": "종합 문제 2: 조건에 따라 서로 다른 값 반환하기" },
-    { "id": "t2-19", "track": "T2", "order": 19, "title": "종합 문제 3: 여러 범위를 순서대로 나누기" },
-    { "id": "t2-20", "track": "T2", "order": 20, "title": "종합 문제 4: 정해진 값마다 다른 결과 반환하기" },
-    { "id": "t2-21", "track": "T2", "order": 21, "title": "종합 문제 5: 두 결과 중 하나를 짧게 선택하기" },
-    { "id": "t2-22", "track": "T2", "order": 22, "title": "종합 문제 6: 반복할 때 계산값 누적하기" },
-    { "id": "t2-23", "track": "T2", "order": 23, "title": "종합 문제 7: 조건을 처음 만족할 때 반복 멈추기" },
-    { "id": "t2-24", "track": "T2", "order": 24, "title": "종합 문제 8: 매개변수에 따라 달라지는 값 반환하기" },
-    { "id": "t2-25", "track": "T2", "order": 25, "title": "종합 문제 9: 여러 매개변수로 하나의 결과 계산하기" },
-    { "id": "t2-26", "track": "T2", "order": 26, "title": "종합 문제 10: 함수의 반환값을 다음 계산에 사용하기" },
-    { "id": "t2-27", "track": "T2", "order": 27, "title": "종합 문제 11: 함수 표현식으로 계산 규칙 만들기" },
-    { "id": "t2-28", "track": "T2", "order": 28, "title": "종합 문제 12: 여러 콜백으로 계산 순서 조합하기" },
-    { "id": "t2-29", "track": "T2", "order": 29, "title": "종합 문제 13: 화살표 함수로 계산 요약 객체 만들기" },
-    { "id": "t2-30", "track": "T2", "order": 30, "title": "종합 문제 14: 클로저로 호출 사이의 값 기억하기" },
-    { "id": "t2-31", "track": "T2", "order": 31, "title": "종합 문제 15: 조건과 반복으로 일정 분석하기" },
-    { "id": "t3-01", "track": "T3", "order": 1, "title": "객체로 관련 있는 값 묶기" },
-    { "id": "t3-02", "track": "T3", "order": 2, "title": "객체의 프로퍼티 읽고 바꾸기" },
-    { "id": "t3-03", "track": "T3", "order": 3, "title": "메서드와 this로 객체 자신의 값 사용하기" },
-    { "id": "t3-04", "track": "T3", "order": 4, "title": "배열로 값의 순서 저장하기" },
-    { "id": "t3-05", "track": "T3", "order": 5, "title": "원시값을 복사하면 서로 영향을 주지 않습니다" },
-    { "id": "t3-06", "track": "T3", "order": 6, "title": "객체를 할당하면 같은 객체를 가리킵니다" },
-    { "id": "t3-07", "track": "T3", "order": 7, "title": "전개 연산자로 새 객체 만들기" },
-    { "id": "t3-08", "track": "T3", "order": 8, "title": "구조 분해로 필요한 값 꺼내기" },
-    { "id": "t3-09", "track": "T3", "order": 9, "title": "rest와 spread 구분하기" },
-    { "id": "t3-10", "track": "T3", "order": 10, "title": "배열의 앞뒤에 값 추가하고 삭제하기" },
-    { "id": "t3-11", "track": "T3", "order": 11, "title": "forEach로 배열의 모든 값 사용하기" },
-    { "id": "t3-12", "track": "T3", "order": 12, "title": "map으로 같은 길이의 새 배열 만들기" },
-    { "id": "t3-13", "track": "T3", "order": 13, "title": "find와 findIndex로 원하는 값 찾기" },
-    { "id": "t3-14", "track": "T3", "order": 14, "title": "filter로 조건에 맞는 값만 남기기" },
-    { "id": "t3-15", "track": "T3", "order": 15, "title": "reduce로 배열을 값 하나로 합치기" },
-    { "id": "t3-16", "track": "T3", "order": 16, "title": "sort로 정렬할 때 원본 지키기" },
-    { "id": "t3-17", "track": "T3", "order": 17, "title": "Date 객체로 날짜와 시간 다루기" },
-    { "id": "t3-18", "track": "T3", "order": 18, "title": "export와 import로 파일 나누기" },
-    { "id": "t3-19", "track": "T3", "order": 19, "title": "종합 문제 1: 배열을 고르고 바꾸고 합쳐 보고서 만들기" },
-    { "id": "t3-20", "track": "T3", "order": 20, "title": "종합 문제 2: 객체의 프로퍼티로 표시 문구 만들기" },
-    { "id": "t3-21", "track": "T3", "order": 21, "title": "종합 문제 3: 변수에 담긴 키로 객체 값 읽기" },
-    { "id": "t3-22", "track": "T3", "order": 22, "title": "종합 문제 4: 객체의 여러 값으로 요약 문장 만들기" },
-    { "id": "t3-23", "track": "T3", "order": 23, "title": "종합 문제 5: 원시값을 복사한 뒤 서로 따로 변경하기" },
-    { "id": "t3-24", "track": "T3", "order": 24, "title": "종합 문제 6: 같은 객체를 가리키는 두 변수 이해하기" },
-    { "id": "t3-25", "track": "T3", "order": 25, "title": "종합 문제 7: 전개 문법으로 원본을 보존한 객체 만들기" },
-    { "id": "t3-26", "track": "T3", "order": 26, "title": "종합 문제 8: 구조 분해로 필요한 값과 기본값 꺼내기" },
-    { "id": "t3-27", "track": "T3", "order": 27, "title": "종합 문제 9: 전개 문법으로 새 배열 합치기" },
-    { "id": "t3-28", "track": "T3", "order": 28, "title": "종합 문제 10: push로 기존 배열 끝에 값 추가하기" },
-    { "id": "t3-29", "track": "T3", "order": 29, "title": "종합 문제 11: forEach로 배열 값을 차례로 누적하기" },
-    { "id": "t3-30", "track": "T3", "order": 30, "title": "종합 문제 12: map으로 각 항목을 새로운 값으로 바꾸기" },
-    { "id": "t3-31", "track": "T3", "order": 31, "title": "종합 문제 13: find로 조건에 맞는 첫 번째 항목 찾기" },
-    { "id": "t3-32", "track": "T3", "order": 32, "title": "종합 문제 14: filter로 조건에 맞는 항목만 새 배열에 담기" },
-    { "id": "t3-33", "track": "T3", "order": 33, "title": "종합 문제 15: 복사한 배열을 기준값에 따라 정렬하기" },
-    { "id": "t4-01", "track": "T4", "order": 1, "title": "DOM에서 HTML 요소 찾기" },
-    { "id": "t4-02", "track": "T4", "order": 2, "title": "요소의 글자·클래스·속성 바꾸기" },
-    { "id": "t4-03", "track": "T4", "order": 3, "title": "새 HTML 요소 만들어 추가하기" },
-    { "id": "t4-04", "track": "T4", "order": 4, "title": "이벤트가 발생했을 때 함수 실행하기" },
-    { "id": "t4-05", "track": "T4", "order": 5, "title": "이벤트 객체에서 발생한 요소 확인하기" },
-    { "id": "t4-06", "track": "T4", "order": 6, "title": "부모 요소에서 여러 자식의 이벤트 처리하기" },
-    { "id": "t4-07", "track": "T4", "order": 7, "title": "input과 change 이벤트로 입력값 읽기" },
-    { "id": "t4-08", "track": "T4", "order": 8, "title": "폼 제출을 JavaScript로 처리하기" },
-    { "id": "t4-09", "track": "T4", "order": 9, "title": "동기 코드와 비동기 코드의 실행 순서" },
-    { "id": "t4-10", "track": "T4", "order": 10, "title": "Promise의 세 가지 상태 이해하기" },
-    { "id": "t4-11", "track": "T4", "order": 11, "title": "then·catch·finally로 Promise 결과 사용하기" },
-    { "id": "t4-12", "track": "T4", "order": 12, "title": "async와 await로 Promise 기다리기" },
-    { "id": "t4-13", "track": "T4", "order": 13, "title": "throw와 try/catch로 오류 처리하기" },
-    { "id": "t4-14", "track": "T4", "order": 14, "title": "fetch로 JSON 응답 받아 사용하기" },
-    { "id": "t4-15", "track": "T4", "order": 15, "title": "여러 Promise를 함께 기다리기" },
-    { "id": "t4-16", "track": "T4", "order": 16, "title": "Web Storage에 브라우저 데이터 저장하기" },
-    { "id": "t4-17", "track": "T4", "order": 17, "title": "종합 문제 1: 요소를 찾아 클릭할 때 숫자 변경하기" },
-    { "id": "t4-18", "track": "T4", "order": 18, "title": "종합 문제 2: 선택자로 요소를 찾아 글자 바꾸기" },
-    { "id": "t4-19", "track": "T4", "order": 19, "title": "종합 문제 3: class와 HTML 속성으로 상태 나타내기" },
-    { "id": "t4-20", "track": "T4", "order": 20, "title": "종합 문제 4: 새 요소를 만들어 부모 요소에 추가하기" },
-    { "id": "t4-21", "track": "T4", "order": 21, "title": "종합 문제 5: 이벤트가 발생할 때 실행할 함수 등록하기" },
-    { "id": "t4-22", "track": "T4", "order": 22, "title": "종합 문제 6: 이벤트가 연결된 요소의 값 사용하기" },
-    { "id": "t4-23", "track": "T4", "order": 23, "title": "종합 문제 7: 부모 요소 하나에서 자식 클릭 처리하기" },
-    { "id": "t4-24", "track": "T4", "order": 24, "title": "종합 문제 8: 입력할 때 현재 값을 다른 요소에 표시하기" },
-    { "id": "t4-25", "track": "T4", "order": 25, "title": "종합 문제 9: 폼의 기본 제출을 막고 입력값 처리하기" },
-    { "id": "t4-26", "track": "T4", "order": 26, "title": "종합 문제 10: 동기 코드와 예약된 콜백의 실행 순서 구분하기" },
-    { "id": "t4-27", "track": "T4", "order": 27, "title": "종합 문제 11: Promise의 성공 결과를 단계적으로 가공하기" },
-    { "id": "t4-28", "track": "T4", "order": 28, "title": "종합 문제 12: async 함수에서 여러 비동기 결과를 순서대로 기다리기" },
-    { "id": "t4-29", "track": "T4", "order": 29, "title": "종합 문제 13: 오류가 날 수 있는 변환을 try/catch로 처리하기" },
-    { "id": "t4-30", "track": "T4", "order": 30, "title": "종합 문제 14: Promise.all로 독립적인 결과를 함께 기다리기" },
-    { "id": "t4-31", "track": "T4", "order": 31, "title": "종합 문제 15: 브라우저 저장소에 문자열을 저장하고 복원하기" },
-    { "id": "t5-01", "track": "T5", "order": 1, "title": "React가 화면을 만드는 방식 이해하기" },
-    { "id": "t5-02", "track": "T5", "order": 2, "title": "root를 만들고 React 화면 렌더링하기" },
-    { "id": "t5-03", "track": "T5", "order": 3, "title": "JSX를 JavaScript 값으로 다루기" },
-    { "id": "t5-04", "track": "T5", "order": 4, "title": "JSX를 하나의 부모로 묶기" },
-    { "id": "t5-05", "track": "T5", "order": 5, "title": "JSX에서 className과 htmlFor 사용하기" },
-    { "id": "t5-06", "track": "T5", "order": 6, "title": "JSX 중괄호 안에 JavaScript 값 넣기" },
-    { "id": "t5-07", "track": "T5", "order": 7, "title": "조건에 따라 다른 JSX 보여 주기" },
-    { "id": "t5-08", "track": "T5", "order": 8, "title": "className과 style 객체로 JSX 꾸미기" },
-    { "id": "t5-09", "track": "T5", "order": 9, "title": "함수 컴포넌트로 화면 조각 만들기" },
-    { "id": "t5-10", "track": "T5", "order": 10, "title": "부모와 자식 컴포넌트로 화면 나누기" },
-    { "id": "t5-11", "track": "T5", "order": 11, "title": "props로 부모의 값을 자식에게 전달하기" },
-    { "id": "t5-12", "track": "T5", "order": 12, "title": "객체·함수·JSX를 props로 전달하기" },
-    { "id": "t5-13", "track": "T5", "order": 13, "title": "children으로 감싼 JSX 전달하기" },
-    { "id": "t5-14", "track": "T5", "order": 14, "title": "React 이벤트에 실행할 함수 전달하기" },
-    { "id": "t5-15", "track": "T5", "order": 15, "title": "React 이벤트 객체에서 입력값 읽기" },
-    { "id": "t5-16", "track": "T5", "order": 16, "title": "배열을 JSX 목록으로 렌더링하기" },
-    { "id": "t5-17", "track": "T5", "order": 17, "title": "종합 문제 1: 컴포넌트와 props로 조건부 목록 렌더링하기" },
-    { "id": "t5-18", "track": "T5", "order": 18, "title": "종합 문제 2: 조건에 따라 다른 상태 문구 보여주기" },
-    { "id": "t5-19", "track": "T5", "order": 19, "title": "종합 문제 3: props로 재사용 가능한 카드 만들기" },
-    { "id": "t5-20", "track": "T5", "order": 20, "title": "종합 문제 4: children으로 공통 틀 안에 내용 넣기" },
-    { "id": "t5-21", "track": "T5", "order": 21, "title": "종합 문제 5: React 이벤트에 실행할 함수 전달하기" },
-    { "id": "t5-22", "track": "T5", "order": 22, "title": "종합 문제 6: 이벤트 객체에서 입력값 읽기" },
-    { "id": "t5-23", "track": "T5", "order": 23, "title": "종합 문제 7: 배열을 JSX 목록으로 렌더링하기" },
-    { "id": "t5-24", "track": "T5", "order": 24, "title": "종합 문제 8: 조건에 따라 className 바꾸기" },
-    { "id": "t5-25", "track": "T5", "order": 25, "title": "종합 문제 9: style 객체로 값에 따른 모양 지정하기" },
-    { "id": "t5-26", "track": "T5", "order": 26, "title": "종합 문제 10: 부모와 자식 컴포넌트로 화면 나누기" },
-    { "id": "t5-27", "track": "T5", "order": 27, "title": "종합 문제 11: 객체를 props로 전달해 필요한 값 읽기" },
-    { "id": "t5-28", "track": "T5", "order": 28, "title": "종합 문제 12: JSX를 props로 전달해 원하는 위치에 표시하기" },
-    { "id": "t5-29", "track": "T5", "order": 29, "title": "종합 문제 13: 함수를 props로 전달해 자식에서 실행하기" },
-    { "id": "t5-30", "track": "T5", "order": 30, "title": "종합 문제 14: JSX의 label과 input을 올바르게 연결하기" },
-    { "id": "t5-31", "track": "T5", "order": 31, "title": "종합 문제 15: 여러 컴포넌트와 목록을 한 화면에 조합하기" },
-    { "id": "t6-01", "track": "T6", "order": 1, "title": "일반 변수를 바꿔도 화면이 그대로인 이유" },
-    { "id": "t6-02", "track": "T6", "order": 2, "title": "useState로 값을 기억하고 화면 갱신하기" },
-    { "id": "t6-03", "track": "T6", "order": 3, "title": "렌더마다 고정된 state 스냅샷 이해하기" },
-    { "id": "t6-04", "track": "T6", "order": 4, "title": "이전 state로 안전하게 다음 값 계산하기" },
-    { "id": "t6-05", "track": "T6", "order": 5, "title": "훅을 컴포넌트 최상위에서 호출하기" },
-    { "id": "t6-06", "track": "T6", "order": 6, "title": "이벤트에서 state를 바꾸고 다시 렌더링하기" },
-    { "id": "t6-07", "track": "T6", "order": 7, "title": "제어 컴포넌트로 입력값과 state 연결하기" },
-    { "id": "t6-08", "track": "T6", "order": 8, "title": "객체 state로 여러 입력값 관리하기" },
-    { "id": "t6-09", "track": "T6", "order": 9, "title": "객체 state를 새 객체로 갱신하기" },
-    { "id": "t6-10", "track": "T6", "order": 10, "title": "배열 state를 새 배열로 갱신하기" },
-    { "id": "t6-11", "track": "T6", "order": 11, "title": "props와 state의 소유권 구분하기" },
-    { "id": "t6-12", "track": "T6", "order": 12, "title": "공유할 state를 공통 부모로 올리기" },
-    { "id": "t6-13", "track": "T6", "order": 13, "title": "state에서 바로 계산할 수 있는 값 구분하기" },
-    { "id": "t6-14", "track": "T6", "order": 14, "title": "로딩·오류·빈 화면·내용 상태 나누기" },
-    { "id": "t6-15", "track": "T6", "order": 15, "title": "useRef로 DOM 요소와 렌더와 무관한 값 기억하기" },
-    { "id": "t6-16", "track": "T6", "order": 16, "title": "종합 문제 1: 입력 state와 배열 state 연결하기" },
-    { "id": "t6-17", "track": "T6", "order": 17, "title": "종합 문제 2: useState로 숫자 상태 변경하기" },
-    { "id": "t6-18", "track": "T6", "order": 18, "title": "종합 문제 3: 이전 상태를 기준으로 안전하게 갱신하기" },
-    { "id": "t6-19", "track": "T6", "order": 19, "title": "종합 문제 4: 불리언 state로 화면 상태 전환하기" },
-    { "id": "t6-20", "track": "T6", "order": 20, "title": "종합 문제 5: 제어 입력으로 state와 입력값 연결하기" },
-    { "id": "t6-21", "track": "T6", "order": 21, "title": "종합 문제 6: 객체 state로 여러 입력값 관리하기" },
-    { "id": "t6-22", "track": "T6", "order": 22, "title": "종합 문제 7: 객체 state를 새 객체로 갱신하기" },
-    { "id": "t6-23", "track": "T6", "order": 23, "title": "종합 문제 8: 배열 state에 새 항목 추가하기" },
-    { "id": "t6-24", "track": "T6", "order": 24, "title": "종합 문제 9: 배열 state에서 조건에 맞는 항목 제거하기" },
-    { "id": "t6-25", "track": "T6", "order": 25, "title": "종합 문제 10: 공유 state를 공통 부모에서 관리하기" },
-    { "id": "t6-26", "track": "T6", "order": 26, "title": "종합 문제 11: state에서 바로 계산할 수 있는 값 구하기" },
-    { "id": "t6-27", "track": "T6", "order": 27, "title": "종합 문제 12: 로딩·오류·빈 화면·내용 상태 나누기" },
-    { "id": "t6-28", "track": "T6", "order": 28, "title": "종합 문제 13: useRef로 DOM 요소에 접근하기" },
-    { "id": "t6-29", "track": "T6", "order": 29, "title": "종합 문제 14: useRef로 렌더링과 무관한 값 기억하기" },
-    { "id": "t6-30", "track": "T6", "order": 30, "title": "종합 문제 15: 입력·배열·계산값을 한 컴포넌트에서 연결하기" },
-    { "id": "t7-01", "track": "T7", "order": 1, "title": "컴포넌트의 마운트·업데이트·언마운트 구분하기" },
-    { "id": "t7-02", "track": "T7", "order": 2, "title": "렌더링과 외부 시스템 동기화 구분하기" },
-    { "id": "t7-03", "track": "T7", "order": 3, "title": "useEffect로 렌더 뒤 코드 실행하기" },
-    { "id": "t7-04", "track": "T7", "order": 4, "title": "의존성 배열로 effect 실행 시점 정하기" },
-    { "id": "t7-05", "track": "T7", "order": 5, "title": "effect가 사용하는 여러 값을 의존성에 넣기" },
-    { "id": "t7-06", "track": "T7", "order": 6, "title": "정리 함수로 이전 effect 끝내기" },
-    { "id": "t7-07", "track": "T7", "order": 7, "title": "마운트 때 구독하고 언마운트 때 해제하기" },
-    { "id": "t7-08", "track": "T7", "order": 8, "title": "effect 없이 계산할 수 있는 값 찾기" },
-    { "id": "t7-09", "track": "T7", "order": 9, "title": "effect에서 데이터를 불러와 화면 상태 바꾸기" },
-    { "id": "t7-10", "track": "T7", "order": 10, "title": "늦게 끝난 이전 요청 결과 무시하기" },
-    { "id": "t7-11", "track": "T7", "order": 11, "title": "커스텀 훅으로 state와 effect 재사용하기" },
-    { "id": "t7-12", "track": "T7", "order": 12, "title": "종합 문제 1: 이벤트 구독을 커스텀 훅으로 분리하기" },
-    { "id": "t7-13", "track": "T7", "order": 13, "title": "종합 문제 2: 마운트 뒤 effect로 외부 값 동기화하기" },
-    { "id": "t7-14", "track": "T7", "order": 14, "title": "종합 문제 3: 의존성 값이 바뀔 때 effect 다시 실행하기" },
-    { "id": "t7-15", "track": "T7", "order": 15, "title": "종합 문제 4: effect가 사용하는 모든 값을 의존성에 넣기" },
-    { "id": "t7-16", "track": "T7", "order": 16, "title": "종합 문제 5: 정리 함수로 이전 타이머 끝내기" },
-    { "id": "t7-17", "track": "T7", "order": 17, "title": "종합 문제 6: 이벤트를 구독하고 정리 함수에서 해제하기" },
-    { "id": "t7-18", "track": "T7", "order": 18, "title": "종합 문제 7: effect 없이 렌더링 중 계산하기" },
-    { "id": "t7-19", "track": "T7", "order": 19, "title": "종합 문제 8: effect에서 비동기 데이터를 받아 state 바꾸기" },
-    { "id": "t7-20", "track": "T7", "order": 20, "title": "종합 문제 9: 비동기 화면을 로딩·오류·내용으로 나누기" },
-    { "id": "t7-21", "track": "T7", "order": 21, "title": "종합 문제 10: 늦게 끝난 이전 요청 결과 무시하기" },
-    { "id": "t7-22", "track": "T7", "order": 22, "title": "종합 문제 11: 커스텀 훅으로 effect 로직 재사용하기" },
-    { "id": "t7-23", "track": "T7", "order": 23, "title": "종합 문제 12: 커스텀 훅으로 이벤트 구독 재사용하기" },
-    { "id": "t7-24", "track": "T7", "order": 24, "title": "종합 문제 13: setInterval을 시작하고 정리하기" },
-    { "id": "t7-25", "track": "T7", "order": 25, "title": "종합 문제 14: state 변화에 맞춰 저장소와 동기화하기" },
-    { "id": "t7-26", "track": "T7", "order": 26, "title": "종합 문제 15: 여러 effect의 역할을 나누어 구성하기" },
-    { "id": "t8-01", "track": "T8", "order": 1, "title": "여러 state 변경 규칙이 흩어질 때의 문제" },
-    { "id": "t8-02", "track": "T8", "order": 2, "title": "reducer 함수로 다음 state 계산하기" },
-    { "id": "t8-03", "track": "T8", "order": 3, "title": "useReducer와 dispatch로 action 보내기" },
-    { "id": "t8-04", "track": "T8", "order": 4, "title": "action의 type과 payload 설계하기" },
-    { "id": "t8-05", "track": "T8", "order": 5, "title": "useState와 useReducer 중 알맞은 도구 고르기" },
-    { "id": "t8-06", "track": "T8", "order": 6, "title": "props drilling이 생기는 구조 확인하기" },
-    { "id": "t8-07", "track": "T8", "order": 7, "title": "Context로 깊은 자식에게 값 공급하기" },
-    { "id": "t8-08", "track": "T8", "order": 8, "title": "Context로 state와 변경 함수 함께 공급하기" },
-    { "id": "t8-09", "track": "T8", "order": 9, "title": "Context를 값과 변경 함수로 나누기" },
-    { "id": "t8-10", "track": "T8", "order": 10, "title": "reducer와 Context를 함께 사용할 때 판단하기" },
-    { "id": "t8-11", "track": "T8", "order": 11, "title": "종합 문제 1: reducer와 Context로 장바구니 변경하기" },
-    { "id": "t8-12", "track": "T8", "order": 12, "title": "종합 문제 2: reducer로 숫자 상태 변경 규칙 모으기" },
-    { "id": "t8-13", "track": "T8", "order": 13, "title": "종합 문제 3: action payload로 변경할 값 전달하기" },
-    { "id": "t8-14", "track": "T8", "order": 14, "title": "종합 문제 4: 여러 action type으로 상태 전환하기" },
-    { "id": "t8-15", "track": "T8", "order": 15, "title": "종합 문제 5: 객체 state를 reducer로 갱신하기" },
-    { "id": "t8-16", "track": "T8", "order": 16, "title": "종합 문제 6: 배열 state에 reducer로 항목 추가하기" },
-    { "id": "t8-17", "track": "T8", "order": 17, "title": "종합 문제 7: 배열 state에서 reducer로 항목 제거하기" },
-    { "id": "t8-18", "track": "T8", "order": 18, "title": "종합 문제 8: props drilling 구조를 공통 데이터 흐름으로 이해하기" },
-    { "id": "t8-19", "track": "T8", "order": 19, "title": "종합 문제 9: Context로 깊은 자식에게 값 공급하기" },
-    { "id": "t8-20", "track": "T8", "order": 20, "title": "종합 문제 10: Context로 state와 변경 함수 함께 공급하기" },
-    { "id": "t8-21", "track": "T8", "order": 21, "title": "종합 문제 11: 값 Context와 변경 함수 Context 나누기" },
-    { "id": "t8-22", "track": "T8", "order": 22, "title": "종합 문제 12: reducer 상태와 dispatch를 Context로 공급하기" },
-    { "id": "t8-23", "track": "T8", "order": 23, "title": "종합 문제 13: Provider와 전용 훅으로 Context 사용법 감싸기" },
-    { "id": "t8-24", "track": "T8", "order": 24, "title": "종합 문제 14: 여러 action으로 복잡한 상태 흐름 구성하기" },
-    { "id": "t8-25", "track": "T8", "order": 25, "title": "종합 문제 15: reducer·Context·파생값을 함께 구성하기" },
-    { "id": "t9-01", "track": "T9", "order": 1, "title": "컴포넌트가 다시 렌더링되는 이유 찾기" },
-    { "id": "t9-02", "track": "T9", "order": 2, "title": "최적화 전에 느린 계산 측정하기" },
-    { "id": "t9-03", "track": "T9", "order": 3, "title": "useMemo로 계산 결과 재사용하기" },
-    { "id": "t9-04", "track": "T9", "order": 4, "title": "React.memo로 같은 props의 자식 렌더 건너뛰기" },
-    { "id": "t9-05", "track": "T9", "order": 5, "title": "렌더마다 새로 만들어지는 함수 참조 이해하기" },
-    { "id": "t9-06", "track": "T9", "order": 6, "title": "useCallback으로 함수 참조 재사용하기" },
-    { "id": "t9-07", "track": "T9", "order": 7, "title": "메모이제이션의 비용과 사용하지 않을 때 판단하기" },
-    { "id": "t9-08", "track": "T9", "order": 8, "title": "React state를 localStorage에 저장하기" },
-    { "id": "t9-09", "track": "T9", "order": 9, "title": "useState 초기화 함수로 저장된 값 복원하기" },
-    { "id": "t9-10", "track": "T9", "order": 10, "title": "effect로 state와 localStorage 동기화하기" },
-    { "id": "t9-11", "track": "T9", "order": 11, "title": "종합 문제 1: 장바구니 합계를 계산하고 저장하기" },
-    { "id": "t9-12", "track": "T9", "order": 12, "title": "종합 문제 2: 다시 렌더링되는 원인 구분하기" },
-    { "id": "t9-13", "track": "T9", "order": 13, "title": "종합 문제 3: 최적화 전에 계산 결과와 비용 확인하기" },
-    { "id": "t9-14", "track": "T9", "order": 14, "title": "종합 문제 4: useMemo로 의존성이 같을 때 계산 결과 재사용하기" },
-    { "id": "t9-15", "track": "T9", "order": 15, "title": "종합 문제 5: React.memo로 같은 props의 자식 렌더 건너뛰기" },
-    { "id": "t9-16", "track": "T9", "order": 16, "title": "종합 문제 6: 렌더마다 새 함수 참조가 만들어지는 이유 이해하기" },
-    { "id": "t9-17", "track": "T9", "order": 17, "title": "종합 문제 7: useCallback으로 함수 참조 재사용하기" },
-    { "id": "t9-18", "track": "T9", "order": 18, "title": "종합 문제 8: 단순한 계산에는 메모이제이션을 사용하지 않기" },
-    { "id": "t9-19", "track": "T9", "order": 19, "title": "종합 문제 9: 버튼 동작으로 state를 localStorage에 저장하기" },
-    { "id": "t9-20", "track": "T9", "order": 20, "title": "종합 문제 10: useState 초기화 함수에서 저장값 한 번 읽기" },
-    { "id": "t9-21", "track": "T9", "order": 21, "title": "종합 문제 11: effect로 state 변화와 localStorage 동기화하기" },
-    { "id": "t9-22", "track": "T9", "order": 22, "title": "종합 문제 12: 객체와 배열을 JSON 문자열로 저장하기" },
-    { "id": "t9-23", "track": "T9", "order": 23, "title": "종합 문제 13: 잘못된 저장값에 안전한 기본값 사용하기" },
-    { "id": "t9-24", "track": "T9", "order": 24, "title": "종합 문제 14: 저장과 복원을 커스텀 훅으로 묶기" },
-    { "id": "t9-25", "track": "T9", "order": 25, "title": "종합 문제 15: 메모이제이션과 저장을 필요한 곳에만 함께 적용하기" }
+    {
+      "id": "t0-01",
+      "track": "T0",
+      "order": 1,
+      "title": "코드는 어떤 순서로 실행될까요"
+    },
+    {
+      "id": "t0-02",
+      "track": "T0",
+      "order": 2,
+      "title": "값을 출력해 확인하기"
+    },
+    {
+      "id": "t0-03",
+      "track": "T0",
+      "order": 3,
+      "title": "값에 이름 붙이기"
+    },
+    {
+      "id": "t0-04",
+      "track": "T0",
+      "order": 4,
+      "title": "읽을 수 있는 이름 짓기"
+    },
+    {
+      "id": "t0-05",
+      "track": "T0",
+      "order": 5,
+      "title": "오류 메시지에서 멈춘 자리 찾기"
+    },
+    {
+      "id": "t0-06",
+      "track": "T0",
+      "order": 6,
+      "title": "입력을 받아 결과 반환하기"
+    },
+    {
+      "id": "t0-07",
+      "track": "T0",
+      "order": 7,
+      "title": "종합 문제 1: 작업 순서를 차례로 출력하기"
+    },
+    {
+      "id": "t0-08",
+      "track": "T0",
+      "order": 8,
+      "title": "종합 문제 2: 서로 다른 값을 줄마다 출력하기"
+    },
+    {
+      "id": "t0-09",
+      "track": "T0",
+      "order": 9,
+      "title": "종합 문제 3: 변수에 담긴 값을 출력하기"
+    },
+    {
+      "id": "t0-10",
+      "track": "T0",
+      "order": 10,
+      "title": "종합 문제 4: 바뀌기 전과 후의 값 출력하기"
+    },
+    {
+      "id": "t0-11",
+      "track": "T0",
+      "order": 11,
+      "title": "종합 문제 5: 주문 정보를 읽기 좋은 순서로 출력하기"
+    },
+    {
+      "id": "t1-01",
+      "track": "T1",
+      "order": 1,
+      "title": "JavaScript 값의 종류 한눈에 보기"
+    },
+    {
+      "id": "t1-02",
+      "track": "T1",
+      "order": 2,
+      "title": "문자열로 글자 다루기"
+    },
+    {
+      "id": "t1-03",
+      "track": "T1",
+      "order": 3,
+      "title": "숫자와 특별한 숫자 결과 이해하기"
+    },
+    {
+      "id": "t1-04",
+      "track": "T1",
+      "order": 4,
+      "title": "참과 거짓으로 상태 나타내기"
+    },
+    {
+      "id": "t1-05",
+      "track": "T1",
+      "order": 5,
+      "title": "undefined와 null 구분하기"
+    },
+    {
+      "id": "t1-06",
+      "track": "T1",
+      "order": 6,
+      "title": "Symbol과 BigInt는 언제 쓸까요"
+    },
+    {
+      "id": "t1-07",
+      "track": "T1",
+      "order": 7,
+      "title": "변수에 다른 종류의 값 넣기"
+    },
+    {
+      "id": "t1-08",
+      "track": "T1",
+      "order": 8,
+      "title": "원하는 자료형으로 직접 바꾸기"
+    },
+    {
+      "id": "t1-09",
+      "track": "T1",
+      "order": 9,
+      "title": "JavaScript가 자동으로 자료형을 바꿀 때"
+    },
+    {
+      "id": "t1-10",
+      "track": "T1",
+      "order": 10,
+      "title": "계산하고 변수에 다시 저장하기"
+    },
+    {
+      "id": "t1-11",
+      "track": "T1",
+      "order": 11,
+      "title": "두 값을 비교하기"
+    },
+    {
+      "id": "t1-12",
+      "track": "T1",
+      "order": 12,
+      "title": "==와 === 구분하기"
+    },
+    {
+      "id": "t1-13",
+      "track": "T1",
+      "order": 13,
+      "title": "여러 조건을 함께 확인하기"
+    },
+    {
+      "id": "t1-14",
+      "track": "T1",
+      "order": 14,
+      "title": "truthy와 falsy 이해하기"
+    },
+    {
+      "id": "t1-15",
+      "track": "T1",
+      "order": 15,
+      "title": "필요한 값만 골라서 사용하기"
+    },
+    {
+      "id": "t1-16",
+      "track": "T1",
+      "order": 16,
+      "title": "종합 문제 1: 입력값의 자료형과 기본값을 문장으로 정리하기"
+    },
+    {
+      "id": "t1-17",
+      "track": "T1",
+      "order": 17,
+      "title": "종합 문제 2: 문자열 숫자를 변환해 금액 계산하기"
+    },
+    {
+      "id": "t1-18",
+      "track": "T1",
+      "order": 18,
+      "title": "종합 문제 3: 식별 번호를 문자열로 통일하기"
+    },
+    {
+      "id": "t1-19",
+      "track": "T1",
+      "order": 19,
+      "title": "종합 문제 4: 값의 입력 여부를 불리언으로 확인하기"
+    },
+    {
+      "id": "t1-20",
+      "track": "T1",
+      "order": 20,
+      "title": "종합 문제 5: 값과 자료형을 함께 비교하기"
+    },
+    {
+      "id": "t1-21",
+      "track": "T1",
+      "order": 21,
+      "title": "종합 문제 6: 두 조건이 모두 맞는지 확인하기"
+    },
+    {
+      "id": "t1-22",
+      "track": "T1",
+      "order": 22,
+      "title": "종합 문제 7: 두 조건 중 하나라도 맞는지 확인하기"
+    },
+    {
+      "id": "t1-23",
+      "track": "T1",
+      "order": 23,
+      "title": "종합 문제 8: null과 undefined에만 기본값 적용하기"
+    },
+    {
+      "id": "t1-24",
+      "track": "T1",
+      "order": 24,
+      "title": "종합 문제 9: falsy 값에 표시용 기본값 적용하기"
+    },
+    {
+      "id": "t1-25",
+      "track": "T1",
+      "order": 25,
+      "title": "종합 문제 10: 문자열 비율을 숫자로 바꿔 계산하기"
+    },
+    {
+      "id": "t1-26",
+      "track": "T1",
+      "order": 26,
+      "title": "종합 문제 11: 계산 결과를 제한값과 비교하기"
+    },
+    {
+      "id": "t1-27",
+      "track": "T1",
+      "order": 27,
+      "title": "종합 문제 12: 숫자로 변환할 수 없는 입력 찾기"
+    },
+    {
+      "id": "t1-28",
+      "track": "T1",
+      "order": 28,
+      "title": "종합 문제 13: 0을 보존하며 기본값 적용하기"
+    },
+    {
+      "id": "t1-29",
+      "track": "T1",
+      "order": 29,
+      "title": "종합 문제 14: 조건이 맞을 때만 값 선택하기"
+    },
+    {
+      "id": "t1-30",
+      "track": "T1",
+      "order": 30,
+      "title": "종합 문제 15: 여러 입력값을 변환·계산해 문장 만들기"
+    },
+    {
+      "id": "t1-31",
+      "track": "T1",
+      "order": 31,
+      "title": "종합 문제 16: 계산 결과를 안내 문장으로 만들기"
+    },
+    {
+      "id": "t1-32",
+      "track": "T1",
+      "order": 32,
+      "title": "종합 문제 17: 서로 다른 단위를 하나로 합치기"
+    },
+    {
+      "id": "t1-33",
+      "track": "T1",
+      "order": 33,
+      "title": "종합 문제 18: 기준값에서 사용한 만큼 빼기"
+    },
+    {
+      "id": "t1-34",
+      "track": "T1",
+      "order": 34,
+      "title": "종합 문제 19: 두 값을 더해 안내 문장 만들기"
+    },
+    {
+      "id": "t1-35",
+      "track": "T1",
+      "order": 35,
+      "title": "종합 문제 20: 값과 비율을 곱해 일부 금액 구하기"
+    },
+    {
+      "id": "t1-36",
+      "track": "T1",
+      "order": 36,
+      "title": "종합 문제 21: 들어온 수와 나간 수로 남은 값 구하기"
+    },
+    {
+      "id": "t1-37",
+      "track": "T1",
+      "order": 37,
+      "title": "종합 문제 22: 가로와 세로를 곱해 넓이 구하기"
+    },
+    {
+      "id": "t1-38",
+      "track": "T1",
+      "order": 38,
+      "title": "종합 문제 23: 값을 다른 단위로 변환하기"
+    },
+    {
+      "id": "t1-39",
+      "track": "T1",
+      "order": 39,
+      "title": "종합 문제 24: 단가와 수량으로 전체 금액 구하기"
+    },
+    {
+      "id": "t1-40",
+      "track": "T1",
+      "order": 40,
+      "title": "종합 문제 25: 세 값을 더해 평균 구하기"
+    },
+    {
+      "id": "t1-41",
+      "track": "T1",
+      "order": 41,
+      "title": "종합 문제 26: 정해진 계산식으로 값 변환하기"
+    },
+    {
+      "id": "t1-42",
+      "track": "T1",
+      "order": 42,
+      "title": "종합 문제 27: 두 문자열을 이어 하나의 문장 만들기"
+    },
+    {
+      "id": "t1-43",
+      "track": "T1",
+      "order": 43,
+      "title": "종합 문제 28: 기본 금액과 추가 금액 합치기"
+    },
+    {
+      "id": "t1-44",
+      "track": "T1",
+      "order": 44,
+      "title": "종합 문제 29: 한 번의 값과 횟수로 전체 값 구하기"
+    },
+    {
+      "id": "t1-45",
+      "track": "T1",
+      "order": 45,
+      "title": "종합 문제 30: 여러 입력값을 계산해 완료 문장 만들기"
+    },
+    {
+      "id": "t2-01",
+      "track": "T2",
+      "order": 1,
+      "title": "if로 조건에 맞는 코드만 실행하기"
+    },
+    {
+      "id": "t2-02",
+      "track": "T2",
+      "order": 2,
+      "title": "else if와 else로 여러 경우 나누기"
+    },
+    {
+      "id": "t2-03",
+      "track": "T2",
+      "order": 3,
+      "title": "switch로 정해진 값별 코드 고르기"
+    },
+    {
+      "id": "t2-04",
+      "track": "T2",
+      "order": 4,
+      "title": "삼항 조건 연산자로 값 하나 고르기"
+    },
+    {
+      "id": "t2-05",
+      "track": "T2",
+      "order": 5,
+      "title": "for로 같은 코드를 반복하기"
+    },
+    {
+      "id": "t2-06",
+      "track": "T2",
+      "order": 6,
+      "title": "break와 continue로 반복 제어하기"
+    },
+    {
+      "id": "t2-07",
+      "track": "T2",
+      "order": 7,
+      "title": "반복되는 코드에서 함수가 필요한 이유 찾기"
+    },
+    {
+      "id": "t2-08",
+      "track": "T2",
+      "order": 8,
+      "title": "함수를 선언하고 필요한 때 호출하기"
+    },
+    {
+      "id": "t2-09",
+      "track": "T2",
+      "order": 9,
+      "title": "매개변수로 호출할 때마다 다른 값 받기"
+    },
+    {
+      "id": "t2-10",
+      "track": "T2",
+      "order": 10,
+      "title": "return으로 함수의 결과 돌려주기"
+    },
+    {
+      "id": "t2-11",
+      "track": "T2",
+      "order": 11,
+      "title": "함수를 값으로 변수에 담기"
+    },
+    {
+      "id": "t2-12",
+      "track": "T2",
+      "order": 12,
+      "title": "콜백 함수 전달하고 호출하기"
+    },
+    {
+      "id": "t2-13",
+      "track": "T2",
+      "order": 13,
+      "title": "화살표 함수의 생략 규칙 읽기"
+    },
+    {
+      "id": "t2-14",
+      "track": "T2",
+      "order": 14,
+      "title": "중첩 함수가 바깥 값을 기억하는 이유"
+    },
+    {
+      "id": "t2-15",
+      "track": "T2",
+      "order": 15,
+      "title": "변수를 사용할 수 있는 범위 이해하기"
+    },
+    {
+      "id": "t2-16",
+      "track": "T2",
+      "order": 16,
+      "title": "선언 전에 사용할 수 있는 이름 구분하기"
+    },
+    {
+      "id": "t2-17",
+      "track": "T2",
+      "order": 17,
+      "title": "종합 문제 1: 조건에 맞는 값만 반복해서 누적하기"
+    },
+    {
+      "id": "t2-18",
+      "track": "T2",
+      "order": 18,
+      "title": "종합 문제 2: 조건에 따라 서로 다른 값 반환하기"
+    },
+    {
+      "id": "t2-19",
+      "track": "T2",
+      "order": 19,
+      "title": "종합 문제 3: 여러 범위를 순서대로 나누기"
+    },
+    {
+      "id": "t2-20",
+      "track": "T2",
+      "order": 20,
+      "title": "종합 문제 4: 정해진 값마다 다른 결과 반환하기"
+    },
+    {
+      "id": "t2-21",
+      "track": "T2",
+      "order": 21,
+      "title": "종합 문제 5: 두 결과 중 하나를 짧게 선택하기"
+    },
+    {
+      "id": "t2-22",
+      "track": "T2",
+      "order": 22,
+      "title": "종합 문제 6: 반복할 때 계산값 누적하기"
+    },
+    {
+      "id": "t2-23",
+      "track": "T2",
+      "order": 23,
+      "title": "종합 문제 7: 조건을 처음 만족할 때 반복 멈추기"
+    },
+    {
+      "id": "t2-24",
+      "track": "T2",
+      "order": 24,
+      "title": "종합 문제 8: 매개변수에 따라 달라지는 값 반환하기"
+    },
+    {
+      "id": "t2-25",
+      "track": "T2",
+      "order": 25,
+      "title": "종합 문제 9: 여러 매개변수로 하나의 결과 계산하기"
+    },
+    {
+      "id": "t2-26",
+      "track": "T2",
+      "order": 26,
+      "title": "종합 문제 10: 함수의 반환값을 다음 계산에 사용하기"
+    },
+    {
+      "id": "t2-27",
+      "track": "T2",
+      "order": 27,
+      "title": "종합 문제 11: 함수 표현식으로 계산 규칙 만들기"
+    },
+    {
+      "id": "t2-28",
+      "track": "T2",
+      "order": 28,
+      "title": "종합 문제 12: 여러 콜백으로 계산 순서 조합하기"
+    },
+    {
+      "id": "t2-29",
+      "track": "T2",
+      "order": 29,
+      "title": "종합 문제 13: 화살표 함수로 계산 요약 객체 만들기"
+    },
+    {
+      "id": "t2-30",
+      "track": "T2",
+      "order": 30,
+      "title": "종합 문제 14: 클로저로 호출 사이의 값 기억하기"
+    },
+    {
+      "id": "t2-31",
+      "track": "T2",
+      "order": 31,
+      "title": "종합 문제 15: 조건과 반복으로 일정 분석하기"
+    },
+    {
+      "id": "t3-01",
+      "track": "T3",
+      "order": 1,
+      "title": "객체로 관련 있는 값 묶기"
+    },
+    {
+      "id": "t3-02",
+      "track": "T3",
+      "order": 2,
+      "title": "객체의 프로퍼티 읽고 바꾸기"
+    },
+    {
+      "id": "t3-03",
+      "track": "T3",
+      "order": 3,
+      "title": "메서드와 this로 객체 자신의 값 사용하기"
+    },
+    {
+      "id": "t3-04",
+      "track": "T3",
+      "order": 4,
+      "title": "배열로 값의 순서 저장하기"
+    },
+    {
+      "id": "t3-05",
+      "track": "T3",
+      "order": 5,
+      "title": "원시값을 복사하면 서로 영향을 주지 않습니다"
+    },
+    {
+      "id": "t3-06",
+      "track": "T3",
+      "order": 6,
+      "title": "객체를 할당하면 같은 객체를 가리킵니다"
+    },
+    {
+      "id": "t3-07",
+      "track": "T3",
+      "order": 7,
+      "title": "전개 연산자로 새 객체 만들기"
+    },
+    {
+      "id": "t3-08",
+      "track": "T3",
+      "order": 8,
+      "title": "구조 분해로 필요한 값 꺼내기"
+    },
+    {
+      "id": "t3-09",
+      "track": "T3",
+      "order": 9,
+      "title": "rest와 spread 구분하기"
+    },
+    {
+      "id": "t3-10",
+      "track": "T3",
+      "order": 10,
+      "title": "배열의 앞뒤에 값 추가하고 삭제하기"
+    },
+    {
+      "id": "t3-11",
+      "track": "T3",
+      "order": 11,
+      "title": "forEach로 배열의 모든 값 사용하기"
+    },
+    {
+      "id": "t3-12",
+      "track": "T3",
+      "order": 12,
+      "title": "map으로 같은 길이의 새 배열 만들기"
+    },
+    {
+      "id": "t3-13",
+      "track": "T3",
+      "order": 13,
+      "title": "find와 findIndex로 원하는 값 찾기"
+    },
+    {
+      "id": "t3-14",
+      "track": "T3",
+      "order": 14,
+      "title": "filter로 조건에 맞는 값만 남기기"
+    },
+    {
+      "id": "t3-15",
+      "track": "T3",
+      "order": 15,
+      "title": "reduce로 배열을 값 하나로 합치기"
+    },
+    {
+      "id": "t3-16",
+      "track": "T3",
+      "order": 16,
+      "title": "sort로 정렬할 때 원본 지키기"
+    },
+    {
+      "id": "t3-17",
+      "track": "T3",
+      "order": 17,
+      "title": "Date 객체로 날짜와 시간 다루기"
+    },
+    {
+      "id": "t3-18",
+      "track": "T3",
+      "order": 18,
+      "title": "export와 import로 파일 나누기"
+    },
+    {
+      "id": "t3-19",
+      "track": "T3",
+      "order": 19,
+      "title": "종합 문제 1: 배열을 고르고 바꾸고 합쳐 보고서 만들기"
+    },
+    {
+      "id": "t3-20",
+      "track": "T3",
+      "order": 20,
+      "title": "종합 문제 2: 객체의 프로퍼티로 표시 문구 만들기"
+    },
+    {
+      "id": "t3-21",
+      "track": "T3",
+      "order": 21,
+      "title": "종합 문제 3: 변수에 담긴 키로 객체 값 읽기"
+    },
+    {
+      "id": "t3-22",
+      "track": "T3",
+      "order": 22,
+      "title": "종합 문제 4: 객체의 여러 값으로 요약 문장 만들기"
+    },
+    {
+      "id": "t3-23",
+      "track": "T3",
+      "order": 23,
+      "title": "종합 문제 5: 원시값을 복사한 뒤 서로 따로 변경하기"
+    },
+    {
+      "id": "t3-24",
+      "track": "T3",
+      "order": 24,
+      "title": "종합 문제 6: 같은 객체를 가리키는 두 변수 이해하기"
+    },
+    {
+      "id": "t3-25",
+      "track": "T3",
+      "order": 25,
+      "title": "종합 문제 7: 전개 문법으로 원본을 보존한 객체 만들기"
+    },
+    {
+      "id": "t3-26",
+      "track": "T3",
+      "order": 26,
+      "title": "종합 문제 8: 구조 분해로 필요한 값과 기본값 꺼내기"
+    },
+    {
+      "id": "t3-27",
+      "track": "T3",
+      "order": 27,
+      "title": "종합 문제 9: 전개 문법으로 새 배열 합치기"
+    },
+    {
+      "id": "t3-28",
+      "track": "T3",
+      "order": 28,
+      "title": "종합 문제 10: push로 기존 배열 끝에 값 추가하기"
+    },
+    {
+      "id": "t3-29",
+      "track": "T3",
+      "order": 29,
+      "title": "종합 문제 11: forEach로 배열 값을 차례로 누적하기"
+    },
+    {
+      "id": "t3-30",
+      "track": "T3",
+      "order": 30,
+      "title": "종합 문제 12: map으로 각 항목을 새로운 값으로 바꾸기"
+    },
+    {
+      "id": "t3-31",
+      "track": "T3",
+      "order": 31,
+      "title": "종합 문제 13: find로 조건에 맞는 첫 번째 항목 찾기"
+    },
+    {
+      "id": "t3-32",
+      "track": "T3",
+      "order": 32,
+      "title": "종합 문제 14: filter로 조건에 맞는 항목만 새 배열에 담기"
+    },
+    {
+      "id": "t3-33",
+      "track": "T3",
+      "order": 33,
+      "title": "종합 문제 15: 복사한 배열을 기준값에 따라 정렬하기"
+    },
+    {
+      "id": "t4-01",
+      "track": "T4",
+      "order": 1,
+      "title": "DOM에서 HTML 요소 찾기"
+    },
+    {
+      "id": "t4-02",
+      "track": "T4",
+      "order": 2,
+      "title": "요소의 글자·클래스·속성 바꾸기"
+    },
+    {
+      "id": "t4-03",
+      "track": "T4",
+      "order": 3,
+      "title": "새 HTML 요소 만들어 추가하기"
+    },
+    {
+      "id": "t4-04",
+      "track": "T4",
+      "order": 4,
+      "title": "이벤트가 발생했을 때 함수 실행하기"
+    },
+    {
+      "id": "t4-05",
+      "track": "T4",
+      "order": 5,
+      "title": "이벤트 객체에서 발생한 요소 확인하기"
+    },
+    {
+      "id": "t4-06",
+      "track": "T4",
+      "order": 6,
+      "title": "부모 요소에서 여러 자식의 이벤트 처리하기"
+    },
+    {
+      "id": "t4-07",
+      "track": "T4",
+      "order": 7,
+      "title": "input과 change 이벤트로 입력값 읽기"
+    },
+    {
+      "id": "t4-08",
+      "track": "T4",
+      "order": 8,
+      "title": "폼 제출을 JavaScript로 처리하기"
+    },
+    {
+      "id": "t4-09",
+      "track": "T4",
+      "order": 9,
+      "title": "동기 코드와 비동기 코드의 실행 순서"
+    },
+    {
+      "id": "t4-10",
+      "track": "T4",
+      "order": 10,
+      "title": "Promise의 세 가지 상태 이해하기"
+    },
+    {
+      "id": "t4-11",
+      "track": "T4",
+      "order": 11,
+      "title": "then·catch·finally로 Promise 결과 사용하기"
+    },
+    {
+      "id": "t4-12",
+      "track": "T4",
+      "order": 12,
+      "title": "async와 await로 Promise 기다리기"
+    },
+    {
+      "id": "t4-13",
+      "track": "T4",
+      "order": 13,
+      "title": "throw와 try/catch로 오류 처리하기"
+    },
+    {
+      "id": "t4-14",
+      "track": "T4",
+      "order": 14,
+      "title": "fetch로 JSON 응답 받아 사용하기"
+    },
+    {
+      "id": "t4-15",
+      "track": "T4",
+      "order": 15,
+      "title": "여러 Promise를 함께 기다리기"
+    },
+    {
+      "id": "t4-16",
+      "track": "T4",
+      "order": 16,
+      "title": "Web Storage에 브라우저 데이터 저장하기"
+    },
+    {
+      "id": "t4-17",
+      "track": "T4",
+      "order": 17,
+      "title": "종합 문제 1: 요소를 찾아 클릭할 때 숫자 변경하기"
+    },
+    {
+      "id": "t4-18",
+      "track": "T4",
+      "order": 18,
+      "title": "종합 문제 2: 선택자로 요소를 찾아 글자 바꾸기"
+    },
+    {
+      "id": "t4-19",
+      "track": "T4",
+      "order": 19,
+      "title": "종합 문제 3: class와 HTML 속성으로 상태 나타내기"
+    },
+    {
+      "id": "t4-20",
+      "track": "T4",
+      "order": 20,
+      "title": "종합 문제 4: 새 요소를 만들어 부모 요소에 추가하기"
+    },
+    {
+      "id": "t4-21",
+      "track": "T4",
+      "order": 21,
+      "title": "종합 문제 5: 이벤트가 발생할 때 실행할 함수 등록하기"
+    },
+    {
+      "id": "t4-22",
+      "track": "T4",
+      "order": 22,
+      "title": "종합 문제 6: 이벤트가 연결된 요소의 값 사용하기"
+    },
+    {
+      "id": "t4-23",
+      "track": "T4",
+      "order": 23,
+      "title": "종합 문제 7: 부모 요소 하나에서 자식 클릭 처리하기"
+    },
+    {
+      "id": "t4-24",
+      "track": "T4",
+      "order": 24,
+      "title": "종합 문제 8: 입력할 때 현재 값을 다른 요소에 표시하기"
+    },
+    {
+      "id": "t4-25",
+      "track": "T4",
+      "order": 25,
+      "title": "종합 문제 9: 폼의 기본 제출을 막고 입력값 처리하기"
+    },
+    {
+      "id": "t4-26",
+      "track": "T4",
+      "order": 26,
+      "title": "종합 문제 10: 동기 코드와 예약된 콜백의 실행 순서 구분하기"
+    },
+    {
+      "id": "t4-27",
+      "track": "T4",
+      "order": 27,
+      "title": "종합 문제 11: Promise의 성공 결과를 단계적으로 가공하기"
+    },
+    {
+      "id": "t4-28",
+      "track": "T4",
+      "order": 28,
+      "title": "종합 문제 12: async 함수에서 여러 비동기 결과를 순서대로 기다리기"
+    },
+    {
+      "id": "t4-29",
+      "track": "T4",
+      "order": 29,
+      "title": "종합 문제 13: 오류가 날 수 있는 변환을 try/catch로 처리하기"
+    },
+    {
+      "id": "t4-30",
+      "track": "T4",
+      "order": 30,
+      "title": "종합 문제 14: Promise.all로 독립적인 결과를 함께 기다리기"
+    },
+    {
+      "id": "t4-31",
+      "track": "T4",
+      "order": 31,
+      "title": "종합 문제 15: 브라우저 저장소에 문자열을 저장하고 복원하기"
+    },
+    {
+      "id": "t5-01",
+      "track": "T5",
+      "order": 1,
+      "title": "React가 화면을 만드는 방식 이해하기"
+    },
+    {
+      "id": "t5-02",
+      "track": "T5",
+      "order": 2,
+      "title": "root를 만들고 React 화면 렌더링하기"
+    },
+    {
+      "id": "t5-03",
+      "track": "T5",
+      "order": 3,
+      "title": "JSX를 JavaScript 값으로 다루기"
+    },
+    {
+      "id": "t5-04",
+      "track": "T5",
+      "order": 4,
+      "title": "JSX를 하나의 부모로 묶기"
+    },
+    {
+      "id": "t5-05",
+      "track": "T5",
+      "order": 5,
+      "title": "JSX에서 className과 htmlFor 사용하기"
+    },
+    {
+      "id": "t5-06",
+      "track": "T5",
+      "order": 6,
+      "title": "JSX 중괄호 안에 JavaScript 값 넣기"
+    },
+    {
+      "id": "t5-07",
+      "track": "T5",
+      "order": 7,
+      "title": "조건에 따라 다른 JSX 보여 주기"
+    },
+    {
+      "id": "t5-08",
+      "track": "T5",
+      "order": 8,
+      "title": "className과 style 객체로 JSX 꾸미기"
+    },
+    {
+      "id": "t5-09",
+      "track": "T5",
+      "order": 9,
+      "title": "함수 컴포넌트로 화면 조각 만들기"
+    },
+    {
+      "id": "t5-10",
+      "track": "T5",
+      "order": 10,
+      "title": "부모와 자식 컴포넌트로 화면 나누기"
+    },
+    {
+      "id": "t5-11",
+      "track": "T5",
+      "order": 11,
+      "title": "props로 부모의 값을 자식에게 전달하기"
+    },
+    {
+      "id": "t5-12",
+      "track": "T5",
+      "order": 12,
+      "title": "객체·함수·JSX를 props로 전달하기"
+    },
+    {
+      "id": "t5-13",
+      "track": "T5",
+      "order": 13,
+      "title": "children으로 감싼 JSX 전달하기"
+    },
+    {
+      "id": "t5-14",
+      "track": "T5",
+      "order": 14,
+      "title": "React 이벤트에 실행할 함수 전달하기"
+    },
+    {
+      "id": "t5-15",
+      "track": "T5",
+      "order": 15,
+      "title": "React 이벤트 객체에서 입력값 읽기"
+    },
+    {
+      "id": "t5-16",
+      "track": "T5",
+      "order": 16,
+      "title": "배열을 JSX 목록으로 렌더링하기"
+    },
+    {
+      "id": "t5-17",
+      "track": "T5",
+      "order": 17,
+      "title": "종합 문제 1: 컴포넌트와 props로 조건부 목록 렌더링하기"
+    },
+    {
+      "id": "t5-18",
+      "track": "T5",
+      "order": 18,
+      "title": "종합 문제 2: 조건에 따라 다른 상태 문구 보여주기"
+    },
+    {
+      "id": "t5-19",
+      "track": "T5",
+      "order": 19,
+      "title": "종합 문제 3: props로 재사용 가능한 카드 만들기"
+    },
+    {
+      "id": "t5-20",
+      "track": "T5",
+      "order": 20,
+      "title": "종합 문제 4: children으로 공통 틀 안에 내용 넣기"
+    },
+    {
+      "id": "t5-21",
+      "track": "T5",
+      "order": 21,
+      "title": "종합 문제 5: React 이벤트에 실행할 함수 전달하기"
+    },
+    {
+      "id": "t5-22",
+      "track": "T5",
+      "order": 22,
+      "title": "종합 문제 6: 이벤트 객체에서 입력값 읽기"
+    },
+    {
+      "id": "t5-23",
+      "track": "T5",
+      "order": 23,
+      "title": "종합 문제 7: 배열을 JSX 목록으로 렌더링하기"
+    },
+    {
+      "id": "t5-24",
+      "track": "T5",
+      "order": 24,
+      "title": "종합 문제 8: 조건에 따라 className 바꾸기"
+    },
+    {
+      "id": "t5-25",
+      "track": "T5",
+      "order": 25,
+      "title": "종합 문제 9: style 객체로 값에 따른 모양 지정하기"
+    },
+    {
+      "id": "t5-26",
+      "track": "T5",
+      "order": 26,
+      "title": "종합 문제 10: 부모와 자식 컴포넌트로 화면 나누기"
+    },
+    {
+      "id": "t5-27",
+      "track": "T5",
+      "order": 27,
+      "title": "종합 문제 11: 객체를 props로 전달해 필요한 값 읽기"
+    },
+    {
+      "id": "t5-28",
+      "track": "T5",
+      "order": 28,
+      "title": "종합 문제 12: JSX를 props로 전달해 원하는 위치에 표시하기"
+    },
+    {
+      "id": "t5-29",
+      "track": "T5",
+      "order": 29,
+      "title": "종합 문제 13: 함수를 props로 전달해 자식에서 실행하기"
+    },
+    {
+      "id": "t5-30",
+      "track": "T5",
+      "order": 30,
+      "title": "종합 문제 14: JSX의 label과 input을 올바르게 연결하기"
+    },
+    {
+      "id": "t5-31",
+      "track": "T5",
+      "order": 31,
+      "title": "종합 문제 15: 여러 컴포넌트와 목록을 한 화면에 조합하기"
+    },
+    {
+      "id": "t6-01",
+      "track": "T6",
+      "order": 1,
+      "title": "일반 변수를 바꿔도 화면이 그대로인 이유"
+    },
+    {
+      "id": "t6-02",
+      "track": "T6",
+      "order": 2,
+      "title": "useState로 값을 기억하고 화면 갱신하기"
+    },
+    {
+      "id": "t6-03",
+      "track": "T6",
+      "order": 3,
+      "title": "렌더마다 고정된 state 스냅샷 이해하기"
+    },
+    {
+      "id": "t6-04",
+      "track": "T6",
+      "order": 4,
+      "title": "이전 state로 안전하게 다음 값 계산하기"
+    },
+    {
+      "id": "t6-05",
+      "track": "T6",
+      "order": 5,
+      "title": "훅을 컴포넌트 최상위에서 호출하기"
+    },
+    {
+      "id": "t6-06",
+      "track": "T6",
+      "order": 6,
+      "title": "이벤트에서 state를 바꾸고 다시 렌더링하기"
+    },
+    {
+      "id": "t6-07",
+      "track": "T6",
+      "order": 7,
+      "title": "제어 컴포넌트로 입력값과 state 연결하기"
+    },
+    {
+      "id": "t6-08",
+      "track": "T6",
+      "order": 8,
+      "title": "객체 state로 여러 입력값 관리하기"
+    },
+    {
+      "id": "t6-09",
+      "track": "T6",
+      "order": 9,
+      "title": "객체 state를 새 객체로 갱신하기"
+    },
+    {
+      "id": "t6-10",
+      "track": "T6",
+      "order": 10,
+      "title": "배열 state를 새 배열로 갱신하기"
+    },
+    {
+      "id": "t6-11",
+      "track": "T6",
+      "order": 11,
+      "title": "props와 state의 소유권 구분하기"
+    },
+    {
+      "id": "t6-12",
+      "track": "T6",
+      "order": 12,
+      "title": "공유할 state를 공통 부모로 올리기"
+    },
+    {
+      "id": "t6-13",
+      "track": "T6",
+      "order": 13,
+      "title": "state에서 바로 계산할 수 있는 값 구분하기"
+    },
+    {
+      "id": "t6-14",
+      "track": "T6",
+      "order": 14,
+      "title": "로딩·오류·빈 화면·내용 상태 나누기"
+    },
+    {
+      "id": "t6-15",
+      "track": "T6",
+      "order": 15,
+      "title": "useRef로 DOM 요소와 렌더와 무관한 값 기억하기"
+    },
+    {
+      "id": "t6-16",
+      "track": "T6",
+      "order": 16,
+      "title": "종합 문제 1: 입력 state와 배열 state 연결하기"
+    },
+    {
+      "id": "t6-17",
+      "track": "T6",
+      "order": 17,
+      "title": "종합 문제 2: useState로 숫자 상태 변경하기"
+    },
+    {
+      "id": "t6-18",
+      "track": "T6",
+      "order": 18,
+      "title": "종합 문제 3: 이전 상태를 기준으로 안전하게 갱신하기"
+    },
+    {
+      "id": "t6-19",
+      "track": "T6",
+      "order": 19,
+      "title": "종합 문제 4: 불리언 state로 화면 상태 전환하기"
+    },
+    {
+      "id": "t6-20",
+      "track": "T6",
+      "order": 20,
+      "title": "종합 문제 5: 제어 입력으로 state와 입력값 연결하기"
+    },
+    {
+      "id": "t6-21",
+      "track": "T6",
+      "order": 21,
+      "title": "종합 문제 6: 객체 state로 여러 입력값 관리하기"
+    },
+    {
+      "id": "t6-22",
+      "track": "T6",
+      "order": 22,
+      "title": "종합 문제 7: 객체 state를 새 객체로 갱신하기"
+    },
+    {
+      "id": "t6-23",
+      "track": "T6",
+      "order": 23,
+      "title": "종합 문제 8: 배열 state에 새 항목 추가하기"
+    },
+    {
+      "id": "t6-24",
+      "track": "T6",
+      "order": 24,
+      "title": "종합 문제 9: 배열 state에서 조건에 맞는 항목 제거하기"
+    },
+    {
+      "id": "t6-25",
+      "track": "T6",
+      "order": 25,
+      "title": "종합 문제 10: 공유 state를 공통 부모에서 관리하기"
+    },
+    {
+      "id": "t6-26",
+      "track": "T6",
+      "order": 26,
+      "title": "종합 문제 11: state에서 바로 계산할 수 있는 값 구하기"
+    },
+    {
+      "id": "t6-27",
+      "track": "T6",
+      "order": 27,
+      "title": "종합 문제 12: 로딩·오류·빈 화면·내용 상태 나누기"
+    },
+    {
+      "id": "t6-28",
+      "track": "T6",
+      "order": 28,
+      "title": "종합 문제 13: useRef로 DOM 요소에 접근하기"
+    },
+    {
+      "id": "t6-29",
+      "track": "T6",
+      "order": 29,
+      "title": "종합 문제 14: useRef로 렌더링과 무관한 값 기억하기"
+    },
+    {
+      "id": "t6-30",
+      "track": "T6",
+      "order": 30,
+      "title": "종합 문제 15: 입력·배열·계산값을 한 컴포넌트에서 연결하기"
+    },
+    {
+      "id": "t7-01",
+      "track": "T7",
+      "order": 1,
+      "title": "컴포넌트의 마운트·업데이트·언마운트 구분하기"
+    },
+    {
+      "id": "t7-02",
+      "track": "T7",
+      "order": 2,
+      "title": "렌더링과 외부 시스템 동기화 구분하기"
+    },
+    {
+      "id": "t7-03",
+      "track": "T7",
+      "order": 3,
+      "title": "useEffect로 렌더 뒤 코드 실행하기"
+    },
+    {
+      "id": "t7-04",
+      "track": "T7",
+      "order": 4,
+      "title": "의존성 배열로 effect 실행 시점 정하기"
+    },
+    {
+      "id": "t7-05",
+      "track": "T7",
+      "order": 5,
+      "title": "effect가 사용하는 여러 값을 의존성에 넣기"
+    },
+    {
+      "id": "t7-06",
+      "track": "T7",
+      "order": 6,
+      "title": "정리 함수로 이전 effect 끝내기"
+    },
+    {
+      "id": "t7-07",
+      "track": "T7",
+      "order": 7,
+      "title": "마운트 때 구독하고 언마운트 때 해제하기"
+    },
+    {
+      "id": "t7-08",
+      "track": "T7",
+      "order": 8,
+      "title": "effect 없이 계산할 수 있는 값 찾기"
+    },
+    {
+      "id": "t7-09",
+      "track": "T7",
+      "order": 9,
+      "title": "effect에서 데이터를 불러와 화면 상태 바꾸기"
+    },
+    {
+      "id": "t7-10",
+      "track": "T7",
+      "order": 10,
+      "title": "늦게 끝난 이전 요청 결과 무시하기"
+    },
+    {
+      "id": "t7-11",
+      "track": "T7",
+      "order": 11,
+      "title": "커스텀 훅으로 state와 effect 재사용하기"
+    },
+    {
+      "id": "t7-12",
+      "track": "T7",
+      "order": 12,
+      "title": "종합 문제 1: 이벤트 구독을 커스텀 훅으로 분리하기"
+    },
+    {
+      "id": "t7-13",
+      "track": "T7",
+      "order": 13,
+      "title": "종합 문제 2: 마운트 뒤 effect로 외부 값 동기화하기"
+    },
+    {
+      "id": "t7-14",
+      "track": "T7",
+      "order": 14,
+      "title": "종합 문제 3: 의존성 값이 바뀔 때 effect 다시 실행하기"
+    },
+    {
+      "id": "t7-15",
+      "track": "T7",
+      "order": 15,
+      "title": "종합 문제 4: effect가 사용하는 모든 값을 의존성에 넣기"
+    },
+    {
+      "id": "t7-16",
+      "track": "T7",
+      "order": 16,
+      "title": "종합 문제 5: 정리 함수로 이전 타이머 끝내기"
+    },
+    {
+      "id": "t7-17",
+      "track": "T7",
+      "order": 17,
+      "title": "종합 문제 6: 이벤트를 구독하고 정리 함수에서 해제하기"
+    },
+    {
+      "id": "t7-18",
+      "track": "T7",
+      "order": 18,
+      "title": "종합 문제 7: effect 없이 렌더링 중 계산하기"
+    },
+    {
+      "id": "t7-19",
+      "track": "T7",
+      "order": 19,
+      "title": "종합 문제 8: effect에서 비동기 데이터를 받아 state 바꾸기"
+    },
+    {
+      "id": "t7-20",
+      "track": "T7",
+      "order": 20,
+      "title": "종합 문제 9: 비동기 화면을 로딩·오류·내용으로 나누기"
+    },
+    {
+      "id": "t7-21",
+      "track": "T7",
+      "order": 21,
+      "title": "종합 문제 10: 늦게 끝난 이전 요청 결과 무시하기"
+    },
+    {
+      "id": "t7-22",
+      "track": "T7",
+      "order": 22,
+      "title": "종합 문제 11: 커스텀 훅으로 effect 로직 재사용하기"
+    },
+    {
+      "id": "t7-23",
+      "track": "T7",
+      "order": 23,
+      "title": "종합 문제 12: 커스텀 훅으로 이벤트 구독 재사용하기"
+    },
+    {
+      "id": "t7-24",
+      "track": "T7",
+      "order": 24,
+      "title": "종합 문제 13: setInterval을 시작하고 정리하기"
+    },
+    {
+      "id": "t7-25",
+      "track": "T7",
+      "order": 25,
+      "title": "종합 문제 14: state 변화에 맞춰 저장소와 동기화하기"
+    },
+    {
+      "id": "t7-26",
+      "track": "T7",
+      "order": 26,
+      "title": "종합 문제 15: 여러 effect의 역할을 나누어 구성하기"
+    },
+    {
+      "id": "t8-01",
+      "track": "T8",
+      "order": 1,
+      "title": "여러 state 변경 규칙이 흩어질 때의 문제"
+    },
+    {
+      "id": "t8-02",
+      "track": "T8",
+      "order": 2,
+      "title": "reducer 함수로 다음 state 계산하기"
+    },
+    {
+      "id": "t8-03",
+      "track": "T8",
+      "order": 3,
+      "title": "useReducer와 dispatch로 action 보내기"
+    },
+    {
+      "id": "t8-04",
+      "track": "T8",
+      "order": 4,
+      "title": "action의 type과 payload 설계하기"
+    },
+    {
+      "id": "t8-05",
+      "track": "T8",
+      "order": 5,
+      "title": "useState와 useReducer 중 알맞은 도구 고르기"
+    },
+    {
+      "id": "t8-06",
+      "track": "T8",
+      "order": 6,
+      "title": "props drilling이 생기는 구조 확인하기"
+    },
+    {
+      "id": "t8-07",
+      "track": "T8",
+      "order": 7,
+      "title": "Context로 깊은 자식에게 값 공급하기"
+    },
+    {
+      "id": "t8-08",
+      "track": "T8",
+      "order": 8,
+      "title": "Context로 state와 변경 함수 함께 공급하기"
+    },
+    {
+      "id": "t8-09",
+      "track": "T8",
+      "order": 9,
+      "title": "Context를 값과 변경 함수로 나누기"
+    },
+    {
+      "id": "t8-10",
+      "track": "T8",
+      "order": 10,
+      "title": "reducer와 Context를 함께 사용할 때 판단하기"
+    },
+    {
+      "id": "t8-11",
+      "track": "T8",
+      "order": 11,
+      "title": "종합 문제 1: reducer와 Context로 장바구니 변경하기"
+    },
+    {
+      "id": "t8-12",
+      "track": "T8",
+      "order": 12,
+      "title": "종합 문제 2: reducer로 숫자 상태 변경 규칙 모으기"
+    },
+    {
+      "id": "t8-13",
+      "track": "T8",
+      "order": 13,
+      "title": "종합 문제 3: action payload로 변경할 값 전달하기"
+    },
+    {
+      "id": "t8-14",
+      "track": "T8",
+      "order": 14,
+      "title": "종합 문제 4: 여러 action type으로 상태 전환하기"
+    },
+    {
+      "id": "t8-15",
+      "track": "T8",
+      "order": 15,
+      "title": "종합 문제 5: 객체 state를 reducer로 갱신하기"
+    },
+    {
+      "id": "t8-16",
+      "track": "T8",
+      "order": 16,
+      "title": "종합 문제 6: 배열 state에 reducer로 항목 추가하기"
+    },
+    {
+      "id": "t8-17",
+      "track": "T8",
+      "order": 17,
+      "title": "종합 문제 7: 배열 state에서 reducer로 항목 제거하기"
+    },
+    {
+      "id": "t8-18",
+      "track": "T8",
+      "order": 18,
+      "title": "종합 문제 8: props drilling 구조를 공통 데이터 흐름으로 이해하기"
+    },
+    {
+      "id": "t8-19",
+      "track": "T8",
+      "order": 19,
+      "title": "종합 문제 9: Context로 깊은 자식에게 값 공급하기"
+    },
+    {
+      "id": "t8-20",
+      "track": "T8",
+      "order": 20,
+      "title": "종합 문제 10: Context로 state와 변경 함수 함께 공급하기"
+    },
+    {
+      "id": "t8-21",
+      "track": "T8",
+      "order": 21,
+      "title": "종합 문제 11: 값 Context와 변경 함수 Context 나누기"
+    },
+    {
+      "id": "t8-22",
+      "track": "T8",
+      "order": 22,
+      "title": "종합 문제 12: reducer 상태와 dispatch를 Context로 공급하기"
+    },
+    {
+      "id": "t8-23",
+      "track": "T8",
+      "order": 23,
+      "title": "종합 문제 13: Provider와 전용 훅으로 Context 사용법 감싸기"
+    },
+    {
+      "id": "t8-24",
+      "track": "T8",
+      "order": 24,
+      "title": "종합 문제 14: 여러 action으로 복잡한 상태 흐름 구성하기"
+    },
+    {
+      "id": "t8-25",
+      "track": "T8",
+      "order": 25,
+      "title": "종합 문제 15: reducer·Context·파생값을 함께 구성하기"
+    },
+    {
+      "id": "t9-01",
+      "track": "T9",
+      "order": 1,
+      "title": "컴포넌트가 다시 렌더링되는 이유 찾기"
+    },
+    {
+      "id": "t9-02",
+      "track": "T9",
+      "order": 2,
+      "title": "최적화 전에 느린 계산 측정하기"
+    },
+    {
+      "id": "t9-03",
+      "track": "T9",
+      "order": 3,
+      "title": "useMemo로 계산 결과 재사용하기"
+    },
+    {
+      "id": "t9-04",
+      "track": "T9",
+      "order": 4,
+      "title": "React.memo로 같은 props의 자식 렌더 건너뛰기"
+    },
+    {
+      "id": "t9-05",
+      "track": "T9",
+      "order": 5,
+      "title": "렌더마다 새로 만들어지는 함수 참조 이해하기"
+    },
+    {
+      "id": "t9-06",
+      "track": "T9",
+      "order": 6,
+      "title": "useCallback으로 함수 참조 재사용하기"
+    },
+    {
+      "id": "t9-07",
+      "track": "T9",
+      "order": 7,
+      "title": "메모이제이션의 비용과 사용하지 않을 때 판단하기"
+    },
+    {
+      "id": "t9-08",
+      "track": "T9",
+      "order": 8,
+      "title": "React state를 localStorage에 저장하기"
+    },
+    {
+      "id": "t9-09",
+      "track": "T9",
+      "order": 9,
+      "title": "useState 초기화 함수로 저장된 값 복원하기"
+    },
+    {
+      "id": "t9-10",
+      "track": "T9",
+      "order": 10,
+      "title": "effect로 state와 localStorage 동기화하기"
+    },
+    {
+      "id": "t9-11",
+      "track": "T9",
+      "order": 11,
+      "title": "종합 문제 1: 장바구니 합계를 계산하고 저장하기"
+    },
+    {
+      "id": "t9-12",
+      "track": "T9",
+      "order": 12,
+      "title": "종합 문제 2: 다시 렌더링되는 원인 구분하기"
+    },
+    {
+      "id": "t9-13",
+      "track": "T9",
+      "order": 13,
+      "title": "종합 문제 3: 최적화 전에 계산 결과와 비용 확인하기"
+    },
+    {
+      "id": "t9-14",
+      "track": "T9",
+      "order": 14,
+      "title": "종합 문제 4: useMemo로 의존성이 같을 때 계산 결과 재사용하기"
+    },
+    {
+      "id": "t9-15",
+      "track": "T9",
+      "order": 15,
+      "title": "종합 문제 5: React.memo로 같은 props의 자식 렌더 건너뛰기"
+    },
+    {
+      "id": "t9-16",
+      "track": "T9",
+      "order": 16,
+      "title": "종합 문제 6: 렌더마다 새 함수 참조가 만들어지는 이유 이해하기"
+    },
+    {
+      "id": "t9-17",
+      "track": "T9",
+      "order": 17,
+      "title": "종합 문제 7: useCallback으로 함수 참조 재사용하기"
+    },
+    {
+      "id": "t9-18",
+      "track": "T9",
+      "order": 18,
+      "title": "종합 문제 8: 단순한 계산에는 메모이제이션을 사용하지 않기"
+    },
+    {
+      "id": "t9-19",
+      "track": "T9",
+      "order": 19,
+      "title": "종합 문제 9: 버튼 동작으로 state를 localStorage에 저장하기"
+    },
+    {
+      "id": "t9-20",
+      "track": "T9",
+      "order": 20,
+      "title": "종합 문제 10: useState 초기화 함수에서 저장값 한 번 읽기"
+    },
+    {
+      "id": "t9-21",
+      "track": "T9",
+      "order": 21,
+      "title": "종합 문제 11: effect로 state 변화와 localStorage 동기화하기"
+    },
+    {
+      "id": "t9-22",
+      "track": "T9",
+      "order": 22,
+      "title": "종합 문제 12: 객체와 배열을 JSON 문자열로 저장하기"
+    },
+    {
+      "id": "t9-23",
+      "track": "T9",
+      "order": 23,
+      "title": "종합 문제 13: 잘못된 저장값에 안전한 기본값 사용하기"
+    },
+    {
+      "id": "t9-24",
+      "track": "T9",
+      "order": 24,
+      "title": "종합 문제 14: 저장과 복원을 커스텀 훅으로 묶기"
+    },
+    {
+      "id": "t9-25",
+      "track": "T9",
+      "order": 25,
+      "title": "종합 문제 15: 메모이제이션과 저장을 필요한 곳에만 함께 적용하기"
+    }
   ]
 }

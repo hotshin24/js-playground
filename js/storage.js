@@ -5,7 +5,8 @@ const KEY = storageKey;
 const SCHEMA_VERSION = 1;
 // 저장 개정 번호. 레슨이 다른 번호로 옮겨 가면 옛 저장분이 남의 레슨에 붙는다.
 // 3: 2026 새 커리큘럼으로 전체 레슨을 교체했다.
-const REVISION = 3;
+// 4: T2-01~07의 함수 선행 문제를 해당 단원 문법 문제로 교체했다.
+const REVISION = 4;
 
 // T0의 옛 종합 문제 15개는 내용상 T1에 속하므로 번호만 옮겼다.
 // 이미 푼 기록은 새 레슨 ID로 이어져야 한다.
@@ -49,6 +50,19 @@ const migrateLesson = (entry) => {
 // 새 커리큘럼 전환 전 저장분은 레슨 ID의 뜻이 달라졌으므로 사용하지 않는다.
 const applyRevision = (lessons, revision) => {
   if ((revision || 1) >= REVISION) return lessons;
+  if ((revision || 1) >= 3) {
+    const migrated = { ...lessons };
+    for (let number = 1; number <= 7; number += 1) {
+      const id = `t2-${String(number).padStart(2, '0')}`;
+      const entry = migrated[id];
+      if (!entry || !entry.steps) continue;
+      const steps = { ...entry.steps };
+      delete steps[3];
+      delete steps[4];
+      migrated[id] = { ...entry, steps };
+    }
+    return migrated;
+  }
   return {};
 };
 
