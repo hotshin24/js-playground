@@ -4,7 +4,7 @@
   "track": "T8",
   "order": 11,
   "runtime": "react",
-  "title": "종합 연습: 장바구니 상태를 깊은 자식에서 바꾸기",
+  "title": "종합 문제 1: reducer와 Context로 장바구니 변경하기",
   "steps": [
     {
       "kind": "read",
@@ -17,8 +17,11 @@
       ]
     },
     {
-      "kind": "run", "title": "action으로 다음 state 계산하기",
-      "brief": ["reducer가 현재 state와 action을 받아 새 객체를 반환하는 기본 흐름을 먼저 확인하세요."],
+      "kind": "run",
+      "title": "action으로 다음 state 계산하기",
+      "brief": [
+        "reducer가 현재 state와 action을 받아 새 객체를 반환하는 기본 흐름을 먼저 확인하세요."
+      ],
       "code": "function reducer(state, action) {\n  if (action.type === 'add') return { count: state.count + 1 };\n  return state;\n}\nconsole.log(reducer({ count: 0 }, { type: 'add' }));\n"
     },
     {
@@ -44,7 +47,9 @@
           "type": "dom",
           "label": "처음 수량은 0",
           "select": "p",
-          "text": ["장바구니: 0개"]
+          "text": [
+            "장바구니: 0개"
+          ]
         },
         {
           "type": "dom",
@@ -60,7 +65,9 @@
             }
           ],
           "select": "p",
-          "text": ["장바구니: 2개"]
+          "text": [
+            "장바구니: 2개"
+          ]
         },
         {
           "type": "dom",
@@ -72,7 +79,9 @@
             }
           ],
           "select": "p",
-          "text": ["장바구니: 0개"]
+          "text": [
+            "장바구니: 0개"
+          ]
         }
       ],
       "hints": [
