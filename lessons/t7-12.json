@@ -4,7 +4,7 @@
   "track": "T7",
   "order": 12,
   "runtime": "react",
-  "title": "종합 연습: 온라인 상태 구독 훅 만들기",
+  "title": "종합 문제 1: 이벤트 구독을 커스텀 훅으로 분리하기",
   "steps": [
     {
       "kind": "read",
@@ -17,9 +17,17 @@
       ]
     },
     {
-      "kind": "run", "title": "effect에서 구독하고 정리하기",
-      "brief": ["온라인 이벤트 하나를 구독하고 같은 함수로 해제하는 가장 작은 예제를 확인하세요."],
-      "scaffold": {"html":["<div id=\"root\"></div>"],"css":[]},
+      "kind": "run",
+      "title": "effect에서 구독하고 정리하기",
+      "brief": [
+        "온라인 이벤트 하나를 구독하고 같은 함수로 해제하는 가장 작은 예제를 확인하세요."
+      ],
+      "scaffold": {
+        "html": [
+          "<div id=\"root\"></div>"
+        ],
+        "css": []
+      },
       "code": "const { useEffect } = React;\nfunction App() { useEffect(() => { const log = () => console.log('온라인'); window.addEventListener('online', log); return () => window.removeEventListener('online', log); }, []); return <p>구독 중</p>; }\nReactDOM.createRoot(document.querySelector('#root')).render(<App />);\n"
     },
     {
@@ -43,13 +51,17 @@
           "type": "dom",
           "label": "현재 연결 상태 표시",
           "select": "p",
-          "text": ["온라인"]
+          "text": [
+            "온라인"
+          ]
         },
         {
           "type": "dom",
           "label": "상태 문구 요소 렌더링",
           "select": "#root p",
-          "text": ["온라인"]
+          "text": [
+            "온라인"
+          ]
         }
       ],
       "hints": [
