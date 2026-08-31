@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "id": "t2-37",
+  "track": "T2",
+  "order": 37,
+  "runtime": "js",
+  "title": "종합 문제 21: 들어온 수와 나간 수로 남은 값 구하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "주차장 차량 변화로 남은 수 읽기",
+      "brief": [
+        "현재 값에 새로 들어온 값을 더하고, 나간 값을 빼면 마지막에 남은 값을 구할 수 있습니다.",
+        "주차장에서는 parkedCars에 enteredCars를 더하고 exitedCars를 빼 현재 차량 수를 계산합니다.",
+        {
+          "code": [
+            "getParkedCars(20, 7, 4);",
+            "// 23"
+          ]
+        },
+        "덧셈과 뺄셈은 왼쪽부터 실행되므로 parkedCars + enteredCars - exitedCars 순서로 적을 수 있습니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "행사장에 남은 좌석 계산하기",
+      "brief": [
+        "기존 좌석에 추가 좌석을 더하고 예약된 좌석을 뺍니다. 다음 쓰기에서는 같은 계산 순서를 재고에 적용합니다."
+      ],
+      "code": "function getAvailableSeats(seats, added, reserved) {\n  const available = seats + added - reserved;\n  return available;\n}\nconsole.log(getAvailableSeats(40, 10, 32));\n"
+    },
+    {
+      "kind": "write",
+      "title": "남은 재고 반환하기",
+      "brief": [
+        "getRemainingStock(stock, received, sold)를 작성하세요.",
+        "기존 재고와 입고량을 더한 뒤 판매량을 빼세요."
+      ],
+      "code": "// getRemainingStock 함수를 작성하세요.\n",
+      "entry": "getRemainingStock",
+      "solutionCode": "function getRemainingStock(stock, received, sold) {\n  const remaining = stock + received - sold;\n  return remaining;\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "입고와 판매 반영",
+          "args": [
+            10,
+            5,
+            3
+          ],
+          "expected": 12
+        },
+        {
+          "type": "value",
+          "label": "입고 없이 판매",
+          "args": [
+            20,
+            0,
+            7
+          ],
+          "expected": 13
+        }
+      ],
+      "hints": [
+        "stock + received - sold를 계산하세요.",
+        "remaining이라는 변수에 저장한 뒤 반환하세요."
+      ]
+    }
+  ]
+}

@@ -1,1 +1,60 @@
-{"schemaVersion":2,"id":"t1-19","track":"T1","order":19,"runtime":"js","title":"종합 문제 4: 값의 입력 여부를 불리언으로 확인하기","steps":[{"kind":"read","title":"전화번호 입력 여부를 확인하는 과정 읽기","brief":["빈 문자열은 falsy이고 글자가 있는 문자열은 truthy입니다.",{"code":["hasPhone('010-1234-5678'); // true","hasPhone(''); // false"]},"Boolean(value)는 truthy를 true로, falsy를 false로 바꿉니다."]},{"kind":"run","title":"배송 요청사항 입력 여부 확인하기","brief":["빈 문자열과 글자가 있는 문자열을 Boolean으로 바꿔 결과를 비교하세요."],"code":"const emptyRequest = '';\nconst writtenRequest = '경비실에 맡겨 주세요';\nconsole.log(Boolean(emptyRequest));\nconsole.log(Boolean(writtenRequest));\n"},{"kind":"write","title":"메모 입력 여부 반환하기","brief":["hasMemo(memo)를 작성하세요.","Boolean으로 변환한 결과를 반환하세요."],"code":"// hasMemo 함수를 작성하세요.\n","entry":"hasMemo","solutionCode":"function hasMemo(memo) {\n  return Boolean(memo);\n}\n","asserts":[{"type":"value","label":"배송 메모 있음","args":["문 앞에 두세요"],"expected":true},{"type":"value","label":"빈 배송 메모","args":[""],"expected":false}],"hints":["Boolean(memo)를 사용하세요.","비교식을 추가할 필요가 없습니다."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t1-19",
+  "track": "T1",
+  "order": 19,
+  "runtime": "js",
+  "title": "종합 문제 4: 값의 입력 여부를 불리언으로 확인하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "입력 내용이 있는지 불리언으로 확인하기",
+      "brief": [
+        "Boolean은 값을 true 또는 false로 바꿉니다. 내용이 있는 문자열은 true, 빈 문자열은 false가 됩니다.",
+        {
+          "code": [
+            "const phone = '010-1234-5678';",
+            "const emptyPhone = '';",
+            "console.log(Boolean(phone)); // true",
+            "console.log(Boolean(emptyPhone)); // false"
+          ]
+        },
+        "여기서는 전화번호 형식이 올바른지 검사하지 않습니다. 문자열에 내용이 있는지만 확인합니다. 공백 하나인 ' '도 빈 문자열이 아니므로 true입니다.",
+        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "배송 요청사항 입력 여부 확인하기",
+      "brief": [
+        "빈 문자열과 글자가 있는 문자열을 Boolean으로 바꿔 결과를 비교하세요."
+      ],
+      "code": "const emptyRequest = '';\nconst writtenRequest = '경비실에 맡겨 주세요';\nconsole.log(Boolean(emptyRequest));\nconsole.log(Boolean(writtenRequest));\n"
+    },
+    {
+      "kind": "write",
+      "title": "배송 메모 입력 여부 확인하기",
+      "brief": [
+        "memo를 Boolean으로 바꿔 출력하세요. 내용이 있으면 true, 빈 문자열이면 false입니다.",
+        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+      ],
+      "code": "let memo = \"문 앞에 두세요\";\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nmemo = \"\";\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "solutionCode": "let memo = \"문 앞에 두세요\";\nconsole.log(Boolean(memo));\n\nmemo = \"\";\nconsole.log(Boolean(memo));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "직접 작성한 코드의 출력 순서와 값",
+          "expected": [
+            "true",
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "memo를 Boolean으로 바꿔 출력하세요. 내용이 있으면 true, 빈 문자열이면 false입니다.",
+        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+      ]
+    }
+  ]
+}

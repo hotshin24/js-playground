@@ -1,1 +1,60 @@
-{"schemaVersion":2,"id":"t1-18","track":"T1","order":18,"runtime":"js","title":"종합 문제 3: 식별 번호를 문자열로 통일하기","steps":[{"kind":"read","title":"직원 번호를 문자열로 바꾸는 과정 읽기","brief":["서로 다른 자료형으로 들어오는 식별 번호는 비교하기 전에 같은 자료형으로 맞추는 편이 안전합니다.",{"code":["normalizeEmployeeId(27);","// '27'"]},"String(value)는 값을 문자열로 바꿉니다."]},{"kind":"run","title":"예약 번호를 문자열로 바꾸기","brief":["숫자로 받은 예약 번호를 String으로 변환한 결과와 자료형을 확인하세요."],"code":"const reservationNumber = 508;\nconst reservationId = String(reservationNumber);\nconsole.log(reservationId, typeof reservationId);\n"},{"kind":"write","title":"상품 번호 정규화하기","brief":["normalizeProductId(productId)를 작성하세요.","String을 사용해 문자열로 바꾼 값을 반환하세요."],"code":"// normalizeProductId 함수를 작성하세요.\n","entry":"normalizeProductId","solutionCode":"function normalizeProductId(productId) {\n  return String(productId);\n}\n","asserts":[{"type":"value","label":"숫자 상품 번호","args":[1042],"expected":"1042"},{"type":"value","label":"문자열 상품 번호","args":["A-17"],"expected":"A-17"}],"hints":["String(productId)를 사용하세요.","변환 결과를 return으로 반환하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t1-18",
+  "track": "T1",
+  "order": 18,
+  "runtime": "js",
+  "title": "종합 문제 3: 식별 번호를 문자열로 통일하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "숫자 식별 번호를 문자열로 바꾸기",
+      "brief": [
+        "직원 번호 27은 숫자입니다. 글자로 표시할 번호가 필요할 때 String으로 변환할 수 있습니다.",
+        {
+          "code": [
+            "const employeeId = 27;",
+            "const displayId = String(employeeId);",
+            "console.log(displayId); // 27",
+            "console.log(typeof displayId); // string"
+          ]
+        },
+        "console.log만 보면 숫자 27과 문자열 '27'이 같아 보입니다. typeof로 자료형을 확인하면 변환된 값은 string입니다.",
+        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "예약 번호를 문자열로 바꾸기",
+      "brief": [
+        "숫자로 받은 예약 번호를 String으로 변환한 결과와 자료형을 확인하세요."
+      ],
+      "code": "const reservationNumber = 508;\nconst reservationId = String(reservationNumber);\nconsole.log(reservationId, typeof reservationId);\n"
+    },
+    {
+      "kind": "write",
+      "title": "상품 번호를 문자열로 바꾸기",
+      "brief": [
+        "productId를 String으로 바꾼 결과를 출력하세요. 숫자 번호와 문자 번호 모두 처리하세요.",
+        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+      ],
+      "code": "let productId = 1042;\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nproductId = \"A-17\";\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "solutionCode": "let productId = 1042;\nconsole.log(String(productId));\n\nproductId = \"A-17\";\nconsole.log(String(productId));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "직접 작성한 코드의 출력 순서와 값",
+          "expected": [
+            "1042",
+            "A-17"
+          ]
+        }
+      ],
+      "hints": [
+        "productId를 String으로 바꾼 결과를 출력하세요. 숫자 번호와 문자 번호 모두 처리하세요.",
+        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+      ]
+    }
+  ]
+}

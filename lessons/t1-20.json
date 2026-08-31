@@ -1,1 +1,60 @@
-{"schemaVersion":2,"id":"t1-20","track":"T1","order":20,"runtime":"js","title":"종합 문제 5: 값과 자료형을 함께 비교하기","steps":[{"kind":"read","title":"좌석 번호를 엄격하게 비교하는 과정 읽기","brief":["숫자 12와 문자열 '12'는 보이는 모양은 같지만 자료형이 다릅니다.",{"code":["isSeatNumber(12); // true","isSeatNumber('12'); // false"]},"===는 값과 자료형이 모두 같아야 true가 됩니다."]},{"kind":"run","title":"상태 코드의 값과 자료형 비교하기","brief":["숫자 상태 코드와 문자열 상태 코드를 ===로 비교해 차이를 확인하세요."],"code":"const completedCode = 200;\nconsole.log(completedCode === 200);\nconsole.log(completedCode === '200');\n"},{"kind":"write","title":"정확한 쿠폰 코드 확인하기","brief":["isExactCouponCode(code)를 작성하세요.","code가 숫자 100과 엄격하게 같은지 반환하세요."],"code":"// isExactCouponCode 함수를 작성하세요.\n","entry":"isExactCouponCode","solutionCode":"function isExactCouponCode(code) {\n  return code === 100;\n}\n","asserts":[{"type":"value","label":"숫자 코드","args":[100],"expected":true},{"type":"value","label":"문자열 코드","args":["100"],"expected":false}],"hints":["===를 사용하세요.","code === 100의 결과를 그대로 반환하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t1-20",
+  "track": "T1",
+  "order": 20,
+  "runtime": "js",
+  "title": "종합 문제 5: 값과 자료형을 함께 비교하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "숫자와 문자열을 구분해서 비교하기",
+      "brief": [
+        "좌석 번호로 숫자 12만 인정한다고 가정합니다. ===는 값과 자료형이 모두 같아야 true입니다.",
+        {
+          "code": [
+            "const seat = 12;",
+            "const textSeat = '12';",
+            "console.log(seat === 12); // true",
+            "console.log(textSeat === 12); // false"
+          ]
+        },
+        "두 값이 화면에서 비슷하게 보여도 seat는 숫자, textSeat는 문자열입니다. Number로 변환하면 이 구분이 사라지므로 여기서는 변환하지 않고 비교합니다.",
+        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "상태 코드의 값과 자료형 비교하기",
+      "brief": [
+        "숫자 상태 코드와 문자열 상태 코드를 ===로 비교해 차이를 확인하세요."
+      ],
+      "code": "const completedCode = 200;\nconsole.log(completedCode === 200);\nconsole.log(completedCode === '200');\n"
+    },
+    {
+      "kind": "write",
+      "title": "쿠폰 코드의 값과 자료형 비교하기",
+      "brief": [
+        "code가 숫자 100과 일치하는지 ===로 비교해 출력하세요. 문자열 '100'은 일치하지 않습니다.",
+        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+      ],
+      "code": "let code = 100;\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\ncode = \"100\";\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "solutionCode": "let code = 100;\nconsole.log(code === 100);\n\ncode = \"100\";\nconsole.log(code === 100);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "직접 작성한 코드의 출력 순서와 값",
+          "expected": [
+            "true",
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "code가 숫자 100과 일치하는지 ===로 비교해 출력하세요. 문자열 '100'은 일치하지 않습니다.",
+        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+      ]
+    }
+  ]
+}

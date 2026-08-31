@@ -1,1 +1,61 @@
-{"schemaVersion":2,"id":"t1-28","track":"T1","order":28,"runtime":"js","title":"종합 문제 13: 0을 보존하며 기본값 적용하기","steps":[{"kind":"read","title":"재시도 횟수 0을 보존하는 과정 읽기","brief":["0은 재시도하지 않는다는 유효한 설정값입니다.",{"code":["getRetryCount(0); // 0","getRetryCount(null); // 3"]},"null과 undefined만 기본값으로 바꾸려면 ??를 사용합니다."]},{"kind":"run","title":"할인 금액 0과 누락값 구분하기","brief":["0에 ||와 ??를 각각 적용해 결과가 어떻게 달라지는지 확인하세요."],"code":"const discountAmount = 0;\nconsole.log(discountAmount || 5000);\nconsole.log(discountAmount ?? 5000);\n"},{"kind":"write","title":"재고 기본값 적용하기","brief":["normalizeStock(stock)를 작성하세요.","stock이 null이나 undefined일 때만 100을 반환하세요."],"code":"// normalizeStock 함수를 작성하세요.\n","entry":"normalizeStock","solutionCode":"function normalizeStock(stock) {\n  return stock ?? 100;\n}\n","asserts":[{"type":"value","label":"재고 0 보존","args":[0],"expected":0},{"type":"value","label":"null에 기본 재고","args":[null],"expected":100},{"type":"value","label":"입력된 재고","args":[25],"expected":25}],"hints":["0을 보존하려면 ??가 필요합니다.","stock ?? 100을 반환하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t1-28",
+  "track": "T1",
+  "order": 28,
+  "runtime": "js",
+  "title": "종합 문제 13: 0을 보존하며 기본값 적용하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "0과 값이 없는 상태를 구분하기",
+      "brief": [
+        "재시도 횟수 0은 '재시도하지 않음'이라는 정상 설정입니다. null인 경우에만 기본 횟수 3을 적용합니다.",
+        {
+          "code": [
+            "const retries = 0;",
+            "const missingRetries = null;",
+            "console.log(retries ?? 3); // 0",
+            "console.log(missingRetries ?? 3); // 3"
+          ]
+        },
+        "0은 falsy이지만 null이나 undefined는 아닙니다. ??는 0을 유지합니다. ||를 사용하면 0까지 3으로 바뀌어 설정의 뜻이 달라집니다.",
+        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "할인 금액 0과 누락값 구분하기",
+      "brief": [
+        "0에 ||와 ??를 각각 적용해 결과가 어떻게 달라지는지 확인하세요."
+      ],
+      "code": "const discountAmount = 0;\nconsole.log(discountAmount || 5000);\nconsole.log(discountAmount ?? 5000);\n"
+    },
+    {
+      "kind": "write",
+      "title": "재고 0을 유지하면서 기본값 적용하기",
+      "brief": [
+        "stock이 null이면 100을 사용하고, 0을 포함한 숫자는 그대로 출력하세요. ??를 사용하세요.",
+        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+      ],
+      "code": "let stock = 0;\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nstock = null;\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nstock = 25;\n// 3번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "solutionCode": "let stock = 0;\nconsole.log(stock ?? 100);\n\nstock = null;\nconsole.log(stock ?? 100);\n\nstock = 25;\nconsole.log(stock ?? 100);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "직접 작성한 코드의 출력 순서와 값",
+          "expected": [
+            "0",
+            "100",
+            "25"
+          ]
+        }
+      ],
+      "hints": [
+        "stock이 null이면 100을 사용하고, 0을 포함한 숫자는 그대로 출력하세요. ??를 사용하세요.",
+        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+      ]
+    }
+  ]
+}

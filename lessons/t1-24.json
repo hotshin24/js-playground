@@ -1,1 +1,60 @@
-{"schemaVersion":2,"id":"t1-24","track":"T1","order":24,"runtime":"js","title":"종합 문제 9: falsy 값에 표시용 기본값 적용하기","steps":[{"kind":"read","title":"검색어가 비었을 때 안내 문구 정하기","brief":["검색어가 빈 문자열이면 화면에 대신 보여 줄 문구가 필요합니다.",{"code":["getSearchLabel(''); // '전체 검색'","getSearchLabel('노트북'); // '노트북'"]},"||는 왼쪽 값이 falsy이면 오른쪽 값을 사용합니다."]},{"kind":"run","title":"이미지 설명의 기본 문구 정하기","brief":["빈 문자열인 이미지 설명에 ||로 기본 문구를 적용하세요."],"code":"const imageDescription = '';\nconst altText = imageDescription || '이미지 설명 없음';\nconsole.log(altText);\n"},{"kind":"write","title":"화면에 표시할 제목 반환하기","brief":["getDisplayTitle(title)을 작성하세요.","title이 falsy이면 '제목 없음'을 반환하세요."],"code":"// getDisplayTitle 함수를 작성하세요.\n","entry":"getDisplayTitle","solutionCode":"function getDisplayTitle(title) {\n  return title || '제목 없음';\n}\n","asserts":[{"type":"value","label":"빈 제목","args":[""],"expected":"제목 없음"},{"type":"value","label":"입력된 제목","args":["배송 안내"],"expected":"배송 안내"}],"hints":["title || '제목 없음'을 사용하세요.","논리 연산식의 값을 그대로 반환하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t1-24",
+  "track": "T1",
+  "order": 24,
+  "runtime": "js",
+  "title": "종합 문제 9: falsy 값에 표시용 기본값 적용하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "빈 문자열에 기본 문구 넣기",
+      "brief": [
+        "검색어가 빈 문자열이면 '전체 검색'을 표시하고, 검색어가 있으면 그대로 표시하려고 합니다.",
+        {
+          "code": [
+            "const emptySearch = '';",
+            "const search = '노트북';",
+            "console.log(emptySearch || '전체 검색'); // 전체 검색",
+            "console.log(search || '전체 검색'); // 노트북"
+          ]
+        },
+        "||는 왼쪽이 falsy이면 오른쪽 값을 사용합니다. 빈 문자열은 falsy이지만 '노트북'은 truthy이므로 그대로 사용합니다.",
+        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "이미지 설명의 기본 문구 정하기",
+      "brief": [
+        "빈 문자열인 이미지 설명에 ||로 기본 문구를 적용하세요."
+      ],
+      "code": "const imageDescription = '';\nconst altText = imageDescription || '이미지 설명 없음';\nconsole.log(altText);\n"
+    },
+    {
+      "kind": "write",
+      "title": "빈 제목 대신 기본 제목 출력하기",
+      "brief": [
+        "title이 빈 문자열이면 '제목 없음'을, 내용이 있으면 그 제목을 출력하세요. ||를 사용하세요.",
+        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+      ],
+      "code": "let title = \"\";\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\ntitle = \"배송 안내\";\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "solutionCode": "let title = \"\";\nconsole.log(title || '제목 없음');\n\ntitle = \"배송 안내\";\nconsole.log(title || '제목 없음');\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "직접 작성한 코드의 출력 순서와 값",
+          "expected": [
+            "제목 없음",
+            "배송 안내"
+          ]
+        }
+      ],
+      "hints": [
+        "title이 빈 문자열이면 '제목 없음'을, 내용이 있으면 그 제목을 출력하세요. ||를 사용하세요.",
+        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+      ]
+    }
+  ]
+}

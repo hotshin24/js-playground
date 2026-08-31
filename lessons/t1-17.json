@@ -1,1 +1,61 @@
-{"schemaVersion":2,"id":"t1-17","track":"T1","order":17,"runtime":"js","title":"종합 문제 2: 문자열 숫자를 변환해 금액 계산하기","steps":[{"kind":"read","title":"근무 시간으로 급여를 계산하는 과정 읽기","brief":["입력창에서 받은 근무 시간 '5'는 문자열이므로 Number로 바꿔야 합니다.",{"code":["calculatePay('5', 12000);","// 60000"]},"Number(workHours)로 변환한 값과 hourlyPay를 곱합니다."]},{"kind":"run","title":"인쇄 매수로 제작비 계산하기","brief":["문자열로 받은 인쇄 매수를 숫자로 바꾼 뒤 장당 가격과 곱하세요."],"code":"const copiesInput = '30';\nconst pricePerCopy = 150;\nconst copies = Number(copiesInput);\nconsole.log(copies * pricePerCopy);\n"},{"kind":"write","title":"주문 금액 반환하기","brief":["calculateOrderTotal(quantity, price)를 작성하세요.","quantity를 Number로 변환한 뒤 price와 곱해 반환하세요."],"code":"// calculateOrderTotal 함수를 작성하세요.\n","entry":"calculateOrderTotal","solutionCode":"function calculateOrderTotal(quantity, price) {\n  const numericQuantity = Number(quantity);\n  return numericQuantity * price;\n}\n","asserts":[{"type":"value","label":"상품 3개","args":["3",12000],"expected":36000},{"type":"value","label":"상품 0개","args":["0",8900],"expected":0}],"hints":["Number(quantity)를 변수에 저장하세요.","변환한 수량과 price를 곱해 반환하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t1-17",
+  "track": "T1",
+  "order": 17,
+  "runtime": "js",
+  "title": "종합 문제 2: 문자열 숫자를 변환해 금액 계산하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "문자열 근무 시간으로 급여 계산하기",
+      "brief": [
+        "입력칸에서 받은 workHours는 '5'라는 문자열이고, hourlyPay는 숫자 12000입니다.",
+        {
+          "code": [
+            "const workHours = '5';",
+            "const hourlyPay = 12000;",
+            "const hours = Number(workHours);",
+            "const pay = hours * hourlyPay;",
+            "console.log(pay); // 60000"
+          ]
+        },
+        "Number(workHours)는 문자열 '5'를 숫자 5로 바꿉니다. 그 숫자에 시급을 곱하면 급여 60000이 됩니다. 계산에 쓰는 값과 출력할 값을 순서대로 변수에 저장합니다.",
+        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "인쇄 매수로 제작비 계산하기",
+      "brief": [
+        "문자열로 받은 인쇄 매수를 숫자로 바꾼 뒤 장당 가격과 곱하세요."
+      ],
+      "code": "const copiesInput = '30';\nconst pricePerCopy = 150;\nconst copies = Number(copiesInput);\nconsole.log(copies * pricePerCopy);\n"
+    },
+    {
+      "kind": "write",
+      "title": "주문 수량으로 결제 금액 계산하기",
+      "brief": [
+        "quantity를 숫자로 바꾸고 price와 곱한 결제 금액을 출력하세요.",
+        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+      ],
+      "code": "let quantity = \"3\";\nlet price = 12000;\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nquantity = \"0\";\nprice = 8900;\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "solutionCode": "let quantity = \"3\";\nlet price = 12000;\nlet numericQuantity = Number(quantity);\nconsole.log(numericQuantity * price);\n\nquantity = \"0\";\nprice = 8900;\nnumericQuantity = Number(quantity);\nconsole.log(numericQuantity * price);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "직접 작성한 코드의 출력 순서와 값",
+          "expected": [
+            "36000",
+            "0"
+          ]
+        }
+      ],
+      "hints": [
+        "quantity를 숫자로 바꾸고 price와 곱한 결제 금액을 출력하세요.",
+        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+      ]
+    }
+  ]
+}

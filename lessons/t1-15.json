@@ -13,7 +13,14 @@
         "앞 레슨에서는 값을 truthy와 falsy로 판단하는 규칙을 배웠습니다. ||(OR, 오어, '또는')와 &&(AND, 앤드, '그리고')는 그 판단을 이용해 두 값 중 하나를 반환합니다.",
         "||(OR, 오어)는 왼쪽 값이 truthy면 왼쪽 값을 반환합니다. 왼쪽 값이 falsy면 오른쪽 값을 반환합니다.",
         "&&(AND, 앤드)는 왼쪽 값이 falsy면 왼쪽 값을 반환합니다. 왼쪽 값이 truthy면 오른쪽 값을 반환합니다.",
-        { "code": ["'민수' || '손님';  // '민수'", "'' || '손님';      // '손님'", "'로그인됨' && '주문하기'; // '주문하기'", "0 && '주문하기';          // 0"] },
+        {
+          "code": [
+            "'민수' || '손님';  // '민수'",
+            "'' || '손님';      // '손님'",
+            "'로그인됨' && '주문하기'; // '주문하기'",
+            "0 && '주문하기';          // 0"
+          ]
+        },
         "중요한 점은 결과가 반드시 true나 false인 것은 아니라는 사실입니다. 연산에 사용한 문자열, 숫자, null 같은 값 자체가 결과가 됩니다.",
         "왼쪽 값만 보고 결과를 정할 수 있으면 오른쪽은 아예 실행하지 않습니다. 중간에서 계산을 멈춘다고 해서 이를 단락 평가라고 합니다."
       ]
@@ -53,12 +60,11 @@
       "kind": "tweak",
       "title": "오른쪽 코드가 실행되지 않는 모습 확인하기",
       "brief": [
-        "showMessage를 호출하면 콘솔에 '함수를 실행했습니다'가 먼저 출력됩니다.",
-        "첫 번째 식은 왼쪽이 false라서 바로 멈춥니다. 오른쪽의 showMessage()는 호출되지 않습니다.",
-        "두 번째 식은 왼쪽이 true라서 오른쪽 함수까지 실행합니다.",
-        "첫 번째 false를 true로 바꾸고 다시 실행해 보세요. 함수 실행 문구가 두 번 출력됩니다. 이것이 단락 평가가 실행 여부에도 영향을 주는 모습입니다."
+        "왼쪽이 false이면 && 오른쪽의 console.log는 실행되지 않습니다.",
+        "두 번째 줄은 왼쪽이 true라서 '두 번째 안내'가 출력됩니다. 실행 결과에는 이 문구만 보여야 합니다.",
+        "첫 번째 false를 true로 바꾸고 다시 실행하세요. 이제 '첫 번째 안내'와 '두 번째 안내'가 순서대로 출력됩니다. 이것이 단락 평가가 실행 여부에 영향을 주는 예입니다."
       ],
-      "code": "function showMessage() {\n  console.log('함수를 실행했습니다');\n  return '완료';\n}\n\nconsole.log(false && showMessage());\nconsole.log(true && showMessage());\n"
+      "code": "false && console.log('첫 번째 안내');\ntrue && console.log('두 번째 안내');\n"
     },
     {
       "kind": "run",
@@ -72,24 +78,30 @@
     },
     {
       "kind": "fill",
-      "title": "기본값을 고르는 함수 완성하기",
+      "title": "빠진 이름에만 기본값 적용하기",
       "brief": [
-        "displayName이 null이나 undefined일 때만 '손님'을 반환하고, 그 밖의 값은 그대로 반환하세요.",
-        "빈 문자열과 숫자 0도 사용자가 전달한 값으로 유지해야 합니다.",
-        "||를 쓰면 두 값이 모두 기본값으로 바뀝니다. 이번 조건에 맞는 것은 ??입니다."
+        "각 console.log의 null을 알맞은 연산식으로 바꾸세요. 위에 선언한 이름 변수를 사용하세요.",
+        "null과 undefined에는 '손님'을 적용하고, '민수', 빈 문자열, 숫자 0은 그대로 출력하세요.",
+        "함수를 만들지 않습니다. ??를 사용한 연산식을 console.log 괄호 안에 작성하세요."
       ],
-      "code": "function chooseName(displayName) {\n  return null; // 이 줄을 바꾸세요\n}\n",
-      "entry": "chooseName",
-      "solutionCode": "function chooseName(displayName) {\n  return displayName ?? '손님';\n}\n",
+      "code": "const savedName = '민수';\nconst missingName = null;\nconst unsetName = undefined;\nconst emptyName = '';\nconst zeroName = 0;\n\nconsole.log(null); // savedName에 ??를 적용하세요.\nconsole.log(null); // missingName에 ??를 적용하세요.\nconsole.log(null); // unsetName에 ??를 적용하세요.\nconsole.log(null); // emptyName에 ??를 적용하세요.\nconsole.log(null); // zeroName에 ??를 적용하세요.\n",
+      "solutionCode": "const savedName = '민수';\nconst missingName = null;\nconst unsetName = undefined;\nconst emptyName = '';\nconst zeroName = 0;\n\nconsole.log(savedName ?? '손님');\nconsole.log(missingName ?? '손님');\nconsole.log(unsetName ?? '손님');\nconsole.log(emptyName ?? '손님');\nconsole.log(zeroName ?? '손님');\n",
       "asserts": [
-        { "type": "value", "label": "이름이 있으면 그대로 반환", "args": ["민수"], "expected": "민수" },
-        { "type": "value", "label": "null이면 기본 이름 반환", "args": [null], "expected": "손님" },
-        { "type": "value", "label": "빈 문자열도 그대로 유지", "args": [""], "expected": "" },
-        { "type": "value", "label": "숫자 0도 그대로 유지", "args": [0], "expected": 0 }
+        {
+          "type": "console",
+          "label": "이름 5개의 기본값 적용 결과",
+          "expected": [
+            "민수",
+            "손님",
+            "손님",
+            "",
+            "0"
+          ]
+        }
       ],
       "hints": [
-        "왼쪽에는 displayName, 오른쪽에는 기본 문자열 '손님'을 둡니다.",
-        "null과 undefined에서만 오른쪽 값을 고르는 연산자는 ??입니다."
+        "각 줄의 null 대신 변수명 ?? '손님'을 작성하세요.",
+        "??는 null과 undefined만 바꿉니다. 빈 문자열과 0이 그대로 출력되는지도 확인하세요."
       ]
     }
   ]

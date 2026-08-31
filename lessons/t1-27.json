@@ -1,1 +1,60 @@
-{"schemaVersion":2,"id":"t1-27","track":"T1","order":27,"runtime":"js","title":"종합 문제 12: 숫자로 변환할 수 없는 입력 찾기","steps":[{"kind":"read","title":"점수 입력이 숫자인지 확인하는 과정 읽기","brief":["Number('결석')처럼 숫자로 바꿀 수 없는 값은 NaN이 됩니다.",{"code":["isInvalidScore('결석'); // true","isInvalidScore('85'); // false"]},"Number.isNaN은 전달한 값이 실제 NaN일 때만 true입니다."]},{"kind":"run","title":"온도 입력의 변환 결과 확인하기","brief":["숫자 문자열과 일반 문자열을 Number로 바꾼 뒤 Number.isNaN으로 비교하세요."],"code":"const validTemperature = Number('23');\nconst invalidTemperature = Number('높음');\nconsole.log(Number.isNaN(validTemperature));\nconsole.log(Number.isNaN(invalidTemperature));\n"},{"kind":"write","title":"잘못된 숫자 입력 확인하기","brief":["isInvalidNumberInput(value)를 작성하세요.","value를 Number로 변환한 결과가 NaN인지 반환하세요."],"code":"// isInvalidNumberInput 함수를 작성하세요.\n","entry":"isInvalidNumberInput","solutionCode":"function isInvalidNumberInput(value) {\n  const numericValue = Number(value);\n  return Number.isNaN(numericValue);\n}\n","asserts":[{"type":"value","label":"숫자 문자열","args":["42"],"expected":false},{"type":"value","label":"일반 문자열","args":["배송"],"expected":true}],"hints":["Number(value)를 변수에 저장하세요.","Number.isNaN으로 변환 결과를 확인하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t1-27",
+  "track": "T1",
+  "order": 27,
+  "runtime": "js",
+  "title": "종합 문제 12: 숫자로 변환할 수 없는 입력 찾기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "숫자 변환이 실패했는지 확인하기",
+      "brief": [
+        "점수 입력값 '85'는 숫자로 바꿀 수 있지만 '결석'은 바꿀 수 없습니다. Number는 변환할 수 없는 문자열에서 NaN을 만듭니다.",
+        {
+          "code": [
+            "const score = Number('85');",
+            "const missingScore = Number('결석');",
+            "console.log(Number.isNaN(score)); // false",
+            "console.log(Number.isNaN(missingScore)); // true"
+          ]
+        },
+        "Number.isNaN은 주어진 값이 NaN이면 true입니다. 따라서 이 예제의 true는 숫자 변환이 실패했다는 뜻입니다. 변환한 값이 NaN인지 확인하는 두 작업을 구분하세요.",
+        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "온도 입력의 변환 결과 확인하기",
+      "brief": [
+        "숫자 문자열과 일반 문자열을 Number로 바꾼 뒤 Number.isNaN으로 비교하세요."
+      ],
+      "code": "const validTemperature = Number('23');\nconst invalidTemperature = Number('높음');\nconsole.log(Number.isNaN(validTemperature));\nconsole.log(Number.isNaN(invalidTemperature));\n"
+    },
+    {
+      "kind": "write",
+      "title": "숫자로 바꿀 수 없는 입력 확인하기",
+      "brief": [
+        "value를 Number로 바꾼 뒤 Number.isNaN으로 확인한 결과를 출력하세요. 숫자로 바꿀 수 없으면 true입니다.",
+        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+      ],
+      "code": "let value = \"42\";\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nvalue = \"배송\";\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "solutionCode": "let value = \"42\";\nlet numericValue = Number(value);\nconsole.log(Number.isNaN(numericValue));\n\nvalue = \"배송\";\nnumericValue = Number(value);\nconsole.log(Number.isNaN(numericValue));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "직접 작성한 코드의 출력 순서와 값",
+          "expected": [
+            "false",
+            "true"
+          ]
+        }
+      ],
+      "hints": [
+        "value를 Number로 바꾼 뒤 Number.isNaN으로 확인한 결과를 출력하세요. 숫자로 바꿀 수 없으면 true입니다.",
+        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+      ]
+    }
+  ]
+}

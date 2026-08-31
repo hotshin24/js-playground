@@ -1,1 +1,61 @@
-{"schemaVersion":2,"id":"t1-23","track":"T1","order":23,"runtime":"js","title":"종합 문제 8: null과 undefined에만 기본값 적용하기","steps":[{"kind":"read","title":"배송 메모의 기본값을 정하는 과정 읽기","brief":["빈 문자열도 사용자가 직접 선택한 값이라면 그대로 보존해야 합니다.",{"code":["getDeliveryNote(null); // '요청 없음'","getDeliveryNote(''); // ''"]},"??는 왼쪽 값이 null 또는 undefined일 때만 오른쪽 값을 사용합니다."]},{"kind":"run","title":"알림 횟수 기본값 적용하기","brief":["0은 유효한 횟수이므로 보존하고 null에만 기본값을 적용하세요."],"code":"const unreadCount = 0;\nconst missingCount = null;\nconsole.log(unreadCount ?? 10);\nconsole.log(missingCount ?? 10);\n"},{"kind":"write","title":"별명 기본값 적용하기","brief":["getNickname(nickname)을 작성하세요.","nickname이 null이나 undefined일 때만 '이름 없음'을 반환하세요."],"code":"// getNickname 함수를 작성하세요.\n","entry":"getNickname","solutionCode":"function getNickname(nickname) {\n  return nickname ?? '이름 없음';\n}\n","asserts":[{"type":"value","label":"null 별명","args":[null],"expected":"이름 없음"},{"type":"value","label":"빈 문자열 보존","args":[""],"expected":""},{"type":"value","label":"입력한 별명","args":["초코"],"expected":"초코"}],"hints":["||가 아니라 ??를 사용하세요.","nickname ?? '이름 없음'을 반환하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t1-23",
+  "track": "T1",
+  "order": 23,
+  "runtime": "js",
+  "title": "종합 문제 8: null과 undefined에만 기본값 적용하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "빈 문자열은 유지하고 빠진 값만 바꾸기",
+      "brief": [
+        "배송 요청이 null이면 '요청 없음'을 표시합니다. 사용자가 남긴 빈 문자열은 그대로 두기로 합니다.",
+        {
+          "code": [
+            "const missingNote = null;",
+            "const emptyNote = '';",
+            "console.log(missingNote ?? '요청 없음'); // 요청 없음",
+            "console.log(emptyNote ?? '요청 없음'); // 빈 줄"
+          ]
+        },
+        "??는 null과 undefined만 기본값으로 바꿉니다. 빈 문자열은 이 둘이 아니므로 두 번째 출력은 빈 줄입니다. ||를 쓰면 빈 문자열까지 바뀝니다.",
+        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "알림 횟수 기본값 적용하기",
+      "brief": [
+        "0은 유효한 횟수이므로 보존하고 null에만 기본값을 적용하세요."
+      ],
+      "code": "const unreadCount = 0;\nconst missingCount = null;\nconsole.log(unreadCount ?? 10);\nconsole.log(missingCount ?? 10);\n"
+    },
+    {
+      "kind": "write",
+      "title": "닉네임의 기본값 적용하기",
+      "brief": [
+        "nickname이 null이면 '이름 없음'을 사용하고 빈 문자열은 유지하여 출력하세요.",
+        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+      ],
+      "code": "let nickname = null;\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nnickname = \"\";\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nnickname = \"초코\";\n// 3번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "solutionCode": "let nickname = null;\nconsole.log(nickname ?? '이름 없음');\n\nnickname = \"\";\nconsole.log(nickname ?? '이름 없음');\n\nnickname = \"초코\";\nconsole.log(nickname ?? '이름 없음');\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "직접 작성한 코드의 출력 순서와 값",
+          "expected": [
+            "이름 없음",
+            "",
+            "초코"
+          ]
+        }
+      ],
+      "hints": [
+        "nickname이 null이면 '이름 없음'을 사용하고 빈 문자열은 유지하여 출력하세요.",
+        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+      ]
+    }
+  ]
+}

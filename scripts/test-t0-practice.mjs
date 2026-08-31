@@ -42,7 +42,7 @@ for (const revision of [3, 4, 5]) {
   assert.equal(state.retiredLessons['t0-function-intro'].steps[4].code, 'old function');
   for (let n = 6; n <= 10; n += 1) assert.equal(state.lessons[`t0-${String(n).padStart(2, '0')}`].steps[3].code, `practice ${n + 1}`);
   assert.equal(state.lessons['t0-11'], undefined);
-  assert.equal(state.lessons['t1-31'].steps[0].code, 'keep');
+  assert.equal(state.lessons['t2-32'].steps[0].code, 'keep');
   state.lessons['t0-11'] = { signature: 'read-run-tweak-write', steps: { 3: { code: 'new answer' } } };
   writeState(state);
   assert.deepEqual(readState(), state);
@@ -51,6 +51,6 @@ for (const revision of [3, 4, 5]) {
 localStorage.raw = JSON.stringify({ schemaVersion: 1, revision: 3, lessons: {
   't0-07': { signature: 'read-run-write', steps: { 2: { code: 'calculation' } } },
 }, lastLessonId: 't0-07' });
-assert.equal(readState().lessons['t1-31'].steps[2].code, 'calculation');
-assert.equal(readState().lastLessonId, 't1-31');
+assert.equal(readState().lessons['t2-32'].steps[2].code, 'calculation');
+assert.equal(readState().lastLessonId, 't2-32');
 console.log(`T0 출력 검사 ${checks}건 통과; revision 3~5 이전·기록 보관·재실행 안정성 통과`);

@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 2,
+  "id": "t2-33",
+  "track": "T2",
+  "order": 33,
+  "runtime": "js",
+  "title": "종합 문제 17: 서로 다른 단위를 하나로 합치기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "배송 시간을 시간으로 나타내는 계산 읽기",
+      "brief": [
+        "큰 단위와 작은 단위가 따로 주어지면 먼저 같은 단위로 맞춘 뒤 더합니다.",
+        "배송에 걸린 days와 extraHours를 모두 시간으로 나타내려면 days * 24 + extraHours를 계산합니다.",
+        {
+          "code": [
+            "toDeliveryHours(2, 5);",
+            "// 53"
+          ]
+        },
+        "기준이 되는 숫자는 단위에 따라 달라집니다. 하루는 24시간이고, 1시간은 60분이며, 1분은 60초입니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "영상 길이를 초로 바꾸기",
+      "brief": [
+        "분을 초로 바꾼 뒤 남은 초를 더합니다. 다음 쓰기에서는 시간과 분을 전체 분으로 바꿔 보세요."
+      ],
+      "code": "function toVideoSeconds(minutes, seconds) {\n  const totalSeconds = minutes * 60 + seconds;\n  return totalSeconds;\n}\nconsole.log(toVideoSeconds(3, 20));\n"
+    },
+    {
+      "kind": "write",
+      "title": "전체 근무 시간 반환하기",
+      "brief": [
+        "toWorkMinutes(hours, minutes)를 작성하세요.",
+        "계산 결과를 console.log가 아니라 return으로 돌려주세요."
+      ],
+      "code": "// toWorkMinutes 함수를 작성하세요.\n",
+      "entry": "toWorkMinutes",
+      "solutionCode": "function toWorkMinutes(hours, minutes) {\n  const totalMinutes = hours * 60 + minutes;\n  return totalMinutes;\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "2시간 30분",
+          "args": [
+            2,
+            30
+          ],
+          "expected": 150
+        },
+        {
+          "type": "value",
+          "label": "8시간",
+          "args": [
+            8,
+            0
+          ],
+          "expected": 480
+        }
+      ],
+      "hints": [
+        "hours * 60으로 시간을 분으로 바꾸세요.",
+        "바꾼 값에 minutes를 더해 반환하세요."
+      ]
+    }
+  ]
+}

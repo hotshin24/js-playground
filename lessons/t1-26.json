@@ -1,1 +1,62 @@
-{"schemaVersion":2,"id":"t1-26","track":"T1","order":26,"runtime":"js","title":"종합 문제 11: 계산 결과를 제한값과 비교하기","steps":[{"kind":"read","title":"회의실 정원이 넘는지 확인하는 과정 읽기","brief":["현재 인원과 추가 인원을 더한 값이 정원 이하여야 입장할 수 있습니다.",{"code":["canEnterRoom(6, 2, 10); // true","canEnterRoom(9, 2, 10); // false"]},"덧셈 결과를 <=로 최대값과 비교합니다."]},{"kind":"run","title":"파일 용량 제한 확인하기","brief":["기존 용량과 새 파일 용량을 더해 저장 한도 이하인지 비교하세요."],"code":"const usedStorage = 70;\nconst newFileSize = 20;\nconst storageLimit = 100;\nconsole.log(usedStorage + newFileSize <= storageLimit);\n"},{"kind":"write","title":"입고 가능 여부 반환하기","brief":["canStore(currentStock, incomingStock, capacity)를 작성하세요.","입고 뒤 수량이 capacity 이하인지 반환하세요."],"code":"// canStore 함수를 작성하세요.\n","entry":"canStore","solutionCode":"function canStore(currentStock, incomingStock, capacity) {\n  return currentStock + incomingStock <= capacity;\n}\n","asserts":[{"type":"value","label":"공간이 남음","args":[70,20,100],"expected":true},{"type":"value","label":"최대 수량과 같음","args":[80,20,100],"expected":true},{"type":"value","label":"최대 수량 초과","args":[90,20,100],"expected":false}],"hints":["currentStock + incomingStock을 계산하세요.","합계가 capacity 이하인지 <=로 비교하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t1-26",
+  "track": "T1",
+  "order": 26,
+  "runtime": "js",
+  "title": "종합 문제 11: 계산 결과를 제한값과 비교하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "합계를 구한 다음 최대값과 비교하기",
+      "brief": [
+        "회의실에는 6명이 있고 2명이 더 들어오려고 합니다. 정원 10명을 넘지 않는지 확인합니다.",
+        {
+          "code": [
+            "const currentPeople = 6;",
+            "const incomingPeople = 2;",
+            "const capacity = 10;",
+            "const total = currentPeople + incomingPeople;",
+            "console.log(total <= capacity); // true"
+          ]
+        },
+        "합계 8은 정원 10 이하이므로 true입니다. 합계가 정원과 같은 경우도 허용하려면 <가 아닌 <=를 사용해야 합니다.",
+        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "파일 용량 제한 확인하기",
+      "brief": [
+        "기존 용량과 새 파일 용량을 더해 저장 한도 이하인지 비교하세요."
+      ],
+      "code": "const usedStorage = 70;\nconst newFileSize = 20;\nconst storageLimit = 100;\nconsole.log(usedStorage + newFileSize <= storageLimit);\n"
+    },
+    {
+      "kind": "write",
+      "title": "창고에 입고할 수 있는지 비교하기",
+      "brief": [
+        "currentStock과 incomingStock의 합이 capacity 이하인지 비교해 출력하세요. 용량과 같아도 입고할 수 있습니다.",
+        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+      ],
+      "code": "let currentStock = 70;\nlet incomingStock = 20;\nlet capacity = 100;\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\ncurrentStock = 80;\nincomingStock = 20;\ncapacity = 100;\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n\ncurrentStock = 90;\nincomingStock = 20;\ncapacity = 100;\n// 3번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "solutionCode": "let currentStock = 70;\nlet incomingStock = 20;\nlet capacity = 100;\nconsole.log(currentStock + incomingStock <= capacity);\n\ncurrentStock = 80;\nincomingStock = 20;\ncapacity = 100;\nconsole.log(currentStock + incomingStock <= capacity);\n\ncurrentStock = 90;\nincomingStock = 20;\ncapacity = 100;\nconsole.log(currentStock + incomingStock <= capacity);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "직접 작성한 코드의 출력 순서와 값",
+          "expected": [
+            "true",
+            "true",
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "currentStock과 incomingStock의 합이 capacity 이하인지 비교해 출력하세요. 용량과 같아도 입고할 수 있습니다.",
+        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+      ]
+    }
+  ]
+}

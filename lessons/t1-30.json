@@ -1,1 +1,64 @@
-{"schemaVersion":2,"id":"t1-30","track":"T1","order":30,"runtime":"js","title":"종합 문제 15: 여러 입력값을 변환·계산해 문장 만들기","steps":[{"kind":"read","title":"근무 기록 입력값을 안내 문장으로 정리하기","brief":["문자열 근무 시간을 숫자로 바꾸고, 빠진 메모에 기본값을 넣고, 초과 근무 여부를 계산할 수 있습니다.",{"code":["makeWorkMessage('9', null);","// '9시간 / 메모 없음 / 초과 근무 여부: true'"]},"빈 문자열 메모는 보존해야 하므로 ??를 사용하고, 여러 결과는 템플릿 리터럴로 연결합니다."]},{"kind":"run","title":"예약 입력값을 단계별로 계산해 문장 만들기","brief":["문자열 인원수를 숫자로 바꾸고, 누락된 요청에 기본값을 넣은 뒤 단체 여부와 함께 문장에 표시하세요."],"code":"const peopleInput = '5';\nconst requestInput = null;\nconst people = Number(peopleInput);\nconst request = requestInput ?? '요청 없음';\nconst groupBooking = people >= 5;\nconsole.log(`${people}명 / ${request} / 단체 예약 여부: ${groupBooking}`);\n"},{"kind":"write","title":"주문 입력값을 최종 안내 문장으로 반환하기","brief":["makeOrderSummary(quantity, price, coupon)를 작성하세요.","quantity는 숫자로 바꾸고 price와 곱해 total을 계산하세요.","coupon에는 ??로 '쿠폰 없음'을 적용하고, total이 50000 이상인지 비교한 결과를 문장으로 반환하세요.","결과 형식은 '3개 / 60000원 / 쿠폰 없음 / 무료 배송 여부: true'입니다."],"code":"// makeOrderSummary 함수를 작성하고 직접 호출하세요.\n","entry":"makeOrderSummary","solutionCode":"function makeOrderSummary(quantity, price, coupon) {\n  const numericQuantity = Number(quantity);\n  const total = numericQuantity * price;\n  const couponName = coupon ?? '쿠폰 없음';\n  const freeShipping = total >= 50000;\n  return `${numericQuantity}개 / ${total}원 / ${couponName} / 무료 배송 여부: ${freeShipping}`;\n}\n","asserts":[{"type":"value","label":"무료 배송 주문","args":["3",20000,null],"expected":"3개 / 60000원 / 쿠폰 없음 / 무료 배송 여부: true"},{"type":"value","label":"배송비가 있는 주문","args":["2",12000,"신규"],"expected":"2개 / 24000원 / 신규 / 무료 배송 여부: false"},{"type":"value","label":"빈 문자열 쿠폰 이름 보존","args":["1",50000,""],"expected":"1개 / 50000원 /  / 무료 배송 여부: true"}],"hints":["Number(quantity), 곱셈, ??, 삼항 조건 연산자를 순서대로 적용하세요.","마지막에 네 결과를 템플릿 리터럴 하나로 연결하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t1-30",
+  "track": "T1",
+  "order": 30,
+  "runtime": "js",
+  "title": "종합 문제 15: 여러 입력값을 변환·계산해 문장 만들기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "변환과 기본값과 비교를 한 문장에 넣기",
+      "brief": [
+        "근무 시간은 문자열 '9'이고 메모는 null입니다. 시간을 숫자로 바꾸고, 메모의 기본값을 정하고, 8시간을 초과했는지 비교합니다.",
+        {
+          "code": [
+            "const workHoursInput = '9';",
+            "const memoInput = null;",
+            "const hours = Number(workHoursInput);",
+            "const memo = memoInput ?? '메모 없음';",
+            "const overtime = hours > 8;",
+            "console.log(`${hours}시간 / ${memo} / 연장 근무 여부: ${overtime}`);",
+            "// 9시간 / 메모 없음 / 연장 근무 여부: true"
+          ]
+        },
+        "Number로 바꾼 hours는 숫자 9입니다. ??로 정한 memo는 '메모 없음'이고, 비교 결과 overtime은 true입니다. ${...}에 각각 넣으면 한 문장이 됩니다. 새 문법이 아니라 배운 세 연산의 결과를 모아 출력하는 연습입니다.",
+        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "예약 입력값을 단계별로 계산해 문장 만들기",
+      "brief": [
+        "문자열 인원수를 숫자로 바꾸고, 누락된 요청에 기본값을 넣은 뒤 단체 여부와 함께 문장에 표시하세요."
+      ],
+      "code": "const peopleInput = '5';\nconst requestInput = null;\nconst people = Number(peopleInput);\nconst request = requestInput ?? '요청 없음';\nconst groupBooking = people >= 5;\nconsole.log(`${people}명 / ${request} / 단체 예약 여부: ${groupBooking}`);\n"
+    },
+    {
+      "kind": "write",
+      "title": "주문 정보를 한 문장으로 출력하기",
+      "brief": [
+        "quantity를 숫자로 바꿔 price와 곱하세요. coupon이 null이면 '쿠폰 없음'을 사용하되 빈 문자열은 유지하세요. 총액이 50000 이상인지 비교하세요. 수량개 / 총액원 / 쿠폰 / 무료 배송 여부: 비교결과 형식으로 출력하세요.",
+        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+      ],
+      "code": "let quantity = \"3\";\nlet price = 20000;\nlet coupon = null;\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nquantity = \"2\";\nprice = 12000;\ncoupon = \"신규\";\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nquantity = \"1\";\nprice = 50000;\ncoupon = \"\";\n// 3번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "solutionCode": "let quantity = \"3\";\nlet price = 20000;\nlet coupon = null;\nlet numericQuantity = Number(quantity);\nlet total = numericQuantity * price;\nlet couponName = coupon ?? '쿠폰 없음';\nlet freeShipping = total >= 50000;\nconsole.log(`${numericQuantity}개 / ${total}원 / ${couponName} / 무료 배송 여부: ${freeShipping}`);\n\nquantity = \"2\";\nprice = 12000;\ncoupon = \"신규\";\nnumericQuantity = Number(quantity);\ntotal = numericQuantity * price;\ncouponName = coupon ?? '쿠폰 없음';\nfreeShipping = total >= 50000;\nconsole.log(`${numericQuantity}개 / ${total}원 / ${couponName} / 무료 배송 여부: ${freeShipping}`);\n\nquantity = \"1\";\nprice = 50000;\ncoupon = \"\";\nnumericQuantity = Number(quantity);\ntotal = numericQuantity * price;\ncouponName = coupon ?? '쿠폰 없음';\nfreeShipping = total >= 50000;\nconsole.log(`${numericQuantity}개 / ${total}원 / ${couponName} / 무료 배송 여부: ${freeShipping}`);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "직접 작성한 코드의 출력 순서와 값",
+          "expected": [
+            "3개 / 60000원 / 쿠폰 없음 / 무료 배송 여부: true",
+            "2개 / 24000원 / 신규 / 무료 배송 여부: false",
+            "1개 / 50000원 /  / 무료 배송 여부: true"
+          ]
+        }
+      ],
+      "hints": [
+        "quantity를 숫자로 바꿔 price와 곱하세요. coupon이 null이면 '쿠폰 없음'을 사용하되 빈 문자열은 유지하세요. 총액이 50000 이상인지 비교하세요. 수량개 / 총액원 / 쿠폰 / 무료 배송 여부: 비교결과 형식으로 출력하세요.",
+        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+      ]
+    }
+  ]
+}

@@ -1,1 +1,61 @@
-{"schemaVersion":2,"id":"t1-29","track":"T1","order":29,"runtime":"js","title":"종합 문제 14: 조건이 맞을 때만 값 선택하기","steps":[{"kind":"read","title":"로그인했을 때만 사용자 이름 사용하기","brief":["로그인한 경우에만 사용자 이름을 화면에 전달하려고 합니다.",{"code":["getSignedInName(true, '민수'); // '민수'","getSignedInName(false, '민수'); // false"]},"&&는 왼쪽이 truthy이면 오른쪽 값을, falsy이면 왼쪽 값을 반환합니다."]},{"kind":"run","title":"동의했을 때만 전화번호 선택하기","brief":["연락 동의 여부와 전화번호를 &&로 연결해 결과를 확인하세요."],"code":"const agreedToCall = true;\nconst phoneNumber = '010-1234-5678';\nconst contactPhone = agreedToCall && phoneNumber;\nconsole.log(contactPhone);\n"},{"kind":"write","title":"마케팅 이메일 선택하기","brief":["getMarketingEmail(agreed, email)을 작성하세요.","agreed가 true일 때 email이 선택되도록 && 식을 반환하세요."],"code":"// getMarketingEmail 함수를 작성하세요.\n","entry":"getMarketingEmail","solutionCode":"function getMarketingEmail(agreed, email) {\n  return agreed && email;\n}\n","asserts":[{"type":"value","label":"수신 동의","args":[true,"a@example.com"],"expected":"a@example.com"},{"type":"value","label":"수신 거부","args":[false,"a@example.com"],"expected":false}],"hints":["agreed && email을 만드세요.","그 식의 결과를 그대로 반환하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t1-29",
+  "track": "T1",
+  "order": 29,
+  "runtime": "js",
+  "title": "종합 문제 14: 조건이 맞을 때만 값 선택하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "조건에 따라 문자열 또는 false 사용하기",
+      "brief": [
+        "로그인했으면 이름을 사용하고, 로그인하지 않았으면 false를 사용하려고 합니다. &&의 결과가 항상 불리언인 것은 아닙니다.",
+        {
+          "code": [
+            "const loggedIn = true;",
+            "const loggedOut = false;",
+            "const userName = '민수';",
+            "console.log(loggedIn && userName); // 민수",
+            "console.log(loggedOut && userName); // false"
+          ]
+        },
+        "왼쪽이 true이면 오른쪽 문자열 '민수'가 결과입니다. 왼쪽이 false이면 그 값에서 멈추므로 false가 결과입니다. 아직 함수를 만들 필요 없이 연산식만으로 확인할 수 있습니다.",
+        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "동의했을 때만 전화번호 선택하기",
+      "brief": [
+        "연락 동의 여부와 전화번호를 &&로 연결해 결과를 확인하세요."
+      ],
+      "code": "const agreedToCall = true;\nconst phoneNumber = '010-1234-5678';\nconst contactPhone = agreedToCall && phoneNumber;\nconsole.log(contactPhone);\n"
+    },
+    {
+      "kind": "write",
+      "title": "수신에 동의한 경우 이메일 사용하기",
+      "brief": [
+        "agreed && email의 결과를 출력하세요. 동의하면 이메일 문자열, 동의하지 않으면 false가 나와야 합니다.",
+        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+      ],
+      "code": "let agreed = true;\nlet email = \"a@example.com\";\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nagreed = false;\nemail = \"a@example.com\";\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "solutionCode": "let agreed = true;\nlet email = \"a@example.com\";\nconsole.log(agreed && email);\n\nagreed = false;\nemail = \"a@example.com\";\nconsole.log(agreed && email);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "직접 작성한 코드의 출력 순서와 값",
+          "expected": [
+            "a@example.com",
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "agreed && email의 결과를 출력하세요. 동의하면 이메일 문자열, 동의하지 않으면 false가 나와야 합니다.",
+        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+      ]
+    }
+  ]
+}
