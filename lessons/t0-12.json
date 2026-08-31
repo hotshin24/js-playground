@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 2,
+  "id": "t0-12",
+  "track": "T0",
+  "order": 12,
+  "runtime": "js",
+  "title": "종합 문제 7: 한 변수의 세 가지 상태 출력하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "한 변수의 세 가지 상태 출력하기",
+      "brief": [
+        "let 변수의 값은 재할당할 때 바뀝니다. 이미 출력된 글자는 나중에 변수가 바뀌어도 그대로 남습니다.",
+        "선언할 때만 let을 쓰고, 이후에는 변수 이름 = 새 값;으로 재할당합니다.",
+        {
+          "code": [
+            "let taskStatus = '접수';",
+            "console.log(taskStatus);",
+            "taskStatus = '검토';",
+            "console.log(taskStatus);",
+            "taskStatus = '승인';",
+            "console.log(taskStatus);"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "출력할 때의 값 확인하기",
+      "brief": [
+        "실행 전에 각 출력 줄에서 어떤 값이 나올지 예상한 뒤 실행해 확인하세요."
+      ],
+      "code": "let taskStatus = '접수';\nconsole.log(taskStatus);\ntaskStatus = '검토';\nconsole.log(taskStatus);\ntaskStatus = '승인';\nconsole.log(taskStatus);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "값과 출력 위치 바꿔 보기",
+      "brief": [
+        "중간 출력을 지우면 검토라는 값은 사용됐어도 콘솔에는 남지 않습니다.",
+        "마지막 출력 줄을 한 번 더 작성하면 승인이 두 번 출력됩니다."
+      ],
+      "code": "let taskStatus = '접수';\nconsole.log(taskStatus);\ntaskStatus = '검토';\nconsole.log(taskStatus);\ntaskStatus = '승인';\nconsole.log(taskStatus);\n"
+    },
+    {
+      "kind": "write",
+      "title": "다른 상황에 적용해 직접 출력하기",
+      "brief": [
+        "let deliveryStatus에 '상품 준비'를 담고 출력하세요.",
+        "'발송'으로 다시 할당하고 출력한 뒤, '도착'으로 다시 할당하고 출력하세요.",
+        "검사는 직접 출력한 내용과 순서를 비교합니다. 함수나 계산식은 사용하지 않습니다."
+      ],
+      "code": "// 변수를 선언하고 요구한 순서로 출력하세요.\n",
+      "solutionCode": "let deliveryStatus = '상품 준비';\nconsole.log(deliveryStatus);\ndeliveryStatus = '발송';\nconsole.log(deliveryStatus);\ndeliveryStatus = '도착';\nconsole.log(deliveryStatus);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "내 코드의 출력 내용과 순서",
+          "expected": [
+            "상품 준비",
+            "발송",
+            "도착"
+          ]
+        }
+      ],
+      "hints": [
+        "변수 선언과 값이 바뀌는 재할당을 먼저 구분하세요.",
+        "console.log 괄호에 변수 이름을 넣고, 글자 자체를 출력할 때만 따옴표를 붙이세요."
+      ]
+    }
+  ]
+}

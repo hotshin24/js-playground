@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 2,
+  "id": "t0-13",
+  "track": "T0",
+  "order": 13,
+  "runtime": "js",
+  "title": "종합 문제 8: 고정된 정보와 바뀌는 정보 출력하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "고정된 정보와 바뀌는 정보 출력하기",
+      "brief": [
+        "바뀌지 않는 정보는 const, 진행 중 새 값을 넣을 정보는 let으로 선언합니다.",
+        "한 변수에 재할당한다고 다른 변수의 값까지 바뀌지는 않습니다. 이름은 유지하고 상태만 바꿔 출력해 보세요.",
+        {
+          "code": [
+            "const guestName = '수진';",
+            "let confirmed = false;",
+            "console.log(guestName);",
+            "console.log(confirmed);",
+            "confirmed = true;",
+            "console.log(guestName);",
+            "console.log(confirmed);"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "출력할 때의 값 확인하기",
+      "brief": [
+        "실행 전에 각 출력 줄에서 어떤 값이 나올지 예상한 뒤 실행해 확인하세요."
+      ],
+      "code": "const guestName = '수진';\nlet confirmed = false;\nconsole.log(guestName);\nconsole.log(confirmed);\nconfirmed = true;\nconsole.log(guestName);\nconsole.log(confirmed);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "값과 출력 위치 바꿔 보기",
+      "brief": [
+        "confirmed의 재할당 줄을 지우면 false가 두 번 나옵니다.",
+        "guestName의 선언 값만 바꾸면 두 이름 출력이 함께 바뀝니다."
+      ],
+      "code": "const guestName = '수진';\nlet confirmed = false;\nconsole.log(guestName);\nconsole.log(confirmed);\nconfirmed = true;\nconsole.log(guestName);\nconsole.log(confirmed);\n"
+    },
+    {
+      "kind": "write",
+      "title": "다른 상황에 적용해 직접 출력하기",
+      "brief": [
+        "const orderId에 315, let paid에 false를 담으세요.",
+        "orderId, paid를 차례로 출력한 뒤 paid에 true를 다시 할당하세요.",
+        "orderId, paid를 같은 순서로 다시 출력하세요.",
+        "검사는 직접 출력한 내용과 순서를 비교합니다. 함수나 계산식은 사용하지 않습니다."
+      ],
+      "code": "// 변수를 선언하고 요구한 순서로 출력하세요.\n",
+      "solutionCode": "const orderId = 315;\nlet paid = false;\nconsole.log(orderId);\nconsole.log(paid);\npaid = true;\nconsole.log(orderId);\nconsole.log(paid);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "내 코드의 출력 내용과 순서",
+          "expected": [
+            "315",
+            "false",
+            "315",
+            "true"
+          ]
+        }
+      ],
+      "hints": [
+        "변수 선언과 값이 바뀌는 재할당을 먼저 구분하세요.",
+        "console.log 괄호에 변수 이름을 넣고, 글자 자체를 출력할 때만 따옴표를 붙이세요."
+      ]
+    }
+  ]
+}

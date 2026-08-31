@@ -1,1 +1,65 @@
-{"schemaVersion":2,"id":"t0-08","track":"T0","order":8,"runtime":"js","title":"종합 문제 2: 서로 다른 값을 줄마다 출력하기","steps":[{"kind":"read","title":"값은 그대로 두고 출력만 맡기기","brief":["숫자는 따옴표 없이, 글자는 따옴표로 감싸고, 참·거짓 값은 true 또는 false로 씁니다.",{"code":["console.log(3);","console.log('알림');","console.log(true);"]},"console.log는 값의 종류를 바꾸지 않고 사람이 콘솔에서 확인하도록 보여 줍니다."]},{"kind":"run","title":"상품 상태의 세 값 확인하기","brief":["수량, 상품명, 판매 여부가 각각 한 줄에 출력됩니다."],"code":"console.log(2);\nconsole.log('노트북 거치대');\nconsole.log(true);\n"},{"kind":"tweak","title":"따옴표와 값 바꿔 보기","brief":["2를 5로, true를 false로 바꿔 결과를 확인하세요.","글자 값의 따옴표를 지우면 이름으로 해석되어 오류가 납니다."],"code":"console.log(2);\nconsole.log('노트북 거치대');\nconsole.log(true);\n"},{"kind":"write","title":"문의 정보를 세 줄로 출력하기","brief":["문의 번호 17, 문의 종류 '배송', 답변 완료 여부 false를 이 순서대로 출력하세요.","각 값을 console.log 한 번씩 사용해 서로 다른 줄에 출력합니다."],"code":"// 문의 정보를 출력하세요.\n","solutionCode":"console.log(17);\nconsole.log('배송');\nconsole.log(false);\n","asserts":[{"type":"console","label":"숫자·글자·참거짓 값이 차례로 출력됨","expected":["17","배송","false"]}],"hints":["숫자 17과 false에는 따옴표를 붙이지 않습니다.","배송은 글자 값이므로 따옴표로 감쌉니다."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t0-08",
+  "track": "T0",
+  "order": 8,
+  "runtime": "js",
+  "title": "종합 문제 3: 변수에 담긴 값을 출력하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "같은 값을 다시 적지 않고 이름으로 사용하기",
+      "brief": [
+        "변수에 값을 담아 두면 console.log 괄호 안에 값 대신 변수 이름을 쓸 수 있습니다.",
+        {
+          "code": [
+            "const customerName = '민수';",
+            "console.log(customerName);"
+          ]
+        },
+        "출력되는 것은 customerName이라는 이름이 아니라 그 이름이 가리키는 민수입니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "예약 정보 변수 출력하기",
+      "brief": [
+        "선언된 두 변수의 이름과 출력 줄의 이름을 하나씩 대응해 보세요."
+      ],
+      "code": "const guestName = '지우';\nconst roomNumber = 305;\n\nconsole.log(guestName);\nconsole.log(roomNumber);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "선언한 값 한 곳만 바꾸기",
+      "brief": [
+        "guestName의 값만 '서준'으로 바꾸세요. 출력 줄은 그대로여도 결과가 바뀝니다.",
+        "출력 줄의 roomNumber를 roomnumber로 바꾸면 대소문자 오타 때문에 오류가 납니다."
+      ],
+      "code": "const guestName = '지우';\nconst roomNumber = 305;\n\nconsole.log(guestName);\nconsole.log(roomNumber);\n"
+    },
+    {
+      "kind": "write",
+      "title": "재고 정보를 변수로 선언하고 출력하기",
+      "brief": [
+        "const로 productName에 '키보드', stockCount에 8을 담으세요.",
+        "그다음 두 변수의 값을 이름, 수량 순서로 각각 출력하세요. console.log에 값을 다시 직접 적지 않습니다."
+      ],
+      "code": "// 변수 두 개를 선언하고 출력하세요.\n",
+      "solutionCode": "const productName = '키보드';\nconst stockCount = 8;\n\nconsole.log(productName);\nconsole.log(stockCount);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "변수에 담긴 상품명과 수량이 출력됨",
+          "expected": [
+            "키보드",
+            "8"
+          ]
+        }
+      ],
+      "hints": [
+        "const productName = '키보드';부터 작성하세요.",
+        "출력 괄호 안에는 '키보드'와 8이 아니라 변수 이름을 넣습니다."
+      ]
+    }
+  ]
+}

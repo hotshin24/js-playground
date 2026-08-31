@@ -1,4 +1,5 @@
 import { storageKey } from './curriculum.js';
+import { migrateT0Progress } from './t0-progress-migration.js';
 
 // 단일 키에 전체 상태를 담는다. F-017(export/import)이 통째 직렬화를 요구하기 때문이다.
 const KEY = storageKey;
@@ -7,7 +8,7 @@ const SCHEMA_VERSION = 1;
 // 3: 2026 새 커리큘럼으로 전체 레슨을 교체했다.
 // 4: T2-01~07의 함수 선행 문제를 해당 단원 문법 문제로 교체했다.
 // 5: T2-08 이후의 선행 문법 문제를 교체하고 옛 답안은 보관한다.
-const REVISION = 5;
+const REVISION = 6;
 
 // T0의 옛 종합 문제 15개는 내용상 T1에 속하므로 번호만 옮겼다.
 // 이미 푼 기록은 새 레슨 ID로 이어져야 한다.
@@ -50,7 +51,7 @@ const migrateLesson = (entry) => {
 
 // 새 커리큘럼 전환 전 저장분은 레슨 ID의 뜻이 달라졌으므로 사용하지 않는다.
 const applyRevision = (lessons, revision) => {
-  if ((revision || 1) >= REVISION) return lessons;
+  if ((revision || 1) >= 5) return lessons;
   if ((revision || 1) >= 3) {
     const migrated = { ...lessons };
     for (let number = 1; number <= ((revision || 1) < 4 ? 7 : 0); number += 1) {
@@ -108,8 +109,10 @@ export function readState() {
       lessons[id] = migrateLesson(entry);
     });
     const revised = applyRevision(lessons, parsed.revision);
-    const moved = moveLessonProgress(revised, parsed.lastLessonId);
-    return {
+    const moved = (parsed.revision || 1) < 6
+      ? moveLessonProgress(revised, parsed.lastLessonId)
+      : { lessons: revised, lastLessonId: parsed.lastLessonId };
+    const state = {
       ...empty(),
       ...parsed,
       lessons: moved.lessons,
@@ -117,6 +120,7 @@ export function readState() {
       settings: parsed.settings || {},
       revision: REVISION,
     };
+    return (parsed.revision || 1) < 6 ? migrateT0Progress(state) : state;
   } catch (err) {
     return empty();
   }
