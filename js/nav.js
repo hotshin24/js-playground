@@ -1,3 +1,5 @@
+import { chapterLabel } from './lesson-labels.js';
+
 const STATUS_TEXT = { done: '완료', partial: '진행 중' };
 
 /**
@@ -63,7 +65,7 @@ export function createNav({ listEl, onSelect }) {
         toggle.setAttribute('aria-expanded', String(trackId === expandedTrackId));
 
         const title = document.createElement('span');
-        title.textContent = track.title; // 화면에는 우리말만. T0/T1 은 내부 이름이다
+        title.textContent = chapterLabel(groups, track.id);
         const count = document.createElement('span');
         count.className = 'track-toggle__count';
         count.textContent = lessons.length + '개';

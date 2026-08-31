@@ -11,7 +11,7 @@ import { loadLesson } from './lessons.js';
  *           onChanged: () => void }} options
  *   deps 는 progress · assist · brief · preview · session · workspace · layout 이다.
  */
-export function createStepView({ mainEl, titleEl, nextButton, deps, applyPolicy, onChanged }) {
+export function createStepView({ mainEl, titleEl, nextButton, deps, applyPolicy, onChanged, titleOf = lesson => lesson.title }) {
   const { progress, assist, brief, preview, session, workspace, layout } = deps;
   let lesson = null;
   let stepIndex = 0;
@@ -47,7 +47,7 @@ export function createStepView({ mainEl, titleEl, nextButton, deps, applyPolicy,
 
   const openLesson = async (id, from) => {
     lesson = await loadLesson(id);
-    titleEl.textContent = lesson.title;
+    titleEl.textContent = titleOf(lesson);
     // 단계 구성이 바뀌면 그 레슨 저장분만 조용히 버려진다
     setLessonMeta(id, lesson.steps.length, lesson.steps.map((s) => s.kind).join('-'));
     // 레슨을 고르면 첫 미완료 단계로 보낸다. 새 저장 필드 없이 완료 기록으로 계산된다.

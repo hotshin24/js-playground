@@ -14,6 +14,7 @@ import { loadIndex } from './lessons.js';
 import { checkBuild } from './build-info.js';
 import { policyOf, labelOf } from './steps.js';
 import { readLastPosition } from './storage.js';
+import { lessonHeading } from './lesson-labels.js';
 
 const el = (id) => document.querySelector('#' + id);
 
@@ -142,6 +143,7 @@ const { applyPolicy, run, reset } = controls;
 
 const view = createStepView({
   mainEl: el('main'), titleEl: el('lesson-title'), nextButton,
+  titleOf: lesson => lessonHeading(index.tracks, lesson),
   deps: { progress, assist, brief, preview, session, workspace, layout },
   applyPolicy,
   onChanged: () => refreshNav(),

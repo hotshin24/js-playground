@@ -45,10 +45,13 @@ body {
   margin-bottom: var(--sp-10);
 }
 
-.topbar__title { margin: 0; font-size: 1rem; font-weight: 600; }
+.topbar__title { margin: 0; font-size: 1rem; font-weight: 600; min-width: 0; max-width: 100%; }
 
 .lesson-menu {
   display: flex;
+  max-width: 100%;
+  text-align: left;
+  overflow-wrap: anywhere;
   align-items: baseline;
   gap: var(--sp-2);
   padding: var(--sp-2) var(--sp-4);
@@ -62,7 +65,7 @@ body {
   transition: background-color 120ms ease;
 }
 .lesson-menu:hover { background: var(--c-surface-alt); }
-.lesson-menu__hint { color: var(--c-text-muted); font-size: 0.8rem; font-weight: 400; }
+.lesson-menu__hint { color: var(--c-text-muted); font-size: 0.8rem; font-weight: 400; flex-shrink: 0; }
 
 .theme-toggle {
   margin-left: auto;
