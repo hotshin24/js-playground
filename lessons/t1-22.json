@@ -36,10 +36,10 @@
       "title": "편집 권한 확인하기",
       "brief": [
         "isAdmin 또는 isManager 중 하나라도 true이면 true가 나오도록 || 연산 결과를 출력하세요.",
-        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
         "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
-      "code": "let isAdmin = true;\nlet isManager = false;\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nisAdmin = false;\nisManager = true;\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nisAdmin = false;\nisManager = false;\n// 3번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "code": "let isAdmin = true;\nlet isManager = false;\n// 관리자이고 매니저가 아닌 경우의 편집 권한 여부를 출력하세요.\n\nisAdmin = false;\nisManager = true;\n// 관리자가 아니고 매니저인 경우의 편집 권한 여부를 다시 확인해 출력하세요.\n\nisAdmin = false;\nisManager = false;\n// 관리자도 매니저도 아닌 경우의 편집 권한 여부를 다시 확인해 출력하세요.\n",
       "solutionCode": "let isAdmin = true;\nlet isManager = false;\nconsole.log(isAdmin || isManager);\n\nisAdmin = false;\nisManager = true;\nconsole.log(isAdmin || isManager);\n\nisAdmin = false;\nisManager = false;\nconsole.log(isAdmin || isManager);\n",
       "asserts": [
         {

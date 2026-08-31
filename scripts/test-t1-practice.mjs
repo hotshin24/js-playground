@@ -9,6 +9,11 @@ const index = JSON.parse(fs.readFileSync(new URL('../lessons/index.json', import
 let checks = 0;
 for (const item of index.lessons.filter(item => item.track === 'T1')) {
   const lesson = JSON.parse(fs.readFileSync(new URL(`../lessons/${item.id}.json`, import.meta.url)));
+  if (item.order >= 16) {
+    const write = lesson.steps[2];
+    assert(!/\d번째 입력/.test(write.code), `${item.id}: 모호한 입력 번호`);
+    assert(write.brief.some(text => typeof text === 'string' && text.includes('변수의 값이 바뀌기 전에 출력')), `${item.id}: 출력 위치 안내`);
+  }
   for (const step of lesson.steps) {
     const snippets = [step.code, step.solutionCode, ...(step.brief || []).filter(part => part.code).map(part => part.code.join('\n'))].filter(Boolean);
     for (const code of snippets) assert(!/\bfunction\b|=>|\breturn\b/.test(code), `${item.id}: 함수 선행 문법`);

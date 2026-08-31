@@ -37,10 +37,10 @@
       "title": "창고에 입고할 수 있는지 비교하기",
       "brief": [
         "currentStock과 incomingStock의 합이 capacity 이하인지 비교해 출력하세요. 용량과 같아도 입고할 수 있습니다.",
-        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
         "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
-      "code": "let currentStock = 70;\nlet incomingStock = 20;\nlet capacity = 100;\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\ncurrentStock = 80;\nincomingStock = 20;\ncapacity = 100;\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n\ncurrentStock = 90;\nincomingStock = 20;\ncapacity = 100;\n// 3번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "code": "let currentStock = 70;\nlet incomingStock = 20;\nlet capacity = 100;\n// 현재 재고 70개에 20개를 더 입고할 수 있는지, 용량 100개와 비교해 출력하세요.\n\ncurrentStock = 80;\nincomingStock = 20;\ncapacity = 100;\n// 현재 재고가 80개로 바뀌었습니다. 20개를 더 입고할 수 있는지 다시 비교해 출력하세요.\n\ncurrentStock = 90;\nincomingStock = 20;\ncapacity = 100;\n// 현재 재고가 90개로 바뀌었습니다. 20개를 더 입고할 수 있는지 다시 비교해 출력하세요.\n",
       "solutionCode": "let currentStock = 70;\nlet incomingStock = 20;\nlet capacity = 100;\nconsole.log(currentStock + incomingStock <= capacity);\n\ncurrentStock = 80;\nincomingStock = 20;\ncapacity = 100;\nconsole.log(currentStock + incomingStock <= capacity);\n\ncurrentStock = 90;\nincomingStock = 20;\ncapacity = 100;\nconsole.log(currentStock + incomingStock <= capacity);\n",
       "asserts": [
         {

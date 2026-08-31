@@ -63,10 +63,11 @@
       "title": "사용자 정보를 안내 문장으로 출력하기",
       "brief": [
         "name이 null이면 '손님'을 사용하고 빈 문자열은 유지하세요. age를 Number로 바꾼 뒤 19 이상인지 비교하세요. 이름 / 나이세 / 성인 여부: 비교결과 형식으로 출력하세요.",
-        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
+        "이 문제는 이름과 나이의 세 조합을 처리합니다. \"민수\"와 \"20\"으로 출력한 다음, null과 \"17\"로 다시 처리하고, 마지막으로 빈 문자열과 \"19\"로 처리하세요. name과 age가 바뀌어도 앞에서 계산해 둔 값이 자동으로 바뀌지는 않습니다.",
         "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
-      "code": "let name = \"민수\";\nlet age = \"20\";\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nname = null;\nage = \"17\";\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nname = \"\";\nage = \"19\";\n// 3번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "code": "let name = \"민수\";\nlet age = \"20\";\n// 이름 \"민수\", 나이 \"20\"으로 안내 문장을 만들어 출력하세요.\n\nname = null;\nage = \"17\";\n// 이름이 null이고 나이가 \"17\"인 경우입니다.\n// 기본 이름을 적용하고, 바뀐 나이로 다시 계산해 안내 문장을 출력하세요.\n\nname = \"\";\nage = \"19\";\n// 이름이 빈 문자열이고 나이가 \"19\"인 경우입니다.\n// 빈 문자열을 유지하고, 바뀐 나이로 다시 계산해 안내 문장을 출력하세요.\n",
       "solutionCode": "let name = \"민수\";\nlet age = \"20\";\nlet normalizedName = name ?? '손님';\nlet normalizedAge = Number(age);\nlet adult = normalizedAge >= 19;\nconsole.log(`${normalizedName} / ${normalizedAge}세 / 성인 여부: ${adult}`);\n\nname = null;\nage = \"17\";\nnormalizedName = name ?? '손님';\nnormalizedAge = Number(age);\nadult = normalizedAge >= 19;\nconsole.log(`${normalizedName} / ${normalizedAge}세 / 성인 여부: ${adult}`);\n\nname = \"\";\nage = \"19\";\nnormalizedName = name ?? '손님';\nnormalizedAge = Number(age);\nadult = normalizedAge >= 19;\nconsole.log(`${normalizedName} / ${normalizedAge}세 / 성인 여부: ${adult}`);\n",
       "asserts": [
         {

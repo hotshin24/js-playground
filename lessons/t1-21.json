@@ -36,10 +36,10 @@
       "title": "무료 배송 조건 확인하기",
       "brief": [
         "orderAmount가 50000 이상이면서 isJeju가 false인지 비교하여 출력하세요.",
-        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
         "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
-      "code": "let orderAmount = 60000;\nlet isJeju = false;\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\norderAmount = 60000;\nisJeju = true;\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n\norderAmount = 40000;\nisJeju = false;\n// 3번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "code": "let orderAmount = 60000;\nlet isJeju = false;\n// 주문 금액 60000원, 제주 배송이 아닌 경우의 무료 배송 여부를 출력하세요.\n\norderAmount = 60000;\nisJeju = true;\n// 주문 금액 60000원, 제주 배송인 경우의 무료 배송 여부를 다시 계산해 출력하세요.\n\norderAmount = 40000;\nisJeju = false;\n// 주문 금액 40000원, 제주 배송이 아닌 경우의 무료 배송 여부를 다시 계산해 출력하세요.\n",
       "solutionCode": "let orderAmount = 60000;\nlet isJeju = false;\nconsole.log(orderAmount >= 50000 && isJeju === false);\n\norderAmount = 60000;\nisJeju = true;\nconsole.log(orderAmount >= 50000 && isJeju === false);\n\norderAmount = 40000;\nisJeju = false;\nconsole.log(orderAmount >= 50000 && isJeju === false);\n",
       "asserts": [
         {

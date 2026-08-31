@@ -39,10 +39,10 @@
       "title": "주문 정보를 한 문장으로 출력하기",
       "brief": [
         "quantity를 숫자로 바꿔 price와 곱하세요. coupon이 null이면 '쿠폰 없음'을 사용하되 빈 문자열은 유지하세요. 총액이 50000 이상인지 비교하세요. 수량개 / 총액원 / 쿠폰 / 무료 배송 여부: 비교결과 형식으로 출력하세요.",
-        "코드에 제시된 입력값을 바꾸지 말고, 각 주석 자리에 계산과 console.log를 작성하세요. 다음 입력값이 대입되면 그 값으로 다시 계산하세요.",
+        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
         "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
-      "code": "let quantity = \"3\";\nlet price = 20000;\nlet coupon = null;\n// 1번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nquantity = \"2\";\nprice = 12000;\ncoupon = \"신규\";\n// 2번째 입력의 결과를 계산해 console.log로 출력하세요.\n\nquantity = \"1\";\nprice = 50000;\ncoupon = \"\";\n// 3번째 입력의 결과를 계산해 console.log로 출력하세요.\n",
+      "code": "let quantity = \"3\";\nlet price = 20000;\nlet coupon = null;\n// 수량 \"3\", 가격 20000원, 쿠폰 null로 주문 안내 문장을 만들어 출력하세요.\n\nquantity = \"2\";\nprice = 12000;\ncoupon = \"신규\";\n// 수량 \"2\", 가격 12000원, 쿠폰 \"신규\"로 바뀌었습니다.\n// 현재 값으로 총액과 무료 배송 여부를 다시 계산해 주문 안내 문장을 출력하세요.\n\nquantity = \"1\";\nprice = 50000;\ncoupon = \"\";\n// 수량 \"1\", 가격 50000원, 쿠폰 빈 문자열로 바뀌었습니다.\n// 빈 쿠폰 문자열을 유지하고, 총액과 무료 배송 여부를 다시 계산해 주문 안내 문장을 출력하세요.\n",
       "solutionCode": "let quantity = \"3\";\nlet price = 20000;\nlet coupon = null;\nlet numericQuantity = Number(quantity);\nlet total = numericQuantity * price;\nlet couponName = coupon ?? '쿠폰 없음';\nlet freeShipping = total >= 50000;\nconsole.log(`${numericQuantity}개 / ${total}원 / ${couponName} / 무료 배송 여부: ${freeShipping}`);\n\nquantity = \"2\";\nprice = 12000;\ncoupon = \"신규\";\nnumericQuantity = Number(quantity);\ntotal = numericQuantity * price;\ncouponName = coupon ?? '쿠폰 없음';\nfreeShipping = total >= 50000;\nconsole.log(`${numericQuantity}개 / ${total}원 / ${couponName} / 무료 배송 여부: ${freeShipping}`);\n\nquantity = \"1\";\nprice = 50000;\ncoupon = \"\";\nnumericQuantity = Number(quantity);\ntotal = numericQuantity * price;\ncouponName = coupon ?? '쿠폰 없음';\nfreeShipping = total >= 50000;\nconsole.log(`${numericQuantity}개 / ${total}원 / ${couponName} / 무료 배송 여부: ${freeShipping}`);\n",
       "asserts": [
         {
