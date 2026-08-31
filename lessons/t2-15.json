@@ -98,26 +98,24 @@
       "kind": "write",
       "title": "블록 안팎의 같은 이름 구분하기",
       "brief": [
-        "getScopeValues()를 작성하세요. 바깥 value는 'outside', if 블록 안 value는 'inside'로 선언하고 { inner, outer }를 반환하세요.",
-        "함수를 작성한 뒤 직접 호출하는 console.log도 추가해 검사 결과에서 입력값과 결과를 확인하세요."
+        "getScopeValues()를 작성하세요. 함수 안에 const value = 'outside';와 let inner = '';를 선언합니다.",
+        "if (true) 블록 안에는 별도의 const value = 'inside';를 선언하고 inner = value;를 실행하세요.",
+        "블록이 끝난 뒤 inner + ' / ' + value를 반환하세요. console.log(getScopeValues());로 'inside / outside'를 확인합니다."
       ],
       "code": "// getScopeValues 함수를 작성하세요.\n// 작성한 뒤 console.log(getScopeValues(...))로 직접 호출하세요.\n",
       "entry": "getScopeValues",
-      "solutionCode": "function getScopeValues() {\n  const value = 'outside';\n  let inner;\n  if (true) {\n    const value = 'inside';\n    inner = value;\n  }\n  return { inner, outer: value };\n}\n",
+      "solutionCode": "function getScopeValues() {\n  const value = 'outside';\n  let inner = '';\n  if (true) {\n    const value = 'inside';\n    inner = value;\n  }\n  return inner + ' / ' + value;\n}\n",
       "asserts": [
         {
           "type": "value",
-          "label": "예시 1",
+          "label": "블록 안팎의 이름 구분",
           "args": [],
-          "expected": {
-            "inner": "inside",
-            "outer": "outside"
-          }
+          "expected": "inside / outside"
         }
       ],
       "hints": [
-        "function getScopeValues(...) { ... } 형태 또는 요구된 함수 표현식으로 시작하세요.",
-        "조건과 계산을 한꺼번에 쓰기 어렵다면 중간 결과를 변수에 저장하세요."
+        "if 안에서는 가장 가까운 value가 'inside'입니다.",
+        "if 밖에서는 안쪽 value를 볼 수 없어 함수에 선언한 'outside'를 사용합니다."
       ]
     }
   ]

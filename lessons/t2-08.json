@@ -56,68 +56,54 @@
     },
     {
       "kind": "write",
-      "title": "선언한 함수를 여러 번 호출하기",
+      "title": "안내 함수를 선언하고 두 번 호출하기",
       "brief": [
-        "toMinutes(hours)를 작성하고 서로 다른 시간에 재사용하세요. 함수는 hours * 60을 반환해야 합니다.",
-        "함수를 작성한 뒤 직접 호출하는 console.log도 추가해 검사 결과에서 입력값과 결과를 확인하세요."
+        "printNotice라는 함수를 선언하세요. 괄호는 비워 두고 본문에서 '점검 예정'을 출력하세요.",
+        "선언 아래에서 printNotice();를 두 번 작성하세요. 매개변수와 return은 사용하지 않습니다.",
+        "검사는 직접 실행한 콘솔의 출력 내용과 순서를 비교합니다."
       ],
-      "code": "// toMinutes 함수를 작성하세요.\n// 작성한 뒤 console.log(toMinutes(...))로 직접 호출하세요.\n",
-      "entry": "toMinutes",
-      "solutionCode": "function toMinutes(hours) {\n  return hours * 60;\n}\n",
+      "code": "// 함수를 선언한 뒤 두 번 호출하세요.\n",
+      "solutionCode": "function printNotice() {\n  console.log('점검 예정');\n}\n\nprintNotice();\nprintNotice();\n",
       "asserts": [
         {
-          "type": "value",
-          "label": "예시 1",
-          "args": [
-            2
-          ],
-          "expected": 120
-        },
-        {
-          "type": "value",
-          "label": "예시 2",
-          "args": [
-            5
-          ],
-          "expected": 300
+          "type": "console",
+          "label": "내 코드의 출력 순서 확인",
+          "expected": [
+            "점검 예정",
+            "점검 예정"
+          ]
         }
       ],
       "hints": [
-        "function toMinutes(...) { ... } 형태 또는 요구된 함수 표현식으로 시작하세요.",
-        "조건과 계산을 한꺼번에 쓰기 어렵다면 중간 결과를 변수에 저장하세요."
+        "function printNotice() 뒤 중괄호 안에 출력 명령을 둡니다.",
+        "함수를 선언하는 것만으로는 실행되지 않습니다. 호출 괄호가 필요합니다."
       ]
     },
     {
       "kind": "write",
-      "title": "함수 호출 결과를 다른 함수에 전달하기",
+      "title": "호출 전후의 실행 순서 작성하기",
       "brief": [
-        "addFee(amount)와 formatPrice(amount)를 작성하세요. formatPrice는 addFee를 호출한 결과를 `13000원` 형태로 반환합니다. 수수료는 3000원입니다.",
-        "함수를 작성한 뒤 직접 호출하는 console.log도 추가해 검사 결과에서 입력값과 결과를 확인하세요."
+        "printPacking 함수를 선언해 '포장 시작', '포장 완료'를 차례로 출력하세요.",
+        "함수 바깥에서 '주문 접수'를 출력한 뒤 printPacking();를 호출하고, 마지막에 '출고 대기'를 출력하세요.",
+        "검사는 직접 실행한 콘솔의 출력 내용과 순서를 비교합니다."
       ],
-      "code": "// formatPrice 함수를 작성하세요.\n// 작성한 뒤 console.log(formatPrice(...))로 직접 호출하세요.\n",
-      "entry": "formatPrice",
-      "solutionCode": "function addFee(amount) {\n  return amount + 3000;\n}\nfunction formatPrice(amount) {\n  return `${addFee(amount)}원`;\n}\n",
+      "code": "// 선언 부분과 호출 전후의 코드를 작성하세요.\n",
+      "solutionCode": "function printPacking() {\n  console.log('포장 시작');\n  console.log('포장 완료');\n}\n\nconsole.log('주문 접수');\nprintPacking();\nconsole.log('출고 대기');\n",
       "asserts": [
         {
-          "type": "value",
-          "label": "예시 1",
-          "args": [
-            10000
-          ],
-          "expected": "13000원"
-        },
-        {
-          "type": "value",
-          "label": "예시 2",
-          "args": [
-            0
-          ],
-          "expected": "3000원"
+          "type": "console",
+          "label": "내 코드의 출력 순서 확인",
+          "expected": [
+            "주문 접수",
+            "포장 시작",
+            "포장 완료",
+            "출고 대기"
+          ]
         }
       ],
       "hints": [
-        "function formatPrice(...) { ... } 형태 또는 요구된 함수 표현식으로 시작하세요.",
-        "조건과 계산을 한꺼번에 쓰기 어렵다면 중간 결과를 변수에 저장하세요."
+        "함수 안에는 포장 작업 두 줄만 둡니다.",
+        "함수 호출이 끝나면 호출 다음 줄로 돌아옵니다."
       ]
     }
   ]

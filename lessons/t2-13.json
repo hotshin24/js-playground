@@ -89,49 +89,44 @@
         }
       ],
       "hints": [
-        "function double(...) { ... } 형태 또는 요구된 함수 표현식으로 시작하세요.",
-        "조건과 계산을 한꺼번에 쓰기 어렵다면 중간 결과를 변수에 저장하세요."
+        "const double = (value) => ... 형태를 사용하세요.",
+        "중괄호 없이 계산식 하나만 쓰면 그 값이 반환됩니다."
       ]
     },
     {
       "kind": "write",
-      "title": "객체를 반환하는 화살표 함수 작성하기",
+      "title": "여러 줄 본문에서 직접 반환하기",
       "brief": [
-        "makeProduct(name, price)를 화살표 함수로 작성해 { name, price } 객체를 반환하세요. 객체 괄호를 잊지 마세요.",
-        "함수를 작성한 뒤 직접 호출하는 console.log도 추가해 검사 결과에서 입력값과 결과를 확인하세요."
+        "getTotal(price, quantity)를 화살표 함수로 선언하세요.",
+        "중괄호 안에서 price * quantity를 total에 저장한 뒤 return total;로 반환하세요. 중괄호 본문은 자동으로 반환하지 않습니다.",
+        "console.log(getTotal(3000, 2));를 작성해 확인하세요."
       ],
-      "code": "// makeProduct 함수를 작성하세요.\n// 작성한 뒤 console.log(makeProduct(...))로 직접 호출하세요.\n",
-      "entry": "makeProduct",
-      "solutionCode": "const makeProduct = (name, price) => ({ name, price });\n",
+      "code": "// 중괄호 본문의 화살표 함수와 호출을 작성하세요.\n",
+      "entry": "getTotal",
+      "solutionCode": "const getTotal = (price, quantity) => {\n  const total = price * quantity;\n  return total;\n};\n",
       "asserts": [
         {
           "type": "value",
-          "label": "예시 1",
+          "label": "단가와 수량의 곱",
           "args": [
-            "컵",
-            8000
+            3000,
+            2
           ],
-          "expected": {
-            "name": "컵",
-            "price": 8000
-          }
+          "expected": 6000
         },
         {
           "type": "value",
-          "label": "예시 2",
+          "label": "수량이 0일 때",
           "args": [
-            "노트",
-            3000
+            5000,
+            0
           ],
-          "expected": {
-            "name": "노트",
-            "price": 3000
-          }
+          "expected": 0
         }
       ],
       "hints": [
-        "function makeProduct(...) { ... } 형태 또는 요구된 함수 표현식으로 시작하세요.",
-        "조건과 계산을 한꺼번에 쓰기 어렵다면 중간 결과를 변수에 저장하세요."
+        "const getTotal = (price, quantity) => { 로 시작합니다.",
+        "중괄호 안에서는 return을 생략하면 undefined가 반환됩니다."
       ]
     }
   ]
