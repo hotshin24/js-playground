@@ -114,7 +114,7 @@ body {
   color: var(--c-on-accent);
   font-weight: 600;
 }
-.chip--current:hover { background: var(--c-accent); }
+.chip--current:hover { background: var(--c-accent-hover); }
 
 /* ---------- 레이아웃 ---------- */
 .layout { display: grid; gap: var(--sp-10); align-items: start; }
@@ -308,7 +308,7 @@ body {
 .button--quiet:hover { background: var(--c-surface-alt); }
 
 .button--primary { background: var(--c-accent); border-color: var(--c-accent); color: var(--c-on-accent); }
-.button--primary:hover { background: var(--c-accent); }
+.button--primary:hover { background: var(--c-accent-hover); border-color: var(--c-accent-hover); }
 .button--primary:disabled { background: var(--c-surface-alt); }
 .button--primary:disabled:hover { background: var(--c-surface-alt); }
 
@@ -408,7 +408,7 @@ body {
   text-align: left;
   cursor: pointer;
 }
-.track-toggle:hover { color: var(--c-accent); }
+.track-toggle:hover { color: var(--c-accent-hover); }
 .track-toggle__count { color: var(--c-text-muted); font-size: 0.8rem; font-weight: 400; }
 .track-toggle__arrow { color: var(--c-text-muted); transition: transform 120ms ease; }
 .track-toggle[aria-expanded="true"] .track-toggle__arrow { transform: rotate(180deg); }

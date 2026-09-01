@@ -11,8 +11,8 @@
   --c-ink-a20: rgba(0, 0, 0, 0.16);
   --c-ink-a35: rgba(0, 0, 0, 0.5);
 
-  --c-clay-600: #171717;
-  --c-clay-100: #e8e8e8;
+  --c-clay-600: #3f6212;
+  --c-clay-100: #ecfccb;
 
   --c-red-700: #a32e22;
   --c-green-700: #3f6b37;
@@ -33,8 +33,9 @@
   --c-shadow-a55: rgba(0, 0, 0, 0.72);
   --c-scrim-a60: rgba(0, 0, 0, 0.72);
 
-  --c-flame-400: #f2f2f2;
-  --c-flame-900: #2a2a2a;
+  --c-flame-300: #e6ff8a;
+  --c-flame-400: #d7ff64;
+  --c-flame-900: #263315;
 
   --c-red-400: #ff8585;
   --c-green-400: #80d49b;
@@ -61,6 +62,7 @@
 
   /* 강조색은 하나다. 누를 곳과 지금 있는 곳에만 쓴다. */
   --c-accent: var(--c-clay-600);
+  --c-accent-hover: #4d7c0f;
   --c-accent-weak: var(--c-clay-100);
   --c-on-accent: var(--c-sand-50);
   --c-focus: var(--c-clay-600);
@@ -112,9 +114,10 @@
     --c-text-warn: var(--c-amber-400);
 
     --c-accent: var(--c-flame-400);
+    --c-accent-hover: var(--c-flame-300);
     --c-accent-weak: var(--c-flame-900);
     --c-on-accent: var(--c-bark-900);
-    --c-focus: var(--c-sky-300);
+    --c-focus: var(--c-flame-400);
 
     --c-syntax-keyword: var(--c-plum-300);
     --c-syntax-name: var(--c-sky-300);
@@ -139,9 +142,10 @@
   --c-text-warn: var(--c-amber-400);
 
   --c-accent: var(--c-flame-400);
+  --c-accent-hover: var(--c-flame-300);
   --c-accent-weak: var(--c-flame-900);
   --c-on-accent: var(--c-bark-900);
-  --c-focus: var(--c-sky-300);
+  --c-focus: var(--c-flame-400);
 
   --c-syntax-keyword: var(--c-plum-300);
   --c-syntax-name: var(--c-sky-300);
