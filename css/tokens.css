@@ -1,19 +1,18 @@
 /* primitive → semantic 2단 토큰. 컴포넌트는 semantic만 참조한다.
    테마는 semantic 값만 갈아 끼운다 — 컴포넌트 CSS 는 한 줄도 바뀌지 않는다. */
 :root {
-  /* ========== primitive: 라이트 ========== */
-  /* 노란기가 도는 모래 톤 한 축. 차가운 회색을 섞으면 톤이 갈라진다. */
-  --c-sand-50: #faf9f5;
-  --c-sand-100: #f3f1ea;
-  --c-sand-200: #eae7dd;
-  --c-sand-300: #ddd9cc;
-  --c-ink-500: #6e6a5e;
-  --c-ink-900: #1f1d1a;
-  --c-ink-a20: rgba(31, 29, 26, 0.2);
-  --c-ink-a35: rgba(31, 29, 26, 0.35);
+  /* ========== primitive: Codex 중립색 ========== */
+  --c-sand-50: #ffffff;
+  --c-sand-100: #f7f7f7;
+  --c-sand-200: #ededed;
+  --c-sand-300: #d9d9d9;
+  --c-ink-500: #696969;
+  --c-ink-900: #171717;
+  --c-ink-a20: rgba(0, 0, 0, 0.16);
+  --c-ink-a35: rgba(0, 0, 0, 0.5);
 
-  --c-clay-600: #b04a2f;
-  --c-clay-100: #f6e9e3;
+  --c-clay-600: #171717;
+  --c-clay-100: #e8e8e8;
 
   --c-red-700: #a32e22;
   --c-green-700: #3f6b37;
@@ -24,28 +23,27 @@
   --c-moss-700: #3f6b37;
   --c-ochre-800: #8a5a16;
 
-  /* ========== primitive: 다크 ========== */
-  /* 같은 색상각을 유지하고 명도만 뒤집는다. 검정에 회색을 얹지 않는다. */
-  --c-bark-900: #1c1a16;
-  --c-bark-800: #26231d;
-  --c-bark-700: #322e27;
-  --c-bark-600: #3d3830;
-  --c-bark-300: #928b7c;
-  --c-bark-50: #f2efe6;
-  --c-shadow-a55: rgba(10, 9, 7, 0.55);
-  --c-scrim-a60: rgba(20, 18, 15, 0.6);
+  /* ========== primitive: Codex 다크 ========== */
+  --c-bark-900: #0d0d0d;
+  --c-bark-800: #151515;
+  --c-bark-700: #1e1e1e;
+  --c-bark-600: #303030;
+  --c-bark-300: #a1a1a1;
+  --c-bark-50: #f2f2f2;
+  --c-shadow-a55: rgba(0, 0, 0, 0.72);
+  --c-scrim-a60: rgba(0, 0, 0, 0.72);
 
-  --c-flame-400: #e08a63;
-  --c-flame-900: #3a2a22;
+  --c-flame-400: #f2f2f2;
+  --c-flame-900: #2a2a2a;
 
-  --c-red-400: #e8897a;
-  --c-green-400: #8fc07e;
-  --c-amber-400: #d9a441;
+  --c-red-400: #ff8585;
+  --c-green-400: #80d49b;
+  --c-amber-400: #e8bd6a;
 
-  --c-plum-300: #e0a0c0;
-  --c-sky-300: #9dbde0;
-  --c-moss-300: #b8c98a;
-  --c-ochre-300: #e0b070;
+  --c-plum-300: #d2a8ff;
+  --c-sky-300: #8cc8ff;
+  --c-moss-300: #a8d8a0;
+  --c-ochre-300: #f0bd75;
 
   /* ========== semantic: 라이트가 기본 ========== */
   --c-bg: var(--c-sand-50);
@@ -116,7 +114,7 @@
     --c-accent: var(--c-flame-400);
     --c-accent-weak: var(--c-flame-900);
     --c-on-accent: var(--c-bark-900);
-    --c-focus: var(--c-flame-400);
+    --c-focus: var(--c-sky-300);
 
     --c-syntax-keyword: var(--c-plum-300);
     --c-syntax-name: var(--c-sky-300);
@@ -143,7 +141,7 @@
   --c-accent: var(--c-flame-400);
   --c-accent-weak: var(--c-flame-900);
   --c-on-accent: var(--c-bark-900);
-  --c-focus: var(--c-flame-400);
+  --c-focus: var(--c-sky-300);
 
   --c-syntax-keyword: var(--c-plum-300);
   --c-syntax-name: var(--c-sky-300);
@@ -152,4 +150,4 @@
   --c-syntax-comment: var(--c-bark-300);
 }
 
-:root { color-scheme: light dark; }
+:root { color-scheme: dark light; }
