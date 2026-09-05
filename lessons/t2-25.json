@@ -1,1 +1,64 @@
-{"schemaVersion":2,"id":"t2-25","track":"T2","order":25,"runtime":"js","title":"종합 문제 9: 여러 매개변수로 하나의 결과 계산하기","steps":[{"kind":"read","title":"숙박비 계산 함수 읽기","brief":["1박 요금과 숙박 일수를 각각 매개변수로 받아 곱할 수 있습니다.",{"code":["calculateStay(80000, 3); // 240000"]}]},{"kind":"run","title":"배송 상자 비용 계산하기","brief":["상자 개수와 상자당 가격을 받는 함수를 호출하세요."],"code":"function calculateBoxCost(boxCount, pricePerBox) {\n  return boxCount * pricePerBox;\n}\nconsole.log(calculateBoxCost(4, 2500));\nconsole.log(calculateBoxCost(2, 4000));\n"},{"kind":"write","title":"급여 계산 함수 작성하기","brief":["calculatePay(hours, hourlyRate)를 작성하세요.","두 매개변수를 곱한 값을 반환하세요."],"code":"// calculatePay 함수를 작성하세요.\n","entry":"calculatePay","solutionCode":"function calculatePay(hours, hourlyRate) {\n  return hours * hourlyRate;\n}\n","asserts":[{"type":"value","label":"8시간 근무","args":[8,12000],"expected":96000},{"type":"value","label":"5시간 근무","args":[5,15000],"expected":75000}],"hints":["매개변수 두 개를 선언하세요.","hours * hourlyRate를 반환하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t2-25",
+  "track": "T2",
+  "order": 25,
+  "runtime": "js",
+  "title": "작은 종합 문제 5: 삼항 연산자로 재고 문구 고르기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "출석 여부로 문구를 고르는 과정 읽기",
+      "brief": [
+        "조건 ? 참일 때 값 : 거짓일 때 값 순서로 작성합니다.",
+        {
+          "code": [
+            "getAttendanceLabel(true); // '출석'",
+            "getAttendanceLabel(false); // '결석'"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "예약 가능 여부 문구 고르기",
+      "brief": [
+        "남은 좌석이 0보다 큰지에 따라 예약 가능 또는 마감을 선택하세요."
+      ],
+      "code": "const seatsLeft = 2;\nconst bookingLabel = seatsLeft > 0 ? '예약 가능' : '마감';\nconsole.log(bookingLabel);\n"
+    },
+    {
+      "kind": "write",
+      "title": "재고 문구 반환하기",
+      "brief": [
+        "getStockLabel(stock)을 작성하세요.",
+        "stock이 0보다 크면 '판매 중', 아니면 '품절'을 반환하세요."
+      ],
+      "code": "// getStockLabel 함수를 작성하세요.\n",
+      "entry": "getStockLabel",
+      "solutionCode": "function getStockLabel(stock) {\n  return stock > 0 ? '판매 중' : '품절';\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "재고 있음",
+          "args": [
+            3
+          ],
+          "expected": "판매 중"
+        },
+        {
+          "type": "value",
+          "label": "재고 없음",
+          "args": [
+            0
+          ],
+          "expected": "품절"
+        }
+      ],
+      "hints": [
+        "stock > 0을 조건으로 사용하세요.",
+        "? 뒤에는 '판매 중', : 뒤에는 '품절'을 쓰세요."
+      ]
+    }
+  ]
+}

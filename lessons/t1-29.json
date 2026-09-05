@@ -4,56 +4,56 @@
   "track": "T1",
   "order": 29,
   "runtime": "js",
-  "title": "종합 문제 14: 조건이 맞을 때만 값 선택하기",
+  "title": "작은 복습 7: 두 조건 중 하나 확인하기",
   "steps": [
     {
       "kind": "read",
-      "title": "조건에 따라 문자열 또는 false 사용하기",
+      "title": "두 조건 중 하나라도 맞는지 확인하기",
       "brief": [
-        "로그인했으면 이름을 사용하고, 로그인하지 않았으면 false를 사용하려고 합니다. &&의 결과가 항상 불리언인 것은 아닙니다.",
+        "공개 글이거나 구독 중이면 글을 읽을 수 있다고 가정합니다. 두 조건 중 하나만 맞아도 되므로 ||를 사용합니다.",
         {
           "code": [
-            "const loggedIn = true;",
-            "const loggedOut = false;",
-            "const userName = '민수';",
-            "console.log(loggedIn && userName); // 민수",
-            "console.log(loggedOut && userName); // false"
+            "const isPublic = true;",
+            "const subscribed = false;",
+            "const canRead = isPublic || subscribed;",
+            "console.log(canRead); // true"
           ]
         },
-        "왼쪽이 true이면 오른쪽 문자열 '민수'가 결과입니다. 왼쪽이 false이면 그 값에서 멈추므로 false가 결과입니다. 아직 함수를 만들 필요 없이 연산식만으로 확인할 수 있습니다.",
+        "구독하지 않았어도 공개 글이므로 true입니다. 두 값이 모두 false일 때만 읽을 수 없다는 뜻의 false가 됩니다.",
         "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "동의했을 때만 전화번호 선택하기",
+      "title": "무료 입장 조건 묶기",
       "brief": [
-        "연락 동의 여부와 전화번호를 &&로 연결해 결과를 확인하세요."
+        "초대장을 받았거나 직원인지 ||로 확인하세요."
       ],
-      "code": "const agreedToCall = true;\nconst phoneNumber = '010-1234-5678';\nconst contactPhone = agreedToCall && phoneNumber;\nconsole.log(contactPhone);\n"
+      "code": "const hasInvitation = false;\nconst isStaff = true;\nconst canEnterFree = hasInvitation || isStaff;\nconsole.log(canEnterFree);\n"
     },
     {
       "kind": "write",
-      "title": "수신에 동의한 경우 이메일 사용하기",
+      "title": "편집 권한 확인하기",
       "brief": [
-        "agreed && email의 결과를 출력하세요. 동의하면 이메일 문자열, 동의하지 않으면 false가 나와야 합니다.",
-        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
+        "isAdmin 또는 isManager 중 하나라도 true이면 true가 나오도록 || 연산 결과를 출력하세요.",
+        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
         "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
-      "code": "let agreed = true;\nlet email = \"a@example.com\";\n// 수신 동의가 true인 경우입니다. 동의 여부와 이메일을 &&로 연결한 결과를 출력하세요.\n\nagreed = false;\nemail = \"a@example.com\";\n// 수신 동의가 false로 바뀌었습니다. 바뀐 동의 여부와 이메일을 &&로 연결한 결과를 출력하세요.\n",
-      "solutionCode": "let agreed = true;\nlet email = \"a@example.com\";\nconsole.log(agreed && email);\n\nagreed = false;\nemail = \"a@example.com\";\nconsole.log(agreed && email);\n",
+      "code": "let isAdmin = true;\nlet isManager = false;\n// 관리자이고 매니저가 아닌 경우의 편집 권한 여부를 출력하세요.\n\nisAdmin = false;\nisManager = true;\n// 관리자가 아니고 매니저인 경우의 편집 권한 여부를 다시 확인해 출력하세요.\n\nisAdmin = false;\nisManager = false;\n// 관리자도 매니저도 아닌 경우의 편집 권한 여부를 다시 확인해 출력하세요.\n",
+      "solutionCode": "let isAdmin = true;\nlet isManager = false;\nconsole.log(isAdmin || isManager);\n\nisAdmin = false;\nisManager = true;\nconsole.log(isAdmin || isManager);\n\nisAdmin = false;\nisManager = false;\nconsole.log(isAdmin || isManager);\n",
       "asserts": [
         {
           "type": "console",
           "label": "직접 작성한 코드의 출력 순서와 값",
           "expected": [
-            "a@example.com",
+            "true",
+            "true",
             "false"
           ]
         }
       ],
       "hints": [
-        "agreed && email의 결과를 출력하세요. 동의하면 이메일 문자열, 동의하지 않으면 false가 나와야 합니다.",
+        "isAdmin 또는 isManager 중 하나라도 true이면 true가 나오도록 || 연산 결과를 출력하세요.",
         "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
       ]
     }

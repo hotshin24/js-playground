@@ -4,55 +4,55 @@
   "track": "T1",
   "order": 27,
   "runtime": "js",
-  "title": "종합 문제 12: 숫자로 변환할 수 없는 입력 찾기",
+  "title": "작은 복습 5: 값과 자료형 함께 비교하기",
   "steps": [
     {
       "kind": "read",
-      "title": "숫자 변환이 실패했는지 확인하기",
+      "title": "숫자와 문자열을 구분해서 비교하기",
       "brief": [
-        "점수 입력값 '85'는 숫자로 바꿀 수 있지만 '결석'은 바꿀 수 없습니다. Number는 변환할 수 없는 문자열에서 NaN을 만듭니다.",
+        "좌석 번호로 숫자 12만 인정한다고 가정합니다. ===는 값과 자료형이 모두 같아야 true입니다.",
         {
           "code": [
-            "const score = Number('85');",
-            "const missingScore = Number('결석');",
-            "console.log(Number.isNaN(score)); // false",
-            "console.log(Number.isNaN(missingScore)); // true"
+            "const seat = 12;",
+            "const textSeat = '12';",
+            "console.log(seat === 12); // true",
+            "console.log(textSeat === 12); // false"
           ]
         },
-        "Number.isNaN은 주어진 값이 NaN이면 true입니다. 따라서 이 예제의 true는 숫자 변환이 실패했다는 뜻입니다. 변환한 값이 NaN인지 확인하는 두 작업을 구분하세요.",
+        "두 값이 화면에서 비슷하게 보여도 seat는 숫자, textSeat는 문자열입니다. Number로 변환하면 이 구분이 사라지므로 여기서는 변환하지 않고 비교합니다.",
         "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "온도 입력의 변환 결과 확인하기",
+      "title": "상태 코드의 값과 자료형 비교하기",
       "brief": [
-        "숫자 문자열과 일반 문자열을 Number로 바꾼 뒤 Number.isNaN으로 비교하세요."
+        "숫자 상태 코드와 문자열 상태 코드를 ===로 비교해 차이를 확인하세요."
       ],
-      "code": "const validTemperature = Number('23');\nconst invalidTemperature = Number('높음');\nconsole.log(Number.isNaN(validTemperature));\nconsole.log(Number.isNaN(invalidTemperature));\n"
+      "code": "const completedCode = 200;\nconsole.log(completedCode === 200);\nconsole.log(completedCode === '200');\n"
     },
     {
       "kind": "write",
-      "title": "숫자로 바꿀 수 없는 입력 확인하기",
+      "title": "쿠폰 코드의 값과 자료형 비교하기",
       "brief": [
-        "value를 Number로 바꾼 뒤 Number.isNaN으로 확인한 결과를 출력하세요. 숫자로 바꿀 수 없으면 true입니다.",
+        "code가 숫자 100과 일치하는지 ===로 비교해 출력하세요. 문자열 '100'은 일치하지 않습니다.",
         "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
         "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
-      "code": "let value = \"42\";\n// 문자열 \"42\"를 숫자로 변환한 값이 NaN인지 확인해 출력하세요.\n\nvalue = \"배송\";\n// 값이 \"배송\"으로 바뀌었습니다. 현재 값을 숫자로 변환한 뒤 NaN인지 확인해 출력하세요.\n",
-      "solutionCode": "let value = \"42\";\nlet numericValue = Number(value);\nconsole.log(Number.isNaN(numericValue));\n\nvalue = \"배송\";\nnumericValue = Number(value);\nconsole.log(Number.isNaN(numericValue));\n",
+      "code": "let code = 100;\n// 숫자 코드 100이 기준값과 일치하는지 비교해 출력하세요.\n\ncode = \"100\";\n// 코드가 문자열 \"100\"으로 바뀌었습니다. 숫자인 기준값과 일치하는지 다시 비교해 출력하세요.\n",
+      "solutionCode": "let code = 100;\nconsole.log(code === 100);\n\ncode = \"100\";\nconsole.log(code === 100);\n",
       "asserts": [
         {
           "type": "console",
           "label": "직접 작성한 코드의 출력 순서와 값",
           "expected": [
-            "false",
-            "true"
+            "true",
+            "false"
           ]
         }
       ],
       "hints": [
-        "value를 Number로 바꾼 뒤 Number.isNaN으로 확인한 결과를 출력하세요. 숫자로 바꿀 수 없으면 true입니다.",
+        "code가 숫자 100과 일치하는지 ===로 비교해 출력하세요. 문자열 '100'은 일치하지 않습니다.",
         "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
       ]
     }

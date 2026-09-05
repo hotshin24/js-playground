@@ -4,38 +4,63 @@
   "track": "T0",
   "order": 4,
   "runtime": "js",
-  "title": "읽을 수 있는 이름 짓기",
+  "title": "상수 const 사용하기",
   "steps": [
     {
       "kind": "read",
-      "title": "이름은 코드의 설명입니다",
+      "title": "const 이해하기",
       "brief": [
-        "변수 이름은 값이 무엇을 뜻하는지 설명해야 합니다. const x = 39000보다 const productPrice = 39000이 읽기 쉽습니다.",
-        "변수 이름을 식별자(identifier — 코드에서 값을 구별해 부르는 이름)라고도 합니다. 영문자, 숫자, 밑줄 _, 달러 기호 $를 쓸 수 있지만 숫자로 시작할 수 없습니다.",
-        "JavaScript에서 여러 단어를 이을 때는 productPrice처럼 두 번째 단어부터 첫 글자를 대문자로 쓰는 camelCase가 일반적입니다.",
-        { "code": ["const productPrice = 39000;", "const shippingFee = 3000;", "const totalPrice = productPrice + shippingFee;"] },
-        "price1은 가능하지만 1price는 불가능합니다. product-price에서 -는 이름의 일부가 아니라 빼기 연산으로 해석합니다. const, let, function처럼 JavaScript가 이미 쓰는 예약어도 이름으로 사용할 수 없습니다.",
-        "짧은 이름이 항상 좋은 것은 아닙니다. 반복문의 i처럼 역할이 널리 알려진 아주 짧은 범위를 제외하면, 읽는 사람이 값의 뜻을 알 수 있는 이름을 씁니다."
+        "책에서 배운 const을(를) 짧게 다시 확인합니다. 이 레슨에서는 이 개념보다 뒤에 나오는 문법을 사용하지 않습니다.",
+        "코드를 위에서 아래로 읽으며 어떤 값이 만들어지고 어떤 값이 출력되는지 먼저 예상해 보세요.",
+        {
+          "code": [
+            "const serviceName = '한입 학습';",
+            "console.log(serviceName);"
+          ]
+        },
+        "다음 단계에서는 같은 코드를 직접 실행하고, 그다음에는 값 하나를 바꾸어 결과 차이를 확인합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "이름으로 계산 읽기",
+      "title": "const 실행하기",
       "brief": [
-        "실행 결과는 42000입니다. 숫자만 봐도 계산은 되지만 변수 이름 덕분에 상품 가격과 배송비를 더한 총액이라는 뜻까지 읽을 수 있습니다.",
-        "세 변수 이름을 소리 내어 읽고 각 값이 무엇을 뜻하는지 설명해 보세요."
+        "코드를 실행해 책에서 본 const의 동작을 확인하세요."
       ],
-      "code": "const productPrice = 39000;\nconst shippingFee = 3000;\nconst totalPrice = productPrice + shippingFee;\n\nconsole.log(totalPrice);\n"
+      "code": "const serviceName = '한입 학습';\nconsole.log(serviceName);\n"
     },
     {
       "kind": "tweak",
-      "title": "잘못된 이름에서 오류 찾기",
+      "title": "const의 값 바꿔 보기",
       "brief": [
-        "shippingFee를 사용하는 셋째 줄에서 shippingfee처럼 F를 소문자로 바꾸고 실행해 보세요. JavaScript는 대문자와 소문자를 구분하므로 존재하지 않는 이름이라는 오류가 납니다.",
-        "되돌린 뒤 totalPrice를 1total로 바꿔 보세요. 이름이 숫자로 시작해 문법 오류가 납니다. 오류의 정식 이름과 메시지 읽기는 다음 레슨에서 배웁니다.",
-        "오타를 고친 뒤 totalPrice를 x로 바꾸면 실행은 되지만 뜻을 잃습니다. 실행 가능 여부와 읽기 좋은 이름은 서로 다른 기준입니다."
+        "maxCount의 처음 값을 5로 바꾸세요. const에는 처음 대입한 뒤 다른 값을 다시 대입하지 않습니다.",
+        "수정한 뒤 다시 실행하여 바꾸기 전 결과와 비교하세요."
       ],
-      "code": "const productPrice = 39000;\nconst shippingFee = 3000;\nconst totalPrice = productPrice + shippingFee;\n\nconsole.log(totalPrice);\n"
+      "code": "const maxCount = 3;\nconsole.log(maxCount);\n"
+    },
+    {
+      "kind": "write",
+      "title": "직접 작성하기",
+      "brief": [
+        "책에서 지금까지 배운 문법만 사용하세요.",
+        "maxCount의 처음 값을 5로 바꾸세요. const에는 처음 대입한 뒤 다른 값을 다시 대입하지 않습니다.",
+        "주어진 코드를 지우지 말고 TODO 아래에 코드를 작성해 요구한 값을 console.log로 출력하세요."
+      ],
+      "code": "const language = 'JavaScript';\n// TODO: language를 출력하세요.\n",
+      "solutionCode": "const language = 'JavaScript';\nconsole.log(language);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "내가 작성한 코드의 출력 결과",
+          "expected": [
+            "JavaScript"
+          ]
+        }
+      ],
+      "hints": [
+        "RUN과 TWEAK에서 사용한 const 문법을 다시 확인하세요.",
+        "출력할 식을 먼저 완성한 뒤 console.log 괄호 안에 넣으세요."
+      ]
     }
   ]
 }

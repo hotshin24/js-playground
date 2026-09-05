@@ -4,56 +4,56 @@
   "track": "T1",
   "order": 28,
   "runtime": "js",
-  "title": "종합 문제 13: 0을 보존하며 기본값 적용하기",
+  "title": "작은 복습 6: 두 조건 모두 확인하기",
   "steps": [
     {
       "kind": "read",
-      "title": "0과 값이 없는 상태를 구분하기",
+      "title": "두 조건을 모두 만족하는지 확인하기",
       "brief": [
-        "재시도 횟수 0은 '재시도하지 않음'이라는 정상 설정입니다. null인 경우에만 기본 횟수 3을 적용합니다.",
+        "행사에 참가하려면 신청을 했고 나이가 14세 이상이어야 합니다. &&로 두 조건을 연결합니다.",
         {
           "code": [
-            "const retries = 0;",
-            "const missingRetries = null;",
-            "console.log(retries ?? 3); // 0",
-            "console.log(missingRetries ?? 3); // 3"
+            "const applied = true;",
+            "const age = 16;",
+            "const canJoin = applied && age >= 14;",
+            "console.log(canJoin); // true"
           ]
         },
-        "0은 falsy이지만 null이나 undefined는 아닙니다. ??는 0을 유지합니다. ||를 사용하면 0까지 3으로 바뀌어 설정의 뜻이 달라집니다.",
+        "age >= 14의 결과는 true입니다. applied도 true이므로 전체 결과가 true입니다. 신청하지 않았거나 나이가 부족하면 전체 결과는 false입니다.",
         "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "할인 금액 0과 누락값 구분하기",
+      "title": "휴가 승인 조건 묶기",
       "brief": [
-        "0에 ||와 ??를 각각 적용해 결과가 어떻게 달라지는지 확인하세요."
+        "잔여 휴가가 있고 인수인계가 끝났는지 &&로 함께 확인하세요."
       ],
-      "code": "const discountAmount = 0;\nconsole.log(discountAmount || 5000);\nconsole.log(discountAmount ?? 5000);\n"
+      "code": "const hasDaysLeft = true;\nconst handoffDone = true;\nconst canTakeLeave = hasDaysLeft && handoffDone;\nconsole.log(canTakeLeave);\n"
     },
     {
       "kind": "write",
-      "title": "재고 0을 유지하면서 기본값 적용하기",
+      "title": "무료 배송 조건 확인하기",
       "brief": [
-        "stock이 null이면 100을 사용하고, 0을 포함한 숫자는 그대로 출력하세요. ??를 사용하세요.",
+        "orderAmount가 50000 이상이면서 isJeju가 false인지 비교하여 출력하세요.",
         "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
         "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
-      "code": "let stock = 0;\n// 재고가 0인 경우입니다. 0을 유지하도록 기본값 연산을 적용해 출력하세요.\n\nstock = null;\n// 재고가 null로 바뀌었습니다. 기본 재고를 적용해 출력하세요.\n\nstock = 25;\n// 재고가 25로 바뀌었습니다. 현재 재고를 유지하도록 기본값 연산을 적용해 출력하세요.\n",
-      "solutionCode": "let stock = 0;\nconsole.log(stock ?? 100);\n\nstock = null;\nconsole.log(stock ?? 100);\n\nstock = 25;\nconsole.log(stock ?? 100);\n",
+      "code": "let orderAmount = 60000;\nlet isJeju = false;\n// 주문 금액 60000원, 제주 배송이 아닌 경우의 무료 배송 여부를 출력하세요.\n\norderAmount = 60000;\nisJeju = true;\n// 주문 금액 60000원, 제주 배송인 경우의 무료 배송 여부를 다시 계산해 출력하세요.\n\norderAmount = 40000;\nisJeju = false;\n// 주문 금액 40000원, 제주 배송이 아닌 경우의 무료 배송 여부를 다시 계산해 출력하세요.\n",
+      "solutionCode": "let orderAmount = 60000;\nlet isJeju = false;\nconsole.log(orderAmount >= 50000 && isJeju === false);\n\norderAmount = 60000;\nisJeju = true;\nconsole.log(orderAmount >= 50000 && isJeju === false);\n\norderAmount = 40000;\nisJeju = false;\nconsole.log(orderAmount >= 50000 && isJeju === false);\n",
       "asserts": [
         {
           "type": "console",
           "label": "직접 작성한 코드의 출력 순서와 값",
           "expected": [
-            "0",
-            "100",
-            "25"
+            "true",
+            "false",
+            "false"
           ]
         }
       ],
       "hints": [
-        "stock이 null이면 100을 사용하고, 0을 포함한 숫자는 그대로 출력하세요. ??를 사용하세요.",
+        "orderAmount가 50000 이상이면서 isJeju가 false인지 비교하여 출력하세요.",
         "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
       ]
     }

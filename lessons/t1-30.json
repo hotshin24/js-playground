@@ -4,59 +4,56 @@
   "track": "T1",
   "order": 30,
   "runtime": "js",
-  "title": "종합 문제 15: 여러 입력값을 변환·계산해 문장 만들기",
+  "title": "작은 복습 8: null과 undefined에 기본값 적용하기",
   "steps": [
     {
       "kind": "read",
-      "title": "변환과 기본값과 비교를 한 문장에 넣기",
+      "title": "빈 문자열은 유지하고 빠진 값만 바꾸기",
       "brief": [
-        "근무 시간은 문자열 '9'이고 메모는 null입니다. 시간을 숫자로 바꾸고, 메모의 기본값을 정하고, 8시간을 초과했는지 비교합니다.",
+        "배송 요청이 null이면 '요청 없음'을 표시합니다. 사용자가 남긴 빈 문자열은 그대로 두기로 합니다.",
         {
           "code": [
-            "const workHoursInput = '9';",
-            "const memoInput = null;",
-            "const hours = Number(workHoursInput);",
-            "const memo = memoInput ?? '메모 없음';",
-            "const overtime = hours > 8;",
-            "console.log(`${hours}시간 / ${memo} / 연장 근무 여부: ${overtime}`);",
-            "// 9시간 / 메모 없음 / 연장 근무 여부: true"
+            "const missingNote = null;",
+            "const emptyNote = '';",
+            "console.log(missingNote ?? '요청 없음'); // 요청 없음",
+            "console.log(emptyNote ?? '요청 없음'); // 빈 줄"
           ]
         },
-        "Number로 바꾼 hours는 숫자 9입니다. ??로 정한 memo는 '메모 없음'이고, 비교 결과 overtime은 true입니다. ${...}에 각각 넣으면 한 문장이 됩니다. 새 문법이 아니라 배운 세 연산의 결과를 모아 출력하는 연습입니다.",
+        "??는 null과 undefined만 기본값으로 바꿉니다. 빈 문자열은 이 둘이 아니므로 두 번째 출력은 빈 줄입니다. ||를 쓰면 빈 문자열까지 바뀝니다.",
         "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "예약 입력값을 단계별로 계산해 문장 만들기",
+      "title": "알림 횟수 기본값 적용하기",
       "brief": [
-        "문자열 인원수를 숫자로 바꾸고, 누락된 요청에 기본값을 넣은 뒤 단체 여부와 함께 문장에 표시하세요."
+        "0은 유효한 횟수이므로 보존하고 null에만 기본값을 적용하세요."
       ],
-      "code": "const peopleInput = '5';\nconst requestInput = null;\nconst people = Number(peopleInput);\nconst request = requestInput ?? '요청 없음';\nconst groupBooking = people >= 5;\nconsole.log(`${people}명 / ${request} / 단체 예약 여부: ${groupBooking}`);\n"
+      "code": "const unreadCount = 0;\nconst missingCount = null;\nconsole.log(unreadCount ?? 10);\nconsole.log(missingCount ?? 10);\n"
     },
     {
       "kind": "write",
-      "title": "주문 정보를 한 문장으로 출력하기",
+      "title": "닉네임의 기본값 적용하기",
       "brief": [
-        "quantity를 숫자로 바꿔 price와 곱하세요. coupon이 null이면 '쿠폰 없음'을 사용하되 빈 문자열은 유지하세요. 총액이 50000 이상인지 비교하세요. 수량개 / 총액원 / 쿠폰 / 무료 배송 여부: 비교결과 형식으로 출력하세요.",
+        "nickname이 null이면 '이름 없음'을 사용하고 빈 문자열은 유지하여 출력하세요.",
         "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
         "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
-      "code": "let quantity = \"3\";\nlet price = 20000;\nlet coupon = null;\n// 수량 \"3\", 가격 20000원, 쿠폰 null로 주문 안내 문장을 만들어 출력하세요.\n\nquantity = \"2\";\nprice = 12000;\ncoupon = \"신규\";\n// 수량 \"2\", 가격 12000원, 쿠폰 \"신규\"로 바뀌었습니다.\n// 현재 값으로 총액과 무료 배송 여부를 다시 계산해 주문 안내 문장을 출력하세요.\n\nquantity = \"1\";\nprice = 50000;\ncoupon = \"\";\n// 수량 \"1\", 가격 50000원, 쿠폰 빈 문자열로 바뀌었습니다.\n// 빈 쿠폰 문자열을 유지하고, 총액과 무료 배송 여부를 다시 계산해 주문 안내 문장을 출력하세요.\n",
-      "solutionCode": "let quantity = \"3\";\nlet price = 20000;\nlet coupon = null;\nlet numericQuantity = Number(quantity);\nlet total = numericQuantity * price;\nlet couponName = coupon ?? '쿠폰 없음';\nlet freeShipping = total >= 50000;\nconsole.log(`${numericQuantity}개 / ${total}원 / ${couponName} / 무료 배송 여부: ${freeShipping}`);\n\nquantity = \"2\";\nprice = 12000;\ncoupon = \"신규\";\nnumericQuantity = Number(quantity);\ntotal = numericQuantity * price;\ncouponName = coupon ?? '쿠폰 없음';\nfreeShipping = total >= 50000;\nconsole.log(`${numericQuantity}개 / ${total}원 / ${couponName} / 무료 배송 여부: ${freeShipping}`);\n\nquantity = \"1\";\nprice = 50000;\ncoupon = \"\";\nnumericQuantity = Number(quantity);\ntotal = numericQuantity * price;\ncouponName = coupon ?? '쿠폰 없음';\nfreeShipping = total >= 50000;\nconsole.log(`${numericQuantity}개 / ${total}원 / ${couponName} / 무료 배송 여부: ${freeShipping}`);\n",
+      "code": "let nickname = null;\n// 닉네임이 null인 경우 기본값을 적용해 출력하세요.\n\nnickname = \"\";\n// 닉네임이 빈 문자열로 바뀌었습니다. 빈 문자열을 유지해 출력하세요.\n\nnickname = \"초코\";\n// 닉네임이 \"초코\"로 바뀌었습니다. 현재 닉네임을 사용해 출력하세요.\n",
+      "solutionCode": "let nickname = null;\nconsole.log(nickname ?? '이름 없음');\n\nnickname = \"\";\nconsole.log(nickname ?? '이름 없음');\n\nnickname = \"초코\";\nconsole.log(nickname ?? '이름 없음');\n",
       "asserts": [
         {
           "type": "console",
           "label": "직접 작성한 코드의 출력 순서와 값",
           "expected": [
-            "3개 / 60000원 / 쿠폰 없음 / 무료 배송 여부: true",
-            "2개 / 24000원 / 신규 / 무료 배송 여부: false",
-            "1개 / 50000원 /  / 무료 배송 여부: true"
+            "이름 없음",
+            "",
+            "초코"
           ]
         }
       ],
       "hints": [
-        "quantity를 숫자로 바꿔 price와 곱하세요. coupon이 null이면 '쿠폰 없음'을 사용하되 빈 문자열은 유지하세요. 총액이 50000 이상인지 비교하세요. 수량개 / 총액원 / 쿠폰 / 무료 배송 여부: 비교결과 형식으로 출력하세요.",
+        "nickname이 null이면 '이름 없음'을 사용하고 빈 문자열은 유지하여 출력하세요.",
         "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
       ]
     }

@@ -1,1 +1,46 @@
-{"schemaVersion":2,"id":"t3-21","track":"T3","order":21,"runtime":"js","title":"종합 문제 3: 변수에 담긴 키로 객체 값 읽기","steps":[{"kind":"read","title":"설정 객체에서 선택한 항목 읽기","brief":["키가 실행 중에 정해지면 settings[selectedKey]처럼 대괄호 표기법을 사용합니다.","점 표기법은 고정된 키를 직접 적을 때 사용합니다."]},{"kind":"run","title":"직원 객체에서 선택한 정보 읽기","brief":["고정된 name과 변수에 담긴 department 키를 각각 읽으세요."],"code":"const employee = { name: '지수', department: '운영' };\nconsole.log(employee.name);\nconst selectedField = 'department';\nconsole.log(employee[selectedField]);\n"},{"kind":"write","title":"선택한 프로퍼티 반환하기","brief":["getProductField(product, key)를 작성하세요.","대괄호 표기법으로 선택한 값을 반환하세요."],"code":"// getProductField 함수를 작성하세요.\n","entry":"getProductField","solutionCode":"function getProductField(product, key) {\n  return product[key];\n}\n","asserts":[{"type":"value","label":"재고 읽기","args":[{"name":"의자","stock":4},"stock"],"expected":4},{"type":"value","label":"이름 읽기","args":[{"name":"의자","stock":4},"name"],"expected":"의자"}],"hints":["product.key는 key라는 이름의 프로퍼티를 찾습니다.","product[key]를 반환하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t3-21",
+  "track": "T3",
+  "order": 21,
+  "runtime": "js",
+  "title": "원시값 복사",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "변수에는 원시값 자체가 복사됩니다",
+      "brief": [
+        "문자열, 숫자, 불리언, undefined, null, symbol, bigint는 원시값입니다. 원시값이 든 변수를 다른 변수에 할당하면 값이 복사됩니다.",
+        {
+          "code": [
+            "let firstPrice = 12000;",
+            "let secondPrice = firstPrice;",
+            "secondPrice = 39000;"
+          ]
+        },
+        "secondPrice에 firstPrice의 숫자 12000이 복사됩니다. 이후 secondPrice를 39000으로 바꿔도 firstPrice는 12000입니다.",
+        "두 변수가 같은 숫자를 가지고 있었을 뿐, 하나의 저장 공간을 함께 사용한 것이 아닙니다.",
+        "이 동작은 다음 레슨의 객체 복사와 다릅니다. 두 코드를 나란히 비교해야 차이가 분명해집니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "복사한 변수만 바꾸기",
+      "brief": [
+        "originalName의 문자열이 copiedName에 복사됩니다. copiedName을 바꿔도 originalName은 그대로입니다.",
+        "숫자와 불리언도 같은 방식으로 서로 독립적인 값이 복사됩니다."
+      ],
+      "code": "let originalName = '셔츠';\nlet copiedName = originalName;\n\ncopiedName = '모자';\n\nconsole.log(originalName);\nconsole.log(copiedName);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "숫자 값으로 다시 확인하기",
+      "brief": [
+        "문자열 대신 originalPrice = 12000과 copiedPrice를 만들어 같은 과정을 실행해 보세요.",
+        "copiedPrice += 3000을 실행해도 originalPrice는 12000입니다.",
+        "원시값을 복사한 뒤 한쪽 변수를 바꾸면 다른 변수의 값은 바뀌지 않습니다."
+      ],
+      "code": "let originalName = '셔츠';\nlet copiedName = originalName;\n\ncopiedName = '모자';\n\nconsole.log(originalName);\nconsole.log(copiedName);\n"
+    }
+  ]
+}

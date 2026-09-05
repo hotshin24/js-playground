@@ -4,55 +4,56 @@
   "track": "T1",
   "order": 24,
   "runtime": "js",
-  "title": "종합 문제 9: falsy 값에 표시용 기본값 적용하기",
+  "title": "작은 복습 2: 문자열 숫자로 금액 계산하기",
   "steps": [
     {
       "kind": "read",
-      "title": "빈 문자열에 기본 문구 넣기",
+      "title": "문자열 근무 시간으로 급여 계산하기",
       "brief": [
-        "검색어가 빈 문자열이면 '전체 검색'을 표시하고, 검색어가 있으면 그대로 표시하려고 합니다.",
+        "입력칸에서 받은 workHours는 '5'라는 문자열이고, hourlyPay는 숫자 12000입니다.",
         {
           "code": [
-            "const emptySearch = '';",
-            "const search = '노트북';",
-            "console.log(emptySearch || '전체 검색'); // 전체 검색",
-            "console.log(search || '전체 검색'); // 노트북"
+            "const workHours = '5';",
+            "const hourlyPay = 12000;",
+            "const hours = Number(workHours);",
+            "const pay = hours * hourlyPay;",
+            "console.log(pay); // 60000"
           ]
         },
-        "||는 왼쪽이 falsy이면 오른쪽 값을 사용합니다. 빈 문자열은 falsy이지만 '노트북'은 truthy이므로 그대로 사용합니다.",
+        "Number(workHours)는 문자열 '5'를 숫자 5로 바꿉니다. 그 숫자에 시급을 곱하면 급여 60000이 됩니다. 계산에 쓰는 값과 출력할 값을 순서대로 변수에 저장합니다.",
         "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "이미지 설명의 기본 문구 정하기",
+      "title": "인쇄 매수로 제작비 계산하기",
       "brief": [
-        "빈 문자열인 이미지 설명에 ||로 기본 문구를 적용하세요."
+        "문자열로 받은 인쇄 매수를 숫자로 바꾼 뒤 장당 가격과 곱하세요."
       ],
-      "code": "const imageDescription = '';\nconst altText = imageDescription || '이미지 설명 없음';\nconsole.log(altText);\n"
+      "code": "const copiesInput = '30';\nconst pricePerCopy = 150;\nconst copies = Number(copiesInput);\nconsole.log(copies * pricePerCopy);\n"
     },
     {
       "kind": "write",
-      "title": "빈 제목 대신 기본 제목 출력하기",
+      "title": "주문 수량으로 결제 금액 계산하기",
       "brief": [
-        "title이 빈 문자열이면 '제목 없음'을, 내용이 있으면 그 제목을 출력하세요. ||를 사용하세요.",
+        "quantity를 숫자로 바꾸고 price와 곱한 결제 금액을 출력하세요.",
         "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
         "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
-      "code": "let title = \"\";\n// 제목이 빈 문자열인 경우 기본 제목을 적용해 출력하세요.\n\ntitle = \"배송 안내\";\n// 제목이 \"배송 안내\"로 바뀌었습니다. 현재 제목을 사용해 출력하세요.\n",
-      "solutionCode": "let title = \"\";\nconsole.log(title || '제목 없음');\n\ntitle = \"배송 안내\";\nconsole.log(title || '제목 없음');\n",
+      "code": "let quantity = \"3\";\nlet price = 12000;\n// 수량 \"3\"과 가격 12000으로 결제 금액을 계산해 출력하세요.\n\nquantity = \"0\";\nprice = 8900;\n// 수량이 \"0\", 가격이 8900으로 바뀌었습니다. 이 값으로 결제 금액을 다시 계산해 출력하세요.\n",
+      "solutionCode": "let quantity = \"3\";\nlet price = 12000;\nlet numericQuantity = Number(quantity);\nconsole.log(numericQuantity * price);\n\nquantity = \"0\";\nprice = 8900;\nnumericQuantity = Number(quantity);\nconsole.log(numericQuantity * price);\n",
       "asserts": [
         {
           "type": "console",
           "label": "직접 작성한 코드의 출력 순서와 값",
           "expected": [
-            "제목 없음",
-            "배송 안내"
+            "36000",
+            "0"
           ]
         }
       ],
       "hints": [
-        "title이 빈 문자열이면 '제목 없음'을, 내용이 있으면 그 제목을 출력하세요. ||를 사용하세요.",
+        "quantity를 숫자로 바꾸고 price와 곱한 결제 금액을 출력하세요.",
         "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
       ]
     }

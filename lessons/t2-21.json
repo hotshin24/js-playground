@@ -1,1 +1,74 @@
-{"schemaVersion":2,"id":"t2-21","track":"T2","order":21,"runtime":"js","title":"종합 문제 5: 두 결과 중 하나를 짧게 선택하기","steps":[{"kind":"read","title":"출석 여부로 문구를 고르는 과정 읽기","brief":["조건 ? 참일 때 값 : 거짓일 때 값 순서로 작성합니다.",{"code":["getAttendanceLabel(true); // '출석'","getAttendanceLabel(false); // '결석'"]}]},{"kind":"run","title":"예약 가능 여부 문구 고르기","brief":["남은 좌석이 0보다 큰지에 따라 예약 가능 또는 마감을 선택하세요."],"code":"const seatsLeft = 2;\nconst bookingLabel = seatsLeft > 0 ? '예약 가능' : '마감';\nconsole.log(bookingLabel);\n"},{"kind":"write","title":"재고 문구 반환하기","brief":["getStockLabel(stock)을 작성하세요.","stock이 0보다 크면 '판매 중', 아니면 '품절'을 반환하세요."],"code":"// getStockLabel 함수를 작성하세요.\n","entry":"getStockLabel","solutionCode":"function getStockLabel(stock) {\n  return stock > 0 ? '판매 중' : '품절';\n}\n","asserts":[{"type":"value","label":"재고 있음","args":[3],"expected":"판매 중"},{"type":"value","label":"재고 없음","args":[0],"expected":"품절"}],"hints":["stock > 0을 조건으로 사용하세요.","? 뒤에는 '판매 중', : 뒤에는 '품절'을 쓰세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t2-21",
+  "track": "T2",
+  "order": 21,
+  "runtime": "js",
+  "title": "작은 종합 문제 1: 조건과 반복으로 짝수 합계 구하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "3의 배수 합계를 구하는 과정 읽기",
+      "brief": [
+        "1부터 limit까지 반복하며 3의 배수만 더할 수 있습니다.",
+        {
+          "code": [
+            "sumMultiplesOfThree(7);",
+            "// 3 + 6이므로 9"
+          ]
+        },
+        "조건에 맞지 않으면 continue로 이번 반복을 건너뜁니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "홀수만 골라 합계 구하기",
+      "brief": [
+        "1부터 7까지 반복하며 짝수는 건너뛰고 홀수만 더하세요."
+      ],
+      "code": "let oddTotal = 0;\nfor (let value = 1; value <= 7; value += 1) {\n  if (value % 2 === 0) continue;\n  oddTotal += value;\n}\nconsole.log(oddTotal);\n"
+    },
+    {
+      "kind": "write",
+      "title": "짝수만 더하는 함수 작성하기",
+      "brief": [
+        "sumEven(limit)를 작성하세요.",
+        "1부터 limit까지 for로 반복하고 홀수이면 continue를 사용하세요.",
+        "남은 짝수를 total에 더한 뒤 반복문이 끝나면 total을 반환하세요."
+      ],
+      "code": "// sumEven 함수를 작성하세요.\n",
+      "entry": "sumEven",
+      "solutionCode": "function sumEven(limit) {\n  let total = 0;\n  for (let number = 1; number <= limit; number += 1) {\n    if (number % 2 !== 0) continue;\n    total += number;\n  }\n  return total;\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "1부터 6까지 짝수의 합",
+          "args": [
+            6
+          ],
+          "expected": 12
+        },
+        {
+          "type": "value",
+          "label": "1부터 10까지 짝수의 합",
+          "args": [
+            10
+          ],
+          "expected": 30
+        },
+        {
+          "type": "value",
+          "label": "짝수가 없을 때",
+          "args": [
+            1
+          ],
+          "expected": 0
+        }
+      ],
+      "hints": [
+        "let total = 0;을 반복문 앞에 두고 for (let number = 1; number <= limit; number += 1)로 시작하세요.",
+        "홀수일 때 continue한 뒤 total += number를 실행하세요."
+      ]
+    }
+  ]
+}

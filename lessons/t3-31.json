@@ -1,1 +1,89 @@
-{"schemaVersion":2,"id":"t3-31","track":"T3","order":31,"runtime":"js","title":"종합 문제 13: find로 조건에 맞는 첫 번째 항목 찾기","steps":[{"kind":"read","title":"회원 번호로 회원을 찾는 과정 읽기","brief":["find는 조건을 처음 만족한 항목 하나를 반환합니다.","찾지 못하면 undefined를 반환합니다."]},{"kind":"run","title":"상품 코드로 상품 찾기","brief":["code가 B2인 상품과 존재하지 않는 상품을 각각 찾아보세요."],"code":"const items = [{ code: 'A1', name: '연필' }, { code: 'B2', name: '노트' }];\nconsole.log(items.find((item) => item.code === 'B2'));\nconsole.log(items.find((item) => item.code === 'C3'));\n"},{"kind":"write","title":"주문 객체 반환하기","brief":["findOrder(orders, targetId)를 작성하세요.","order.id가 targetId와 같은 첫 주문을 반환하세요."],"code":"// findOrder 함수를 작성하세요.\n","entry":"findOrder","solutionCode":"function findOrder(orders, targetId) {\n  return orders.find((order) => order.id === targetId);\n}\n","asserts":[{"type":"value","label":"12번 주문","args":[[{"id":11,"item":"컵"},{"id":12,"item":"접시"}],12],"expected":{"id":12,"item":"접시"}},{"type":"value","label":"첫 주문 찾기","args":[[{"id":1},{"id":2}],1],"expected":{"id":1}}],"hints":["orders.find(...)를 사용하세요.","콜백에서 order.id === targetId를 반환하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t3-31",
+  "track": "T3",
+  "order": 31,
+  "runtime": "js",
+  "title": "reduce",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "누산값에 각 값을 차례로 반영합니다",
+      "brief": [
+        "reduce는 배열의 여러 값을 하나의 결과로 합칩니다. 합계, 개수, 객체처럼 원하는 결과를 만들 수 있습니다.",
+        {
+          "code": [
+            "const total = prices.reduce((sum, price) => {",
+            "  return sum + price;",
+            "}, 0);"
+          ]
+        },
+        "첫 매개변수 sum은 지금까지 계산한 누산값이고, price는 현재 배열 값입니다. 마지막의 0은 누산값의 초깃값입니다.",
+        "첫 반복에서 sum은 0이고, 콜백이 반환한 값이 다음 반복의 sum이 됩니다. 모든 반복이 끝난 뒤 마지막 누산값을 반환합니다.",
+        "초깃값을 명시하면 빈 배열에서도 결과를 정할 수 있고 누산값의 자료형도 알아보기 쉽습니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "합계가 쌓이는 순서 보기",
+      "brief": [
+        "sum은 0에서 시작해 10000, 25000, 30000으로 바뀝니다.",
+        "forEach와 달리 reduce는 마지막 누산값 30000을 반환합니다."
+      ],
+      "code": "const prices = [10000, 15000, 5000];\n\nconst total = prices.reduce((sum, price) => {\n  const nextSum = sum + price;\n  console.log(sum + ' + ' + price + ' = ' + nextSum);\n  return nextSum;\n}, 0);\n\nconsole.log('합계: ' + total);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "초깃값 바꿔 보기",
+      "brief": [
+        "마지막 초깃값 0을 3000으로 바꾸면 배송비 3000이 먼저 더해져 결과가 33000이 됩니다.",
+        "return nextSum을 지우면 다음 반복의 sum이 undefined가 되어 정상적인 합계를 만들 수 없습니다.",
+        "단순 합계는 반복문으로도 만들 수 있습니다. reduce는 누산값이 어떻게 바뀌는지 설명할 수 있을 때 사용하세요."
+      ],
+      "code": "const prices = [10000, 15000, 5000];\n\nconst total = prices.reduce((sum, price) => {\n  const nextSum = sum + price;\n  console.log(sum + ' + ' + price + ' = ' + nextSum);\n  return nextSum;\n}, 0);\n\nconsole.log('합계: ' + total);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "상품 가격의 합계 구하기",
+      "brief": [
+        "products에 든 모든 객체의 price를 더해 반환하세요. 빈 배열에서는 0을 반환해야 합니다.",
+        "reduce의 초깃값을 0으로 두고, 콜백에서 sum과 product.price를 더하세요."
+      ],
+      "code": "function totalPrice(products) {\n  return null; // 이 줄을 바꾸세요\n}\n",
+      "entry": "totalPrice",
+      "solutionCode": "function totalPrice(products) {\n  return products.reduce((sum, product) => sum + product.price, 0);\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "세 상품 가격 합계",
+          "args": [
+            [
+              {
+                "price": 10000
+              },
+              {
+                "price": 15000
+              },
+              {
+                "price": 5000
+              }
+            ]
+          ],
+          "expected": 30000
+        },
+        {
+          "type": "value",
+          "label": "빈 배열 합계는 0",
+          "args": [
+            []
+          ],
+          "expected": 0
+        }
+      ],
+      "hints": [
+        "products.reduce((sum, product) => ..., 0)을 반환하세요.",
+        "다음 누산값은 sum + product.price입니다."
+      ]
+    }
+  ]
+}

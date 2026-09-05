@@ -4,57 +4,62 @@
   "track": "T1",
   "order": 17,
   "runtime": "js",
-  "title": "종합 문제 2: 문자열 숫자를 변환해 금액 계산하기",
+  "title": "증감 연산자",
   "steps": [
     {
       "kind": "read",
-      "title": "문자열 근무 시간으로 급여 계산하기",
+      "title": "증감 연산자 이해하기",
       "brief": [
-        "입력칸에서 받은 workHours는 '5'라는 문자열이고, hourlyPay는 숫자 12000입니다.",
+        "책에서 방금 읽은 증감 연산자을(를) 실습으로 다시 확인합니다.",
+        "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
-            "const workHours = '5';",
-            "const hourlyPay = 12000;",
-            "const hours = Number(workHours);",
-            "const pay = hours * hourlyPay;",
-            "console.log(pay); // 60000"
+            "let count = 1;",
+            "count++;",
+            "console.log(count);",
+            "count--;",
+            "console.log(count);"
           ]
         },
-        "Number(workHours)는 문자열 '5'를 숫자 5로 바꿉니다. 그 숫자에 시급을 곱하면 급여 60000이 됩니다. 계산에 쓰는 값과 출력할 값을 순서대로 변수에 저장합니다.",
-        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+        "이 레슨의 쓰기에서는 여기 나온 문법만 직접 사용합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "인쇄 매수로 제작비 계산하기",
+      "title": "증감 연산자 실행하기",
       "brief": [
-        "문자열로 받은 인쇄 매수를 숫자로 바꾼 뒤 장당 가격과 곱하세요."
+        "코드를 실행해 증감 연산자의 결과를 확인하세요."
       ],
-      "code": "const copiesInput = '30';\nconst pricePerCopy = 150;\nconst copies = Number(copiesInput);\nconsole.log(copies * pricePerCopy);\n"
+      "code": "let count = 1;\ncount++;\nconsole.log(count);\ncount--;\nconsole.log(count);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "값을 바꾸어 결과 비교하기",
+      "brief": [
+        "코드의 값 하나를 바꾼 뒤 다시 실행하세요. 무엇을 바꾸었고 출력이 왜 달라졌는지 말로 설명해 보세요."
+      ],
+      "code": "let count = 1;\ncount++;\nconsole.log(count);\ncount--;\nconsole.log(count);\n"
     },
     {
       "kind": "write",
-      "title": "주문 수량으로 결제 금액 계산하기",
+      "title": "증감 연산자 직접 사용하기",
       "brief": [
-        "quantity를 숫자로 바꾸고 price와 곱한 결제 금액을 출력하세요.",
-        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
-        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
       ],
-      "code": "let quantity = \"3\";\nlet price = 12000;\n// 수량 \"3\"과 가격 12000으로 결제 금액을 계산해 출력하세요.\n\nquantity = \"0\";\nprice = 8900;\n// 수량이 \"0\", 가격이 8900으로 바뀌었습니다. 이 값으로 결제 금액을 다시 계산해 출력하세요.\n",
-      "solutionCode": "let quantity = \"3\";\nlet price = 12000;\nlet numericQuantity = Number(quantity);\nconsole.log(numericQuantity * price);\n\nquantity = \"0\";\nprice = 8900;\nnumericQuantity = Number(quantity);\nconsole.log(numericQuantity * price);\n",
+      "code": "let visitors = 9;\n// TODO: 1 증가시키고 출력하세요.\n",
+      "solutionCode": "let visitors = 9;\nvisitors++;\nconsole.log(visitors);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "직접 작성한 코드의 출력 순서와 값",
+          "label": "내가 작성한 코드의 출력 결과",
           "expected": [
-            "36000",
-            "0"
+            "10"
           ]
         }
       ],
       "hints": [
-        "quantity를 숫자로 바꾸고 price와 곱한 결제 금액을 출력하세요.",
-        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+        "증감 연산자의 RUN 코드를 다시 확인하세요.",
+        "완성한 식을 console.log로 출력하세요."
       ]
     }
   ]

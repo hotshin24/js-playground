@@ -4,36 +4,59 @@
   "track": "T1",
   "order": 12,
   "runtime": "js",
-  "title": "==와 === 구분하기",
+  "title": "parseInt로 정수 변환하기",
   "steps": [
     {
       "kind": "read",
-      "title": "===는 값과 자료형을 함께 비교합니다",
+      "title": "parseInt 이해하기",
       "brief": [
-        "===는 값과 자료형이 모두 같은지 비교하는 엄격한 동등 연산자입니다. !==는 두 값이 다른지 비교합니다.",
-        { "code": ["42 === 42;   // true", "42 === '42'; // false", "42 !== '42'; // true"] },
-        "==는 비교하기 전에 자료형을 자동으로 바꿀 수 있습니다. 그래서 42 == '42'는 true가 됩니다.",
-        "자동 변환이 섞이면 결과를 예상하기 어려워집니다. 특별한 이유가 없다면 ===와 !==를 사용하세요."
+        "책에서 방금 읽은 parseInt을(를) 실습으로 다시 확인합니다.",
+        "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
+        {
+          "code": [
+            "console.log(parseInt('120px', 10));"
+          ]
+        },
+        "이 레슨의 쓰기에서는 여기 나온 문법만 직접 사용합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "느슨한 비교와 엄격한 비교 보기",
+      "title": "parseInt 실행하기",
       "brief": [
-        "숫자 0과 문자열 '0'은 화면에 비슷하게 보이지만 자료형이 다릅니다.",
-        "==는 둘을 같다고 판단하고, ===는 다르다고 판단합니다."
+        "코드를 실행해 parseInt의 결과를 확인하세요."
       ],
-      "code": "console.log(0 == '0');\nconsole.log(0 === '0');\nconsole.log(false == 0);\nconsole.log(false === 0);\nconsole.log(42 !== '42');\n"
+      "code": "console.log(parseInt('120px', 10));\n"
     },
     {
       "kind": "tweak",
-      "title": "자료형을 맞춘 뒤 비교하기",
+      "title": "값을 바꾸어 결과 비교하기",
       "brief": [
-        "0 === '0'을 0 === Number('0')으로 바꿔 보세요. 오른쪽 값도 숫자가 되어 true가 나옵니다.",
-        "서로 다른 자료형을 비교해야 한다면 ==에 맡기지 말고 Number나 String으로 원하는 자료형을 직접 맞추세요.",
-        "=, ==, ===는 서로 다른 연산자입니다. 저장에는 =, 비교에는 ===를 사용한다고 기억하면 됩니다."
+        "코드의 값 하나를 바꾼 뒤 다시 실행하세요. 무엇을 바꾸었고 출력이 왜 달라졌는지 말로 설명해 보세요."
       ],
-      "code": "console.log(0 == '0');\nconsole.log(0 === '0');\nconsole.log(false == 0);\nconsole.log(false === 0);\nconsole.log(42 !== '42');\n"
+      "code": "console.log(parseInt('120px', 10));\n"
+    },
+    {
+      "kind": "write",
+      "title": "parseInt 직접 사용하기",
+      "brief": [
+        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+      ],
+      "code": "const width = '320px';\n// TODO: 정수 부분을 변환해 출력하세요.\n",
+      "solutionCode": "const width = '320px';\nconsole.log(parseInt(width, 10));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "내가 작성한 코드의 출력 결과",
+          "expected": [
+            "320"
+          ]
+        }
+      ],
+      "hints": [
+        "parseInt의 RUN 코드를 다시 확인하세요.",
+        "완성한 식을 console.log로 출력하세요."
+      ]
     }
   ]
 }

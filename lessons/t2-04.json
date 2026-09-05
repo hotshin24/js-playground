@@ -4,96 +4,65 @@
   "track": "T2",
   "order": 4,
   "runtime": "js",
-  "title": "삼항 조건 연산자로 값 하나 고르기",
+  "title": "switch 조건문",
   "steps": [
     {
       "kind": "read",
-      "title": "조건에 따라 두 값 중 하나를 만듭니다",
+      "title": "switch 이해하기",
       "brief": [
-        "삼항 조건 연산자는 조건에 따라 두 값 중 하나를 고릅니다.",
+        "책에서 배운 switch을(를) 짧게 복원합니다.",
+        "아래 코드의 실행 순서와 출력값을 먼저 예상하세요.",
         {
           "code": [
-            "const result = age >= 18 ? '성인' : '미성년자';"
+            "const fruit = 'apple';",
+            "switch (fruit) {",
+            "  case 'apple':",
+            "    console.log('사과');",
+            "    break;",
+            "  default:",
+            "    console.log('알 수 없음');",
+            "}"
           ]
         },
-        "? 앞에는 조건, ? 뒤에는 조건이 true일 때의 값, : 뒤에는 false일 때의 값을 씁니다.",
-        "삼항 조건 연산자 전체가 값 하나를 만들기 때문에 변수에 바로 할당하거나 함수에서 반환할 수 있습니다.",
-        "여러 작업을 실행하거나 조건이 복잡하다면 if가 읽기 쉽습니다. 간단한 조건으로 값 하나를 고를 때 삼항 연산자가 알맞습니다.",
-        "삼항 조건 연산자를 왼쪽부터 한 덩어리로 읽지 말고 조건 ? 참일 때 값 : 거짓일 때 값의 세 칸으로 나누세요.",
-        {
-          "code": [
-            "const stock = 0;",
-            "const label = stock > 0 ? '구매' : '품절';",
-            "console.log(label);"
-          ]
-        },
-        "먼저 stock > 0을 계산하면 false입니다. 따라서 ? 뒤의 '구매'는 건너뛰고 : 뒤의 '품절'이 label에 저장됩니다.",
-        "삼항 연산자는 console.log 같은 명령 두 개를 고르는 문법이 아니라 값 두 개 중 하나를 만드는 식입니다. 만들어진 값을 변수에 저장한 뒤 출력해 확인하세요."
+        "다음 단계에서 실행하고 값을 바꾼 뒤, 마지막 단계에서 같은 문법을 직접 작성합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "배송비 값 고르기",
+      "title": "switch 실행하기",
       "brief": [
-        "price가 30000 이상이므로 shippingFee에는 0이 들어갑니다.",
-        "if와 달리 중괄호 안의 명령을 고르는 것이 아니라 0과 3000이라는 값 중 하나를 고릅니다."
+        "switch 코드가 어떤 순서로 실행되는지 확인하세요."
       ],
-      "code": "const price = 39000;\nconst shippingFee = price >= 30000 ? 0 : 3000;\n\nconsole.log(shippingFee);\nconsole.log('배송비: ' + shippingFee + '원');\n"
+      "code": "const fruit = 'apple';\nswitch (fruit) {\n  case 'apple':\n    console.log('사과');\n    break;\n  default:\n    console.log('알 수 없음');\n}\n"
     },
     {
       "kind": "tweak",
-      "title": "조건과 두 결과 확인하기",
+      "title": "조건이나 값 바꿔 보기",
       "brief": [
-        "price를 29000으로 바꾸면 조건이 false가 되어 shippingFee에 3000이 들어갑니다.",
-        "? 뒤의 0과 : 뒤의 3000을 서로 바꾸면 조건의 뜻과 결과가 맞지 않게 됩니다. 코드를 읽을 때 세 부분을 나눠 확인하세요.",
-        "삼항 연산자를 여러 번 겹치면 읽기 어려워집니다. 경우가 셋 이상이라면 if 또는 switch를 먼저 고려하세요."
+        "코드에서 값 하나를 바꾸고 다시 실행해 달라진 흐름을 확인하세요."
       ],
-      "code": "const price = 39000;\nconst shippingFee = price >= 30000 ? 0 : 3000;\n\nconsole.log(shippingFee);\nconsole.log('배송비: ' + shippingFee + '원');\n"
+      "code": "const fruit = 'apple';\nswitch (fruit) {\n  case 'apple':\n    console.log('사과');\n    break;\n  default:\n    console.log('알 수 없음');\n}\n"
     },
     {
       "kind": "write",
-      "title": "재고 여부에 따라 버튼 문구 고르기",
+      "title": "switch 직접 작성하기",
       "brief": [
-        "const stock에 4를 담으세요.",
-        "삼항 조건 연산자로 stock이 0보다 크면 '구매', 아니면 '품절'을 buyLabel에 저장하고 출력하세요."
+        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
       ],
-      "code": "const stock = 4;\n\n// buyLabel을 만들고 출력하세요.\n",
-      "solutionCode": "const stock = 4;\nconst buyLabel = stock > 0 ? '구매' : '품절';\n\nconsole.log(buyLabel);\n",
+      "code": "const grade = 'gold';\n// TODO: gold는 '골드 회원', 그 밖은 '일반 회원'을 출력하세요.\n",
+      "solutionCode": "const grade = 'gold';\nswitch (grade) {\n  case 'gold':\n    console.log('골드 회원');\n    break;\n  default:\n    console.log('일반 회원');\n}\n",
       "asserts": [
         {
           "type": "console",
-          "label": "재고가 있을 때 구매 문구 출력",
+          "label": "내가 작성한 코드의 출력 결과",
           "expected": [
-            "구매"
+            "골드 회원"
           ]
         }
       ],
       "hints": [
-        "const buyLabel = stock > 0 ? ... 형태로 시작하세요.",
-        "완성한 buyLabel을 console.log로 출력하세요."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "회원 여부에 따라 배송비 고르기",
-      "brief": [
-        "const isMember에 true를 담으세요.",
-        "삼항 조건 연산자로 회원이면 배송비 0, 아니면 3000을 deliveryFee에 저장하고 출력하세요."
-      ],
-      "code": "const isMember = true;\n\n// deliveryFee를 만들고 출력하세요.\n",
-      "solutionCode": "const isMember = true;\nconst deliveryFee = isMember ? 0 : 3000;\n\nconsole.log(deliveryFee);\n",
-      "asserts": [
-        {
-          "type": "console",
-          "label": "회원의 배송비는 0",
-          "expected": [
-            "0"
-          ]
-        }
-      ],
-      "hints": [
-        "조건 자리에는 이미 참·거짓 값인 isMember를 그대로 씁니다.",
-        "? 뒤에는 0, : 뒤에는 3000을 둡니다."
+        "switch의 RUN 코드를 다시 확인하세요.",
+        "조건과 중괄호의 범위를 먼저 확인하세요."
       ]
     }
   ]

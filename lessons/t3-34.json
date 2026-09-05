@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 2,
+  "id": "t3-34",
+  "track": "T3",
+  "order": 34,
+  "runtime": "js",
+  "title": "모듈 export와 import",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "내보낸 값만 다른 파일에서 가져올 수 있습니다",
+      "brief": [
+        "ES 모듈은 코드를 여러 파일로 나누고 필요한 값을 주고받는 표준 문법입니다.",
+        {
+          "code": [
+            "// price.js",
+            "export const shippingFee = 3000;",
+            "",
+            "// main.js",
+            "import { shippingFee } from './price.js';"
+          ]
+        },
+        "export는 현재 파일의 값을 다른 파일에서 사용할 수 있게 내보냅니다. import는 내보낸 이름을 가져옵니다.",
+        "중괄호로 가져오는 이름은 export한 이름과 같아야 합니다. 경로의 ./는 현재 파일과 같은 위치라는 뜻입니다.",
+        "모듈마다 스코프가 따로 있으므로 export하지 않은 변수는 다른 파일에서 직접 사용할 수 없습니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "두 파일을 연결해 실행하기",
+      "brief": [
+        "price.js가 addShipping 함수를 내보내고 main.js가 가져와 호출합니다.",
+        "main.js는 shippingFee를 직접 알지 못해도 내보낸 함수를 통해 계산 결과를 사용할 수 있습니다."
+      ],
+      "files": [
+        {
+          "name": "main.js",
+          "entry": true,
+          "code": [
+            "import { addShipping } from './price.js';",
+            "",
+            "console.log(addShipping(12000));",
+            ""
+          ]
+        },
+        {
+          "name": "price.js",
+          "code": [
+            "const shippingFee = 3000;",
+            "",
+            "export function addShipping(price) {",
+            "  return price + shippingFee;",
+            "}",
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "tweak",
+      "title": "내보내지 않은 이름 가져와 보기",
+      "brief": [
+        "main.js의 import에 shippingFee를 추가하면 오류가 납니다. price.js가 shippingFee를 export하지 않았기 때문입니다.",
+        "price.js의 const 앞에 export를 붙이면 가져올 수 있습니다. 파일 밖에서 사용할 값만 export하는 것이 기본입니다.",
+        "import 경로에서 ./나 .js를 빼면 이 플레이그라운드와 브라우저의 직접 실행 환경에서는 파일을 찾을 수 없습니다."
+      ],
+      "files": [
+        {
+          "name": "main.js",
+          "entry": true,
+          "code": [
+            "import { addShipping } from './price.js';",
+            "",
+            "console.log(addShipping(12000));",
+            ""
+          ]
+        },
+        {
+          "name": "price.js",
+          "code": [
+            "const shippingFee = 3000;",
+            "",
+            "export function addShipping(price) {",
+            "  return price + shippingFee;",
+            "}",
+            ""
+          ]
+        }
+      ]
+    }
+  ]
+}

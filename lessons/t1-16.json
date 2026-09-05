@@ -4,85 +4,60 @@
   "track": "T1",
   "order": 16,
   "runtime": "js",
-  "title": "종합 문제 1: 입력값의 자료형과 기본값을 문장으로 정리하기",
+  "title": "복합 대입 연산자",
   "steps": [
     {
       "kind": "read",
-      "title": "따로 배운 네 가지 작업을 한 순서로 연결하기",
+      "title": "복합 대입 연산자 이해하기",
       "brief": [
-        "이 단계에서 새로운 문법을 배우는 것은 아닙니다. 앞에서 따로 배운 기본값, 숫자 변환, 비교, 문자열 조합을 한 번에 사용하는 순서를 연습합니다.",
-        "화면의 입력칸에서 테마와 페이지 크기를 받았다고 가정해 보겠습니다. 사용자가 테마를 고르지 않았고, 페이지 크기에는 50을 입력했습니다.",
+        "책에서 방금 읽은 복합 대입 연산자을(를) 실습으로 다시 확인합니다.",
+        "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
-            "const themeInput = null;",
-            "const pageSizeInput = '50';"
+            "let point = 10;",
+            "point += 5;",
+            "console.log(point);"
           ]
         },
-        "첫 번째 값 null은 '테마를 고르지 않음'을 뜻합니다. 따라서 ??를 사용해 '기본'으로 바꿉니다.",
-        {
-          "code": [
-            "const theme = themeInput ?? '기본';",
-            "// '기본'"
-          ]
-        },
-        "두 번째 값 '50'은 숫자처럼 보이지만 따옴표가 있으므로 문자열입니다. 계산이나 숫자 비교에 사용하기 전에 Number로 바꿉니다.",
-        {
-          "code": [
-            "const pageSize = Number(pageSizeInput);",
-            "// 50"
-          ]
-        },
-        "이제 pageSize는 숫자이므로 50 이상인지 비교할 수 있습니다. 비교 결과는 true 또는 false입니다.",
-        {
-          "code": [
-            "const large = pageSize >= 50;",
-            "// true"
-          ]
-        },
-        "마지막으로 세 결과를 템플릿 리터럴에 넣어 사람이 읽을 수 있는 문장 하나로 만듭니다.",
-        {
-          "code": [
-            "const message = `${theme} / ${pageSize}개 / 큰 화면 여부: ${large}`;",
-            "console.log(message);",
-            "// '기본 / 50개 / 큰 화면 여부: true'"
-          ]
-        },
-        "정리하면 입력값 확인 → 빠진 값에 기본값 적용 → 문자열 숫자 변환 → 크기 비교 → 문장 만들기 순서입니다. 다음 실행에서는 같은 순서를 예약 정보에 적용합니다."
+        "이 레슨의 쓰기에서는 여기 나온 문법만 직접 사용합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "예약 입력값을 변환해 문장 만들기",
+      "title": "복합 대입 연산자 실행하기",
       "brief": [
-        "예약자 이름의 기본값, 문자열 인원수의 숫자 변환, 단체 여부 비교 결과를 하나의 문장에 넣으세요."
+        "코드를 실행해 복합 대입 연산자의 결과를 확인하세요."
       ],
-      "code": "const guest = null;\nconst peopleInput = '4';\nconst guestName = guest ?? '예약자 없음';\nconst people = Number(peopleInput);\nconst group = people >= 4;\nconsole.log(`${guestName} / ${people}명 / 단체 여부: ${group}`);\n"
+      "code": "let point = 10;\npoint += 5;\nconsole.log(point);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "값을 바꾸어 결과 비교하기",
+      "brief": [
+        "코드의 값 하나를 바꾼 뒤 다시 실행하세요. 무엇을 바꾸었고 출력이 왜 달라졌는지 말로 설명해 보세요."
+      ],
+      "code": "let point = 10;\npoint += 5;\nconsole.log(point);\n"
     },
     {
       "kind": "write",
-      "title": "사용자 정보를 안내 문장으로 출력하기",
+      "title": "복합 대입 연산자 직접 사용하기",
       "brief": [
-        "name이 null이면 '손님'을 사용하고 빈 문자열은 유지하세요. age를 Number로 바꾼 뒤 19 이상인지 비교하세요. 이름 / 나이세 / 성인 여부: 비교결과 형식으로 출력하세요.",
-        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
-        "이 문제는 이름과 나이의 세 조합을 처리합니다. \"민수\"와 \"20\"으로 출력한 다음, null과 \"17\"로 다시 처리하고, 마지막으로 빈 문자열과 \"19\"로 처리하세요. name과 age가 바뀌어도 앞에서 계산해 둔 값이 자동으로 바뀌지는 않습니다.",
-        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
       ],
-      "code": "let name = \"민수\";\nlet age = \"20\";\n// 이름 \"민수\", 나이 \"20\"으로 안내 문장을 만들어 출력하세요.\n\nname = null;\nage = \"17\";\n// 이름이 null이고 나이가 \"17\"인 경우입니다.\n// 기본 이름을 적용하고, 바뀐 나이로 다시 계산해 안내 문장을 출력하세요.\n\nname = \"\";\nage = \"19\";\n// 이름이 빈 문자열이고 나이가 \"19\"인 경우입니다.\n// 빈 문자열을 유지하고, 바뀐 나이로 다시 계산해 안내 문장을 출력하세요.\n",
-      "solutionCode": "let name = \"민수\";\nlet age = \"20\";\nlet normalizedName = name ?? '손님';\nlet normalizedAge = Number(age);\nlet adult = normalizedAge >= 19;\nconsole.log(`${normalizedName} / ${normalizedAge}세 / 성인 여부: ${adult}`);\n\nname = null;\nage = \"17\";\nnormalizedName = name ?? '손님';\nnormalizedAge = Number(age);\nadult = normalizedAge >= 19;\nconsole.log(`${normalizedName} / ${normalizedAge}세 / 성인 여부: ${adult}`);\n\nname = \"\";\nage = \"19\";\nnormalizedName = name ?? '손님';\nnormalizedAge = Number(age);\nadult = normalizedAge >= 19;\nconsole.log(`${normalizedName} / ${normalizedAge}세 / 성인 여부: ${adult}`);\n",
+      "code": "let balance = 10000;\n// TODO: +=로 5000을 더하고 출력하세요.\n",
+      "solutionCode": "let balance = 10000;\nbalance += 5000;\nconsole.log(balance);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "직접 작성한 코드의 출력 순서와 값",
+          "label": "내가 작성한 코드의 출력 결과",
           "expected": [
-            "민수 / 20세 / 성인 여부: true",
-            "손님 / 17세 / 성인 여부: false",
-            " / 19세 / 성인 여부: true"
+            "15000"
           ]
         }
       ],
       "hints": [
-        "name이 null이면 '손님'을 사용하고 빈 문자열은 유지하세요. age를 Number로 바꾼 뒤 19 이상인지 비교하세요. 이름 / 나이세 / 성인 여부: 비교결과 형식으로 출력하세요.",
-        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+        "복합 대입 연산자의 RUN 코드를 다시 확인하세요.",
+        "완성한 식을 console.log로 출력하세요."
       ]
     }
   ]

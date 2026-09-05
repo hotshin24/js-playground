@@ -4,57 +4,55 @@
   "track": "T1",
   "order": 26,
   "runtime": "js",
-  "title": "종합 문제 11: 계산 결과를 제한값과 비교하기",
+  "title": "작은 복습 4: 입력 여부를 불리언으로 확인하기",
   "steps": [
     {
       "kind": "read",
-      "title": "합계를 구한 다음 최대값과 비교하기",
+      "title": "입력 내용이 있는지 불리언으로 확인하기",
       "brief": [
-        "회의실에는 6명이 있고 2명이 더 들어오려고 합니다. 정원 10명을 넘지 않는지 확인합니다.",
+        "Boolean은 값을 true 또는 false로 바꿉니다. 내용이 있는 문자열은 true, 빈 문자열은 false가 됩니다.",
         {
           "code": [
-            "const currentPeople = 6;",
-            "const incomingPeople = 2;",
-            "const capacity = 10;",
-            "const total = currentPeople + incomingPeople;",
-            "console.log(total <= capacity); // true"
+            "const phone = '010-1234-5678';",
+            "const emptyPhone = '';",
+            "console.log(Boolean(phone)); // true",
+            "console.log(Boolean(emptyPhone)); // false"
           ]
         },
-        "합계 8은 정원 10 이하이므로 true입니다. 합계가 정원과 같은 경우도 허용하려면 <가 아닌 <=를 사용해야 합니다.",
+        "여기서는 전화번호 형식이 올바른지 검사하지 않습니다. 문자열에 내용이 있는지만 확인합니다. 공백 하나인 ' '도 빈 문자열이 아니므로 true입니다.",
         "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "파일 용량 제한 확인하기",
+      "title": "배송 요청사항 입력 여부 확인하기",
       "brief": [
-        "기존 용량과 새 파일 용량을 더해 저장 한도 이하인지 비교하세요."
+        "빈 문자열과 글자가 있는 문자열을 Boolean으로 바꿔 결과를 비교하세요."
       ],
-      "code": "const usedStorage = 70;\nconst newFileSize = 20;\nconst storageLimit = 100;\nconsole.log(usedStorage + newFileSize <= storageLimit);\n"
+      "code": "const emptyRequest = '';\nconst writtenRequest = '경비실에 맡겨 주세요';\nconsole.log(Boolean(emptyRequest));\nconsole.log(Boolean(writtenRequest));\n"
     },
     {
       "kind": "write",
-      "title": "창고에 입고할 수 있는지 비교하기",
+      "title": "배송 메모 입력 여부 확인하기",
       "brief": [
-        "currentStock과 incomingStock의 합이 capacity 이하인지 비교해 출력하세요. 용량과 같아도 입고할 수 있습니다.",
-        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
+        "memo를 Boolean으로 바꿔 출력하세요. 내용이 있으면 true, 빈 문자열이면 false입니다.",
+        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
         "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
-      "code": "let currentStock = 70;\nlet incomingStock = 20;\nlet capacity = 100;\n// 현재 재고 70개에 20개를 더 입고할 수 있는지, 용량 100개와 비교해 출력하세요.\n\ncurrentStock = 80;\nincomingStock = 20;\ncapacity = 100;\n// 현재 재고가 80개로 바뀌었습니다. 20개를 더 입고할 수 있는지 다시 비교해 출력하세요.\n\ncurrentStock = 90;\nincomingStock = 20;\ncapacity = 100;\n// 현재 재고가 90개로 바뀌었습니다. 20개를 더 입고할 수 있는지 다시 비교해 출력하세요.\n",
-      "solutionCode": "let currentStock = 70;\nlet incomingStock = 20;\nlet capacity = 100;\nconsole.log(currentStock + incomingStock <= capacity);\n\ncurrentStock = 80;\nincomingStock = 20;\ncapacity = 100;\nconsole.log(currentStock + incomingStock <= capacity);\n\ncurrentStock = 90;\nincomingStock = 20;\ncapacity = 100;\nconsole.log(currentStock + incomingStock <= capacity);\n",
+      "code": "let memo = \"문 앞에 두세요\";\n// 메모 \"문 앞에 두세요\"의 입력 여부를 불리언으로 변환해 출력하세요.\n\nmemo = \"\";\n// 메모가 빈 문자열로 바뀌었습니다. 현재 값의 입력 여부를 불리언으로 변환해 출력하세요.\n",
+      "solutionCode": "let memo = \"문 앞에 두세요\";\nconsole.log(Boolean(memo));\n\nmemo = \"\";\nconsole.log(Boolean(memo));\n",
       "asserts": [
         {
           "type": "console",
           "label": "직접 작성한 코드의 출력 순서와 값",
           "expected": [
             "true",
-            "true",
             "false"
           ]
         }
       ],
       "hints": [
-        "currentStock과 incomingStock의 합이 capacity 이하인지 비교해 출력하세요. 용량과 같아도 입고할 수 있습니다.",
+        "memo를 Boolean으로 바꿔 출력하세요. 내용이 있으면 true, 빈 문자열이면 false입니다.",
         "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
       ]
     }

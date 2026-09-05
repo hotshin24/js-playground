@@ -1,1 +1,73 @@
-{"schemaVersion":2,"id":"t2-22","track":"T2","order":22,"runtime":"js","title":"종합 문제 6: 반복할 때 계산값 누적하기","steps":[{"kind":"read","title":"날짜별 방문자 수를 누적하는 과정 읽기","brief":["반복문 밖에 total을 만들고 매 반복마다 값을 더합니다.","반복이 끝난 뒤 total을 사용하려면 변수를 반복문 밖에 선언해야 합니다."]},{"kind":"run","title":"네 구간의 생산량 누적하기","brief":["1부터 4까지 반복하며 counter * 3을 합계에 더하세요."],"code":"let productionTotal = 0;\nfor (let section = 1; section <= 4; section += 1) {\n  productionTotal += section * 3;\n}\nconsole.log(productionTotal);\n"},{"kind":"write","title":"총 작업 시간 반환하기","brief":["calculateTaskMinutes(count)를 작성하세요.","1부터 count까지 반복하며 counter * 2를 total에 더하세요."],"code":"// calculateTaskMinutes 함수를 작성하세요.\n","entry":"calculateTaskMinutes","solutionCode":"function calculateTaskMinutes(count) {\n  let total = 0;\n  for (let counter = 1; counter <= count; counter += 1) {\n    total += counter * 2;\n  }\n  return total;\n}\n","asserts":[{"type":"value","label":"작업 3개","args":[3],"expected":12},{"type":"value","label":"작업 1개","args":[1],"expected":2},{"type":"value","label":"작업 없음","args":[0],"expected":0}],"hints":["let total = 0을 반복문 앞에 두세요.","반복문 안에서 total += counter * 2를 실행하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t2-22",
+  "track": "T2",
+  "order": 22,
+  "runtime": "js",
+  "title": "작은 종합 문제 2: 조건에 따라 배송비 반환하기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "연체 일수로 연체료를 정하는 과정 읽기",
+      "brief": [
+        "연체가 7일 이상이면 5000원, 아니면 0원을 반환한다고 가정합니다.",
+        {
+          "code": [
+            "getLateFee(8); // 5000",
+            "getLateFee(2); // 0"
+          ]
+        },
+        "if의 조건이 맞으면 그 자리에서 값을 반환할 수 있습니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "구매 금액으로 사은품 수량 정하기",
+      "brief": [
+        "구매 금액이 100000원 이상이면 1, 아니면 0을 반환하세요."
+      ],
+      "code": "function getGiftCount(purchaseAmount) {\n  if (purchaseAmount >= 100000) return 1;\n  return 0;\n}\nconsole.log(getGiftCount(120000));\nconsole.log(getGiftCount(70000));\n"
+    },
+    {
+      "kind": "write",
+      "title": "배송비 반환하기",
+      "brief": [
+        "getShippingFee(orderAmount)를 작성하세요.",
+        "50000원 이상이면 0, 아니면 3000을 반환하세요."
+      ],
+      "code": "// getShippingFee 함수를 작성하세요.\n",
+      "entry": "getShippingFee",
+      "solutionCode": "function getShippingFee(orderAmount) {\n  if (orderAmount >= 50000) return 0;\n  return 3000;\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "무료 배송",
+          "args": [
+            60000
+          ],
+          "expected": 0
+        },
+        {
+          "type": "value",
+          "label": "경계값",
+          "args": [
+            50000
+          ],
+          "expected": 0
+        },
+        {
+          "type": "value",
+          "label": "일반 배송",
+          "args": [
+            30000
+          ],
+          "expected": 3000
+        }
+      ],
+      "hints": [
+        "orderAmount >= 50000을 if 조건으로 사용하세요.",
+        "조건 밖에서는 3000을 반환하세요."
+      ]
+    }
+  ]
+}

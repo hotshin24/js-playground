@@ -1,1 +1,46 @@
-{"schemaVersion":2,"id":"t3-33","track":"T3","order":33,"runtime":"js","title":"종합 문제 15: 복사한 배열을 기준값에 따라 정렬하기","steps":[{"kind":"read","title":"직원을 점수순으로 정렬하는 과정 읽기","brief":["sort는 배열 자체의 순서를 바꾸므로 원본을 지키려면 먼저 전개 문법으로 복사합니다.","숫자 오름차순 비교 함수는 (a, b) => a - b 형태입니다."]},{"kind":"run","title":"작업을 소요 시간순으로 정렬하기","brief":["원본을 복사하고 duration이 작은 순서로 정렬하세요."],"code":"const jobs = [{ title: '검수', duration: 30 }, { title: '포장', duration: 10 }];\nconst sortedJobs = [...jobs].sort((a, b) => a.duration - b.duration);\nconsole.log(sortedJobs);\nconsole.log(jobs);\n"},{"kind":"write","title":"가격 오름차순 배열 반환하기","brief":["sortByPrice(products)를 작성하세요.","전개 연산자로 복사한 배열을 price 오름차순으로 정렬해 반환하세요."],"code":"// sortByPrice 함수를 작성하세요.\n","entry":"sortByPrice","solutionCode":"function sortByPrice(products) {\n  return [...products].sort((a, b) => a.price - b.price);\n}\n","asserts":[{"type":"value","label":"세 상품 정렬","args":[[{"name":"의자","price":30000},{"name":"컵","price":10000},{"name":"램프","price":20000}]],"expected":[{"name":"컵","price":10000},{"name":"램프","price":20000},{"name":"의자","price":30000}]},{"type":"value","label":"빈 상품 목록","args":[[]],"expected":[]}],"hints":["[...products]로 새 배열을 만드세요.","sort 비교 함수에서 a.price - b.price를 반환하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t3-33",
+  "track": "T3",
+  "order": 33,
+  "runtime": "js",
+  "title": "Date",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "Date는 한 시점을 나타내는 객체입니다",
+      "brief": [
+        "new Date()는 현재 날짜와 시간을 가진 Date 객체를 만듭니다. 정해진 시점은 new Date('2026-08-23T09:30:00')처럼 만들 수 있습니다.",
+        "getFullYear, getMonth, getDate, getHours 같은 메서드로 각 부분을 읽습니다.",
+        {
+          "code": [
+            "date.getFullYear();",
+            "date.getMonth() + 1;",
+            "date.getDate();"
+          ]
+        },
+        "getMonth는 1월을 0으로 세므로 사람이 쓰는 월로 표시할 때 1을 더합니다. getDate는 월 안의 날짜입니다.",
+        "Date의 set 메서드는 원본 Date 객체를 바꿉니다. 원본을 지키려면 new Date(original)로 복사한 뒤 수정합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "날짜의 각 부분 확인하기",
+      "brief": [
+        "문자열에 시간대가 없으므로 현재 실행 환경의 지역 시간으로 2026년 8월 23일 9시 30분을 만듭니다.",
+        "getMonth 결과에 1을 더해 8월로 표시합니다."
+      ],
+      "code": "const date = new Date('2026-08-23T09:30:00');\n\nconsole.log(date.getFullYear());\nconsole.log(date.getMonth() + 1);\nconsole.log(date.getDate());\nconsole.log(date.getHours());\nconsole.log(date.getMinutes());\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "복사한 날짜만 변경하기",
+      "brief": [
+        "const tomorrow = new Date(date);를 추가하고 tomorrow.setDate(tomorrow.getDate() + 1)을 실행하세요.",
+        "date는 23일로 남고 tomorrow는 24일이 됩니다. Date도 객체이므로 const tomorrow = date라고 쓰면 같은 객체를 공유합니다.",
+        "날짜 문자열의 시간대가 중요할 때는 Z나 시간대 오프셋을 명시해야 합니다. 지금은 Date 객체의 기본 생성·조회·변경만 다룹니다."
+      ],
+      "code": "const date = new Date('2026-08-23T09:30:00');\n\nconsole.log(date.getFullYear());\nconsole.log(date.getMonth() + 1);\nconsole.log(date.getDate());\nconsole.log(date.getHours());\nconsole.log(date.getMinutes());\n"
+    }
+  ]
+}

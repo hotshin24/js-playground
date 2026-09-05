@@ -1,1 +1,107 @@
-{"schemaVersion":2,"id":"t3-23","track":"T3","order":23,"runtime":"js","title":"종합 문제 5: 원시값을 복사한 뒤 서로 따로 변경하기","steps":[{"kind":"read","title":"복사한 점수 값의 변화 읽기","brief":["숫자 같은 원시값은 변수에 복사한 뒤 한쪽을 바꿔도 원본이 바뀌지 않습니다.","두 변수가 같은 숫자로 시작했어도 이후에는 각각의 값을 가집니다."]},{"kind":"run","title":"복사한 온도만 변경하기","brief":["원본 온도를 다른 변수에 복사하고 복사본에만 2를 더하세요."],"code":"const measuredTemperature = 21;\nlet adjustedTemperature = measuredTemperature;\nadjustedTemperature += 2;\nconsole.log(measuredTemperature, adjustedTemperature);\n"},{"kind":"write","title":"원시값 복사 결과 반환하기","brief":["copyAndIncrease(value)를 작성하세요.","value를 copied에 복사하고 1을 더한 뒤 original과 copied를 객체로 반환하세요."],"code":"// copyAndIncrease 함수를 작성하세요.\n","entry":"copyAndIncrease","solutionCode":"function copyAndIncrease(value) {\n  const original = value;\n  let copied = original;\n  copied += 1;\n  return { original, copied };\n}\n","asserts":[{"type":"value","label":"5 복사","args":[5],"expected":{"original":5,"copied":6}},{"type":"value","label":"0 복사","args":[0],"expected":{"original":0,"copied":1}}],"hints":["let copied = original로 복사하세요.","copied만 1 늘려 객체로 반환하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t3-23",
+  "track": "T3",
+  "order": 23,
+  "runtime": "js",
+  "title": "전개 연산자로 객체 복사",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "겉에 있는 프로퍼티를 새 객체에 펼칩니다",
+      "brief": [
+        "객체 앞에 ...을 쓰면 객체의 프로퍼티를 다른 객체 안에 펼칠 수 있습니다. 이를 전개 연산자라고 합니다.",
+        {
+          "code": [
+            "const original = { name: '셔츠', price: 39000 };",
+            "const copied = { ...original };",
+            "copied.price = 42000;"
+          ]
+        },
+        "copied는 새 객체이므로 copied.price를 바꿔도 original.price는 바뀌지 않습니다. original === copied도 false입니다.",
+        "하지만 전개 연산자는 한 단계의 프로퍼티만 복사합니다. 객체 안에 또 객체가 있으면 안쪽 객체의 참조는 그대로 공유합니다.",
+        "이처럼 겉의 한 단계만 새로 복사하는 것을 얕은 복사라고 합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "겉 객체와 안쪽 객체 비교하기",
+      "brief": [
+        "original과 copied는 서로 다른 객체이므로 첫 비교는 false입니다.",
+        "두 객체의 detail은 같은 안쪽 객체를 가리키므로 둘째 비교는 true입니다."
+      ],
+      "code": "const original = {\n  name: '셔츠',\n  detail: { color: '파랑' },\n};\n\nconst copied = { ...original };\n\nconsole.log(original === copied);\nconsole.log(original.detail === copied.detail);\n\ncopied.name = '모자';\ncopied.detail.color = '빨강';\n\nconsole.log(original.name);\nconsole.log(original.detail.color);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "중첩 객체도 따로 복사하기",
+      "brief": [
+        "copied를 { ...original, detail: { ...original.detail } }로 바꾸고 실행해 보세요.",
+        "이제 detail도 새 객체가 되므로 copied.detail.color를 바꿔도 original의 색상은 파랑으로 남습니다.",
+        "중첩된 모든 값을 무조건 복사하기보다 바꿀 객체가 있는 단계마다 새 객체를 만드는 방식을 사용합니다."
+      ],
+      "code": "const original = {\n  name: '셔츠',\n  detail: { color: '파랑' },\n};\n\nconst copied = { ...original };\n\nconsole.log(original === copied);\nconsole.log(original.detail === copied.detail);\n\ncopied.name = '모자';\ncopied.detail.color = '빨강';\n\nconsole.log(original.name);\nconsole.log(original.detail.color);\n"
+    },
+    {
+      "kind": "fill",
+      "title": "중첩 객체를 안전하게 복사하기",
+      "brief": [
+        "상품 객체를 받아 새 객체를 반환하세요. 겉 객체뿐 아니라 detail도 새 객체여야 합니다.",
+        "함수 안의 null만 전개 연산자를 사용한 객체로 바꾸세요. 원본의 name과 detail.color는 그대로 유지되어야 합니다."
+      ],
+      "code": "function copyProduct(product) {\n  return null; // 이 줄을 바꾸세요\n}\n\nfunction checkCopy(product) {\n  const copied = copyProduct(product);\n  return [copied, copied !== product, copied && copied.detail !== product.detail];\n}\n",
+      "entry": "checkCopy",
+      "solutionCode": "function copyProduct(product) {\n  return { ...product, detail: { ...product.detail } };\n}\n\nfunction checkCopy(product) {\n  const copied = copyProduct(product);\n  return [copied, copied !== product, copied.detail !== product.detail];\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "값을 유지하고 두 객체를 새로 만듦",
+          "args": [
+            {
+              "name": "셔츠",
+              "detail": {
+                "color": "파랑"
+              }
+            }
+          ],
+          "expected": [
+            {
+              "name": "셔츠",
+              "detail": {
+                "color": "파랑"
+              }
+            },
+            true,
+            true
+          ]
+        },
+        {
+          "type": "value",
+          "label": "다른 상품도 같은 방식으로 복사함",
+          "args": [
+            {
+              "name": "신발",
+              "detail": {
+                "color": "흰색"
+              }
+            }
+          ],
+          "expected": [
+            {
+              "name": "신발",
+              "detail": {
+                "color": "흰색"
+              }
+            },
+            true,
+            true
+          ]
+        }
+      ],
+      "hints": [
+        "겉 객체는 { ...product }로 복사합니다.",
+        "detail 프로퍼티에는 { ...product.detail }로 만든 새 객체를 덮어쓰세요."
+      ]
+    }
+  ]
+}

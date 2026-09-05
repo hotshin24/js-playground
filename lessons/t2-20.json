@@ -1,1 +1,67 @@
-{"schemaVersion":2,"id":"t2-20","track":"T2","order":20,"runtime":"js","title":"종합 문제 4: 정해진 값마다 다른 결과 반환하기","steps":[{"kind":"read","title":"회원 등급별 문구를 고르는 과정 읽기","brief":["switch로 'gold', 'silver'처럼 정해진 값을 case별로 나눌 수 있습니다.","어느 case에도 맞지 않을 때는 default를 사용합니다."]},{"kind":"run","title":"문의 상태별 문구 반환하기","brief":["문의 상태 코드를 switch로 나눠 문구를 반환하세요."],"code":"function getTicketMessage(status) {\n  switch (status) {\n    case 'open': return '접수';\n    case 'checking': return '확인 중';\n    case 'closed': return '처리 완료';\n    default: return '알 수 없음';\n  }\n}\nconsole.log(getTicketMessage('checking'));\n"},{"kind":"write","title":"주문 상태 문구 반환하기","brief":["getOrderMessage(status)를 작성하세요.","paid, shipping, done과 그 밖의 값을 각각 처리하세요."],"code":"// getOrderMessage 함수를 작성하세요.\n","entry":"getOrderMessage","solutionCode":"function getOrderMessage(status) {\n  switch (status) {\n    case 'paid': return '결제 완료';\n    case 'shipping': return '배송 중입니다';\n    case 'done': return '배송 완료';\n    default: return '상태 확인 중';\n  }\n}\n","asserts":[{"type":"value","label":"결제 완료","args":["paid"],"expected":"결제 완료"},{"type":"value","label":"배송 중","args":["shipping"],"expected":"배송 중입니다"},{"type":"value","label":"알 수 없는 상태","args":["ready"],"expected":"상태 확인 중"}],"hints":["switch (status)를 작성하세요.","default에서 '상태 확인 중'을 반환하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t2-20",
+  "track": "T2",
+  "order": 20,
+  "runtime": "js",
+  "title": "let·const와 var의 스코프",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "var와 블록 스코프 이해하기",
+      "brief": [
+        "책에서 배운 var와 블록 스코프을(를) 짧게 복원합니다.",
+        "아래 코드의 실행 순서와 출력값을 먼저 예상하세요.",
+        {
+          "code": [
+            "if (true) {",
+            "  let blockLet = 'let';",
+            "  var functionVar = 'var';",
+            "  console.log(blockLet);",
+            "}",
+            "console.log(functionVar);"
+          ]
+        },
+        "다음 단계에서 실행하고 값을 바꾼 뒤, 마지막 단계에서 같은 문법을 직접 작성합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "var와 블록 스코프 실행하기",
+      "brief": [
+        "var와 블록 스코프 코드가 어떤 순서로 실행되는지 확인하세요."
+      ],
+      "code": "if (true) {\n  let blockLet = 'let';\n  var functionVar = 'var';\n  console.log(blockLet);\n}\nconsole.log(functionVar);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "조건이나 값 바꿔 보기",
+      "brief": [
+        "코드에서 값 하나를 바꾸고 다시 실행해 달라진 흐름을 확인하세요."
+      ],
+      "code": "if (true) {\n  let blockLet = 'let';\n  var functionVar = 'var';\n  console.log(blockLet);\n}\nconsole.log(functionVar);\n"
+    },
+    {
+      "kind": "write",
+      "title": "var와 블록 스코프 직접 작성하기",
+      "brief": [
+        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+      ],
+      "code": "// TODO: 블록 안에서 var value에 '보임'을 대입하고 블록 밖에서 출력하세요.\n",
+      "solutionCode": "if (true) {\n  var value = '보임';\n}\nconsole.log(value);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "내가 작성한 코드의 출력 결과",
+          "expected": [
+            "보임"
+          ]
+        }
+      ],
+      "hints": [
+        "var와 블록 스코프의 RUN 코드를 다시 확인하세요.",
+        "조건과 중괄호의 범위를 먼저 확인하세요."
+      ]
+    }
+  ]
+}

@@ -4,37 +4,62 @@
   "track": "T1",
   "order": 9,
   "runtime": "js",
-  "title": "JavaScript가 자동으로 자료형을 바꿀 때",
+  "title": "undefined 이해하기",
   "steps": [
     {
       "kind": "read",
-      "title": "연산 과정에서 자동 변환이 일어납니다",
+      "title": "undefined 이해하기",
       "brief": [
-        "연산을 처리하기 위해 JavaScript가 자료형을 자동으로 바꾸는 일을 암시적 형변환이라고 합니다.",
-        { "code": ["1 + '2'; // '12'", "1 - '2'; // -1"] },
-        "+는 숫자 덧셈과 문자열 연결에 모두 쓰입니다. 한쪽이 문자열이면 문자열 연결을 선택해 1을 '1'로 바꿉니다.",
-        "-는 문자열 연결에 쓰이지 않습니다. 따라서 '2'를 숫자 2로 바꾼 뒤 뺄셈을 합니다.",
-        "자동 변환 규칙을 이용한 짧은 코드보다 Number나 String으로 의도를 드러낸 코드가 이해하기 쉽습니다."
+        "책에서 방금 읽은 undefined을(를) 실습으로 다시 확인합니다.",
+        "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
+        {
+          "code": [
+            "let result;",
+            "console.log(result);",
+            "console.log(typeof result);"
+          ]
+        },
+        "이 레슨의 쓰기에서는 여기 나온 문법만 직접 사용합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "더하기와 빼기 결과 비교하기",
+      "title": "undefined 실행하기",
       "brief": [
-        "첫 결과는 문자열 '12'이고 둘째 결과는 숫자 -1입니다.",
-        "console.log에는 따옴표가 표시되지 않으므로 typeof도 함께 출력해 자료형을 확인합니다."
+        "코드를 실행해 undefined의 결과를 확인하세요."
       ],
-      "code": "const added = 1 + '2';\nconst subtracted = 1 - '2';\n\nconsole.log(added);\nconsole.log(typeof added);\nconsole.log(subtracted);\nconsole.log(typeof subtracted);\n"
+      "code": "let result;\nconsole.log(result);\nconsole.log(typeof result);\n"
     },
     {
       "kind": "tweak",
-      "title": "명시적 형변환으로 결과 정하기",
+      "title": "값을 바꾸어 결과 비교하기",
       "brief": [
-        "1 + '2'를 1 + Number('2')로 바꾸면 결과는 숫자 3이 됩니다.",
-        "1 - '2'를 String(1) + '2'로 바꾸면 연산자도 +로 바뀌어야 문자열 '12'를 만들 수 있습니다.",
-        "결과를 예상하기 어렵다면 JavaScript의 자동 변환에 맡기지 말고 원하는 자료형을 직접 적으세요."
+        "코드의 값 하나를 바꾼 뒤 다시 실행하세요. 무엇을 바꾸었고 출력이 왜 달라졌는지 말로 설명해 보세요."
       ],
-      "code": "const added = 1 + '2';\nconst subtracted = 1 - '2';\n\nconsole.log(added);\nconsole.log(typeof added);\nconsole.log(subtracted);\nconsole.log(typeof subtracted);\n"
+      "code": "let result;\nconsole.log(result);\nconsole.log(typeof result);\n"
+    },
+    {
+      "kind": "write",
+      "title": "undefined 직접 사용하기",
+      "brief": [
+        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+      ],
+      "code": "let message;\n// TODO: 값과 자료형을 출력하세요.\n",
+      "solutionCode": "let message;\nconsole.log(message);\nconsole.log(typeof message);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "내가 작성한 코드의 출력 결과",
+          "expected": [
+            "undefined",
+            "undefined"
+          ]
+        }
+      ],
+      "hints": [
+        "undefined의 RUN 코드를 다시 확인하세요.",
+        "완성한 식을 console.log로 출력하세요."
+      ]
     }
   ]
 }

@@ -1,26 +1,63 @@
 {
-  "schemaVersion": 2, "id": "t3-04", "track": "T3", "order": 4, "runtime": "js",
-  "title": "배열로 값의 순서 저장하기",
+  "schemaVersion": 2,
+  "id": "t3-04",
+  "track": "T3",
+  "order": 4,
+  "runtime": "js",
+  "title": "대괄호 표기법으로 프로퍼티 접근하기",
   "steps": [
     {
-      "kind": "read", "title": "배열은 순서가 있는 값의 모음입니다",
+      "kind": "read",
+      "title": "대괄호 표기법 이해하기",
       "brief": [
-        "배열(array)은 여러 값을 순서대로 저장합니다. 대괄호 안에 값을 쉼표로 나누어 작성합니다.",
-        { "code": ["const products = ['셔츠', '모자', '신발'];"] },
-        "각 값의 위치 번호를 인덱스라고 합니다. 인덱스는 0부터 시작하므로 products[0]은 셔츠이고 products[2]는 신발입니다.",
-        "배열의 length 프로퍼티는 들어 있는 값의 개수입니다. 위 배열의 products.length는 3입니다.",
-        "배열도 객체 타입에 속합니다. typeof []는 object가 나오므로 배열인지 정확히 확인할 때는 Array.isArray를 사용합니다."
+        "책 PDF 4에서 배운 대괄호 표기법을(를) 짧게 다시 확인합니다.",
+        "아래 코드에서 객체 또는 배열의 어느 값에 접근하는지 먼저 찾으세요.",
+        {
+          "code": [
+            "const user = { name: '민수', age: 25 };",
+            "console.log(user['name']);"
+          ]
+        },
+        "RUN, TWEAK, WRITE 순서로 같은 개념을 반복합니다."
       ]
     },
     {
-      "kind": "run", "title": "인덱스와 길이 확인하기",
-      "brief": ["첫 값의 인덱스는 0이고 마지막 값의 인덱스는 length - 1입니다.", "존재하지 않는 products[3]을 읽으면 오류가 아니라 undefined가 나옵니다."],
-      "code": "const products = ['셔츠', '모자', '신발'];\n\nconsole.log(products[0]);\nconsole.log(products[2]);\nconsole.log(products.length);\nconsole.log(products[3]);\nconsole.log(Array.isArray(products));\n"
+      "kind": "run",
+      "title": "대괄호 표기법 실행하기",
+      "brief": [
+        "코드를 실행해 대괄호 표기법의 결과를 확인하세요."
+      ],
+      "code": "const user = { name: '민수', age: 25 };\nconsole.log(user['name']);\n"
     },
     {
-      "kind": "tweak", "title": "배열 값 바꾸기",
-      "brief": ["products[1] = '가방';을 추가하면 둘째 값이 모자에서 가방으로 바뀝니다.", "products[3] = '양말';을 추가하면 네 번째 값이 생기고 length는 4가 됩니다.", "const 배열도 배열 안의 값은 바꿀 수 있습니다. 변수 products 자체를 다른 배열로 재할당할 수 없다는 뜻입니다."],
-      "code": "const products = ['셔츠', '모자', '신발'];\n\nconsole.log(products[0]);\nconsole.log(products[2]);\nconsole.log(products.length);\nconsole.log(products[3]);\nconsole.log(Array.isArray(products));\n"
+      "kind": "tweak",
+      "title": "값을 바꾸어 결과 비교하기",
+      "brief": [
+        "객체나 배열의 값 하나를 바꾸고 다시 실행해 결과를 비교하세요."
+      ],
+      "code": "const user = { name: '민수', age: 25 };\nconsole.log(user['name']);\n"
+    },
+    {
+      "kind": "write",
+      "title": "대괄호 표기법 직접 작성하기",
+      "brief": [
+        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+      ],
+      "code": "const product = { price: 12000 };\n// TODO: 대괄호 표기법으로 price를 출력하세요.\n",
+      "solutionCode": "const product = { price: 12000 };\nconsole.log(product['price']);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "내가 작성한 코드의 출력 결과",
+          "expected": [
+            "12000"
+          ]
+        }
+      ],
+      "hints": [
+        "대괄호 표기법의 RUN 코드를 다시 확인하세요.",
+        "접근할 key 또는 index를 정확히 확인하세요."
+      ]
     }
   ]
 }

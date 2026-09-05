@@ -4,37 +4,60 @@
   "track": "T1",
   "order": 8,
   "runtime": "js",
-  "title": "원하는 자료형으로 직접 바꾸기",
+  "title": "null로 값이 없음을 나타내기",
   "steps": [
     {
       "kind": "read",
-      "title": "직접 바꾸면 의도가 분명합니다",
+      "title": "null 이해하기",
       "brief": [
-        "값의 자료형을 다른 자료형으로 바꾸는 일을 형변환이라고 합니다. 개발자가 Number, String, Boolean을 써서 직접 바꾸면 명시적 형변환입니다.",
-        { "code": ["Number('42');   // 숫자 42", "String(42);     // 문자열 '42'", "Boolean(1);    // true"] },
-        "Number는 숫자 모양의 문자열을 숫자로 바꿉니다. 바꿀 수 없는 문자열은 NaN이 됩니다.",
-        "String은 값을 문자열로 바꿉니다. Boolean은 값이 참처럼 취급되는지 거짓처럼 취급되는지에 따라 true 또는 false로 바꿉니다.",
-        "Boolean의 자세한 규칙은 T1-14에서 배웁니다. 지금은 1은 true, 0은 false가 된다는 예만 확인합니다."
+        "책에서 방금 읽은 null을(를) 실습으로 다시 확인합니다.",
+        "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
+        {
+          "code": [
+            "const selected = null;",
+            "console.log(selected);"
+          ]
+        },
+        "이 레슨의 쓰기에서는 여기 나온 문법만 직접 사용합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "변환 전후를 나란히 보기",
+      "title": "null 실행하기",
       "brief": [
-        "Number('12000')은 숫자 12000이므로 3000을 더하면 15000입니다.",
-        "String(12000)은 문자열이므로 뒤에 '원'을 이어 붙일 수 있습니다."
+        "코드를 실행해 null의 결과를 확인하세요."
       ],
-      "code": "const priceText = '12000';\nconst price = Number(priceText);\n\nconsole.log(price + 3000);\nconsole.log(String(price) + '원');\nconsole.log(Boolean(1));\nconsole.log(Boolean(0));\n"
+      "code": "const selected = null;\nconsole.log(selected);\n"
     },
     {
       "kind": "tweak",
-      "title": "바꿀 수 없는 값 확인하기",
+      "title": "값을 바꾸어 결과 비교하기",
       "brief": [
-        "priceText의 '12000'을 '만원'으로 바꾸고 실행해 보세요. Number('만원')은 숫자로 바꿀 수 없어 NaN이 됩니다.",
-        "사용자가 입력한 값은 보통 문자열입니다. 계산 전에 Number로 바꿀 때는 결과가 NaN인지 확인해야 합니다.",
-        "형변환 함수를 코드에 직접 적으면 어떤 자료형을 원하는지 읽는 사람도 알 수 있습니다."
+        "코드의 값 하나를 바꾼 뒤 다시 실행하세요. 무엇을 바꾸었고 출력이 왜 달라졌는지 말로 설명해 보세요."
       ],
-      "code": "const priceText = '12000';\nconst price = Number(priceText);\n\nconsole.log(price + 3000);\nconsole.log(String(price) + '원');\nconsole.log(Boolean(1));\nconsole.log(Boolean(0));\n"
+      "code": "const selected = null;\nconsole.log(selected);\n"
+    },
+    {
+      "kind": "write",
+      "title": "null 직접 사용하기",
+      "brief": [
+        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+      ],
+      "code": "const reservation = null;\n// TODO: 값을 출력하세요.\n",
+      "solutionCode": "const reservation = null;\nconsole.log(reservation);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "내가 작성한 코드의 출력 결과",
+          "expected": [
+            "null"
+          ]
+        }
+      ],
+      "hints": [
+        "null의 RUN 코드를 다시 확인하세요.",
+        "완성한 식을 console.log로 출력하세요."
+      ]
     }
   ]
 }

@@ -1,26 +1,64 @@
 {
-  "schemaVersion": 2, "id": "t3-05", "track": "T3", "order": 5, "runtime": "js",
-  "title": "원시값을 복사하면 서로 영향을 주지 않습니다",
+  "schemaVersion": 2,
+  "id": "t3-05",
+  "track": "T3",
+  "order": 5,
+  "runtime": "js",
+  "title": "변수로 동적 프로퍼티 접근하기",
   "steps": [
     {
-      "kind": "read", "title": "변수에는 원시값 자체가 복사됩니다",
+      "kind": "read",
+      "title": "동적 프로퍼티 접근 이해하기",
       "brief": [
-        "문자열, 숫자, 불리언, undefined, null, symbol, bigint는 원시값입니다. 원시값이 든 변수를 다른 변수에 할당하면 값이 복사됩니다.",
-        { "code": ["let firstPrice = 12000;", "let secondPrice = firstPrice;", "secondPrice = 39000;"] },
-        "secondPrice에 firstPrice의 숫자 12000이 복사됩니다. 이후 secondPrice를 39000으로 바꿔도 firstPrice는 12000입니다.",
-        "두 변수가 같은 숫자를 가지고 있었을 뿐, 하나의 저장 공간을 함께 사용한 것이 아닙니다.",
-        "이 동작은 다음 레슨의 객체 복사와 다릅니다. 두 코드를 나란히 비교해야 차이가 분명해집니다."
+        "책 PDF 4에서 배운 동적 프로퍼티 접근을(를) 짧게 다시 확인합니다.",
+        "아래 코드에서 객체 또는 배열의 어느 값에 접근하는지 먼저 찾으세요.",
+        {
+          "code": [
+            "const user = { name: '민수', age: 25 };",
+            "const key = 'age';",
+            "console.log(user[key]);"
+          ]
+        },
+        "RUN, TWEAK, WRITE 순서로 같은 개념을 반복합니다."
       ]
     },
     {
-      "kind": "run", "title": "복사한 변수만 바꾸기",
-      "brief": ["originalName의 문자열이 copiedName에 복사됩니다. copiedName을 바꿔도 originalName은 그대로입니다.", "숫자와 불리언도 같은 방식으로 서로 독립적인 값이 복사됩니다."],
-      "code": "let originalName = '셔츠';\nlet copiedName = originalName;\n\ncopiedName = '모자';\n\nconsole.log(originalName);\nconsole.log(copiedName);\n"
+      "kind": "run",
+      "title": "동적 프로퍼티 접근 실행하기",
+      "brief": [
+        "코드를 실행해 동적 프로퍼티 접근의 결과를 확인하세요."
+      ],
+      "code": "const user = { name: '민수', age: 25 };\nconst key = 'age';\nconsole.log(user[key]);\n"
     },
     {
-      "kind": "tweak", "title": "숫자 값으로 다시 확인하기",
-      "brief": ["문자열 대신 originalPrice = 12000과 copiedPrice를 만들어 같은 과정을 실행해 보세요.", "copiedPrice += 3000을 실행해도 originalPrice는 12000입니다.", "원시값을 복사한 뒤 한쪽 변수를 바꾸면 다른 변수의 값은 바뀌지 않습니다."],
-      "code": "let originalName = '셔츠';\nlet copiedName = originalName;\n\ncopiedName = '모자';\n\nconsole.log(originalName);\nconsole.log(copiedName);\n"
+      "kind": "tweak",
+      "title": "값을 바꾸어 결과 비교하기",
+      "brief": [
+        "객체나 배열의 값 하나를 바꾸고 다시 실행해 결과를 비교하세요."
+      ],
+      "code": "const user = { name: '민수', age: 25 };\nconst key = 'age';\nconsole.log(user[key]);\n"
+    },
+    {
+      "kind": "write",
+      "title": "동적 프로퍼티 접근 직접 작성하기",
+      "brief": [
+        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+      ],
+      "code": "const product = { name: '노트북', price: 900000 };\nconst key = 'name';\n// TODO: key 변수로 값을 출력하세요.\n",
+      "solutionCode": "const product = { name: '노트북', price: 900000 };\nconst key = 'name';\nconsole.log(product[key]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "내가 작성한 코드의 출력 결과",
+          "expected": [
+            "노트북"
+          ]
+        }
+      ],
+      "hints": [
+        "동적 프로퍼티 접근의 RUN 코드를 다시 확인하세요.",
+        "접근할 key 또는 index를 정확히 확인하세요."
+      ]
     }
   ]
 }

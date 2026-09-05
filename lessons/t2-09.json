@@ -4,109 +4,61 @@
   "track": "T2",
   "order": 9,
   "runtime": "js",
-  "title": "매개변수로 호출할 때마다 다른 값 받기",
+  "title": "함수 선언과 호출",
   "steps": [
     {
       "kind": "read",
-      "title": "매개변수는 받고, 인자는 보냅니다",
+      "title": "함수 선언과 호출 이해하기",
       "brief": [
-        "매개변수(parameter)는 함수가 받을 값에 붙인 이름입니다. 함수 선언의 괄호 안에 씁니다.",
-        "인자(argument)는 함수를 호출할 때 실제로 전달하는 값입니다.",
+        "책에서 배운 함수 선언과 호출을(를) 짧게 복원합니다.",
+        "아래 코드의 실행 순서와 출력값을 먼저 예상하세요.",
         {
           "code": [
-            "function greet(name) {",
-            "  console.log('안녕하세요, ' + name);",
+            "function greet() {",
+            "  console.log('안녕하세요');",
             "}",
-            "",
-            "greet('민수');"
+            "greet();"
           ]
         },
-        "name은 매개변수이고 '민수'는 인자입니다. 호출하는 동안 name이 '민수'를 가리킵니다.",
-        "매개변수가 여러 개라면 쉼표로 나눕니다. 호출할 때도 같은 순서로 인자를 전달해야 합니다.",
-        "호출이 시작될 때 JavaScript는 첫 번째 인자를 첫 번째 매개변수에, 두 번째 인자를 두 번째 매개변수에 순서대로 연결합니다.",
-        {
-          "code": [
-            "function printOrder(product, count) {",
-            "  console.log(product);",
-            "  console.log(count);",
-            "}",
-            "",
-            "printOrder('키보드', 2);"
-          ]
-        },
-        "이 호출 안에서 product는 '키보드', count는 2입니다. 호출이 끝난 뒤 다른 인자로 다시 호출하면 두 매개변수는 새 값을 받습니다.",
-        "인자를 덜 전달하면 남는 매개변수에는 undefined가 들어갑니다. 순서를 바꾸면 오류가 자동으로 나기보다 서로 다른 뜻의 값이 잘못 연결될 수 있으므로 더 주의해야 합니다."
+        "다음 단계에서 실행하고 값을 바꾼 뒤, 마지막 단계에서 같은 문법을 직접 작성합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "같은 함수에 다른 인자 전달하기",
+      "title": "함수 선언과 호출 실행하기",
       "brief": [
-        "첫 호출에서는 product가 셔츠, price가 39000입니다. 둘째 호출에서는 각각 모자와 15000입니다.",
-        "함수 코드는 하나지만 인자가 달라서 서로 다른 영수증을 출력합니다."
+        "함수 선언과 호출 코드가 어떤 순서로 실행되는지 확인하세요."
       ],
-      "code": "function printProduct(product, price) {\n  console.log('상품: ' + product);\n  console.log('가격: ' + price + '원');\n}\n\nprintProduct('셔츠', 39000);\nprintProduct('모자', 15000);\n"
+      "code": "function greet() {\n  console.log('안녕하세요');\n}\ngreet();\n"
     },
     {
       "kind": "tweak",
-      "title": "인자의 순서 바꿔 보기",
+      "title": "조건이나 값 바꿔 보기",
       "brief": [
-        "첫 호출을 printProduct(39000, '셔츠')로 바꾸면 상품과 가격이 뒤바뀌어 출력됩니다.",
-        "JavaScript는 변수 이름의 뜻을 보고 인자를 연결하지 않습니다. 첫 인자는 첫 매개변수, 둘째 인자는 둘째 매개변수에 들어갑니다.",
-        "호출할 때 인자를 빼면 해당 매개변수에는 undefined가 들어갑니다."
+        "코드에서 값 하나를 바꾸고 다시 실행해 달라진 흐름을 확인하세요."
       ],
-      "code": "function printProduct(product, price) {\n  console.log('상품: ' + product);\n  console.log('가격: ' + price + '원');\n}\n\nprintProduct('셔츠', 39000);\nprintProduct('모자', 15000);\n"
+      "code": "function greet() {\n  console.log('안녕하세요');\n}\ngreet();\n"
     },
     {
       "kind": "write",
-      "title": "이름을 받아 안내 문장 출력하기",
+      "title": "함수 선언과 호출 직접 작성하기",
       "brief": [
-        "printWelcome(name)을 선언하세요. 본문에서 name과 '님, 환영합니다.'를 이어 출력하세요.",
-        "'서연', '도윤'을 각각 인자로 전달해 두 번 호출하세요. 아직 return은 쓰지 않습니다.",
-        "검사는 직접 실행한 콘솔의 출력 내용과 순서를 비교합니다."
+        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
       ],
-      "code": "// 매개변수 하나를 받는 함수와 두 호출을 작성하세요.\n",
-      "solutionCode": "function printWelcome(name) {\n  console.log(name + '님, 환영합니다.');\n}\n\nprintWelcome('서연');\nprintWelcome('도윤');\n",
+      "code": "// TODO: '준비 완료'를 출력하는 ready 함수를 선언하고 호출하세요.\n",
+      "solutionCode": "function ready() {\n  console.log('준비 완료');\n}\nready();\n",
       "asserts": [
         {
           "type": "console",
-          "label": "내 코드의 출력 순서 확인",
+          "label": "내가 작성한 코드의 출력 결과",
           "expected": [
-            "서연님, 환영합니다.",
-            "도윤님, 환영합니다."
+            "준비 완료"
           ]
         }
       ],
       "hints": [
-        "선언 괄호의 name은 받을 값의 이름이고, 호출 괄호에는 실제 이름을 넣습니다.",
-        "함수 안에서 console.log를 쓰므로 호출 바깥에 console.log를 또 감싸지 않습니다."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "두 매개변수의 순서 맞추기",
-      "brief": [
-        "printStock(product, quantity)를 선언하세요. 상품명과 수량을 각각 한 줄에 출력합니다.",
-        "printStock('노트', 3), printStock('펜', 5)를 차례로 호출하세요. 두 인자의 순서를 매개변수 순서에 맞추세요.",
-        "검사는 직접 실행한 콘솔의 출력 내용과 순서를 비교합니다."
-      ],
-      "code": "// 매개변수 두 개를 받는 함수와 두 호출을 작성하세요.\n",
-      "solutionCode": "function printStock(product, quantity) {\n  console.log(product);\n  console.log(quantity);\n}\n\nprintStock('노트', 3);\nprintStock('펜', 5);\n",
-      "asserts": [
-        {
-          "type": "console",
-          "label": "내 코드의 출력 순서 확인",
-          "expected": [
-            "노트",
-            "3",
-            "펜",
-            "5"
-          ]
-        }
-      ],
-      "hints": [
-        "첫 매개변수는 상품명, 둘째 매개변수는 수량을 받습니다.",
-        "함수 본문의 두 출력 줄은 호출할 때마다 다시 실행됩니다."
+        "함수 선언과 호출의 RUN 코드를 다시 확인하세요.",
+        "조건과 중괄호의 범위를 먼저 확인하세요."
       ]
     }
   ]

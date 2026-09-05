@@ -4,56 +4,59 @@
   "track": "T1",
   "order": 20,
   "runtime": "js",
-  "title": "종합 문제 5: 값과 자료형을 함께 비교하기",
+  "title": "null 병합 연산자",
   "steps": [
     {
       "kind": "read",
-      "title": "숫자와 문자열을 구분해서 비교하기",
+      "title": "null 병합 연산자 이해하기",
       "brief": [
-        "좌석 번호로 숫자 12만 인정한다고 가정합니다. ===는 값과 자료형이 모두 같아야 true입니다.",
+        "책에서 방금 읽은 null 병합 연산자을(를) 실습으로 다시 확인합니다.",
+        "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
-            "const seat = 12;",
-            "const textSeat = '12';",
-            "console.log(seat === 12); // true",
-            "console.log(textSeat === 12); // false"
+            "console.log(null ?? '손님');",
+            "console.log(0 ?? 10);"
           ]
         },
-        "두 값이 화면에서 비슷하게 보여도 seat는 숫자, textSeat는 문자열입니다. Number로 변환하면 이 구분이 사라지므로 여기서는 변환하지 않고 비교합니다.",
-        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+        "이 레슨의 쓰기에서는 여기 나온 문법만 직접 사용합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "상태 코드의 값과 자료형 비교하기",
+      "title": "null 병합 연산자 실행하기",
       "brief": [
-        "숫자 상태 코드와 문자열 상태 코드를 ===로 비교해 차이를 확인하세요."
+        "코드를 실행해 null 병합 연산자의 결과를 확인하세요."
       ],
-      "code": "const completedCode = 200;\nconsole.log(completedCode === 200);\nconsole.log(completedCode === '200');\n"
+      "code": "console.log(null ?? '손님');\nconsole.log(0 ?? 10);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "값을 바꾸어 결과 비교하기",
+      "brief": [
+        "코드의 값 하나를 바꾼 뒤 다시 실행하세요. 무엇을 바꾸었고 출력이 왜 달라졌는지 말로 설명해 보세요."
+      ],
+      "code": "console.log(null ?? '손님');\nconsole.log(0 ?? 10);\n"
     },
     {
       "kind": "write",
-      "title": "쿠폰 코드의 값과 자료형 비교하기",
+      "title": "null 병합 연산자 직접 사용하기",
       "brief": [
-        "code가 숫자 100과 일치하는지 ===로 비교해 출력하세요. 문자열 '100'은 일치하지 않습니다.",
-        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
-        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
       ],
-      "code": "let code = 100;\n// 숫자 코드 100이 기준값과 일치하는지 비교해 출력하세요.\n\ncode = \"100\";\n// 코드가 문자열 \"100\"으로 바뀌었습니다. 숫자인 기준값과 일치하는지 다시 비교해 출력하세요.\n",
-      "solutionCode": "let code = 100;\nconsole.log(code === 100);\n\ncode = \"100\";\nconsole.log(code === 100);\n",
+      "code": "const name = null;\n// TODO: 없을 때만 '이름 없음'을 사용해 출력하세요.\n",
+      "solutionCode": "const name = null;\nconsole.log(name ?? '이름 없음');\n",
       "asserts": [
         {
           "type": "console",
-          "label": "직접 작성한 코드의 출력 순서와 값",
+          "label": "내가 작성한 코드의 출력 결과",
           "expected": [
-            "true",
-            "false"
+            "이름 없음"
           ]
         }
       ],
       "hints": [
-        "code가 숫자 100과 일치하는지 ===로 비교해 출력하세요. 문자열 '100'은 일치하지 않습니다.",
-        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+        "null 병합 연산자의 RUN 코드를 다시 확인하세요.",
+        "완성한 식을 console.log로 출력하세요."
       ]
     }
   ]

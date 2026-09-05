@@ -4,56 +4,61 @@
   "track": "T1",
   "order": 19,
   "runtime": "js",
-  "title": "종합 문제 4: 값의 입력 여부를 불리언으로 확인하기",
+  "title": "비교 연산자",
   "steps": [
     {
       "kind": "read",
-      "title": "입력 내용이 있는지 불리언으로 확인하기",
+      "title": "비교 연산자 이해하기",
       "brief": [
-        "Boolean은 값을 true 또는 false로 바꿉니다. 내용이 있는 문자열은 true, 빈 문자열은 false가 됩니다.",
+        "책에서 방금 읽은 비교 연산자을(를) 실습으로 다시 확인합니다.",
+        "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
-            "const phone = '010-1234-5678';",
-            "const emptyPhone = '';",
-            "console.log(Boolean(phone)); // true",
-            "console.log(Boolean(emptyPhone)); // false"
+            "console.log(10 > 5);",
+            "console.log(10 >= 10);",
+            "console.log(10 === '10');"
           ]
         },
-        "여기서는 전화번호 형식이 올바른지 검사하지 않습니다. 문자열에 내용이 있는지만 확인합니다. 공백 하나인 ' '도 빈 문자열이 아니므로 true입니다.",
-        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+        "이 레슨의 쓰기에서는 여기 나온 문법만 직접 사용합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "배송 요청사항 입력 여부 확인하기",
+      "title": "비교 연산자 실행하기",
       "brief": [
-        "빈 문자열과 글자가 있는 문자열을 Boolean으로 바꿔 결과를 비교하세요."
+        "코드를 실행해 비교 연산자의 결과를 확인하세요."
       ],
-      "code": "const emptyRequest = '';\nconst writtenRequest = '경비실에 맡겨 주세요';\nconsole.log(Boolean(emptyRequest));\nconsole.log(Boolean(writtenRequest));\n"
+      "code": "console.log(10 > 5);\nconsole.log(10 >= 10);\nconsole.log(10 === '10');\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "값을 바꾸어 결과 비교하기",
+      "brief": [
+        "코드의 값 하나를 바꾼 뒤 다시 실행하세요. 무엇을 바꾸었고 출력이 왜 달라졌는지 말로 설명해 보세요."
+      ],
+      "code": "console.log(10 > 5);\nconsole.log(10 >= 10);\nconsole.log(10 === '10');\n"
     },
     {
       "kind": "write",
-      "title": "배송 메모 입력 여부 확인하기",
+      "title": "비교 연산자 직접 사용하기",
       "brief": [
-        "memo를 Boolean으로 바꿔 출력하세요. 내용이 있으면 true, 빈 문자열이면 false입니다.",
-        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
-        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
       ],
-      "code": "let memo = \"문 앞에 두세요\";\n// 메모 \"문 앞에 두세요\"의 입력 여부를 불리언으로 변환해 출력하세요.\n\nmemo = \"\";\n// 메모가 빈 문자열로 바뀌었습니다. 현재 값의 입력 여부를 불리언으로 변환해 출력하세요.\n",
-      "solutionCode": "let memo = \"문 앞에 두세요\";\nconsole.log(Boolean(memo));\n\nmemo = \"\";\nconsole.log(Boolean(memo));\n",
+      "code": "const stock = 3;\n// TODO: 1보다 큰지와 숫자 3과 같은지 출력하세요.\n",
+      "solutionCode": "const stock = 3;\nconsole.log(stock > 1);\nconsole.log(stock === 3);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "직접 작성한 코드의 출력 순서와 값",
+          "label": "내가 작성한 코드의 출력 결과",
           "expected": [
             "true",
-            "false"
+            "true"
           ]
         }
       ],
       "hints": [
-        "memo를 Boolean으로 바꿔 출력하세요. 내용이 있으면 true, 빈 문자열이면 false입니다.",
-        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+        "비교 연산자의 RUN 코드를 다시 확인하세요.",
+        "완성한 식을 console.log로 출력하세요."
       ]
     }
   ]

@@ -4,37 +4,61 @@
   "track": "T1",
   "order": 14,
   "runtime": "js",
-  "title": "truthy와 falsy 이해하기",
+  "title": "대입 연산자",
   "steps": [
     {
       "kind": "read",
-      "title": "불리언이 아닌 값도 조건에서 판단됩니다",
+      "title": "대입 연산자 이해하기",
       "brief": [
-        "JavaScript는 조건이 필요한 자리에서 값을 true 또는 false처럼 판단합니다. true처럼 판단하는 값을 truthy, false처럼 판단하는 값을 falsy라고 합니다.",
-        "대표적인 falsy 값은 false, 0, 빈 문자열 '', null, undefined, NaN입니다.",
-        { "code": ["Boolean(0);       // false", "Boolean('');      // false", "Boolean('안녕');  // true", "Boolean(42);      // true"] },
-        "'false'와 '0'은 글자가 들어 있는 문자열이므로 truthy입니다. 문자열 안의 단어 뜻이나 숫자 모양으로 판단하지 않습니다.",
-        "빈 배열 []과 빈 객체 {}도 truthy입니다. 비어 보인다는 이유로 falsy라고 생각하면 안 됩니다."
+        "책에서 방금 읽은 대입 연산자을(를) 실습으로 다시 확인합니다.",
+        "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
+        {
+          "code": [
+            "let score;",
+            "score = 10;",
+            "console.log(score);"
+          ]
+        },
+        "이 레슨의 쓰기에서는 여기 나온 문법만 직접 사용합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "Boolean으로 판단 결과 확인하기",
+      "title": "대입 연산자 실행하기",
       "brief": [
-        "각 값을 Boolean으로 바꿔 조건에서 어떻게 판단되는지 확인합니다.",
-        "빈 문자열과 공백 한 칸인 문자열은 다릅니다. 공백도 글자이므로 ' '는 truthy입니다."
+        "코드를 실행해 대입 연산자의 결과를 확인하세요."
       ],
-      "code": "console.log(Boolean(0));\nconsole.log(Boolean(''));\nconsole.log(Boolean(null));\nconsole.log(Boolean(undefined));\nconsole.log(Boolean(NaN));\nconsole.log(Boolean(' '));\nconsole.log(Boolean([]));\n"
+      "code": "let score;\nscore = 10;\nconsole.log(score);\n"
     },
     {
       "kind": "tweak",
-      "title": "비슷해 보이는 값 비교하기",
+      "title": "값을 바꾸어 결과 비교하기",
       "brief": [
-        "Boolean(' ')의 공백을 지워 빈 문자열로 만들면 결과가 false로 바뀝니다.",
-        "Boolean(0)을 Boolean('0')으로 바꾸면 true가 됩니다. 숫자 0은 falsy지만 글자가 들어 있는 문자열은 truthy입니다.",
-        "truthy와 falsy는 값을 없거나 있다고 판정하는 규칙이 아닙니다. JavaScript가 조건에서 사용하는 변환 규칙입니다."
+        "코드의 값 하나를 바꾼 뒤 다시 실행하세요. 무엇을 바꾸었고 출력이 왜 달라졌는지 말로 설명해 보세요."
       ],
-      "code": "console.log(Boolean(0));\nconsole.log(Boolean(''));\nconsole.log(Boolean(null));\nconsole.log(Boolean(undefined));\nconsole.log(Boolean(NaN));\nconsole.log(Boolean(' '));\nconsole.log(Boolean([]));\n"
+      "code": "let score;\nscore = 10;\nconsole.log(score);\n"
+    },
+    {
+      "kind": "write",
+      "title": "대입 연산자 직접 사용하기",
+      "brief": [
+        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+      ],
+      "code": "let page;\n// TODO: 3을 대입하고 출력하세요.\n",
+      "solutionCode": "let page;\npage = 3;\nconsole.log(page);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "내가 작성한 코드의 출력 결과",
+          "expected": [
+            "3"
+          ]
+        }
+      ],
+      "hints": [
+        "대입 연산자의 RUN 코드를 다시 확인하세요.",
+        "완성한 식을 console.log로 출력하세요."
+      ]
     }
   ]
 }

@@ -1,1 +1,64 @@
-{"schemaVersion":2,"id":"t2-28","track":"T2","order":28,"runtime":"js","title":"종합 문제 12: 여러 콜백으로 계산 순서 조합하기","steps":[{"kind":"read","title":"문자열 가공 콜백을 전달하는 과정 읽기","brief":["콜백은 다른 함수에 인자로 전달하는 함수입니다.","받은 함수는 필요한 시점에 괄호를 붙여 실행합니다."]},{"kind":"run","title":"포인트 두 배 콜백 실행하기","brief":["값과 콜백을 받는 함수에 포인트를 두 배로 만드는 함수를 전달하세요."],"code":"function applyRule(value, rule) {\n  return rule(value);\n}\nfunction doublePoints(points) {\n  return points * 2;\n}\nconsole.log(applyRule(500, doublePoints));\n"},{"kind":"write","title":"할인과 배송비 콜백을 순서대로 적용하기","brief":["processOrder(amount, discountCallback, feeCallback)을 작성하세요. getFinalOrderAmount(amount)는 10% 할인 콜백과 3000원 배송비 콜백을 전달해야 합니다. 검사 대상은 getFinalOrderAmount입니다.","직접 함수를 호출하는 console.log를 추가해 입력값에 따른 결과도 확인하세요."],"code":"// getFinalOrderAmount를 작성하고 직접 호출하세요.\n","entry":"getFinalOrderAmount","solutionCode":"function processOrder(amount, discountCallback, feeCallback) {\n  const discounted = discountCallback(amount);\n  return feeCallback(discounted);\n}\nfunction getFinalOrderAmount(amount) {\n  const discount = (value) => value * 0.9;\n  const addFee = (value) => value + 3000;\n  return processOrder(amount, discount, addFee);\n}\n","asserts":[{"type":"value","label":"도전 검사 1","args":[10000],"expected":12000},{"type":"value","label":"도전 검사 2","args":[50000],"expected":48000}],"hints":["문제를 작은 함수와 중간 변수로 나눈 뒤 각 결과를 순서대로 연결하세요.","반환값의 자료형과 객체 프로퍼티 이름까지 요구사항과 같은지 확인하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t2-28",
+  "track": "T2",
+  "order": 28,
+  "runtime": "js",
+  "title": "작은 종합 문제 8: 매개변수로 결과 바꾸기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "포장비를 계산하는 함수 읽기",
+      "brief": [
+        "함수의 매개변수는 호출할 때 전달한 값으로 바뀝니다.",
+        {
+          "code": [
+            "calculatePackingFee(20000); // 1000",
+            "calculatePackingFee(50000); // 2500"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "보험료 계산 함수 실행하기",
+      "brief": [
+        "금액의 2%를 반환하는 함수를 서로 다른 금액으로 호출하세요."
+      ],
+      "code": "function calculateInsurance(amount) {\n  return amount * 0.02;\n}\nconsole.log(calculateInsurance(100000));\nconsole.log(calculateInsurance(40000));\n"
+    },
+    {
+      "kind": "write",
+      "title": "판매 수수료 함수 작성하기",
+      "brief": [
+        "calculateFee(amount)를 작성하세요.",
+        "amount의 3퍼센트를 반환하세요."
+      ],
+      "code": "// calculateFee 함수를 작성하세요.\n",
+      "entry": "calculateFee",
+      "solutionCode": "function calculateFee(amount) {\n  return amount * 0.03;\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "10만원 판매",
+          "args": [
+            100000
+          ],
+          "expected": 3000
+        },
+        {
+          "type": "value",
+          "label": "5만원 판매",
+          "args": [
+            50000
+          ],
+          "expected": 1500
+        }
+      ],
+      "hints": [
+        "3퍼센트는 0.03입니다.",
+        "amount * 0.03을 반환하세요."
+      ]
+    }
+  ]
+}

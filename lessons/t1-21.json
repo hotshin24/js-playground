@@ -4,57 +4,60 @@
   "track": "T1",
   "order": 21,
   "runtime": "js",
-  "title": "종합 문제 6: 두 조건이 모두 맞는지 확인하기",
+  "title": "typeof 연산자",
   "steps": [
     {
       "kind": "read",
-      "title": "두 조건을 모두 만족하는지 확인하기",
+      "title": "typeof 이해하기",
       "brief": [
-        "행사에 참가하려면 신청을 했고 나이가 14세 이상이어야 합니다. &&로 두 조건을 연결합니다.",
+        "책에서 방금 읽은 typeof을(를) 실습으로 다시 확인합니다.",
+        "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
-            "const applied = true;",
-            "const age = 16;",
-            "const canJoin = applied && age >= 14;",
-            "console.log(canJoin); // true"
+            "console.log(typeof 10);",
+            "console.log(typeof '글자');",
+            "console.log(typeof true);"
           ]
         },
-        "age >= 14의 결과는 true입니다. applied도 true이므로 전체 결과가 true입니다. 신청하지 않았거나 나이가 부족하면 전체 결과는 false입니다.",
-        "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
+        "이 레슨의 쓰기에서는 여기 나온 문법만 직접 사용합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "휴가 승인 조건 묶기",
+      "title": "typeof 실행하기",
       "brief": [
-        "잔여 휴가가 있고 인수인계가 끝났는지 &&로 함께 확인하세요."
+        "코드를 실행해 typeof의 결과를 확인하세요."
       ],
-      "code": "const hasDaysLeft = true;\nconst handoffDone = true;\nconst canTakeLeave = hasDaysLeft && handoffDone;\nconsole.log(canTakeLeave);\n"
+      "code": "console.log(typeof 10);\nconsole.log(typeof '글자');\nconsole.log(typeof true);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "값을 바꾸어 결과 비교하기",
+      "brief": [
+        "코드의 값 하나를 바꾼 뒤 다시 실행하세요. 무엇을 바꾸었고 출력이 왜 달라졌는지 말로 설명해 보세요."
+      ],
+      "code": "console.log(typeof 10);\nconsole.log(typeof '글자');\nconsole.log(typeof true);\n"
     },
     {
       "kind": "write",
-      "title": "무료 배송 조건 확인하기",
+      "title": "typeof 직접 사용하기",
       "brief": [
-        "orderAmount가 50000 이상이면서 isJeju가 false인지 비교하여 출력하세요.",
-        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
-        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
       ],
-      "code": "let orderAmount = 60000;\nlet isJeju = false;\n// 주문 금액 60000원, 제주 배송이 아닌 경우의 무료 배송 여부를 출력하세요.\n\norderAmount = 60000;\nisJeju = true;\n// 주문 금액 60000원, 제주 배송인 경우의 무료 배송 여부를 다시 계산해 출력하세요.\n\norderAmount = 40000;\nisJeju = false;\n// 주문 금액 40000원, 제주 배송이 아닌 경우의 무료 배송 여부를 다시 계산해 출력하세요.\n",
-      "solutionCode": "let orderAmount = 60000;\nlet isJeju = false;\nconsole.log(orderAmount >= 50000 && isJeju === false);\n\norderAmount = 60000;\nisJeju = true;\nconsole.log(orderAmount >= 50000 && isJeju === false);\n\norderAmount = 40000;\nisJeju = false;\nconsole.log(orderAmount >= 50000 && isJeju === false);\n",
+      "code": "const active = false;\n// TODO: 자료형을 출력하세요.\n",
+      "solutionCode": "const active = false;\nconsole.log(typeof active);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "직접 작성한 코드의 출력 순서와 값",
+          "label": "내가 작성한 코드의 출력 결과",
           "expected": [
-            "true",
-            "false",
-            "false"
+            "boolean"
           ]
         }
       ],
       "hints": [
-        "orderAmount가 50000 이상이면서 isJeju가 false인지 비교하여 출력하세요.",
-        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+        "typeof의 RUN 코드를 다시 확인하세요.",
+        "완성한 식을 console.log로 출력하세요."
       ]
     }
   ]

@@ -4,56 +4,55 @@
   "track": "T1",
   "order": 25,
   "runtime": "js",
-  "title": "종합 문제 10: 문자열 비율을 숫자로 바꿔 계산하기",
+  "title": "작은 복습 3: 식별 번호를 문자열로 바꾸기",
   "steps": [
     {
       "kind": "read",
-      "title": "문자열 비율을 숫자로 바꿔 계산하기",
+      "title": "숫자 식별 번호를 문자열로 바꾸기",
       "brief": [
-        "결제 금액은 50000원이고 수수료율 입력값은 문자열 '3'입니다. 3%는 3을 100으로 나눈 비율입니다.",
+        "직원 번호 27은 숫자입니다. 글자로 표시할 번호가 필요할 때 String으로 변환할 수 있습니다.",
         {
           "code": [
-            "const amount = 50000;",
-            "const feeRateInput = '3';",
-            "const feeRate = Number(feeRateInput);",
-            "const fee = amount * feeRate / 100;",
-            "console.log(fee); // 1500"
+            "const employeeId = 27;",
+            "const displayId = String(employeeId);",
+            "console.log(displayId); // 27",
+            "console.log(typeof displayId); // string"
           ]
         },
-        "먼저 '3'을 숫자로 바꿉니다. 50000에 3을 곱하고 100으로 나누면 수수료 1500입니다. 수수료 자체와 수수료를 뺀 금액은 다르다는 점도 구분하세요.",
+        "console.log만 보면 숫자 27과 문자열 '27'이 같아 보입니다. typeof로 자료형을 확인하면 변환된 값은 string입니다.",
         "다음 실행에서는 다른 입력에 같은 개념을 적용합니다. 쓰기에서는 직접 연산식을 작성합니다."
       ]
     },
     {
       "kind": "run",
-      "title": "문자열 세율로 세금 계산하기",
+      "title": "예약 번호를 문자열로 바꾸기",
       "brief": [
-        "문자열 세율을 Number로 바꿔 상품 가격에 적용하세요."
+        "숫자로 받은 예약 번호를 String으로 변환한 결과와 자료형을 확인하세요."
       ],
-      "code": "const productPrice = 20000;\nconst taxRateInput = '10';\nconst taxRate = Number(taxRateInput);\nconst tax = productPrice * taxRate / 100;\nconsole.log(tax);\n"
+      "code": "const reservationNumber = 508;\nconst reservationId = String(reservationNumber);\nconsole.log(reservationId, typeof reservationId);\n"
     },
     {
       "kind": "write",
-      "title": "문자열 할인율로 최종 가격 계산하기",
+      "title": "상품 번호를 문자열로 바꾸기",
       "brief": [
-        "rate를 숫자로 바꾸세요. price에 (1 - 할인율 / 100)을 곱한 할인 적용 금액을 출력하세요.",
+        "productId를 String으로 바꾼 결과를 출력하세요. 숫자 번호와 문자 번호 모두 처리하세요.",
         "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
         "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
-      "code": "let price = 50000;\nlet rate = \"20\";\n// 가격 50000원과 할인율 \"20\"으로 할인 적용 금액을 계산해 출력하세요.\n\nprice = 18000;\nrate = \"0\";\n// 가격이 18000원, 할인율이 \"0\"으로 바뀌었습니다. 할인 적용 금액을 다시 계산해 출력하세요.\n",
-      "solutionCode": "let price = 50000;\nlet rate = \"20\";\nlet numericRate = Number(rate);\nconsole.log(price * (1 - numericRate / 100));\n\nprice = 18000;\nrate = \"0\";\nnumericRate = Number(rate);\nconsole.log(price * (1 - numericRate / 100));\n",
+      "code": "let productId = 1042;\n// 숫자 상품 번호 1042를 문자열로 변환해 출력하세요.\n\nproductId = \"A-17\";\n// 상품 번호가 \"A-17\"로 바뀌었습니다. 현재 값을 문자열로 변환해 출력하세요.\n",
+      "solutionCode": "let productId = 1042;\nconsole.log(String(productId));\n\nproductId = \"A-17\";\nconsole.log(String(productId));\n",
       "asserts": [
         {
           "type": "console",
           "label": "직접 작성한 코드의 출력 순서와 값",
           "expected": [
-            "40000",
-            "18000"
+            "1042",
+            "A-17"
           ]
         }
       ],
       "hints": [
-        "rate를 숫자로 바꾸세요. price에 (1 - 할인율 / 100)을 곱한 할인 적용 금액을 출력하세요.",
+        "productId를 String으로 바꾼 결과를 출력하세요. 숫자 번호와 문자 번호 모두 처리하세요.",
         "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
       ]
     }

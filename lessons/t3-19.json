@@ -4,87 +4,61 @@
   "track": "T3",
   "order": 19,
   "runtime": "js",
-  "title": "종합 문제 1: 배열을 고르고 바꾸고 합쳐 보고서 만들기",
+  "title": "연결 복습 1: 원시값 복사하기",
   "steps": [
     {
       "kind": "read",
-      "title": "근무 기록을 가공하는 흐름 읽기",
+      "title": "복사한 점수 값의 변화 읽기",
       "brief": [
-        "출근한 기록만 filter로 고르고, 이름은 map으로 바꾸고, 근무 시간은 reduce로 합칠 수 있습니다.",
-        "세 메서드가 각각 고르기·바꾸기·합치기 중 어떤 역할인지 구분하세요."
+        "숫자 같은 원시값은 변수에 복사한 뒤 한쪽을 바꿔도 원본이 바뀌지 않습니다.",
+        "두 변수가 같은 숫자로 시작했어도 이후에는 각각의 값을 가집니다."
       ]
     },
     {
       "kind": "run",
-      "title": "완료한 작업의 시간 보고서 만들기",
+      "title": "복사한 온도만 변경하기",
       "brief": [
-        "완료한 작업만 남긴 뒤 제목 배열과 전체 소요 시간을 구하세요."
+        "원본 온도를 다른 변수에 복사하고 복사본에만 2를 더하세요."
       ],
-      "code": "const tasks = [{ title: '검수', minutes: 20, done: true }, { title: '포장', minutes: 15, done: false }, { title: '발송', minutes: 10, done: true }];\nconst doneTasks = tasks.filter((task) => task.done);\nconsole.log(doneTasks.map((task) => task.title));\nconsole.log(doneTasks.reduce((total, task) => total + task.minutes, 0));\n"
+      "code": "const measuredTemperature = 21;\nlet adjustedTemperature = measuredTemperature;\nadjustedTemperature += 2;\nconsole.log(measuredTemperature, adjustedTemperature);\n"
     },
     {
       "kind": "write",
-      "title": "재고 보고서 함수 작성하기",
+      "title": "원시값 복사 결과 반환하기",
       "brief": [
-        "makeStockReport(products)를 작성하세요.",
-        "재고가 있는 상품만 activeProducts에 저장하세요.",
-        "names와 totalValue를 계산해 객체로 반환하세요."
+        "copyAndIncrease(value)를 작성하세요.",
+        "value를 copied에 복사하고 1을 더한 뒤 original과 copied를 객체로 반환하세요."
       ],
-      "code": "// makeStockReport 함수를 작성하세요.\n",
-      "entry": "makeStockReport",
-      "solutionCode": "function makeStockReport(products) {\n  const activeProducts = products.filter((product) => product.stock > 0);\n  const names = activeProducts.map((product) => product.name);\n  const totalValue = activeProducts.reduce((total, product) => total + product.price * product.stock, 0);\n  return { names, totalValue };\n}\n",
+      "code": "// copyAndIncrease 함수를 작성하세요.\n",
+      "entry": "copyAndIncrease",
+      "solutionCode": "function copyAndIncrease(value) {\n  const original = value;\n  let copied = original;\n  copied += 1;\n  return { original: original, copied: copied };\n}\n",
       "asserts": [
         {
           "type": "value",
-          "label": "재고 상품 이름과 금액 계산",
+          "label": "5 복사",
           "args": [
-            [
-              {
-                "name": "셔츠",
-                "price": 20000,
-                "stock": 2
-              },
-              {
-                "name": "모자",
-                "price": 10000,
-                "stock": 0
-              },
-              {
-                "name": "신발",
-                "price": 40000,
-                "stock": 1
-              }
-            ]
+            5
           ],
           "expected": {
-            "names": [
-              "셔츠",
-              "신발"
-            ],
-            "totalValue": 80000
+            "original": 5,
+            "copied": 6
           }
         },
         {
           "type": "value",
-          "label": "재고가 없으면 빈 보고서",
+          "label": "0 복사",
           "args": [
-            [
-              {
-                "name": "모자",
-                "price": 10000,
-                "stock": 0
-              }
-            ]
+            0
           ],
           "expected": {
-            "names": [],
-            "totalValue": 0
+            "original": 0,
+            "copied": 1
           }
         }
       ],
       "hints": [
-        "products.filter((product) => product.stock > 0)부터 작성하세요.",
-        "reduce의 시작값은 0이고 더할 값은 product.price * product.stock입니다."
+        "let copied = original로 복사하세요.",
+        "copied만 1 늘려 객체로 반환하세요."
       ]
     }
   ]

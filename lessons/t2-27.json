@@ -1,1 +1,59 @@
-{"schemaVersion":2,"id":"t2-27","track":"T2","order":27,"runtime":"js","title":"종합 문제 11: 함수 표현식으로 계산 규칙 만들기","steps":[{"kind":"read","title":"환율 계산 함수를 변수에 저장하는 과정 읽기","brief":["함수 표현식은 함수를 만들어 변수에 저장합니다.","변수 이름 뒤에 괄호를 붙여 저장된 함수를 호출합니다."]},{"kind":"run","title":"서비스 요금 함수 표현식 실행하기","brief":["금액의 5%를 반환하는 함수를 변수에 저장하세요."],"code":"const calculateServiceFee = function (amount) {\n  return amount * 0.05;\n};\nconsole.log(calculateServiceFee(40000));\n"},{"kind":"write","title":"비율을 기억하는 수수료 계산기 작성하기","brief":["calculateFeeWithRate(amount, rate)를 작성하세요. 함수 안에서 rate를 사용하는 함수 표현식 calculator를 만들고 amount를 전달한 결과를 반환하세요.","직접 함수를 호출하는 console.log를 추가해 입력값에 따른 결과도 확인하세요."],"code":"// calculateFeeWithRate를 작성하고 직접 호출하세요.\n","entry":"calculateFeeWithRate","solutionCode":"function calculateFeeWithRate(amount, rate) {\n  const calculator = function (value) {\n    return value * rate;\n  };\n  return calculator(amount);\n}\n","asserts":[{"type":"value","label":"도전 검사 1","args":[100000,0.03],"expected":3000},{"type":"value","label":"도전 검사 2","args":[50000,0.1],"expected":5000}],"hints":["문제를 작은 함수와 중간 변수로 나눈 뒤 각 결과를 순서대로 연결하세요.","반환값의 자료형과 객체 프로퍼티 이름까지 요구사항과 같은지 확인하세요."]}]}
+{
+  "schemaVersion": 2,
+  "id": "t2-27",
+  "track": "T2",
+  "order": 27,
+  "runtime": "js",
+  "title": "작은 종합 문제 7: 조건을 만족하면 반복 멈추기",
+  "steps": [
+    {
+      "kind": "read",
+      "title": "첫 번째 빈 시간대를 찾는 과정 읽기",
+      "brief": [
+        "원하는 값을 찾으면 변수에 저장하고 break로 반복을 끝냅니다.",
+        "이후 값을 계속 확인할 필요가 없을 때 break를 사용합니다."
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "첫 번째 5의 배수 찾기",
+      "brief": [
+        "12부터 25까지 확인하며 첫 번째 5의 배수를 찾으면 멈추세요."
+      ],
+      "code": "let firstMultiple = 0;\nfor (let number = 12; number <= 25; number += 1) {\n  if (number % 5 === 0) {\n    firstMultiple = number;\n    break;\n  }\n}\nconsole.log(firstMultiple);\n"
+    },
+    {
+      "kind": "write",
+      "title": "다음 점검일 반환하기",
+      "brief": [
+        "findNextInspectionDay(start)를 작성하세요.",
+        "start부터 start + 6까지 반복해 처음 만난 7의 배수를 반환하세요."
+      ],
+      "code": "// findNextInspectionDay 함수를 작성하세요.\n",
+      "entry": "findNextInspectionDay",
+      "solutionCode": "function findNextInspectionDay(start) {\n  let found = start;\n  for (let day = start; day <= start + 6; day += 1) {\n    if (day % 7 === 0) {\n      found = day;\n      break;\n    }\n  }\n  return found;\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "10 다음 점검일",
+          "args": [
+            10
+          ],
+          "expected": 14
+        },
+        {
+          "type": "value",
+          "label": "이미 점검일",
+          "args": [
+            14
+          ],
+          "expected": 14
+        }
+      ],
+      "hints": [
+        "day % 7 === 0인지 확인하세요.",
+        "찾은 day를 저장하고 break한 뒤 반환하세요."
+      ]
+    }
+  ]
+}

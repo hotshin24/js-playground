@@ -1,31 +1,64 @@
 {
-  "schemaVersion": 2, "id": "t3-18", "track": "T3", "order": 18, "runtime": "js",
-  "title": "export와 import로 파일 나누기",
+  "schemaVersion": 2,
+  "id": "t3-18",
+  "track": "T3",
+  "order": 18,
+  "runtime": "js",
+  "title": "PDF 4 작은 복습 3: 여러 프로퍼티로 문장 만들기",
   "steps": [
     {
-      "kind": "read", "title": "내보낸 값만 다른 파일에서 가져올 수 있습니다",
+      "kind": "read",
+      "title": "지점 객체로 안내 문장 만드는 과정 읽기",
       "brief": [
-        "ES 모듈은 코드를 여러 파일로 나누고 필요한 값을 주고받는 표준 문법입니다.",
-        { "code": ["// price.js", "export const shippingFee = 3000;", "", "// main.js", "import { shippingFee } from './price.js';"] },
-        "export는 현재 파일의 값을 다른 파일에서 사용할 수 있게 내보냅니다. import는 내보낸 이름을 가져옵니다.",
-        "중괄호로 가져오는 이름은 export한 이름과 같아야 합니다. 경로의 ./는 현재 파일과 같은 위치라는 뜻입니다.",
-        "모듈마다 스코프가 따로 있으므로 export하지 않은 변수는 다른 파일에서 직접 사용할 수 없습니다."
+        "객체의 여러 프로퍼티를 템플릿 리터럴에 넣어 하나의 문장으로 만들 수 있습니다.",
+        "프로퍼티 이름을 보고 각 값의 의미를 먼저 확인하세요."
       ]
     },
     {
-      "kind": "run", "title": "두 파일을 연결해 실행하기",
-      "brief": ["price.js가 addShipping 함수를 내보내고 main.js가 가져와 호출합니다.", "main.js는 shippingFee를 직접 알지 못해도 내보낸 함수를 통해 계산 결과를 사용할 수 있습니다."],
-      "files": [
-        { "name": "main.js", "entry": true, "code": ["import { addShipping } from './price.js';", "", "console.log(addShipping(12000));", ""] },
-        { "name": "price.js", "code": ["const shippingFee = 3000;", "", "export function addShipping(price) {", "  return price + shippingFee;", "}", ""] }
-      ]
+      "kind": "run",
+      "title": "배송 객체로 요약 문장 만들기",
+      "brief": [
+        "recipient와 city를 읽어 배송 문장을 만드세요."
+      ],
+      "code": "const delivery = { recipient: '민호', city: '부산' };\nconsole.log(`${delivery.recipient} · ${delivery.city} 배송`);\n"
     },
     {
-      "kind": "tweak", "title": "내보내지 않은 이름 가져와 보기",
-      "brief": ["main.js의 import에 shippingFee를 추가하면 오류가 납니다. price.js가 shippingFee를 export하지 않았기 때문입니다.", "price.js의 const 앞에 export를 붙이면 가져올 수 있습니다. 파일 밖에서 사용할 값만 export하는 것이 기본입니다.", "import 경로에서 ./나 .js를 빼면 이 플레이그라운드와 브라우저의 직접 실행 환경에서는 파일을 찾을 수 없습니다."],
-      "files": [
-        { "name": "main.js", "entry": true, "code": ["import { addShipping } from './price.js';", "", "console.log(addShipping(12000));", ""] },
-        { "name": "price.js", "code": ["const shippingFee = 3000;", "", "export function addShipping(price) {", "  return price + shippingFee;", "}", ""] }
+      "kind": "write",
+      "title": "사용자 요약 반환하기",
+      "brief": [
+        "makeUserSummary(user)를 작성하세요.",
+        "정해진 형식으로 이름과 역할을 조합하세요."
+      ],
+      "code": "// makeUserSummary 함수를 작성하세요.\n",
+      "entry": "makeUserSummary",
+      "solutionCode": "function makeUserSummary(user) {\n  return `${user.name} · ${user.role} 담당`;\n}\n",
+      "asserts": [
+        {
+          "type": "value",
+          "label": "검수 담당자",
+          "args": [
+            {
+              "name": "민지",
+              "role": "검수"
+            }
+          ],
+          "expected": "민지 · 검수 담당"
+        },
+        {
+          "type": "value",
+          "label": "배송 담당자",
+          "args": [
+            {
+              "name": "준호",
+              "role": "배송"
+            }
+          ],
+          "expected": "준호 · 배송 담당"
+        }
+      ],
+      "hints": [
+        "user.name과 user.role을 읽으세요.",
+        "가운데에 ' · ', 끝에 ' 담당'을 붙이세요."
       ]
     }
   ]
