@@ -42,9 +42,8 @@
       "kind": "write",
       "title": "직접 작성하기",
       "brief": [
-        "지금까지 다룬 문법을 사용해 직접 작성하세요.",
-        "maxCount의 처음 값을 5로 바꾸세요. const에는 처음 대입한 뒤 다른 값을 다시 대입하지 않습니다.",
-        "주어진 코드를 지우지 말고 TODO 아래에 코드를 작성해 요구한 값을 console.log로 출력하세요."
+        "const로 선언된 language 변수의 값 'JavaScript'를 console.log(language)로 출력하세요.",
+        "language에 다른 값을 재할당하지 않고 저장된 값을 그대로 읽습니다."
       ],
       "code": "const language = 'JavaScript';\n// TODO: language를 출력하세요.\n",
       "solutionCode": "const language = 'JavaScript';\nconsole.log(language);\n",
@@ -58,8 +57,8 @@
         }
       ],
       "hints": [
-        "RUN과 TWEAK에서 사용한 const 문법을 다시 확인하세요.",
-        "출력할 식을 먼저 완성한 뒤 console.log 괄호 안에 넣으세요."
+        "language는 이미 선언되어 있으므로 선언문을 추가하지 않습니다.",
+        "console.log의 괄호 안에 language를 넣으세요."
       ]
     }
   ]

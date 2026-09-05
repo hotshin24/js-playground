@@ -43,9 +43,8 @@
       "kind": "write",
       "title": "직접 작성하기",
       "brief": [
-        "지금까지 다룬 문법을 사용해 직접 작성하세요.",
-        "두 번째 대입값 3을 5로 바꾸어 마지막 값이 달라지는지 확인하세요.",
-        "주어진 코드를 지우지 말고 TODO 아래에 코드를 작성해 요구한 값을 console.log로 출력하세요."
+        "status에 '완료'를 다시 대입한 뒤 console.log(status)로 변경된 값을 출력하세요.",
+        "처음 저장된 '대기'가 새로운 값 '완료'로 재할당되는 과정을 직접 작성합니다."
       ],
       "code": "let status = '대기';\n// TODO: status에 '완료'를 다시 대입하고 출력하세요.\n",
       "solutionCode": "let status = '대기';\nstatus = '완료';\nconsole.log(status);\n",
@@ -59,8 +58,8 @@
         }
       ],
       "hints": [
-        "RUN과 TWEAK에서 사용한 재할당 문법을 다시 확인하세요.",
-        "출력할 식을 먼저 완성한 뒤 console.log 괄호 안에 넣으세요."
+        "status는 let으로 선언되어 있으므로 status = '완료';처럼 재할당할 수 있습니다.",
+        "재할당문 다음 줄에서 console.log(status)를 호출하세요."
       ]
     }
   ]

@@ -38,7 +38,7 @@
       "kind": "tweak",
       "title": "조건이나 값 바꿔 보기",
       "brief": [
-        "코드에서 값 하나를 바꾸고 다시 실행해 달라진 흐름을 확인하세요."
+        "run에 전달하는 finish를 새 콜백 함수로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
       ],
       "code": "function finish() {\n  console.log('완료');\n}\nfunction run(callback) {\n  callback();\n}\nrun(finish);\n"
     },
@@ -46,7 +46,7 @@
       "kind": "write",
       "title": "콜백 함수 직접 작성하기",
       "brief": [
-        "TODO 아래에 요구한 코드를 직접 작성하세요."
+        "callback을 호출하는 execute를 만들고 alarm을 전달하는 코드를 직접 작성하고 실행 결과를 확인하세요."
       ],
       "code": "function alarm() {\n  console.log('알림');\n}\n// TODO: callback을 호출하는 execute를 만들고 alarm을 전달하세요.\n",
       "solutionCode": "function alarm() {\n  console.log('알림');\n}\nfunction execute(callback) {\n  callback();\n}\nexecute(alarm);\n",
@@ -60,8 +60,8 @@
         }
       ],
       "hints": [
-        "콜백 함수의 RUN 코드를 다시 확인하세요.",
-        "조건과 중괄호의 범위를 먼저 확인하세요."
+        "function execute(callback) { 줄을 먼저 작성하세요.",
+        "함수 이름, 매개변수, 호출 위치를 문제에서 요구한 흐름과 맞게 확인하세요."
       ]
     }
   ]

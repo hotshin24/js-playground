@@ -35,7 +35,7 @@
       "kind": "tweak",
       "title": "조건이나 값 바꿔 보기",
       "brief": [
-        "코드에서 값 하나를 바꾸고 다시 실행해 달라진 흐름을 확인하세요."
+        "호출 인수 민수를 영희로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
       ],
       "code": "function greet(name) {\n  console.log(name + '님');\n}\ngreet('민수');\n"
     },
@@ -43,7 +43,7 @@
       "kind": "write",
       "title": "매개변수와 인수 직접 작성하기",
       "brief": [
-        "TODO 아래에 요구한 코드를 직접 작성하세요."
+        "message를 출력하는 show 함수를 만들고 '완료'를 전달해 호출하는 코드를 직접 작성하고 실행 결과를 확인하세요."
       ],
       "code": "// TODO: message를 출력하는 show 함수를 만들고 '완료'를 전달해 호출하세요.\n",
       "solutionCode": "function show(message) {\n  console.log(message);\n}\nshow('완료');\n",
@@ -57,8 +57,8 @@
         }
       ],
       "hints": [
-        "매개변수와 인수의 RUN 코드를 다시 확인하세요.",
-        "조건과 중괄호의 범위를 먼저 확인하세요."
+        "function show(message) { 줄을 먼저 작성하세요.",
+        "함수 이름, 매개변수, 호출 위치를 문제에서 요구한 흐름과 맞게 확인하세요."
       ]
     }
   ]

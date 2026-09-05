@@ -33,7 +33,7 @@
       "kind": "tweak",
       "title": "값을 바꾸어 결과 비교하기",
       "brief": [
-        "코드의 값 하나를 바꾼 뒤 다시 실행하세요. 무엇을 바꾸었고 출력이 왜 달라졌는지 말로 설명해 보세요."
+        "input의 42를 100으로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
       ],
       "code": "const input = '42';\nconsole.log(Number(input));\n"
     },
@@ -41,7 +41,7 @@
       "kind": "write",
       "title": "Number 직접 사용하기",
       "brief": [
-        "TODO 아래에 요구한 코드를 직접 작성하세요."
+        "Number로 변환해 출력하는 코드를 직접 작성하고 실행 결과를 확인하세요."
       ],
       "code": "const age = '30';\n// TODO: Number로 변환해 출력하세요.\n",
       "solutionCode": "const age = '30';\nconsole.log(Number(age));\n",
@@ -55,7 +55,7 @@
         }
       ],
       "hints": [
-        "Number의 RUN 코드를 다시 확인하세요.",
+        "console.log(Number(age)); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
       ]
     }

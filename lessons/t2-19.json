@@ -35,7 +35,7 @@
       "kind": "tweak",
       "title": "조건이나 값 바꿔 보기",
       "brief": [
-        "코드에서 값 하나를 바꾸고 다시 실행해 달라진 흐름을 확인하세요."
+        "if 조건 true를 false로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
       ],
       "code": "if (true) {\n  let blockValue = '블록 안';\n  console.log(blockValue);\n}\n"
     },
@@ -43,7 +43,7 @@
       "kind": "write",
       "title": "함수·블록 스코프 직접 작성하기",
       "brief": [
-        "TODO 아래에 요구한 코드를 직접 작성하세요."
+        "if 블록 안에 const status를 선언해 '완료'를 출력하는 코드를 직접 작성하고 실행 결과를 확인하세요."
       ],
       "code": "// TODO: if 블록 안에 const status를 선언해 '완료'를 출력하세요.\n",
       "solutionCode": "if (true) {\n  const status = '완료';\n  console.log(status);\n}\n",
@@ -57,8 +57,8 @@
         }
       ],
       "hints": [
-        "함수·블록 스코프의 RUN 코드를 다시 확인하세요.",
-        "조건과 중괄호의 범위를 먼저 확인하세요."
+        "if (true) { 줄을 먼저 작성하세요.",
+        "변수가 선언된 중괄호 안팎의 스코프를 구분하세요."
       ]
     }
   ]

@@ -42,9 +42,8 @@
       "kind": "write",
       "title": "직접 작성하기",
       "brief": [
-        "지금까지 다룬 문법을 사용해 직접 작성하세요.",
-        "userName에 대입한 문자열을 다른 이름으로 바꾸세요.",
-        "주어진 코드를 지우지 말고 TODO 아래에 코드를 작성해 요구한 값을 console.log로 출력하세요."
+        "이미 선언된 city 변수의 값 '서울'을 console.log(city)로 출력하세요.",
+        "문자열을 다시 적지 않고 변수 이름을 사용해 저장된 값을 읽습니다."
       ],
       "code": "let city = '서울';\n// TODO: city의 값을 출력하세요.\n",
       "solutionCode": "let city = '서울';\nconsole.log(city);\n",
@@ -58,8 +57,8 @@
         }
       ],
       "hints": [
-        "RUN과 TWEAK에서 사용한 변수와 let 문법을 다시 확인하세요.",
-        "출력할 식을 먼저 완성한 뒤 console.log 괄호 안에 넣으세요."
+        "city는 이미 let으로 선언되어 있으므로 새 변수를 만들 필요가 없습니다.",
+        "console.log의 괄호 안에 따옴표 없는 city를 넣으세요."
       ]
     }
   ]

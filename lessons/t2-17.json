@@ -33,7 +33,7 @@
       "kind": "tweak",
       "title": "조건이나 값 바꿔 보기",
       "brief": [
-        "코드에서 값 하나를 바꾸고 다시 실행해 달라진 흐름을 확인하세요."
+        "add(2, 3)의 3을 4로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
       ],
       "code": "const add = (a, b) => a + b;\nconsole.log(add(2, 3));\n"
     },
@@ -41,7 +41,7 @@
       "kind": "write",
       "title": "화살표 함수 직접 작성하기",
       "brief": [
-        "TODO 아래에 요구한 코드를 직접 작성하세요."
+        "value를 두 배로 반환하는 화살표 함수 double을 만들고 4의 결과를 출력하는 코드를 직접 작성하고 실행 결과를 확인하세요."
       ],
       "code": "// TODO: value를 두 배로 반환하는 화살표 함수 double을 만들고 4의 결과를 출력하세요.\n",
       "solutionCode": "const double = value => value * 2;\nconsole.log(double(4));\n",
@@ -55,8 +55,8 @@
         }
       ],
       "hints": [
-        "화살표 함수의 RUN 코드를 다시 확인하세요.",
-        "조건과 중괄호의 범위를 먼저 확인하세요."
+        "const double = value => value * 2; 줄을 먼저 작성하세요.",
+        "함수 이름, 매개변수, 호출 위치를 문제에서 요구한 흐름과 맞게 확인하세요."
       ]
     }
   ]

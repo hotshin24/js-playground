@@ -34,7 +34,7 @@
       "kind": "tweak",
       "title": "값을 바꾸어 결과 비교하기",
       "brief": [
-        "객체나 배열의 값 하나를 바꾸고 다시 실행해 결과를 비교하세요."
+        "삭제할 프로퍼티를 age에서 name으로 바꾸고 다시 실행하여 결과를 비교하세요."
       ],
       "code": "const user = { name: '민수', age: 25 };\ndelete user.age;\nconsole.log(user.age);\n"
     },
@@ -42,7 +42,7 @@
       "kind": "write",
       "title": "delete 직접 작성하기",
       "brief": [
-        "TODO 아래에 요구한 코드를 직접 작성하세요."
+        "stock을 삭제하고 값을 출력하는 코드를 직접 작성하고 실행 결과를 확인하세요."
       ],
       "code": "const product = { name: '키보드', stock: 3 };\n// TODO: stock을 삭제하고 값을 출력하세요.\n",
       "solutionCode": "const product = { name: '키보드', stock: 3 };\ndelete product.stock;\nconsole.log(product.stock);\n",
@@ -56,7 +56,7 @@
         }
       ],
       "hints": [
-        "delete의 RUN 코드를 다시 확인하세요.",
+        "delete product.stock; 줄을 먼저 작성하세요.",
         "접근할 key 또는 index를 정확히 확인하세요."
       ]
     }

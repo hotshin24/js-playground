@@ -44,9 +44,8 @@
       "kind": "write",
       "title": "직접 작성하기",
       "brief": [
-        "지금까지 다룬 문법을 사용해 직접 작성하세요.",
-        "score와 Score의 값을 서로 바꿔 대소문자가 다른 이름임을 확인하세요.",
-        "주어진 코드를 지우지 말고 TODO 아래에 코드를 작성해 요구한 값을 console.log로 출력하세요."
+        "orderCount와 OrderCount를 이 순서대로 각각 출력하세요.",
+        "대소문자가 다른 두 식별자는 서로 다른 변수이므로 3과 5가 차례로 출력되어야 합니다."
       ],
       "code": "let orderCount = 3;\nlet OrderCount = 5;\n// TODO: 두 변수를 순서대로 출력하세요.\n",
       "solutionCode": "let orderCount = 3;\nlet OrderCount = 5;\nconsole.log(orderCount);\nconsole.log(OrderCount);\n",
@@ -61,8 +60,8 @@
         }
       ],
       "hints": [
-        "RUN과 TWEAK에서 사용한 변수 명명 규칙·예약어·대소문자 문법을 다시 확인하세요.",
-        "출력할 식을 먼저 완성한 뒤 console.log 괄호 안에 넣으세요."
+        "첫 출력에는 소문자로 시작하는 orderCount를 사용하세요.",
+        "둘째 출력에는 대문자로 시작하는 OrderCount를 사용하세요."
       ]
     }
   ]

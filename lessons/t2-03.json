@@ -39,7 +39,7 @@
       "kind": "tweak",
       "title": "조건이나 값 바꿔 보기",
       "brief": [
-        "코드에서 값 하나를 바꾸고 다시 실행해 달라진 흐름을 확인하세요."
+        "score의 75를 95로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
       ],
       "code": "const score = 75;\nif (score >= 90) {\n  console.log('A');\n} else if (score >= 70) {\n  console.log('B');\n} else {\n  console.log('C');\n}\n"
     },
@@ -47,7 +47,7 @@
       "kind": "write",
       "title": "else if 직접 작성하기",
       "brief": [
-        "TODO 아래에 요구한 코드를 직접 작성하세요."
+        "19 이상 '성인', 14 이상 '청소년', 나머지 '어린이'를 출력하는 코드를 직접 작성하고 실행 결과를 확인하세요."
       ],
       "code": "const age = 15;\n// TODO: 19 이상 '성인', 14 이상 '청소년', 나머지 '어린이'를 출력하세요.\n",
       "solutionCode": "const age = 15;\nif (age >= 19) {\n  console.log('성인');\n} else if (age >= 14) {\n  console.log('청소년');\n} else {\n  console.log('어린이');\n}\n",
@@ -61,7 +61,7 @@
         }
       ],
       "hints": [
-        "else if의 RUN 코드를 다시 확인하세요.",
+        "if (age >= 19) { 줄을 먼저 작성하세요.",
         "조건과 중괄호의 범위를 먼저 확인하세요."
       ]
     }

@@ -35,7 +35,7 @@
       "kind": "tweak",
       "title": "조건이나 값 바꿔 보기",
       "brief": [
-        "코드에서 값 하나를 바꾸고 다시 실행해 달라진 흐름을 확인하세요."
+        "age의 20을 18로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
       ],
       "code": "const age = 20;\nif (age >= 19) {\n  console.log('성인');\n}\n"
     },
@@ -43,7 +43,7 @@
       "kind": "write",
       "title": "if 직접 작성하기",
       "brief": [
-        "TODO 아래에 요구한 코드를 직접 작성하세요."
+        "stock이 0보다 크면 '판매 중'을 출력하는 코드를 직접 작성하고 실행 결과를 확인하세요."
       ],
       "code": "const stock = 3;\n// TODO: stock이 0보다 크면 '판매 중'을 출력하세요.\n",
       "solutionCode": "const stock = 3;\nif (stock > 0) {\n  console.log('판매 중');\n}\n",
@@ -57,7 +57,7 @@
         }
       ],
       "hints": [
-        "if의 RUN 코드를 다시 확인하세요.",
+        "if (stock > 0) { 줄을 먼저 작성하세요.",
         "조건과 중괄호의 범위를 먼저 확인하세요."
       ]
     }

@@ -36,7 +36,7 @@
       "kind": "tweak",
       "title": "값을 바꾸어 결과 비교하기",
       "brief": [
-        "코드의 값 하나를 바꾼 뒤 다시 실행하세요. 무엇을 바꾸었고 출력이 왜 달라졌는지 말로 설명해 보세요."
+        "첫 계산의 10을 12로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
       ],
       "code": "console.log(10 + 3);\nconsole.log(10 - 3);\nconsole.log(10 * 3);\nconsole.log(10 / 2);\nconsole.log(10 % 3);\n"
     },
@@ -44,7 +44,7 @@
       "kind": "write",
       "title": "산술 연산자 직접 사용하기",
       "brief": [
-        "TODO 아래에 요구한 코드를 직접 작성하세요."
+        "곱한 값을 출력하는 코드를 직접 작성하고 실행 결과를 확인하세요."
       ],
       "code": "const price = 12000;\nconst quantity = 3;\n// TODO: 곱한 값을 출력하세요.\n",
       "solutionCode": "const price = 12000;\nconst quantity = 3;\nconsole.log(price * quantity);\n",
@@ -58,7 +58,7 @@
         }
       ],
       "hints": [
-        "산술 연산자의 RUN 코드를 다시 확인하세요.",
+        "console.log(price * quantity); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
       ]
     }
