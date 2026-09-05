@@ -20,19 +20,19 @@
     },
     {
       "kind": "run",
-      "title": "parseInt 실행하기",
+      "title": "CSS 크기에서 정수 읽기",
       "brief": [
-        "코드를 실행해 parseInt의 결과를 확인하세요."
+        "parseInt는 '48px'의 앞 숫자 부분 48을 읽고 px에서 멈춥니다."
       ],
-      "code": "console.log(parseInt('120px', 10));\n"
+      "code": "const widthText = '48px';\nconsole.log(parseInt(widthText, 10));\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "숫자로 시작하지 않는 값 비교하기",
       "brief": [
-        "120px를 85px로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "'약 30명'은 숫자로 시작하지 않아 NaN입니다. 문자열을 '30명'으로 바꿔 결과가 30이 되게 하세요."
       ],
-      "code": "console.log(parseInt('120px', 10));\n"
+      "code": "console.log(parseInt('약 30명', 10));\n"
     },
     {
       "kind": "write",
@@ -54,6 +54,50 @@
       "hints": [
         "console.log(parseInt(width, 10)); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "퍼센트 문자열에서 정수 읽기",
+      "brief": [
+        "'85%'를 10진수 정수 85로 변환해 출력하세요."
+      ],
+      "code": "const rateText = '85%';\n// TODO: parseInt로 정수를 출력하세요.\n",
+      "solutionCode": "const rateText = '85%';\nconsole.log(parseInt(rateText, 10));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "퍼센트 문자열에서 정수 읽기",
+          "expected": [
+            "85"
+          ]
+        }
+      ],
+      "hints": [
+        "parseInt의 첫 인수에 rateText를 넣으세요.",
+        "두 번째 인수에는 10을 적으세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "소수 문자열의 정수 부분 읽기",
+      "brief": [
+        "'19.75kg'를 parseInt로 읽어 정수 19를 출력하세요."
+      ],
+      "code": "const weightText = '19.75kg';\n// TODO: 정수 부분을 출력하세요.\n",
+      "solutionCode": "const weightText = '19.75kg';\nconsole.log(parseInt(weightText, 10));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "소수 문자열의 정수 부분 읽기",
+          "expected": [
+            "19"
+          ]
+        }
+      ],
+      "hints": [
+        "parseInt는 소수점에서 정수 읽기를 멈춥니다.",
+        "10진수 기준을 두 번째 인수로 전달하세요."
       ]
     }
   ]

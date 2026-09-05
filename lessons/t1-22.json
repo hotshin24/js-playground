@@ -21,19 +21,19 @@
     },
     {
       "kind": "run",
-      "title": "삼항 조건 연산자 실행하기",
+      "title": "재고에 따라 판매 문구 고르기",
       "brief": [
-        "코드를 실행해 삼항 조건 연산자의 결과를 확인하세요."
+        "stock > 0의 결과에 따라 판매 중과 품절 중 하나를 선택해 label에 저장합니다."
       ],
-      "code": "const age = 20;\nconsole.log(age >= 19 ? '성인' : '미성년자');\n"
+      "code": "const stock = 0;\nconst label = stock > 0 ? '판매 중' : '품절';\nconsole.log(label);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "경계값에서 선택 결과 비교하기",
       "brief": [
-        "age의 20을 18로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "score 60은 >= 60 조건을 만족해 통과입니다. 비교 연산자를 >로 바꿨을 때 경계값이 탈락으로 바뀌는지 확인하세요."
       ],
-      "code": "const age = 20;\nconsole.log(age >= 19 ? '성인' : '미성년자');\n"
+      "code": "const score = 60;\nconsole.log(score >= 60 ? '통과' : '재시험');\n"
     },
     {
       "kind": "write",
@@ -55,6 +55,50 @@
       "hints": [
         "console.log(score >= 60 ? '통과' : '재시험'); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "나이에 따라 요금 고르기",
+      "brief": [
+        "age가 13 이하이면 5000, 아니면 8000을 선택해 출력하세요."
+      ],
+      "code": "const age = 12;\n// TODO: 삼항 조건 연산자로 요금을 출력하세요.\n",
+      "solutionCode": "const age = 12;\nconsole.log(age <= 13 ? 5000 : 8000);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "나이에 따라 요금 고르기",
+          "expected": [
+            "5000"
+          ]
+        }
+      ],
+      "hints": [
+        "조건은 age <= 13입니다.",
+        "? 뒤에 5000, : 뒤에 8000을 적으세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "불리언 상태로 문구 선택하기",
+      "brief": [
+        "isOpen이 false이면 닫힘, true이면 영업 중을 선택해 출력하세요."
+      ],
+      "code": "const isOpen = false;\n// TODO: 상태 문구를 출력하세요.\n",
+      "solutionCode": "const isOpen = false;\nconsole.log(isOpen ? '영업 중' : '닫힘');\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "불리언 상태로 문구 선택하기",
+          "expected": [
+            "닫힘"
+          ]
+        }
+      ],
+      "hints": [
+        "isOpen 자체를 조건으로 사용하세요.",
+        "false일 때 값은 콜론 뒤에 둡니다."
       ]
     }
   ]

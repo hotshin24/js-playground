@@ -24,22 +24,88 @@
     },
     {
       "kind": "run",
-      "title": "객체와 배열 구조 분해 비교하기",
+      "title": "예약 객체와 좌석 배열 구조 분해하기",
       "brief": [
-        "객체에서는 name과 price라는 key로 값을 찾습니다. 배열에서는 first와 second라는 새 이름에 순서대로 값이 들어갑니다.",
-        "product에 stock이 없으므로 기본값 0이 사용됩니다."
+        "객체는 key 이름으로, 배열은 위치 순서로 필요한 값을 각각 변수에 꺼냅니다."
       ],
-      "code": "const product = { name: '셔츠', price: 39000 };\nconst { price, name, stock = 0 } = product;\n\nconst colors = ['파랑', '빨강'];\nconst [first, second] = colors;\n\nconsole.log(name, price, stock);\nconsole.log(first, second);\n"
+      "code": "const booking = { guest: '하린', people: 3 };\nconst { guest, people } = booking;\nconst seats = ['A1', 'A2'];\nconst [firstSeat, secondSeat] = seats;\nconsole.log(guest, people);\nconsole.log(firstSeat, secondSeat);\n"
     },
     {
       "kind": "tweak",
-      "title": "새 변수 이름 사용하기",
+      "title": "없는 프로퍼티에 기본값 사용하기",
       "brief": [
-        "객체 구조 분해를 const { name: productName, price } = product;로 바꾸면 name 값을 productName이라는 변수에 담습니다.",
-        "이 경우 name이라는 변수는 만들어지지 않습니다. 아래 console.log도 productName으로 바꿔야 합니다.",
-        "배열에서 첫 값을 건너뛰려면 const [, second] = colors처럼 해당 자리를 비워 둡니다."
+        "coupon key가 없어 기본값 '없음'이 사용됩니다. booking에 coupon: 'WELCOME'을 추가해 실제 값이 기본값보다 우선하는지 확인하세요."
       ],
-      "code": "const product = { name: '셔츠', price: 39000 };\nconst { price, name, stock = 0 } = product;\n\nconst colors = ['파랑', '빨강'];\nconst [first, second] = colors;\n\nconsole.log(name, price, stock);\nconsole.log(first, second);\n"
+      "code": "const booking = { guest: '민지' };\nconst { guest, coupon = '없음' } = booking;\nconsole.log(guest);\nconsole.log(coupon);\n"
+    },
+    {
+      "kind": "write",
+      "title": "객체 프로퍼티 구조 분해하기",
+      "brief": [
+        "order에서 item과 quantity를 구조 분해해 두 값을 출력하세요."
+      ],
+      "code": "const order = { item: '펜', quantity: 4, paid: true };\n// TODO: 필요한 두 프로퍼티를 구조 분해하세요.\n",
+      "solutionCode": "const order = { item: '펜', quantity: 4, paid: true };\nconst { item, quantity } = order;\nconsole.log(item);\nconsole.log(quantity);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "객체 프로퍼티 구조 분해하기",
+          "expected": [
+            "펜",
+            "4"
+          ]
+        }
+      ],
+      "hints": [
+        "중괄호 안에 item과 quantity를 적으세요.",
+        "선언한 두 변수를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "배열 구조 분해로 위치 선택하기",
+      "brief": [
+        "colors의 첫째와 둘째 항목을 primary와 secondary에 구조 분해해 출력하세요."
+      ],
+      "code": "const colors = ['파랑', '회색', '흰색'];\n// TODO: 앞의 두 값을 구조 분해하세요.\n",
+      "solutionCode": "const colors = ['파랑', '회색', '흰색'];\nconst [primary, secondary] = colors;\nconsole.log(primary);\nconsole.log(secondary);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "배열 구조 분해로 위치 선택하기",
+          "expected": [
+            "파랑",
+            "회색"
+          ]
+        }
+      ],
+      "hints": [
+        "대괄호 왼쪽부터 변수 이름을 적으세요.",
+        "배열은 위치 순서대로 대응합니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "객체 기본값과 실제 값 비교하기",
+      "brief": [
+        "settings에서 theme과 language 기본값 ko를 구조 분해하고 출력하세요."
+      ],
+      "code": "const settings = { theme: 'dark' };\n// TODO: language 기본값을 포함해 구조 분해하세요.\n",
+      "solutionCode": "const settings = { theme: 'dark' };\nconst { theme, language = 'ko' } = settings;\nconsole.log(theme);\nconsole.log(language);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "객체 기본값과 실제 값 비교하기",
+          "expected": [
+            "dark",
+            "ko"
+          ]
+        }
+      ],
+      "hints": [
+        "language = 'ko'를 구조 분해 자리에 적으세요.",
+        "없는 key에만 기본값이 사용됩니다."
+      ]
     }
   ]
 }

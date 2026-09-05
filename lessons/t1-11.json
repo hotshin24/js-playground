@@ -21,19 +21,19 @@
     },
     {
       "kind": "run",
-      "title": "Number 실행하기",
+      "title": "문자열 인원수를 숫자로 바꾸기",
       "brief": [
-        "코드를 실행해 Number의 결과를 확인하세요."
+        "입력처럼 들어온 문자열 '6'을 Number로 변환하면 숫자 6이 되어 1을 더할 수 있습니다."
       ],
-      "code": "const input = '42';\nconsole.log(Number(input));\n"
+      "code": "const peopleInput = '6';\nconst people = Number(peopleInput);\nconsole.log(people + 1);\nconsole.log(typeof people);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "변환할 수 없는 문자열 확인하기",
       "brief": [
-        "input의 42를 100으로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "Number('오천')은 NaN입니다. 문자열을 '5000'으로 바꿔 정상 숫자와 자료형이 나오는지 확인하세요."
       ],
-      "code": "const input = '42';\nconsole.log(Number(input));\n"
+      "code": "const feeInput = '오천';\nconsole.log(Number(feeInput));\nconsole.log(typeof Number(feeInput));\n"
     },
     {
       "kind": "write",
@@ -55,6 +55,51 @@
       "hints": [
         "console.log(Number(age)); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "나이 입력을 숫자로 변환하기",
+      "brief": [
+        "문자열 ageInput을 Number로 변환해 age에 저장하고 age와 자료형을 출력하세요."
+      ],
+      "code": "const ageInput = '28';\n// TODO: 숫자로 변환해 출력하세요.\n",
+      "solutionCode": "const ageInput = '28';\nconst age = Number(ageInput);\nconsole.log(age);\nconsole.log(typeof age);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "나이 입력을 숫자로 변환하기",
+          "expected": [
+            "28",
+            "number"
+          ]
+        }
+      ],
+      "hints": [
+        "Number(ageInput)을 age에 저장하세요.",
+        "age와 typeof age를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "변환한 가격으로 계산하기",
+      "brief": [
+        "'12500'을 Number로 변환한 뒤 배송비 3000을 더해 15500을 출력하세요."
+      ],
+      "code": "const priceInput = '12500';\nconst shippingFee = 3000;\n// TODO: 변환한 가격과 배송비의 합을 출력하세요.\n",
+      "solutionCode": "const priceInput = '12500';\nconst shippingFee = 3000;\nconst price = Number(priceInput);\nconsole.log(price + shippingFee);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "변환한 가격으로 계산하기",
+          "expected": [
+            "15500"
+          ]
+        }
+      ],
+      "hints": [
+        "Number(priceInput)으로 숫자를 만드세요.",
+        "변환한 값에 shippingFee를 더하세요."
       ]
     }
   ]

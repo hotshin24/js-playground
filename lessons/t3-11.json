@@ -21,19 +21,19 @@
     },
     {
       "kind": "run",
-      "title": "배열 리터럴 실행하기",
+      "title": "배송 단계를 배열로 묶기",
       "brief": [
-        "코드를 실행해 배열 리터럴의 결과를 확인하세요."
+        "배송 단계를 작성 순서대로 배열에 저장하고 첫 단계와 마지막 단계를 인덱스로 읽습니다."
       ],
-      "code": "const fruits = ['사과', '바나나', '포도'];\nconsole.log(fruits[0]);\n"
+      "code": "const steps = ['결제', '포장', '출고'];\nconsole.log(steps[0]);\nconsole.log(steps[2]);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "배열 순서가 인덱스를 결정하는 점 확인하기",
       "brief": [
-        "첫 배열 값 사과를 딸기로 바꾸고 다시 실행하여 결과를 비교하세요."
+        "첫 두 항목의 위치를 바꾸면 인덱스 0의 값도 달라집니다. '서울'과 '부산'의 위치를 바꿔 첫 출력을 비교하세요."
       ],
-      "code": "const fruits = ['사과', '바나나', '포도'];\nconsole.log(fruits[0]);\n"
+      "code": "const cities = ['서울', '부산', '제주'];\nconsole.log(cities[0]);\nconsole.log(cities[1]);\n"
     },
     {
       "kind": "write",
@@ -55,6 +55,51 @@
       "hints": [
         "const cities = ['서울', '부산']; 줄을 먼저 작성하세요.",
         "접근할 key 또는 index를 정확히 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "할 일 배열 만들기",
+      "brief": [
+        "'메일 확인', '회의', '정리'를 담은 tasks 배열을 만들고 첫 항목을 출력하세요."
+      ],
+      "code": "// TODO: tasks 배열을 만들고 첫 값을 출력하세요.\n",
+      "solutionCode": "const tasks = ['메일 확인', '회의', '정리'];\nconsole.log(tasks[0]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "할 일 배열 만들기",
+          "expected": [
+            "메일 확인"
+          ]
+        }
+      ],
+      "hints": [
+        "대괄호 안에 세 문자열을 쉼표로 나열하세요.",
+        "첫 항목의 인덱스는 0입니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "숫자 배열의 두 위치 읽기",
+      "brief": [
+        "scores 배열에 70, 85, 90을 넣고 두 번째와 세 번째 값을 출력하세요."
+      ],
+      "code": "// TODO: scores 배열을 만들고 두 값을 출력하세요.\n",
+      "solutionCode": "const scores = [70, 85, 90];\nconsole.log(scores[1]);\nconsole.log(scores[2]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "숫자 배열의 두 위치 읽기",
+          "expected": [
+            "85",
+            "90"
+          ]
+        }
+      ],
+      "hints": [
+        "두 번째 항목은 인덱스 1입니다.",
+        "세 번째 항목은 인덱스 2입니다."
       ]
     }
   ]

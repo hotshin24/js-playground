@@ -24,19 +24,19 @@
     },
     {
       "kind": "run",
-      "title": "증감 연산자 실행하기",
+      "title": "대기 인원 한 명씩 바꾸기",
       "brief": [
-        "코드를 실행해 증감 연산자의 결과를 확인하세요."
+        "한 명이 들어오면 waiting++, 한 명이 취소하면 waiting--로 정확히 1씩 바뀝니다."
       ],
-      "code": "let count = 1;\ncount++;\nconsole.log(count);\ncount--;\nconsole.log(count);\n"
+      "code": "let waiting = 6;\nwaiting++;\nconsole.log(waiting);\nwaiting--;\nconsole.log(waiting);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "증감 위치에 따른 출력값 대조하기",
       "brief": [
-        "count++를 count += 2로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "count++ 자체를 출력하면 증가 전 2가 먼저 사용되고 이후 count는 3입니다. 첫 출력을 ++count로 바꿔 차이를 확인하세요."
       ],
-      "code": "let count = 1;\ncount++;\nconsole.log(count);\ncount--;\nconsole.log(count);\n"
+      "code": "let count = 2;\nconsole.log(count++);\nconsole.log(count);\n"
     },
     {
       "kind": "write",
@@ -58,6 +58,50 @@
       "hints": [
         "visitors++; 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "페이지 번호 증가시키기",
+      "brief": [
+        "page를 ++로 한 번 증가시켜 4를 출력하세요."
+      ],
+      "code": "let page = 3;\n// TODO: page를 증가시키고 출력하세요.\n",
+      "solutionCode": "let page = 3;\npage++;\nconsole.log(page);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "페이지 번호 증가시키기",
+          "expected": [
+            "4"
+          ]
+        }
+      ],
+      "hints": [
+        "page++;를 한 줄 작성하세요.",
+        "증가한 다음 page를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "수량을 두 번 감소시키기",
+      "brief": [
+        "quantity에 --를 두 번 적용해 8을 출력하세요."
+      ],
+      "code": "let quantity = 10;\n// TODO: 두 번 감소시키고 출력하세요.\n",
+      "solutionCode": "let quantity = 10;\nquantity--;\nquantity--;\nconsole.log(quantity);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "수량을 두 번 감소시키기",
+          "expected": [
+            "8"
+          ]
+        }
+      ],
+      "hints": [
+        "quantity--;를 두 번 작성하세요.",
+        "두 감소가 끝난 뒤 출력하세요."
       ]
     }
   ]

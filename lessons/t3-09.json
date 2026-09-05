@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "in 연산자 실행하기",
+      "title": "선택 프로퍼티가 있는지 확인하기",
       "brief": [
-        "코드를 실행해 in 연산자의 결과를 확인하세요."
+        "required는 객체에 있으므로 true, optional은 없으므로 false가 됩니다."
       ],
-      "code": "const user = { name: '민수' };\nconsole.log('name' in user);\nconsole.log('age' in user);\n"
+      "code": "const form = { required: '이름' };\nconsole.log('required' in form);\nconsole.log('optional' in form);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "값이 undefined여도 key는 존재하는 경우 확인하기",
       "brief": [
-        "검사할 age를 name으로 바꾸고 다시 실행하여 결과를 비교하세요."
+        "value 프로퍼티의 값은 undefined이지만 key는 객체에 있으므로 in 결과는 true입니다. delete로 제거해 false로 바꿔 보세요."
       ],
-      "code": "const user = { name: '민수' };\nconsole.log('name' in user);\nconsole.log('age' in user);\n"
+      "code": "const data = { value: undefined };\nconsole.log(data.value);\nconsole.log('value' in data);\n"
     },
     {
       "kind": "write",
@@ -57,6 +57,51 @@
       "hints": [
         "console.log('price' in product); 줄을 먼저 작성하세요.",
         "접근할 key 또는 index를 정확히 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "프로퍼티 두 개의 존재 여부 확인하기",
+      "brief": [
+        "product에 price가 있는지와 stock이 있는지를 in으로 차례로 출력하세요."
+      ],
+      "code": "const product = { name: '램프', price: 22000 };\n// TODO: 두 key의 존재 여부를 출력하세요.\n",
+      "solutionCode": "const product = { name: '램프', price: 22000 };\nconsole.log('price' in product);\nconsole.log('stock' in product);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "프로퍼티 두 개의 존재 여부 확인하기",
+          "expected": [
+            "true",
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "왼쪽에는 key 문자열을 둡니다.",
+        "오른쪽에는 product 객체를 둡니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "동적 key의 존재 여부 확인하기",
+      "brief": [
+        "field에 'email'을 저장하고 field in member 결과를 출력하세요."
+      ],
+      "code": "const member = { name: '하늘', email: 'h@example.com' };\nconst field = 'email';\n// TODO: 변수에 담긴 key를 확인하세요.\n",
+      "solutionCode": "const member = { name: '하늘', email: 'h@example.com' };\nconst field = 'email';\nconsole.log(field in member);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "동적 key의 존재 여부 확인하기",
+          "expected": [
+            "true"
+          ]
+        }
+      ],
+      "hints": [
+        "in 왼쪽에는 문자열 변수도 사용할 수 있습니다.",
+        "field in member를 출력하세요."
       ]
     }
   ]

@@ -22,22 +22,89 @@
     },
     {
       "kind": "run",
-      "title": "복사한 변수만 바꾸기",
+      "title": "복사한 배송비만 따로 수정하기",
       "brief": [
-        "originalName의 문자열이 copiedName에 복사됩니다. copiedName을 바꿔도 originalName은 그대로입니다.",
-        "숫자와 불리언도 같은 방식으로 서로 독립적인 값이 복사됩니다."
+        "숫자형 값은 대입할 때 값 자체가 복사되므로 copiedFee를 바꿔도 originalFee는 그대로입니다."
       ],
-      "code": "let originalName = '셔츠';\nlet copiedName = originalName;\n\ncopiedName = '모자';\n\nconsole.log(originalName);\nconsole.log(copiedName);\n"
+      "code": "let originalFee = 3000;\nlet copiedFee = originalFee;\ncopiedFee = 5000;\nconsole.log(originalFee);\nconsole.log(copiedFee);\n"
     },
     {
       "kind": "tweak",
-      "title": "숫자 값으로 다시 확인하기",
+      "title": "문자열 복사 뒤 두 변수 비교하기",
       "brief": [
-        "문자열 대신 originalPrice = 12000과 copiedPrice를 만들어 같은 과정을 실행해 보세요.",
-        "copiedPrice += 3000을 실행해도 originalPrice는 12000입니다.",
-        "원시 자료형의 값을 복사한 뒤 한쪽 변수를 바꾸면 다른 변수의 값은 바뀌지 않습니다."
+        "selected에 original의 문자열이 복사됩니다. selected를 '부산'으로 바꿔도 original이 서울로 남는지 확인하세요."
       ],
-      "code": "let originalName = '셔츠';\nlet copiedName = originalName;\n\ncopiedName = '모자';\n\nconsole.log(originalName);\nconsole.log(copiedName);\n"
+      "code": "const original = '서울';\nlet selected = original;\nselected = '제주';\nconsole.log(original);\nconsole.log(selected);\n"
+    },
+    {
+      "kind": "write",
+      "title": "불리언 값을 독립적으로 복사하기",
+      "brief": [
+        "original의 true를 copied에 복사한 뒤 copied만 false로 재할당하고 두 값을 출력하세요."
+      ],
+      "code": "const original = true;\n// TODO: copied를 만들고 값만 바꿔 두 변수를 출력하세요.\n",
+      "solutionCode": "const original = true;\nlet copied = original;\ncopied = false;\nconsole.log(original);\nconsole.log(copied);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "불리언 값을 독립적으로 복사하기",
+          "expected": [
+            "true",
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "copied에는 original의 현재 값이 복사됩니다.",
+        "copied만 false로 재할당하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "숫자 복사 후 계산하기",
+      "brief": [
+        "base를 adjusted에 복사하고 adjusted에 15를 더해 40으로 만든 뒤 두 값을 출력하세요."
+      ],
+      "code": "const base = 25;\n// TODO: 값을 복사하고 adjusted만 계산하세요.\n",
+      "solutionCode": "const base = 25;\nlet adjusted = base;\nadjusted += 15;\nconsole.log(base);\nconsole.log(adjusted);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "숫자 복사 후 계산하기",
+          "expected": [
+            "25",
+            "40"
+          ]
+        }
+      ],
+      "hints": [
+        "let adjusted = base로 복사하세요.",
+        "복사본에만 += 15를 적용하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "두 단계로 복사해도 독립적인지 확인하기",
+      "brief": [
+        "first를 second에, second를 third에 복사한 뒤 third만 9로 바꾸고 세 값을 출력하세요."
+      ],
+      "code": "const first = 3;\n// TODO: 두 번 복사한 뒤 third만 바꾸세요.\n",
+      "solutionCode": "const first = 3;\nlet second = first;\nlet third = second;\nthird = 9;\nconsole.log(first);\nconsole.log(second);\nconsole.log(third);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "두 단계로 복사해도 독립적인지 확인하기",
+          "expected": [
+            "3",
+            "3",
+            "9"
+          ]
+        }
+      ],
+      "hints": [
+        "원시값은 대입할 때마다 값이 복사됩니다.",
+        "third 재할당은 first와 second에 영향이 없습니다."
+      ]
     }
   ]
 }

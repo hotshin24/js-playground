@@ -22,22 +22,88 @@
     },
     {
       "kind": "run",
-      "title": "원본과 반환값 함께 확인하기",
+      "title": "대기열 앞뒤 항목 변경하기",
       "brief": [
-        "push의 반환값은 새 길이 3입니다. shift의 반환값은 삭제된 첫 값 셔츠입니다.",
-        "마지막 배열에는 모자와 신발이 남습니다."
+        "push는 끝에 추가하고 shift는 앞 항목을 제거해 반환합니다. 원본 queue도 함께 바뀝니다."
       ],
-      "code": "const items = ['셔츠', '모자'];\n\nconst newLength = items.push('신발');\nconst removed = items.shift();\n\nconsole.log(newLength);\nconsole.log(removed);\nconsole.log(items);\n"
+      "code": "const queue = ['민수', '지수'];\nconst length = queue.push('서윤');\nconst served = queue.shift();\nconsole.log(length);\nconsole.log(served);\nconsole.log(queue[0]);\nconsole.log(queue[1]);\n"
     },
     {
       "kind": "tweak",
-      "title": "반대쪽 메서드로 바꿔 보기",
+      "title": "pop과 unshift의 반대 방향 비교하기",
       "brief": [
-        "push를 unshift로 바꾸면 신발이 배열 앞에 추가됩니다.",
-        "shift를 pop으로 바꾸면 배열 끝의 값이 삭제되어 removed에 들어갑니다.",
-        "메서드의 반환값과 변경된 원본 배열은 서로 다를 수 있으므로 둘을 따로 확인하세요."
+        "unshift는 앞에 긴급을 추가하고 pop은 마지막 완료를 제거합니다. pop을 shift로 바꿔 어느 값이 제거되는지 비교하세요."
       ],
-      "code": "const items = ['셔츠', '모자'];\n\nconst newLength = items.push('신발');\nconst removed = items.shift();\n\nconsole.log(newLength);\nconsole.log(removed);\nconsole.log(items);\n"
+      "code": "const tasks = ['검토', '완료'];\ntasks.unshift('긴급');\nconst removed = tasks.pop();\nconsole.log(removed);\nconsole.log(tasks[0]);\nconsole.log(tasks.length);\n"
+    },
+    {
+      "kind": "write",
+      "title": "장바구니 끝에 추가하고 제거하기",
+      "brief": [
+        "cart 끝에 '신발'을 push한 뒤 pop으로 다시 제거하고 반환값과 남은 길이를 출력하세요."
+      ],
+      "code": "const cart = ['셔츠', '모자'];\n// TODO: 끝 항목을 추가하고 제거하세요.\n",
+      "solutionCode": "const cart = ['셔츠', '모자'];\ncart.push('신발');\nconst removed = cart.pop();\nconsole.log(removed);\nconsole.log(cart.length);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "장바구니 끝에 추가하고 제거하기",
+          "expected": [
+            "신발",
+            "2"
+          ]
+        }
+      ],
+      "hints": [
+        "push와 pop은 배열 끝을 사용합니다.",
+        "pop의 반환값을 removed에 저장하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "알림 배열 앞부분 변경하기",
+      "brief": [
+        "notices 앞에 '긴급'을 unshift하고 shift로 첫 값을 제거해 반환값과 새 첫 값을 출력하세요."
+      ],
+      "code": "const notices = ['일반', '점검'];\n// TODO: 앞에 추가한 뒤 첫 값을 제거하세요.\n",
+      "solutionCode": "const notices = ['일반', '점검'];\nnotices.unshift('긴급');\nconst removed = notices.shift();\nconsole.log(removed);\nconsole.log(notices[0]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "알림 배열 앞부분 변경하기",
+          "expected": [
+            "긴급",
+            "일반"
+          ]
+        }
+      ],
+      "hints": [
+        "unshift는 배열 앞에 추가합니다.",
+        "shift는 앞 항목을 제거해 반환합니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "네 메서드의 반환값 구분하기",
+      "brief": [
+        "items에 push를 적용한 뒤 반환된 길이와, shift로 제거된 값을 출력하세요."
+      ],
+      "code": "const items = ['A', 'B'];\n// TODO: C를 추가하고 첫 값을 제거하세요.\n",
+      "solutionCode": "const items = ['A', 'B'];\nconst newLength = items.push('C');\nconst first = items.shift();\nconsole.log(newLength);\nconsole.log(first);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "네 메서드의 반환값 구분하기",
+          "expected": [
+            "3",
+            "A"
+          ]
+        }
+      ],
+      "hints": [
+        "push의 반환값은 새 길이입니다.",
+        "shift의 반환값은 제거한 항목입니다."
+      ]
     }
   ]
 }

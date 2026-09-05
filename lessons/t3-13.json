@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "배열 인덱스 실행하기",
+      "title": "요일 배열의 처음과 마지막 읽기",
       "brief": [
-        "코드를 실행해 배열 인덱스의 결과를 확인하세요."
+        "항목이 네 개인 배열의 인덱스는 0부터 3까지이므로 마지막 값은 days[3]입니다."
       ],
-      "code": "const colors = ['빨강', '초록', '파랑'];\nconsole.log(colors[0]);\nconsole.log(colors[2]);\n"
+      "code": "const days = ['월', '화', '수', '목'];\nconsole.log(days[0]);\nconsole.log(days[3]);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "범위를 벗어난 인덱스 확인하기",
       "brief": [
-        "출력할 인덱스 2를 1로 바꾸고 다시 실행하여 결과를 비교하세요."
+        "항목이 세 개인 배열에서 index 3은 존재하지 않아 undefined입니다. 3을 2로 바꿔 마지막 항목을 읽으세요."
       ],
-      "code": "const colors = ['빨강', '초록', '파랑'];\nconsole.log(colors[0]);\nconsole.log(colors[2]);\n"
+      "code": "const sizes = ['S', 'M', 'L'];\nconsole.log(sizes[3]);\nconsole.log(sizes.length);\n"
     },
     {
       "kind": "write",
@@ -57,6 +57,51 @@
       "hints": [
         "console.log(days[1]); 줄을 먼저 작성하세요.",
         "접근할 key 또는 index를 정확히 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "정확한 인덱스로 값 선택하기",
+      "brief": [
+        "colors에서 두 번째 '초록'과 네 번째 '노랑'을 출력하세요."
+      ],
+      "code": "const colors = ['빨강', '초록', '파랑', '노랑'];\n// TODO: 두 위치의 값을 출력하세요.\n",
+      "solutionCode": "const colors = ['빨강', '초록', '파랑', '노랑'];\nconsole.log(colors[1]);\nconsole.log(colors[3]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "정확한 인덱스로 값 선택하기",
+          "expected": [
+            "초록",
+            "노랑"
+          ]
+        }
+      ],
+      "hints": [
+        "사람의 두 번째는 인덱스 1입니다.",
+        "네 번째는 인덱스 3입니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "length로 마지막 인덱스 계산하기",
+      "brief": [
+        "items.length - 1을 인덱스로 사용해 마지막 값 '양말'을 출력하세요."
+      ],
+      "code": "const items = ['셔츠', '모자', '양말'];\n// TODO: length로 마지막 값을 읽으세요.\n",
+      "solutionCode": "const items = ['셔츠', '모자', '양말'];\nconsole.log(items[items.length - 1]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "length로 마지막 인덱스 계산하기",
+          "expected": [
+            "양말"
+          ]
+        }
+      ],
+      "hints": [
+        "마지막 인덱스는 length - 1입니다.",
+        "계산식을 대괄호 안에 넣으세요."
       ]
     }
   ]

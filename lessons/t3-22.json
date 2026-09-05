@@ -22,22 +22,90 @@
     },
     {
       "kind": "run",
-      "title": "두 변수가 공유하는 객체 확인하기",
+      "title": "공유된 예약 객체 수정하기",
       "brief": [
-        "copied.price를 바꾼 뒤 original.price와 copied.price가 모두 42000으로 출력됩니다.",
-        "const는 original이나 copied를 다른 객체로 재할당하지 못하게 할 뿐, 공유 객체의 프로퍼티 변경을 막지 않습니다."
+        "shared와 booking은 같은 객체를 가리키므로 shared.people 수정 결과가 booking에서도 보입니다."
       ],
-      "code": "const original = { name: '셔츠', price: 39000 };\nconst copied = original;\n\ncopied.price = 42000;\n\nconsole.log(original.price);\nconsole.log(copied.price);\nconsole.log(original === copied);\n"
+      "code": "const booking = { people: 2 };\nconst shared = booking;\nshared.people = 4;\nconsole.log(booking.people);\nconsole.log(shared === booking);\n"
     },
     {
       "kind": "tweak",
-      "title": "새 객체와 같은 객체 비교하기",
+      "title": "새 객체와 같은 참조 비교하기",
       "brief": [
-        "const another = { name: '셔츠', price: 42000 };를 추가하고 original === another를 출력해 보세요. 내용이 같아 보여도 false입니다.",
-        "객체 비교는 프로퍼티 내용을 하나씩 비교하지 않고 같은 객체를 가리키는지 확인합니다.",
-        "React가 객체 상태의 변경을 알아차리는 과정에서도 이 참조 차이가 중요합니다."
+        "first와 second는 내용이 같아도 따로 만든 객체라 ===가 false입니다. second를 first로 대입해 true로 바꾸세요."
       ],
-      "code": "const original = { name: '셔츠', price: 39000 };\nconst copied = original;\n\ncopied.price = 42000;\n\nconsole.log(original.price);\nconsole.log(copied.price);\nconsole.log(original === copied);\n"
+      "code": "const first = { status: '완료' };\nconst second = { status: '완료' };\nconsole.log(first === second);\n"
+    },
+    {
+      "kind": "write",
+      "title": "같은 객체를 가리키는 두 변수 만들기",
+      "brief": [
+        "profile을 alias에 대입하고 alias.role을 editor로 바꾼 뒤 두 role과 === 결과를 출력하세요."
+      ],
+      "code": "const profile = { role: 'viewer' };\n// TODO: 참조를 복사하고 프로퍼티를 수정하세요.\n",
+      "solutionCode": "const profile = { role: 'viewer' };\nconst alias = profile;\nalias.role = 'editor';\nconsole.log(profile.role);\nconsole.log(alias.role);\nconsole.log(profile === alias);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "같은 객체를 가리키는 두 변수 만들기",
+          "expected": [
+            "editor",
+            "editor",
+            "true"
+          ]
+        }
+      ],
+      "hints": [
+        "alias에는 객체 참조가 복사됩니다.",
+        "alias를 통해 같은 객체의 role을 바꾸세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "서로 독립적인 객체 구분하기",
+      "brief": [
+        "left와 같은 내용을 가진 right 객체를 새로 만들고, right.count만 2로 바꾼 뒤 두 값과 === 결과를 출력하세요."
+      ],
+      "code": "const left = { count: 1 };\n// TODO: 새 객체 right를 만들고 수정하세요.\n",
+      "solutionCode": "const left = { count: 1 };\nconst right = { count: 1 };\nright.count = 2;\nconsole.log(left.count);\nconsole.log(right.count);\nconsole.log(left === right);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "서로 독립적인 객체 구분하기",
+          "expected": [
+            "1",
+            "2",
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "right는 left를 대입하지 말고 새 객체 리터럴로 만드세요.",
+        "서로 다른 객체는 내용이 같아도 ===가 false입니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "배열 참조도 공유되는지 확인하기",
+      "brief": [
+        "items를 sharedItems에 대입하고 sharedItems[0]을 수정해 두 변수에서 같은 값이 보이는지 출력하세요."
+      ],
+      "code": "const items = ['대기'];\n// TODO: 배열 참조를 복사하고 값을 수정하세요.\n",
+      "solutionCode": "const items = ['대기'];\nconst sharedItems = items;\nsharedItems[0] = '완료';\nconsole.log(items[0]);\nconsole.log(sharedItems[0]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "배열 참조도 공유되는지 확인하기",
+          "expected": [
+            "완료",
+            "완료"
+          ]
+        }
+      ],
+      "hints": [
+        "배열도 객체 자료형이라 참조가 복사됩니다.",
+        "공유된 배열의 첫 항목을 바꾸세요."
+      ]
     }
   ]
 }

@@ -21,19 +21,19 @@
     },
     {
       "kind": "run",
-      "title": "null 실행하기",
+      "title": "선택 전 배송 방법 나타내기",
       "brief": [
-        "코드를 실행해 null의 결과를 확인하세요."
+        "아직 배송 방법을 선택하지 않은 상태를 null로 명시하고 값 자체를 출력합니다."
       ],
-      "code": "const selected = null;\nconsole.log(selected);\n"
+      "code": "const deliveryMethod = null;\nconsole.log(deliveryMethod);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "null과 빈 문자열 대조하기",
       "brief": [
-        "selected의 null을 문자열 선택됨으로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "첫 값 null은 의도적인 값 없음이고 둘째 값 ''은 존재하는 빈 문자열입니다. empty를 null로 바꿔 두 출력을 같게 만드세요."
       ],
-      "code": "const selected = null;\nconsole.log(selected);\n"
+      "code": "const selected = null;\nconst empty = '';\nconsole.log(selected);\nconsole.log(empty);\n"
     },
     {
       "kind": "write",
@@ -55,6 +55,52 @@
       "hints": [
         "console.log(reservation); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "선택되지 않은 좌석 나타내기",
+      "brief": [
+        "selectedSeat에 null을 저장하고 값과 selectedSeat === null의 결과를 출력하세요."
+      ],
+      "code": "// TODO: selectedSeat을 선언하고 두 값을 출력하세요.\n",
+      "solutionCode": "const selectedSeat = null;\nconsole.log(selectedSeat);\nconsole.log(selectedSeat === null);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "선택되지 않은 좌석 나타내기",
+          "expected": [
+            "null",
+            "true"
+          ]
+        }
+      ],
+      "hints": [
+        "const selectedSeat = null;로 선언하세요.",
+        "selectedSeat === null도 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "0과 null 구분하기",
+      "brief": [
+        "stock 0과 missingStock null을 차례로 출력하세요. 0은 수량이 없다는 숫자값이고 null은 값 자체가 없다는 표시입니다."
+      ],
+      "code": "// TODO: 두 변수를 선언하고 출력하세요.\n",
+      "solutionCode": "const stock = 0;\nconst missingStock = null;\nconsole.log(stock);\nconsole.log(missingStock);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "0과 null 구분하기",
+          "expected": [
+            "0",
+            "null"
+          ]
+        }
+      ],
+      "hints": [
+        "stock에는 숫자 0을 넣으세요.",
+        "missingStock에는 null을 넣으세요."
       ]
     }
   ]

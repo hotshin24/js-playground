@@ -23,25 +23,22 @@
     },
     {
       "kind": "run",
-      "title": "원본과 새 배열 비교하기",
+      "title": "상품명을 표시 문구로 변환하기",
       "brief": [
-        "각 price에 1000을 더한 11000, 21000, 31000이 새 배열에 들어갑니다.",
-        "prices === withTax는 false입니다. 두 배열의 길이는 같지만 서로 다른 배열입니다."
+        "map 콜백이 각 상품명을 변환해 원본과 길이가 같은 새 labels 배열을 만듭니다."
       ],
-      "code": "const prices = [10000, 20000, 30000];\nconst withTax = prices.map((price) => price + 1000);\n\nconsole.log(prices);\nconsole.log(withTax);\nconsole.log(prices === withTax);\n"
+      "code": "const products = ['컵', '펜', '노트'];\nconst labels = products.map((product) => product + ' 상품');\nconsole.log(labels[0]);\nconsole.log(labels[2]);\nconsole.log(products === labels);\n"
     },
     {
       "kind": "tweak",
-      "title": "return을 빠뜨린 결과 확인하기",
+      "title": "콜백 return을 빠뜨린 결과 확인하기",
       "brief": [
-        "화살표 함수를 (price) => { price + 1000; }으로 바꾸면 결과 배열은 [undefined, undefined, undefined]가 됩니다.",
-        "중괄호를 사용하면 return을 직접 써야 합니다. (price) => { return price + 1000; }로 고치면 정상 결과가 나옵니다.",
-        "map에서는 콜백이 각 위치에 넣을 값을 반드시 반환해야 합니다."
+        "중괄호 본문에 return이 없어 mapped 항목이 undefined가 됩니다. value * 2 앞에 return을 추가해 4와 8을 만드세요."
       ],
-      "code": "const prices = [10000, 20000, 30000];\nconst withTax = prices.map((price) => price + 1000);\n\nconsole.log(prices);\nconsole.log(withTax);\nconsole.log(prices === withTax);\n"
+      "code": "const values = [2, 4];\nconst mapped = values.map((value) => {\n  value * 2;\n});\nconsole.log(mapped[0]);\nconsole.log(mapped[1]);\n"
     },
     {
-      "kind": "fill",
+      "kind": "write",
       "title": "각 가격을 10% 할인하기",
       "brief": [
         "prices의 각 값에 0.9를 곱한 새 배열을 반환하세요. 원본 배열은 바꾸지 않습니다.",
@@ -79,6 +76,52 @@
       "hints": [
         "prices.map(...)의 결과를 반환하세요.",
         "map의 콜백은 price * 0.9를 반환합니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "가격 배열을 할인 가격으로 변환하기",
+      "brief": [
+        "prices의 각 값에서 1000을 뺀 새 salePrices를 만들고 두 값을 출력하세요."
+      ],
+      "code": "const prices = [5000, 8000];\n// TODO: map으로 새 배열을 만드세요.\n",
+      "solutionCode": "const prices = [5000, 8000];\nconst salePrices = prices.map((price) => price - 1000);\nconsole.log(salePrices[0]);\nconsole.log(salePrices[1]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "가격 배열을 할인 가격으로 변환하기",
+          "expected": [
+            "4000",
+            "7000"
+          ]
+        }
+      ],
+      "hints": [
+        "map 콜백에서 price - 1000을 반환하세요.",
+        "새 배열을 salePrices에 저장하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "객체 배열에서 이름 배열 만들기",
+      "brief": [
+        "users의 각 name을 반환해 names 배열을 만들고 출력하세요."
+      ],
+      "code": "const users = [{ name: '하린' }, { name: '민호' }];\n// TODO: map으로 name 배열을 만드세요.\n",
+      "solutionCode": "const users = [{ name: '하린' }, { name: '민호' }];\nconst names = users.map((user) => user.name);\nconsole.log(names[0]);\nconsole.log(names[1]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "객체 배열에서 이름 배열 만들기",
+          "expected": [
+            "하린",
+            "민호"
+          ]
+        }
+      ],
+      "hints": [
+        "콜백에서 user.name을 반환하세요.",
+        "map 결과는 새 배열입니다."
       ]
     }
   ]

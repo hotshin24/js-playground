@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "프로퍼티 수정 실행하기",
+      "title": "예약 인원 프로퍼티 수정하기",
       "brief": [
-        "코드를 실행해 프로퍼티 수정의 결과를 확인하세요."
+        "booking.people에 새 값을 대입하면 기존 2가 4로 교체되고 다른 guest 프로퍼티는 그대로입니다."
       ],
-      "code": "const user = { name: '민수' };\nuser.name = '영희';\nconsole.log(user.name);\n"
+      "code": "const booking = { guest: '민호', people: 2 };\nbooking.people = 4;\nconsole.log(booking.guest);\nconsole.log(booking.people);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "잘못된 key가 새 프로퍼티를 만드는 점 확인하기",
       "brief": [
-        "수정할 name 값을 영희에서 지수로 바꾸고 다시 실행하여 결과를 비교하세요."
+        "prcie는 price의 오타라 기존 가격은 바뀌지 않고 새 프로퍼티가 생깁니다. prcie를 price로 고쳐 가격이 15000이 되게 하세요."
       ],
-      "code": "const user = { name: '민수' };\nuser.name = '영희';\nconsole.log(user.name);\n"
+      "code": "const product = { price: 12000 };\nproduct.prcie = 15000;\nconsole.log(product.price);\nconsole.log(product.prcie);\n"
     },
     {
       "kind": "write",
@@ -56,6 +56,50 @@
       "hints": [
         "order.status = '완료'; 줄을 먼저 작성하세요.",
         "접근할 key 또는 index를 정확히 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "상태 프로퍼티 수정하기",
+      "brief": [
+        "ticket.status를 '완료'로 수정하고 출력하세요."
+      ],
+      "code": "const ticket = { id: 3, status: '대기' };\n// TODO: status를 수정하세요.\n",
+      "solutionCode": "const ticket = { id: 3, status: '대기' };\nticket.status = '완료';\nconsole.log(ticket.status);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "상태 프로퍼티 수정하기",
+          "expected": [
+            "완료"
+          ]
+        }
+      ],
+      "hints": [
+        "기존 key status에 새 값을 대입하세요.",
+        "수정 뒤 ticket.status를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "동적 key로 값 수정하기",
+      "brief": [
+        "field가 가리키는 score 프로퍼티를 95로 수정하고 출력하세요."
+      ],
+      "code": "const result = { name: '수빈', score: 80 };\nconst field = 'score';\n// TODO: field를 이용해 값을 수정하세요.\n",
+      "solutionCode": "const result = { name: '수빈', score: 80 };\nconst field = 'score';\nresult[field] = 95;\nconsole.log(result.score);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "동적 key로 값 수정하기",
+          "expected": [
+            "95"
+          ]
+        }
+      ],
+      "hints": [
+        "result[field]을 대입문의 왼쪽에 두세요.",
+        "수정한 score를 출력하세요."
       ]
     }
   ]

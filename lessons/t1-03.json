@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "특별한 숫자값 실행하기",
+      "title": "0으로 나눈 두 방향 확인하기",
       "brief": [
-        "코드를 실행해 특별한 숫자값의 결과를 확인하세요."
+        "양수와 음수를 0으로 나누면 Infinity와 -Infinity가 각각 나옵니다."
       ],
-      "code": "console.log(1 / 0);\nconsole.log(-1 / 0);\nconsole.log('글자' * 2);\n"
+      "code": "const forward = 8 / 0;\nconst backward = -8 / 0;\nconsole.log(forward);\nconsole.log(backward);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "계산할 수 없는 문자열 곱하기",
       "brief": [
-        "1 / 0의 1을 2로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "'배송비' * 3은 NaN입니다. 문자열을 '4'로 바꿔 숫자로 해석 가능한 경우에는 결과가 어떻게 달라지는지 확인하세요."
       ],
-      "code": "console.log(1 / 0);\nconsole.log(-1 / 0);\nconsole.log('글자' * 2);\n"
+      "code": "console.log('배송비' * 3);\nconsole.log(typeof ('배송비' * 3));\n"
     },
     {
       "kind": "write",
@@ -57,6 +57,52 @@
       "hints": [
         "console.log(5 / 0); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "음의 무한대 만들기",
+      "brief": [
+        "-12를 0으로 나눈 결과와 그 자료형을 출력하세요."
+      ],
+      "code": "// TODO: -12 / 0의 값과 자료형을 출력하세요.\n",
+      "solutionCode": "console.log(-12 / 0);\nconsole.log(typeof (-12 / 0));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "음의 무한대 만들기",
+          "expected": [
+            "-Infinity",
+            "number"
+          ]
+        }
+      ],
+      "hints": [
+        "-12 / 0을 먼저 출력하세요.",
+        "typeof (-12 / 0)도 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "NaN과 자료형 함께 확인하기",
+      "brief": [
+        "'수량' - 1의 결과와 자료형을 출력하세요."
+      ],
+      "code": "// TODO: 계산 결과와 자료형을 출력하세요.\n",
+      "solutionCode": "console.log('수량' - 1);\nconsole.log(typeof ('수량' - 1));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "NaN과 자료형 함께 확인하기",
+          "expected": [
+            "NaN",
+            "number"
+          ]
+        }
+      ],
+      "hints": [
+        "'수량' - 1은 정상 숫자를 만들 수 없습니다.",
+        "NaN에도 typeof를 적용하세요."
       ]
     }
   ]

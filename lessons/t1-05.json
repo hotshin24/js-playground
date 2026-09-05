@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "문자열 연결 실행하기",
+      "title": "배송 상태 문장 연결하기",
       "brief": [
-        "코드를 실행해 문자열 연결의 결과를 확인하세요."
+        "상품명, 구분 기호, 배송 상태를 +로 연결해 하나의 문장을 만듭니다. 공백도 문자열에 직접 포함합니다."
       ],
-      "code": "const first = '김';\nconst last = '민수';\nconsole.log(first + last);\n"
+      "code": "const product = '스탠드';\nconst delivery = '도착';\nconsole.log(product + ' - ' + delivery);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "공백이 자동으로 생기지 않는 점 확인하기",
       "brief": [
-        "last의 민수를 영희로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "현재 결과는 '서울부산'입니다. 두 변수 사이에 ' → ' 문자열을 추가해 '서울 → 부산'으로 바꾸세요."
       ],
-      "code": "const first = '김';\nconst last = '민수';\nconsole.log(first + last);\n"
+      "code": "const from = '서울';\nconst to = '부산';\nconsole.log(from + to);\n"
     },
     {
       "kind": "write",
@@ -56,6 +56,50 @@
       "hints": [
         "console.log(item + ': ' + state); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "이름과 호칭 연결하기",
+      "brief": [
+        "customer와 ' 고객님'을 연결해 '하린 고객님'을 출력하세요."
+      ],
+      "code": "const customer = '하린';\n// TODO: 호칭을 연결해 출력하세요.\n",
+      "solutionCode": "const customer = '하린';\nconsole.log(customer + ' 고객님');\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "이름과 호칭 연결하기",
+          "expected": [
+            "하린 고객님"
+          ]
+        }
+      ],
+      "hints": [
+        "customer 뒤에 공백이 포함된 문자열을 더하세요.",
+        "' 고객님' 앞의 공백을 빠뜨리지 마세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "세 조각으로 경로 만들기",
+      "brief": [
+        "start, ' / ', end를 +로 연결해 '접수 / 완료'를 출력하세요."
+      ],
+      "code": "const start = '접수';\nconst end = '완료';\n// TODO: 세 문자열을 연결하세요.\n",
+      "solutionCode": "const start = '접수';\nconst end = '완료';\nconsole.log(start + ' / ' + end);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "세 조각으로 경로 만들기",
+          "expected": [
+            "접수 / 완료"
+          ]
+        }
+      ],
+      "hints": [
+        "두 변수 사이에 문자열 구분 기호를 더하세요.",
+        "+ 연산자를 두 번 사용하세요."
       ]
     }
   ]

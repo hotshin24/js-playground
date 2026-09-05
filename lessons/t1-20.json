@@ -21,19 +21,19 @@
     },
     {
       "kind": "run",
-      "title": "null 병합 연산자 실행하기",
+      "title": "누락된 닉네임에 기본값 적용하기",
       "brief": [
-        "코드를 실행해 null 병합 연산자의 결과를 확인하세요."
+        "nickname이 undefined이므로 ?? 오른쪽의 손님을 선택합니다."
       ],
-      "code": "console.log(null ?? '손님');\nconsole.log(0 ?? 10);\n"
+      "code": "let nickname;\nconst displayName = nickname ?? '손님';\nconsole.log(displayName);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "0과 빈 문자열 보존하기",
       "brief": [
-        "둘째 식의 0을 false로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "0과 빈 문자열은 null이나 undefined가 아니므로 ??가 왼쪽 값을 유지합니다. 빈 문자열을 null로 바꿔 기본 문구가 나오는지 확인하세요."
       ],
-      "code": "console.log(null ?? '손님');\nconsole.log(0 ?? 10);\n"
+      "code": "console.log(0 ?? 99);\nconsole.log('' ?? '입력 없음');\n"
     },
     {
       "kind": "write",
@@ -55,6 +55,50 @@
       "hints": [
         "console.log(name ?? '이름 없음'); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "null 배송 메모 대체하기",
+      "brief": [
+        "memo가 null일 때 '메모 없음'을 선택해 출력하세요."
+      ],
+      "code": "const memo = null;\n// TODO: ??로 기본 문구를 출력하세요.\n",
+      "solutionCode": "const memo = null;\nconsole.log(memo ?? '메모 없음');\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "null 배송 메모 대체하기",
+          "expected": [
+            "메모 없음"
+          ]
+        }
+      ],
+      "hints": [
+        "memo 왼쪽, 기본 문자열 오른쪽에 ??를 두세요.",
+        "완성한 표현식을 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "유효한 false 유지하기",
+      "brief": [
+        "notifications가 false일 때 ??가 false를 그대로 유지하도록 결과를 출력하세요."
+      ],
+      "code": "const notifications = false;\n// TODO: 기본값 true를 두고 결과를 출력하세요.\n",
+      "solutionCode": "const notifications = false;\nconsole.log(notifications ?? true);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "유효한 false 유지하기",
+          "expected": [
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "false는 값이 없는 상태가 아닙니다.",
+        "notifications ?? true를 출력하세요."
       ]
     }
   ]

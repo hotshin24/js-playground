@@ -23,19 +23,19 @@
     },
     {
       "kind": "run",
-      "title": "continue 실행하기",
+      "title": "휴무일만 건너뛰기",
       "brief": [
-        "continue 코드가 어떤 순서로 실행되는지 확인하세요."
+        "day 3에서 continue가 실행되어 출력만 건너뛰고 4와 5의 반복은 계속됩니다."
       ],
-      "code": "for (let number = 1; number <= 4; number++) {\n  if (number === 2) continue;\n  console.log(number);\n}\n"
+      "code": "for (let day = 1; day <= 5; day++) {\n  if (day === 3) continue;\n  console.log(day);\n}\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "짝수 차례를 건너뛰어 홀수만 남기기",
       "brief": [
-        "건너뛰는 값 2를 3으로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "현재 짝수에서 continue합니다. 조건을 number % 2 !== 0으로 바꿔 홀수 대신 짝수만 출력해 보세요."
       ],
-      "code": "for (let number = 1; number <= 4; number++) {\n  if (number === 2) continue;\n  console.log(number);\n}\n"
+      "code": "for (let number = 1; number <= 6; number++) {\n  if (number % 2 === 0) continue;\n  console.log(number);\n}\n"
     },
     {
       "kind": "write",
@@ -60,6 +60,57 @@
       "hints": [
         "for (let number = 1; number <= 5; number++) { 줄을 먼저 작성하세요.",
         "조건과 중괄호의 범위를 먼저 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "특정 번호 제외하기",
+      "brief": [
+        "1부터 5까지 중 2만 건너뛰고 나머지를 출력하세요."
+      ],
+      "code": "// TODO: continue로 2를 제외하세요.\n",
+      "solutionCode": "for (let number = 1; number <= 5; number++) {\n  if (number === 2) continue;\n  console.log(number);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "특정 번호 제외하기",
+          "expected": [
+            "1",
+            "3",
+            "4",
+            "5"
+          ]
+        }
+      ],
+      "hints": [
+        "number === 2일 때 continue하세요.",
+        "출력문은 if 다음에 둡니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "3의 배수 제외하기",
+      "brief": [
+        "1부터 7까지 중 3의 배수는 건너뛰고 나머지를 출력하세요."
+      ],
+      "code": "// TODO: 3의 배수를 제외하세요.\n",
+      "solutionCode": "for (let number = 1; number <= 7; number++) {\n  if (number % 3 === 0) continue;\n  console.log(number);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "3의 배수 제외하기",
+          "expected": [
+            "1",
+            "2",
+            "4",
+            "5",
+            "7"
+          ]
+        }
+      ],
+      "hints": [
+        "나머지가 0인지 검사하세요.",
+        "continue 뒤의 출력은 현재 차례에서 실행되지 않습니다."
       ]
     }
   ]

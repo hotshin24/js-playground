@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "숫자형 실행하기",
+      "title": "온도와 소수값 계산하기",
       "brief": [
-        "코드를 실행해 number의 결과를 확인하세요."
+        "영하 온도와 소수 변화량도 모두 숫자형입니다. 두 값을 더한 결과와 자료형을 확인하세요."
       ],
-      "code": "const number = 25;\nconsole.log(number);\nconsole.log(typeof number);\n"
+      "code": "const morning = -2;\nconst rise = 3.5;\nconst afternoon = morning + rise;\nconsole.log(afternoon);\nconsole.log(typeof afternoon);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "숫자와 숫자처럼 보이는 문자열 비교하기",
       "brief": [
-        "number의 25를 30으로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "따옴표 없는 12.5는 숫자형입니다. 둘째 줄의 '12.5'에서 따옴표를 제거해 typeof 결과를 비교하세요."
       ],
-      "code": "const number = 25;\nconsole.log(number);\nconsole.log(typeof number);\n"
+      "code": "console.log(typeof 12.5);\nconsole.log(typeof '12.5');\n"
     },
     {
       "kind": "write",
@@ -57,6 +57,51 @@
       "hints": [
         "console.log(price); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "정수와 소수 계산하기",
+      "brief": [
+        "distance 8.5에 extra 1.5를 더해 10을 출력하세요."
+      ],
+      "code": "const distance = 8.5;\nconst extra = 1.5;\n// TODO: 두 수의 합을 출력하세요.\n",
+      "solutionCode": "const distance = 8.5;\nconst extra = 1.5;\nconsole.log(distance + extra);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "정수와 소수 계산하기",
+          "expected": [
+            "10"
+          ]
+        }
+      ],
+      "hints": [
+        "distance + extra를 계산하세요.",
+        "계산식을 console.log 안에 넣으세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "음수의 자료형 확인하기",
+      "brief": [
+        "balance에 -4200을 저장하고 값과 자료형을 출력하세요."
+      ],
+      "code": "// TODO: balance를 선언하고 값과 자료형을 출력하세요.\n",
+      "solutionCode": "const balance = -4200;\nconsole.log(balance);\nconsole.log(typeof balance);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "음수의 자료형 확인하기",
+          "expected": [
+            "-4200",
+            "number"
+          ]
+        }
+      ],
+      "hints": [
+        "const balance = -4200;으로 선언하세요.",
+        "typeof balance도 출력하세요."
       ]
     }
   ]

@@ -22,25 +22,22 @@
     },
     {
       "kind": "run",
-      "title": "합계가 쌓이는 순서 보기",
+      "title": "장바구니 수량 합계 누적하기",
       "brief": [
-        "sum은 0에서 시작해 10000, 25000, 30000으로 바뀝니다.",
-        "forEach와 달리 reduce는 마지막 누산값 30000을 반환합니다."
+        "초깃값 0에서 시작해 각 quantity를 더한 반환값이 다음 콜백의 sum으로 이어집니다."
       ],
-      "code": "const prices = [10000, 15000, 5000];\n\nconst total = prices.reduce((sum, price) => {\n  const nextSum = sum + price;\n  console.log(sum + ' + ' + price + ' = ' + nextSum);\n  return nextSum;\n}, 0);\n\nconsole.log('합계: ' + total);\n"
+      "code": "const cart = [{ quantity: 2 }, { quantity: 1 }, { quantity: 4 }];\nconst total = cart.reduce((sum, item) => {\n  return sum + item.quantity;\n}, 0);\nconsole.log(total);\n"
     },
     {
       "kind": "tweak",
-      "title": "초깃값 바꿔 보기",
+      "title": "초깃값이 최종 결과에 미치는 영향 확인하기",
       "brief": [
-        "마지막 초깃값 0을 3000으로 바꾸면 배송비 3000이 먼저 더해져 결과가 33000이 됩니다.",
-        "return nextSum을 지우면 다음 반복의 sum이 undefined가 되어 정상적인 합계를 만들 수 없습니다.",
-        "단순 합계는 반복문으로도 만들 수 있습니다. reduce는 누산값이 어떻게 바뀌는지 설명할 수 있을 때 사용하세요."
+        "현재 합계는 초깃값 10에서 시작해 16입니다. 초깃값을 0으로 바꿔 순수한 배열 합계 6을 확인하세요."
       ],
-      "code": "const prices = [10000, 15000, 5000];\n\nconst total = prices.reduce((sum, price) => {\n  const nextSum = sum + price;\n  console.log(sum + ' + ' + price + ' = ' + nextSum);\n  return nextSum;\n}, 0);\n\nconsole.log('합계: ' + total);\n"
+      "code": "const values = [1, 2, 3];\nconst total = values.reduce((sum, value) => sum + value, 10);\nconsole.log(total);\n"
     },
     {
-      "kind": "fill",
+      "kind": "write",
       "title": "상품 가격의 합계 구하기",
       "brief": [
         "products에 든 모든 객체의 price를 더해 반환하세요. 빈 배열에서는 0을 반환해야 합니다.",
@@ -80,6 +77,50 @@
       "hints": [
         "products.reduce((sum, product) => ..., 0)을 반환하세요.",
         "다음 누산값은 sum + product.price입니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "가격 총합 누적하기",
+      "brief": [
+        "prices를 reduce로 모두 더해 30000을 출력하세요. 초깃값은 0입니다."
+      ],
+      "code": "const prices = [8000, 12000, 10000];\n// TODO: reduce로 합계를 만드세요.\n",
+      "solutionCode": "const prices = [8000, 12000, 10000];\nconst total = prices.reduce((sum, price) => sum + price, 0);\nconsole.log(total);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "가격 총합 누적하기",
+          "expected": [
+            "30000"
+          ]
+        }
+      ],
+      "hints": [
+        "콜백은 sum + price를 반환합니다.",
+        "reduce의 두 번째 인수는 0입니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "곱셈 결과 누적하기",
+      "brief": [
+        "numbers를 reduce로 모두 곱해 24를 출력하세요. 초깃값은 1입니다."
+      ],
+      "code": "const numbers = [2, 3, 4];\n// TODO: reduce로 곱을 구하세요.\n",
+      "solutionCode": "const numbers = [2, 3, 4];\nconst result = numbers.reduce((product, number) => product * number, 1);\nconsole.log(result);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "곱셈 결과 누적하기",
+          "expected": [
+            "24"
+          ]
+        }
+      ],
+      "hints": [
+        "곱셈의 초깃값은 1입니다.",
+        "매번 product * number를 반환하세요."
       ]
     }
   ]

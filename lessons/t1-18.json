@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "논리 연산자 실행하기",
+      "title": "배송 조건 두 가지 결합하기",
       "brief": [
-        "코드를 실행해 논리 연산자의 결과를 확인하세요."
+        "결제가 끝났고 주소도 있을 때만 배송할 수 있으므로 두 조건을 &&로 결합합니다."
       ],
-      "code": "console.log(true && false);\nconsole.log(true || false);\nconsole.log(!true);\n"
+      "code": "const paid = true;\nconst hasAddress = true;\nconsole.log(paid && hasAddress);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "그리고와 또는의 결과 비교하기",
       "brief": [
-        "&& 식의 false를 true로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "false && true는 false지만 false || true는 true입니다. hasTicket을 true로 바꿔 두 결과가 어떻게 달라지는지 확인하세요."
       ],
-      "code": "console.log(true && false);\nconsole.log(true || false);\nconsole.log(!true);\n"
+      "code": "const hasTicket = false;\nconst isStaff = true;\nconsole.log(hasTicket && isStaff);\nconsole.log(hasTicket || isStaff);\n"
     },
     {
       "kind": "write",
@@ -56,6 +56,50 @@
       "hints": [
         "console.log(member || coupon); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "두 자격 모두 확인하기",
+      "brief": [
+        "adult와 agreed가 모두 true일 때만 가능한 결과를 &&로 출력하세요."
+      ],
+      "code": "const adult = true;\nconst agreed = false;\n// TODO: 두 조건을 결합해 출력하세요.\n",
+      "solutionCode": "const adult = true;\nconst agreed = false;\nconsole.log(adult && agreed);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "두 자격 모두 확인하기",
+          "expected": [
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "두 변수 사이에 &&를 사용하세요.",
+        "둘 중 agreed가 false임을 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "부정과 또는 함께 사용하기",
+      "brief": [
+        "soldOut이 아니거나 preorder가 가능하면 true가 되도록 !와 ||를 사용하세요."
+      ],
+      "code": "const soldOut = true;\nconst preorder = true;\n// TODO: 조건 결과를 출력하세요.\n",
+      "solutionCode": "const soldOut = true;\nconst preorder = true;\nconsole.log(!soldOut || preorder);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "부정과 또는 함께 사용하기",
+          "expected": [
+            "true"
+          ]
+        }
+      ],
+      "hints": [
+        "soldOut 앞에 !를 붙이세요.",
+        "그 결과와 preorder를 ||로 연결하세요."
       ]
     }
   ]

@@ -23,20 +23,19 @@
     },
     {
       "kind": "run",
-      "title": "변수 명명 규칙·예약어·대소문자 실행하기",
+      "title": "역할이 드러나는 변수 이름 읽기",
       "brief": [
-        "코드를 실행해 변수 명명 규칙·예약어·대소문자의 동작을 확인하세요."
+        "예약 인원과 예약자 이름을 camelCase 변수로 구분해 저장하고 출력합니다."
       ],
-      "code": "let userName = '민수';\nlet user_name = '영희';\nconsole.log(userName);\nconsole.log(user_name);\n"
+      "code": "let bookingCount = 2;\nlet bookingName = '서윤';\nconsole.log(bookingCount);\nconsole.log(bookingName);\n"
     },
     {
       "kind": "tweak",
-      "title": "변수 명명 규칙·예약어·대소문자의 값 바꿔 보기",
+      "title": "대소문자가 다른 이름 비교하기",
       "brief": [
-        "score와 Score의 값을 서로 바꿔 대소문자가 다른 이름임을 확인하세요.",
-        "수정한 뒤 다시 실행하여 바꾸기 전 결과와 비교하세요."
+        "item과 Item은 서로 다른 변수입니다. Item을 item으로 바꾸면 같은 이름을 다시 선언하는 오류가 생기는지 확인한 뒤 원래 코드로 되돌리세요."
       ],
-      "code": "let score = 10;\nlet Score = 20;\nconsole.log(score);\nconsole.log(Score);\n"
+      "code": "let item = '연필';\nlet Item = '지우개';\nconsole.log(item);\nconsole.log(Item);\n"
     },
     {
       "kind": "write",
@@ -60,6 +59,51 @@
       "hints": [
         "첫 출력에는 소문자로 시작하는 orderCount를 사용하세요.",
         "둘째 출력에는 대문자로 시작하는 OrderCount를 사용하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "camelCase 이름으로 변수 선언하기",
+      "brief": [
+        "배송 날짜를 뜻하는 deliveryDate 변수를 선언해 '9월 10일'을 저장하고 출력하세요."
+      ],
+      "code": "// TODO: deliveryDate를 선언하고 출력하세요.\n",
+      "solutionCode": "let deliveryDate = '9월 10일';\nconsole.log(deliveryDate);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "camelCase 이름으로 변수 선언하기",
+          "expected": [
+            "9월 10일"
+          ]
+        }
+      ],
+      "hints": [
+        "두 단어를 deliveryDate처럼 이어 쓰세요.",
+        "변수 이름의 D만 대문자입니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "서로 다른 두 식별자 구분하기",
+      "brief": [
+        "userId와 userID에 각각 17과 29를 저장하고 순서대로 출력하세요. 대소문자를 정확히 구분해야 합니다."
+      ],
+      "code": "// TODO: userId와 userID를 선언하고 출력하세요.\n",
+      "solutionCode": "let userId = 17;\nlet userID = 29;\nconsole.log(userId);\nconsole.log(userID);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "서로 다른 두 식별자 구분하기",
+          "expected": [
+            "17",
+            "29"
+          ]
+        }
+      ],
+      "hints": [
+        "Id와 ID의 대소문자가 다릅니다.",
+        "선언과 출력에서 같은 철자를 사용하세요."
       ]
     }
   ]

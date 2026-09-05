@@ -23,19 +23,19 @@
     },
     {
       "kind": "run",
-      "title": "매개변수와 인수 실행하기",
+      "title": "수량을 인수로 전달해 문장 만들기",
       "brief": [
-        "매개변수와 인수 코드가 어떤 순서로 실행되는지 확인하세요."
+        "함수 선언의 quantity는 매개변수이고 호출의 4와 9는 각각 전달되는 인수입니다."
       ],
-      "code": "function greet(name) {\n  console.log(name + '님');\n}\ngreet('민수');\n"
+      "code": "function showStock(quantity) {\n  console.log('재고: ' + quantity + '개');\n}\nshowStock(4);\nshowStock(9);\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "두 매개변수의 위치 바꿔 보기",
       "brief": [
-        "호출 인수 민수를 영희로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "첫 인수는 item, 둘째 인수는 count에 들어갑니다. 마지막 호출을 showOrder(2, '연필')로 바꿔 위치가 뒤바뀌면 문장이 어색해지는지 확인하세요."
       ],
-      "code": "function greet(name) {\n  console.log(name + '님');\n}\ngreet('민수');\n"
+      "code": "function showOrder(item, count) {\n  console.log(item + ': ' + count + '개');\n}\nshowOrder('연필', 2);\n"
     },
     {
       "kind": "write",
@@ -57,6 +57,51 @@
       "hints": [
         "function show(message) { 줄을 먼저 작성하세요.",
         "함수 이름, 매개변수, 호출 위치를 문제에서 요구한 흐름과 맞게 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "한 매개변수로 다른 결과 만들기",
+      "brief": [
+        "city를 받아 'city 배송'을 출력하는 ship 함수를 만들고 서울과 제주로 호출하세요."
+      ],
+      "code": "// TODO: ship 함수를 만들고 두 번 호출하세요.\n",
+      "solutionCode": "function ship(city) {\n  console.log(city + ' 배송');\n}\nship('서울');\nship('제주');\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "한 매개변수로 다른 결과 만들기",
+          "expected": [
+            "서울 배송",
+            "제주 배송"
+          ]
+        }
+      ],
+      "hints": [
+        "city 매개변수를 문자열과 연결하세요.",
+        "두 도시를 각각 인수로 전달하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "여러 매개변수로 계산하기",
+      "brief": [
+        "price와 count를 받아 곱한 값을 출력하는 showTotal을 만들고 3500, 3을 전달하세요."
+      ],
+      "code": "// TODO: 두 매개변수로 합계를 출력하세요.\n",
+      "solutionCode": "function showTotal(price, count) {\n  console.log(price * count);\n}\nshowTotal(3500, 3);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "여러 매개변수로 계산하기",
+          "expected": [
+            "10500"
+          ]
+        }
+      ],
+      "hints": [
+        "매개변수 순서는 price, count입니다.",
+        "본문에서 두 값을 곱해 출력하세요."
       ]
     }
   ]

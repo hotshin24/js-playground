@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "복합 대입 연산자 실행하기",
+      "title": "재고 수량 누적하기",
       "brief": [
-        "코드를 실행해 복합 대입 연산자의 결과를 확인하세요."
+        "stock += incoming은 기존 재고 12에 입고량 5를 더해 다시 stock에 저장합니다."
       ],
-      "code": "let point = 10;\npoint += 5;\nconsole.log(point);\n"
+      "code": "let stock = 12;\nconst incoming = 5;\nstock += incoming;\nconsole.log(stock);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "여러 복합 대입 연산 이어 보기",
       "brief": [
-        "point에 더하는 5를 10으로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "balance에 입금액을 더한 뒤 결제액을 뺍니다. payment를 9000으로 바꿔 잔액을 비교하세요."
       ],
-      "code": "let point = 10;\npoint += 5;\nconsole.log(point);\n"
+      "code": "let balance = 30000;\nbalance += 10000;\nconst payment = 6500;\nbalance -= payment;\nconsole.log(balance);\n"
     },
     {
       "kind": "write",
@@ -56,6 +56,50 @@
       "hints": [
         "balance += 5000; 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "누적 점수 계산하기",
+      "brief": [
+        "point에 bonus를 +=로 더하고 27을 출력하세요."
+      ],
+      "code": "let point = 20;\nconst bonus = 7;\n// TODO: 복합 대입 후 출력하세요.\n",
+      "solutionCode": "let point = 20;\nconst bonus = 7;\npoint += bonus;\nconsole.log(point);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "누적 점수 계산하기",
+          "expected": [
+            "27"
+          ]
+        }
+      ],
+      "hints": [
+        "point += bonus를 작성하세요.",
+        "변경된 point를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "곱한 뒤 나누기",
+      "brief": [
+        "value에 *= 3을 적용하고 이어서 /= 2를 적용해 12를 출력하세요."
+      ],
+      "code": "let value = 8;\n// TODO: 두 복합 대입 연산을 적용하세요.\n",
+      "solutionCode": "let value = 8;\nvalue *= 3;\nvalue /= 2;\nconsole.log(value);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "곱한 뒤 나누기",
+          "expected": [
+            "12"
+          ]
+        }
+      ],
+      "hints": [
+        "먼저 value *= 3을 실행하세요.",
+        "다음에 value /= 2를 실행하세요."
       ]
     }
   ]

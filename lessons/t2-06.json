@@ -23,19 +23,19 @@
     },
     {
       "kind": "run",
-      "title": "break 실행하기",
+      "title": "첫 품절 번호에서 검색 끝내기",
       "brief": [
-        "break 코드가 어떤 순서로 실행되는지 확인하세요."
+        "번호 4를 찾는 순간 break가 반복문을 끝내므로 1, 2, 3만 출력됩니다."
       ],
-      "code": "for (let number = 1; number <= 5; number++) {\n  if (number === 3) break;\n  console.log(number);\n}\n"
+      "code": "for (let item = 1; item <= 7; item++) {\n  if (item === 4) break;\n  console.log(item);\n}\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "출력 뒤 break를 둘 때 차이 확인하기",
       "brief": [
-        "중단 조건 number === 3을 number === 4로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "현재는 3도 출력한 다음 break로 끝납니다. console.log를 if 아래로 옮겨 3이 출력되지 않게 바꾸세요."
       ],
-      "code": "for (let number = 1; number <= 5; number++) {\n  if (number === 3) break;\n  console.log(number);\n}\n"
+      "code": "for (let number = 1; number <= 5; number++) {\n  console.log(number);\n  if (number === 3) break;\n}\n"
     },
     {
       "kind": "write",
@@ -59,6 +59,53 @@
       "hints": [
         "for (let number = 1; number <= 6; number++) { 줄을 먼저 작성하세요.",
         "조건과 중괄호의 범위를 먼저 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "허용 범위에서 반복 멈추기",
+      "brief": [
+        "1부터 출력하다 value가 5가 되면 출력 전에 반복을 끝내세요."
+      ],
+      "code": "// TODO: break를 포함한 반복문을 작성하세요.\n",
+      "solutionCode": "for (let value = 1; value <= 8; value++) {\n  if (value === 5) break;\n  console.log(value);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "허용 범위에서 반복 멈추기",
+          "expected": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ]
+        }
+      ],
+      "hints": [
+        "if 조건은 value === 5입니다.",
+        "출력문보다 break 검사를 먼저 두세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "첫 4의 배수 찾고 종료하기",
+      "brief": [
+        "10부터 20까지 검사하다 첫 4의 배수를 출력하고 즉시 끝내세요."
+      ],
+      "code": "// TODO: 첫 4의 배수만 출력하세요.\n",
+      "solutionCode": "for (let number = 10; number <= 20; number++) {\n  if (number % 4 === 0) {\n    console.log(number);\n    break;\n  }\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "첫 4의 배수 찾고 종료하기",
+          "expected": [
+            "12"
+          ]
+        }
+      ],
+      "hints": [
+        "number % 4 === 0으로 검사하세요.",
+        "출력 직후 break를 실행하세요."
       ]
     }
   ]

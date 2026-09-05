@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "여러 자료형을 담는 배열 실행하기",
+      "title": "한 주문의 서로 다른 자료형 배열로 확인하기",
       "brief": [
-        "코드를 실행해 여러 자료형을 담는 배열의 결과를 확인하세요."
+        "문자열 상품명, 숫자 수량, 불리언 결제 여부를 한 배열에서 각 인덱스로 읽습니다."
       ],
-      "code": "const values = ['민수', 25, true, null];\nconsole.log(values[0]);\nconsole.log(values[1]);\n"
+      "code": "const order = ['스탠드', 2, true];\nconsole.log(order[0]);\nconsole.log(typeof order[1]);\nconsole.log(order[2]);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "값과 자료형을 위치별로 비교하기",
       "brief": [
-        "values[1]의 25를 30으로 바꾸고 다시 실행하여 결과를 비교하세요."
+        "첫 7은 숫자형이고 둘째 '7'은 문자형입니다. 둘째 값의 따옴표를 제거해 두 typeof 결과가 같아지는지 확인하세요."
       ],
-      "code": "const values = ['민수', 25, true, null];\nconsole.log(values[0]);\nconsole.log(values[1]);\n"
+      "code": "const values = [7, '7', false];\nconsole.log(typeof values[0]);\nconsole.log(typeof values[1]);\n"
     },
     {
       "kind": "write",
@@ -58,6 +58,55 @@
       "hints": [
         "console.log(info[0]); 줄을 먼저 작성하세요.",
         "접근할 key 또는 index를 정확히 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "서로 다른 자료형 배열에 담기",
+      "brief": [
+        "profile 배열에 '민지', 31, false, null을 담고 각 값을 차례로 출력하세요."
+      ],
+      "code": "// TODO: profile 배열을 만들고 모든 값을 출력하세요.\n",
+      "solutionCode": "const profile = ['민지', 31, false, null];\nconsole.log(profile[0]);\nconsole.log(profile[1]);\nconsole.log(profile[2]);\nconsole.log(profile[3]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "서로 다른 자료형 배열에 담기",
+          "expected": [
+            "민지",
+            "31",
+            "false",
+            "null"
+          ]
+        }
+      ],
+      "hints": [
+        "네 값을 대괄호 안에 나열하세요.",
+        "인덱스 0부터 3까지 읽으세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "배열 항목의 자료형 확인하기",
+      "brief": [
+        "data의 세 항목에 typeof를 적용해 string, number, boolean을 출력하세요."
+      ],
+      "code": "const data = ['완료', 5, true];\n// TODO: 각 항목의 자료형을 출력하세요.\n",
+      "solutionCode": "const data = ['완료', 5, true];\nconsole.log(typeof data[0]);\nconsole.log(typeof data[1]);\nconsole.log(typeof data[2]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "배열 항목의 자료형 확인하기",
+          "expected": [
+            "string",
+            "number",
+            "boolean"
+          ]
+        }
+      ],
+      "hints": [
+        "각 항목 접근식 앞에 typeof를 붙이세요.",
+        "인덱스를 0, 1, 2로 바꾸어 출력하세요."
       ]
     }
   ]

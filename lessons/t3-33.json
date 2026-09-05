@@ -22,22 +22,89 @@
     },
     {
       "kind": "run",
-      "title": "날짜의 각 부분 확인하기",
+      "title": "예약 시각의 날짜와 시간 읽기",
       "brief": [
-        "문자열에 시간대가 없으므로 현재 실행 환경의 지역 시간으로 2026년 8월 23일 9시 30분을 만듭니다.",
-        "getMonth 결과에 1을 더해 8월로 표시합니다."
+        "Date 객체에서 연·월·일·시를 각각 꺼냅니다. getMonth는 0부터 시작하므로 실제 월에는 1을 더합니다."
       ],
-      "code": "const date = new Date('2026-08-23T09:30:00');\n\nconsole.log(date.getFullYear());\nconsole.log(date.getMonth() + 1);\nconsole.log(date.getDate());\nconsole.log(date.getHours());\nconsole.log(date.getMinutes());\n"
+      "code": "const reservation = new Date('2026-11-05T14:20:00');\nconsole.log(reservation.getFullYear());\nconsole.log(reservation.getMonth() + 1);\nconsole.log(reservation.getDate());\nconsole.log(reservation.getHours());\n"
     },
     {
       "kind": "tweak",
-      "title": "복사한 날짜만 변경하기",
+      "title": "getDate와 getDay 결과 구분하기",
       "brief": [
-        "const tomorrow = new Date(date);를 추가하고 tomorrow.setDate(tomorrow.getDate() + 1)을 실행하세요.",
-        "date는 23일로 남고 tomorrow는 24일이 됩니다. Date도 객체이므로 const tomorrow = date라고 쓰면 같은 객체를 공유합니다.",
-        "날짜 문자열의 시간대가 중요할 때는 Z나 시간대 오프셋을 명시해야 합니다. 지금은 Date 객체의 기본 생성·조회·변경만 다룹니다."
+        "getDate는 월의 날짜 23을, getDay는 요일 번호를 반환합니다. 날짜를 24일로 바꿔 두 결과가 어떻게 달라지는지 확인하세요."
       ],
-      "code": "const date = new Date('2026-08-23T09:30:00');\n\nconsole.log(date.getFullYear());\nconsole.log(date.getMonth() + 1);\nconsole.log(date.getDate());\nconsole.log(date.getHours());\nconsole.log(date.getMinutes());\n"
+      "code": "const date = new Date('2026-08-23T09:00:00');\nconsole.log(date.getDate());\nconsole.log(date.getDay());\n"
+    },
+    {
+      "kind": "write",
+      "title": "Date에서 연월일 읽기",
+      "brief": [
+        "주어진 Date에서 2027, 1, 15를 차례로 출력하세요."
+      ],
+      "code": "const date = new Date('2027-01-15T10:30:00');\n// TODO: 연, 월, 일을 출력하세요.\n",
+      "solutionCode": "const date = new Date('2027-01-15T10:30:00');\nconsole.log(date.getFullYear());\nconsole.log(date.getMonth() + 1);\nconsole.log(date.getDate());\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "Date에서 연월일 읽기",
+          "expected": [
+            "2027",
+            "1",
+            "15"
+          ]
+        }
+      ],
+      "hints": [
+        "연도는 getFullYear로 읽습니다.",
+        "getMonth 결과에는 1을 더하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "Date에서 시와 분 읽기",
+      "brief": [
+        "주어진 Date에서 시 18과 분 45를 출력하세요."
+      ],
+      "code": "const date = new Date('2026-03-02T18:45:00');\n// TODO: 시와 분을 출력하세요.\n",
+      "solutionCode": "const date = new Date('2026-03-02T18:45:00');\nconsole.log(date.getHours());\nconsole.log(date.getMinutes());\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "Date에서 시와 분 읽기",
+          "expected": [
+            "18",
+            "45"
+          ]
+        }
+      ],
+      "hints": [
+        "getHours로 시를 읽으세요.",
+        "getMinutes로 분을 읽으세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "두 날짜의 월 차이 확인하기",
+      "brief": [
+        "january와 december의 월을 사람이 읽는 1과 12로 출력하세요."
+      ],
+      "code": "const january = new Date('2026-01-01');\nconst december = new Date('2026-12-01');\n// TODO: 두 월을 출력하세요.\n",
+      "solutionCode": "const january = new Date('2026-01-01');\nconst december = new Date('2026-12-01');\nconsole.log(january.getMonth() + 1);\nconsole.log(december.getMonth() + 1);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "두 날짜의 월 차이 확인하기",
+          "expected": [
+            "1",
+            "12"
+          ]
+        }
+      ],
+      "hints": [
+        "두 Date 모두 getMonth() + 1을 사용합니다.",
+        "월이 0부터 시작하는 규칙은 같습니다."
+      ]
     }
   ]
 }

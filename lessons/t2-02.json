@@ -25,19 +25,19 @@
     },
     {
       "kind": "run",
-      "title": "else 실행하기",
+      "title": "좌석 유무에 따라 두 문구 나누기",
       "brief": [
-        "else 코드가 어떤 순서로 실행되는지 확인하세요."
+        "남은 좌석이 있으면 예약 가능, 없으면 마감 블록 하나만 실행됩니다."
       ],
-      "code": "const stock = 0;\nif (stock > 0) {\n  console.log('판매 중');\n} else {\n  console.log('품절');\n}\n"
+      "code": "const seats = 0;\nif (seats > 0) {\n  console.log('예약 가능');\n} else {\n  console.log('마감');\n}\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "불리언 조건의 반대 경로 확인하기",
       "brief": [
-        "stock의 0을 2로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "isOnline이 false라서 오프라인이 출력됩니다. 값을 true로 바꿔 if 경로만 실행되는지 확인하세요."
       ],
-      "code": "const stock = 0;\nif (stock > 0) {\n  console.log('판매 중');\n} else {\n  console.log('품절');\n}\n"
+      "code": "const isOnline = false;\nif (isOnline) {\n  console.log('온라인');\n} else {\n  console.log('오프라인');\n}\n"
     },
     {
       "kind": "write",
@@ -59,6 +59,50 @@
       "hints": [
         "if (score >= 60) { 줄을 먼저 작성하세요.",
         "조건과 중괄호의 범위를 먼저 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "결제 여부로 상태 나누기",
+      "brief": [
+        "paid가 true이면 '결제 완료', 아니면 '결제 필요'를 출력하세요."
+      ],
+      "code": "const paid = true;\n// TODO: if와 else로 상태를 나누세요.\n",
+      "solutionCode": "const paid = true;\nif (paid) {\n  console.log('결제 완료');\n} else {\n  console.log('결제 필요');\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "결제 여부로 상태 나누기",
+          "expected": [
+            "결제 완료"
+          ]
+        }
+      ],
+      "hints": [
+        "if에는 paid를 그대로 넣으세요.",
+        "else에는 반대 문구를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "기준 점수의 양쪽 처리하기",
+      "brief": [
+        "score가 60 이상이면 '통과', 아니면 '재시험'을 출력하세요."
+      ],
+      "code": "const score = 58;\n// TODO: 두 결과 중 하나를 출력하세요.\n",
+      "solutionCode": "const score = 58;\nif (score >= 60) {\n  console.log('통과');\n} else {\n  console.log('재시험');\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "기준 점수의 양쪽 처리하기",
+          "expected": [
+            "재시험"
+          ]
+        }
+      ],
+      "hints": [
+        "경계값을 포함하려면 >=를 사용하세요.",
+        "조건이 false일 때 else가 실행됩니다."
       ]
     }
   ]

@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "문자형 실행하기",
+      "title": "주소와 빈 문자열 확인하기",
       "brief": [
-        "코드를 실행해 string의 결과를 확인하세요."
+        "주소는 글자가 있는 문자열이고 emptyAddress는 글자가 없는 빈 문자열입니다. 둘 다 자료형은 string입니다."
       ],
-      "code": "const text = 'JavaScript';\nconsole.log(text);\nconsole.log(typeof text);\n"
+      "code": "const address = '서울시 중구';\nconst emptyAddress = '';\nconsole.log(address);\nconsole.log(typeof emptyAddress);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "숫자와 문자열 번호 대조하기",
       "brief": [
-        "text의 JavaScript를 React로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "room은 숫자 305, roomText는 문자열 '305'입니다. roomText의 따옴표를 제거해 두 자료형이 같아지는지 확인하세요."
       ],
-      "code": "const text = 'JavaScript';\nconsole.log(text);\nconsole.log(typeof text);\n"
+      "code": "const room = 305;\nconst roomText = '305';\nconsole.log(typeof room);\nconsole.log(typeof roomText);\n"
     },
     {
       "kind": "write",
@@ -57,6 +57,52 @@
       "hints": [
         "console.log(menu); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "큰따옴표로 문자열 만들기",
+      "brief": [
+        "큰따옴표를 사용해 message에 \"예약 완료\"를 저장하고 값과 자료형을 출력하세요."
+      ],
+      "code": "// TODO: message를 선언하고 출력하세요.\n",
+      "solutionCode": "const message = \"예약 완료\";\nconsole.log(message);\nconsole.log(typeof message);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "큰따옴표로 문자열 만들기",
+          "expected": [
+            "예약 완료",
+            "string"
+          ]
+        }
+      ],
+      "hints": [
+        "큰따옴표 안에 예약 완료를 적으세요.",
+        "typeof message도 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "빈 문자열 구분하기",
+      "brief": [
+        "empty에 빈 문자열을 저장하고 값 다음에 자료형을 출력하세요. 첫 출력은 빈 줄이어야 합니다."
+      ],
+      "code": "// TODO: empty를 선언하고 두 값을 출력하세요.\n",
+      "solutionCode": "const empty = '';\nconsole.log(empty);\nconsole.log(typeof empty);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "빈 문자열 구분하기",
+          "expected": [
+            "",
+            "string"
+          ]
+        }
+      ],
+      "hints": [
+        "따옴표 사이에 아무 글자도 넣지 마세요.",
+        "빈 문자열의 자료형도 string입니다."
       ]
     }
   ]

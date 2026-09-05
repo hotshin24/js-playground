@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "배열 값 수정 실행하기",
+      "title": "예약 상태 배열의 한 항목 수정하기",
       "brief": [
-        "코드를 실행해 배열 값 수정의 결과를 확인하세요."
+        "인덱스 1에 새 값을 대입하면 두 번째 상태만 대기에서 확정으로 바뀝니다."
       ],
-      "code": "const tasks = ['대기', '진행'];\ntasks[0] = '완료';\nconsole.log(tasks[0]);\n"
+      "code": "const reservations = ['확정', '대기', '취소'];\nreservations[1] = '확정';\nconsole.log(reservations[0]);\nconsole.log(reservations[1]);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "수정 전후 값을 다른 변수에 보관하기",
       "brief": [
-        "tasks[0]에 대입할 완료를 보류로 바꾸고 다시 실행하여 결과를 비교하세요."
+        "before에는 수정 전 값이 복사되고 배열 항목만 수정됩니다. priorities[0]을 3으로 바꿔 두 출력이 서로 달라지는지 확인하세요."
       ],
-      "code": "const tasks = ['대기', '진행'];\ntasks[0] = '완료';\nconsole.log(tasks[0]);\n"
+      "code": "const priorities = [1, 2];\nconst before = priorities[0];\npriorities[0] = 5;\nconsole.log(before);\nconsole.log(priorities[0]);\n"
     },
     {
       "kind": "write",
@@ -56,6 +56,51 @@
       "hints": [
         "scores[1] = 90; 줄을 먼저 작성하세요.",
         "접근할 key 또는 index를 정확히 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "배열의 가운데 값 수정하기",
+      "brief": [
+        "status의 두 번째 값을 '처리 중'으로 수정하고 출력하세요."
+      ],
+      "code": "const status = ['접수', '대기', '완료'];\n// TODO: 두 번째 값을 수정하세요.\n",
+      "solutionCode": "const status = ['접수', '대기', '완료'];\nstatus[1] = '처리 중';\nconsole.log(status[1]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "배열의 가운데 값 수정하기",
+          "expected": [
+            "처리 중"
+          ]
+        }
+      ],
+      "hints": [
+        "두 번째 항목의 인덱스는 1입니다.",
+        "대입한 뒤 같은 인덱스를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "서로 다른 두 위치 수정하기",
+      "brief": [
+        "prices의 첫 값을 9000, 마지막 값을 25000으로 수정해 차례로 출력하세요."
+      ],
+      "code": "const prices = [10000, 15000, 20000];\n// TODO: 첫 값과 마지막 값을 수정하세요.\n",
+      "solutionCode": "const prices = [10000, 15000, 20000];\nprices[0] = 9000;\nprices[2] = 25000;\nconsole.log(prices[0]);\nconsole.log(prices[2]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "서로 다른 두 위치 수정하기",
+          "expected": [
+            "9000",
+            "25000"
+          ]
+        }
+      ],
+      "hints": [
+        "첫 인덱스는 0입니다.",
+        "마지막 인덱스는 2입니다."
       ]
     }
   ]

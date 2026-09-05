@@ -21,22 +21,65 @@
     },
     {
       "kind": "run",
-      "title": "복사본만 오름차순 정렬하기",
+      "title": "상품 가격 오름차순으로 정렬하기",
       "brief": [
-        "sorted에는 3, 20, 100이 들어가고 prices의 순서는 그대로입니다.",
-        "prices === sorted는 false이므로 서로 다른 배열입니다."
+        "원본을 spread로 복사한 뒤 비교 함수 a - b로 숫자 오름차순 정렬하므로 원본 순서는 유지됩니다."
       ],
-      "code": "const prices = [100, 3, 20];\nconst sorted = [...prices].sort((a, b) => a - b);\n\nconsole.log(prices);\nconsole.log(sorted);\nconsole.log(prices === sorted);\n"
+      "code": "const prices = [45000, 9000, 21000];\nconst sorted = [...prices].sort((a, b) => a - b);\nconsole.log(prices[0]);\nconsole.log(sorted[0]);\nconsole.log(sorted[2]);\n"
     },
     {
       "kind": "tweak",
-      "title": "복사 없이 정렬해 보기",
+      "title": "오름차순과 내림차순 비교하기",
       "brief": [
-        "[...prices]를 prices로 바꾸면 sorted와 prices가 같은 배열이 되고 원본 순서도 바뀝니다.",
-        "비교 함수를 지우면 100, 20, 3처럼 문자열 기준으로 정렬됩니다.",
-        "React의 배열 상태를 정렬할 때는 원본을 직접 sort하지 말고 먼저 새 배열을 만들어야 합니다."
+        "현재 b - a 비교 함수가 큰 값부터 정렬합니다. a - b로 바꿔 작은 값부터 정렬하세요."
       ],
-      "code": "const prices = [100, 3, 20];\nconst sorted = [...prices].sort((a, b) => a - b);\n\nconsole.log(prices);\nconsole.log(sorted);\nconsole.log(prices === sorted);\n"
+      "code": "const scores = [72, 95, 81];\nconst sorted = [...scores].sort((a, b) => b - a);\nconsole.log(sorted[0]);\nconsole.log(sorted[2]);\n"
+    },
+    {
+      "kind": "write",
+      "title": "숫자 배열 오름차순 정렬하기",
+      "brief": [
+        "numbers를 복사한 뒤 숫자 오름차순으로 정렬해 첫 값과 마지막 값을 출력하세요."
+      ],
+      "code": "const numbers = [30, 4, 12];\n// TODO: 원본을 보존하며 정렬하세요.\n",
+      "solutionCode": "const numbers = [30, 4, 12];\nconst sorted = [...numbers].sort((a, b) => a - b);\nconsole.log(sorted[0]);\nconsole.log(sorted[2]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "숫자 배열 오름차순 정렬하기",
+          "expected": [
+            "4",
+            "30"
+          ]
+        }
+      ],
+      "hints": [
+        "먼저 spread로 새 배열을 만드세요.",
+        "오름차순 비교 함수는 a - b입니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "객체 배열을 가격순으로 정렬하기",
+      "brief": [
+        "products를 복사하고 price가 높은 순서로 정렬해 상품명을 출력하세요."
+      ],
+      "code": "const products = [{ name: '컵', price: 7000 }, { name: '가방', price: 30000 }, { name: '펜', price: 2000 }];\n// TODO: 가격 내림차순으로 정렬하세요.\n",
+      "solutionCode": "const products = [{ name: '컵', price: 7000 }, { name: '가방', price: 30000 }, { name: '펜', price: 2000 }];\nconst sorted = [...products].sort((a, b) => b.price - a.price);\nconsole.log(sorted[0].name);\nconsole.log(sorted[2].name);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "객체 배열을 가격순으로 정렬하기",
+          "expected": [
+            "가방",
+            "펜"
+          ]
+        }
+      ],
+      "hints": [
+        "객체의 b.price와 a.price를 비교하세요.",
+        "큰 가격을 앞에 두려면 b.price - a.price입니다."
+      ]
     }
   ]
 }

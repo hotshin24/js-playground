@@ -30,22 +30,89 @@
     },
     {
       "kind": "run",
-      "title": "펼친 결과와 모은 결과 보기",
+      "title": "두 태그 배열을 펼쳐 합치고 나머지 받기",
       "brief": [
-        "...first와 ...second는 각 배열의 값을 새 배열 안에 펼칩니다.",
-        "구조 분해의 ...remaining은 첫 값을 제외한 나머지를 새 배열로 모읍니다."
+        "배열 안의 spread는 항목을 펼쳐 합치고, 구조 분해의 rest는 첫 항목 뒤 남은 항목을 모읍니다."
       ],
-      "code": "const first = ['셔츠', '모자'];\nconst second = ['신발', '양말'];\nconst all = [...first, ...second];\n\nconst [selected, ...remaining] = all;\n\nconsole.log(all);\nconsole.log(selected);\nconsole.log(remaining);\n"
+      "code": "const required = ['HTML', 'CSS'];\nconst optional = ['JavaScript'];\nconst all = [...required, ...optional];\nconst [first, ...remaining] = all;\nconsole.log(first);\nconsole.log(remaining);\n"
     },
     {
       "kind": "tweak",
-      "title": "함수의 나머지 매개변수 사용하기",
+      "title": "객체 spread로 덮어쓰고 rest로 나머지 모으기",
       "brief": [
-        "function showAll(...items) { console.log(items); }를 추가하고 showAll('셔츠', '모자', '신발')을 호출해 보세요.",
-        "세 인수가 items라는 배열 하나로 모입니다. rest 매개변수는 항상 매개변수 목록의 마지막에 있어야 합니다.",
-        "... 문법을 볼 때 먼저 그 위치가 값을 펼치는 곳인지 남은 값을 모으는 곳인지 확인하세요."
+        "spread 뒤의 status가 기존 값을 덮습니다. 구조 분해에서 status를 제외한 나머지가 details 객체에 모입니다. status를 완료로 바꿔 보세요."
       ],
-      "code": "const first = ['셔츠', '모자'];\nconst second = ['신발', '양말'];\nconst all = [...first, ...second];\n\nconst [selected, ...remaining] = all;\n\nconsole.log(all);\nconsole.log(selected);\nconsole.log(remaining);\n"
+      "code": "const task = { title: '배포', status: '대기', owner: '민수' };\nconst updated = { ...task, status: '진행' };\nconst { status, ...details } = updated;\nconsole.log(status);\nconsole.log(details.title);\nconsole.log(details.owner);\n"
+    },
+    {
+      "kind": "write",
+      "title": "spread로 배열 두 개 합치기",
+      "brief": [
+        "morning과 afternoon을 spread로 합친 schedule을 만들고 첫 값과 마지막 값을 출력하세요."
+      ],
+      "code": "const morning = ['회의', '메일'];\nconst afternoon = ['개발', '정리'];\n// TODO: 두 배열을 펼쳐 합치세요.\n",
+      "solutionCode": "const morning = ['회의', '메일'];\nconst afternoon = ['개발', '정리'];\nconst schedule = [...morning, ...afternoon];\nconsole.log(schedule[0]);\nconsole.log(schedule[3]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "spread로 배열 두 개 합치기",
+          "expected": [
+            "회의",
+            "정리"
+          ]
+        }
+      ],
+      "hints": [
+        "새 배열 안에 ...morning과 ...afternoon을 적으세요.",
+        "합친 배열의 인덱스 0과 3을 읽으세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "rest로 첫 값과 나머지 분리하기",
+      "brief": [
+        "numbers에서 head는 10, tail은 나머지 배열이 되게 구조 분해하고 출력하세요."
+      ],
+      "code": "const numbers = [10, 20, 30, 40];\n// TODO: 첫 값과 나머지를 분리하세요.\n",
+      "solutionCode": "const numbers = [10, 20, 30, 40];\nconst [head, ...tail] = numbers;\nconsole.log(head);\nconsole.log(tail[0]);\nconsole.log(tail[2]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "rest로 첫 값과 나머지 분리하기",
+          "expected": [
+            "10",
+            "20",
+            "40"
+          ]
+        }
+      ],
+      "hints": [
+        "첫 변수 뒤에 ...tail을 적으세요.",
+        "tail은 남은 값을 담은 새 배열입니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "객체에서 한 값과 나머지 분리하기",
+      "brief": [
+        "profile에서 password를 따로 받고 나머지를 safeProfile로 모아 name과 role을 출력하세요."
+      ],
+      "code": "const profile = { name: '서윤', role: 'admin', password: '1234' };\n// TODO: password와 나머지를 분리하세요.\n",
+      "solutionCode": "const profile = { name: '서윤', role: 'admin', password: '1234' };\nconst { password, ...safeProfile } = profile;\nconsole.log(safeProfile.name);\nconsole.log(safeProfile.role);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "객체에서 한 값과 나머지 분리하기",
+          "expected": [
+            "서윤",
+            "admin"
+          ]
+        }
+      ],
+      "hints": [
+        "객체 구조 분해에서 password 뒤에 ...safeProfile을 적으세요.",
+        "safeProfile에는 password가 아닌 프로퍼티가 모입니다."
+      ]
     }
   ]
 }

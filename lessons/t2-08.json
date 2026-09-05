@@ -21,19 +21,19 @@
     },
     {
       "kind": "run",
-      "title": "반복 코드와 함수 실행하기",
+      "title": "반복되는 배송 안내 실행하기",
       "brief": [
-        "반복 코드와 함수 코드가 어떤 순서로 실행되는지 확인하세요."
+        "주문 번호만 다른 두 안내를 직접 적으면 같은 문장 구조가 반복됩니다. 어떤 부분이 같고 어떤 값만 달라지는지 찾으세요."
       ],
-      "code": "console.log('민수님, 안녕하세요');\nconsole.log('영희님, 안녕하세요');\n"
+      "code": "const firstOrder = 'A-17';\nconst secondOrder = 'B-04';\nconsole.log(firstOrder + ' 배송 시작');\nconsole.log(secondOrder + ' 배송 시작');\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "반복 문구를 모두 수정해 보기",
       "brief": [
-        "둘째 이름 영희를 준호로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "두 줄에 반복된 '접수 완료'를 '처리 완료'로 모두 바꾸세요. 같은 규칙이 여러 줄에 흩어져 있으면 빠뜨리지 않고 함께 고쳐야 한다는 불편을 확인합니다."
       ],
-      "code": "console.log('민수님, 안녕하세요');\nconsole.log('영희님, 안녕하세요');\n"
+      "code": "const firstName = '민수';\nconst secondName = '지수';\nconsole.log(firstName + ': 접수 완료');\nconsole.log(secondName + ': 접수 완료');\n"
     },
     {
       "kind": "write",
@@ -55,7 +55,54 @@
       ],
       "hints": [
         "console.log('주문을 확인합니다'); 줄을 먼저 작성하세요.",
-        "함수 이름, 매개변수, 호출 위치를 문제에서 요구한 흐름과 맞게 확인하세요."
+        "같은 console.log 문장을 두 번 작성해 반복을 직접 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "세 주문의 같은 안내 직접 작성하기",
+      "brief": [
+        "서로 다른 세 주문 번호 뒤에 같은 ' 확인 완료' 문구를 연결해 출력하세요. 반복되는 부분을 눈으로 구분하는 연습입니다."
+      ],
+      "code": "const first = 'A1';\nconst second = 'B2';\nconst third = 'C3';\n// TODO: 세 주문의 안내를 출력하세요.\n",
+      "solutionCode": "const first = 'A1';\nconst second = 'B2';\nconst third = 'C3';\nconsole.log(first + ' 확인 완료');\nconsole.log(second + ' 확인 완료');\nconsole.log(third + ' 확인 완료');\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "세 주문의 반복 안내",
+          "expected": [
+            "A1 확인 완료",
+            "B2 확인 완료",
+            "C3 확인 완료"
+          ]
+        }
+      ],
+      "hints": [
+        "각 주문 번호에 같은 문자열을 +로 연결하세요.",
+        "console.log를 세 번 직접 작성하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "반복 계산의 공통 규칙 찾기",
+      "brief": [
+        "서로 다른 두 가격에 같은 배송비 3000을 더한 결과를 출력하세요. 다음 레슨부터 이런 반복 규칙을 함수로 묶습니다."
+      ],
+      "code": "const firstPrice = 12000;\nconst secondPrice = 8000;\nconst shippingFee = 3000;\n// TODO: 두 가격에 같은 배송비를 더해 출력하세요.\n",
+      "solutionCode": "const firstPrice = 12000;\nconst secondPrice = 8000;\nconst shippingFee = 3000;\nconsole.log(firstPrice + shippingFee);\nconsole.log(secondPrice + shippingFee);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "같은 계산 규칙 반복",
+          "expected": [
+            "15000",
+            "11000"
+          ]
+        }
+      ],
+      "hints": [
+        "두 계산 모두 shippingFee를 사용하세요.",
+        "firstPrice와 secondPrice에 각각 같은 값을 더하세요."
       ]
     }
   ]

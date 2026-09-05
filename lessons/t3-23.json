@@ -22,25 +22,22 @@
     },
     {
       "kind": "run",
-      "title": "겉 객체와 안쪽 객체 비교하기",
+      "title": "설정 객체를 펼쳐 독립 복사하기",
       "brief": [
-        "original과 copied는 서로 다른 객체이므로 첫 비교는 false입니다.",
-        "두 객체의 detail은 같은 안쪽 객체를 가리키므로 둘째 비교는 true입니다."
+        "spread로 새 객체를 만들면 최상위 프로퍼티 수정이 원본에 영향을 주지 않습니다."
       ],
-      "code": "const original = {\n  name: '셔츠',\n  detail: { color: '파랑' },\n};\n\nconst copied = { ...original };\n\nconsole.log(original === copied);\nconsole.log(original.detail === copied.detail);\n\ncopied.name = '모자';\ncopied.detail.color = '빨강';\n\nconsole.log(original.name);\nconsole.log(original.detail.color);\n"
+      "code": "const settings = { theme: 'light', fontSize: 16 };\nconst copied = { ...settings };\ncopied.theme = 'dark';\nconsole.log(settings.theme);\nconsole.log(copied.theme);\nconsole.log(settings === copied);\n"
     },
     {
       "kind": "tweak",
-      "title": "중첩 객체도 따로 복사하기",
+      "title": "얕은 복사의 안쪽 객체 따로 복사하기",
       "brief": [
-        "copied를 { ...original, detail: { ...original.detail } }로 바꾸고 실행해 보세요.",
-        "이제 detail도 새 객체가 되므로 copied.detail.color를 바꿔도 original의 색상은 파랑으로 남습니다.",
-        "중첩된 모든 값을 무조건 복사하기보다 바꿀 객체가 있는 단계마다 새 객체를 만드는 방식을 사용합니다."
+        "현재 detail은 공유되어 원본 색상도 빨강으로 바뀝니다. copied의 detail에 { ...original.detail }을 덮어써 원본을 파랑으로 유지하세요."
       ],
-      "code": "const original = {\n  name: '셔츠',\n  detail: { color: '파랑' },\n};\n\nconst copied = { ...original };\n\nconsole.log(original === copied);\nconsole.log(original.detail === copied.detail);\n\ncopied.name = '모자';\ncopied.detail.color = '빨강';\n\nconsole.log(original.name);\nconsole.log(original.detail.color);\n"
+      "code": "const original = { name: '셔츠', detail: { color: '파랑' } };\nconst copied = { ...original };\ncopied.detail.color = '빨강';\nconsole.log(original.detail.color);\n"
     },
     {
-      "kind": "fill",
+      "kind": "write",
       "title": "중첩 객체를 안전하게 복사하기",
       "brief": [
         "상품 객체를 받아 새 객체를 반환하세요. 겉 객체뿐 아니라 detail도 새 객체여야 합니다.",
@@ -98,6 +95,53 @@
       "hints": [
         "겉 객체는 { ...product }로 복사합니다.",
         "detail 프로퍼티에는 { ...product.detail }로 만든 새 객체를 덮어쓰세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "전개 연산자로 객체 복사하기",
+      "brief": [
+        "user를 spread로 copiedUser에 복사하고 copiedUser.name만 바꿔 두 이름과 === 결과를 출력하세요."
+      ],
+      "code": "const user = { name: '민수', age: 25 };\n// TODO: 새 객체를 만들고 이름만 수정하세요.\n",
+      "solutionCode": "const user = { name: '민수', age: 25 };\nconst copiedUser = { ...user };\ncopiedUser.name = '영희';\nconsole.log(user.name);\nconsole.log(copiedUser.name);\nconsole.log(user === copiedUser);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "전개 연산자로 객체 복사하기",
+          "expected": [
+            "민수",
+            "영희",
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "{ ...user }로 새 객체를 만드세요.",
+        "복사본의 name만 수정하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "복사하면서 프로퍼티 덮어쓰기",
+      "brief": [
+        "product를 펼친 뒤 price만 18000으로 덮어쓴 sale 객체를 만들고 두 가격을 출력하세요."
+      ],
+      "code": "const product = { name: '가방', price: 22000 };\n// TODO: spread 뒤에 새 price를 적으세요.\n",
+      "solutionCode": "const product = { name: '가방', price: 22000 };\nconst sale = { ...product, price: 18000 };\nconsole.log(product.price);\nconsole.log(sale.price);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "복사하면서 프로퍼티 덮어쓰기",
+          "expected": [
+            "22000",
+            "18000"
+          ]
+        }
+      ],
+      "hints": [
+        "spread를 먼저 쓰고 뒤에 price를 적어야 덮어씁니다.",
+        "원본과 복사본 가격을 각각 출력하세요."
       ]
     }
   ]

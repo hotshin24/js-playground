@@ -24,19 +24,19 @@
     },
     {
       "kind": "run",
-      "title": "함수 값 실행하기",
+      "title": "함수를 다른 변수 이름으로 호출하기",
       "brief": [
-        "함수 값 코드가 어떤 순서로 실행되는지 확인하세요."
+        "format 함수 자체를 saved에 저장하므로 saved()를 호출해도 같은 함수 본문이 실행됩니다."
       ],
-      "code": "function greet() {\n  console.log('안녕');\n}\nconst savedFunction = greet;\nsavedFunction();\n"
+      "code": "function format(text) {\n  return '[' + text + ']';\n}\nconst saved = format;\nconsole.log(saved('배송'));\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "함수 자체와 반환값 저장 비교하기",
       "brief": [
-        "savedFunction 호출을 greet 호출로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "handler에는 함수가, result에는 함수 호출 결과가 저장됩니다. handler를 finish()로 바꿔 typeof 두 결과가 모두 string이 되게 해 보세요."
       ],
-      "code": "function greet() {\n  console.log('안녕');\n}\nconst savedFunction = greet;\nsavedFunction();\n"
+      "code": "function finish() {\n  return '완료';\n}\nconst handler = finish;\nconst result = finish();\nconsole.log(typeof handler);\nconsole.log(typeof result);\n"
     },
     {
       "kind": "write",
@@ -58,6 +58,51 @@
       "hints": [
         "const another = show; 줄을 먼저 작성하세요.",
         "함수 이름, 매개변수, 호출 위치를 문제에서 요구한 흐름과 맞게 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "함수에 새 이름 붙이기",
+      "brief": [
+        "notify 함수 자체를 savedNotify에 저장하고 savedNotify()로 '알림'을 출력하세요."
+      ],
+      "code": "function notify() {\n  console.log('알림');\n}\n// TODO: 함수 자체를 저장하고 새 이름으로 호출하세요.\n",
+      "solutionCode": "function notify() {\n  console.log('알림');\n}\nconst savedNotify = notify;\nsavedNotify();\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "함수에 새 이름 붙이기",
+          "expected": [
+            "알림"
+          ]
+        }
+      ],
+      "hints": [
+        "notify 뒤에 괄호 없이 저장하세요.",
+        "savedNotify에는 괄호를 붙여 호출하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "함수 값의 자료형 확인하기",
+      "brief": [
+        "calculate 함수 자체와 calculate(4)의 typeof 결과를 차례로 출력하세요."
+      ],
+      "code": "function calculate(value) {\n  return value * 3;\n}\n// TODO: 함수와 호출 결과의 자료형을 출력하세요.\n",
+      "solutionCode": "function calculate(value) {\n  return value * 3;\n}\nconsole.log(typeof calculate);\nconsole.log(typeof calculate(4));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "함수 값의 자료형 확인하기",
+          "expected": [
+            "function",
+            "number"
+          ]
+        }
+      ],
+      "hints": [
+        "첫 typeof에는 함수 이름만 넣으세요.",
+        "둘째 typeof에는 호출식을 넣으세요."
       ]
     }
   ]

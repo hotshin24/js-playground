@@ -24,29 +24,27 @@
     },
     {
       "kind": "run",
-      "title": "두 파일을 연결해 실행하기",
+      "title": "할인 함수를 다른 파일에서 가져와 실행하기",
       "brief": [
-        "price.js가 addShipping 함수를 내보내고 main.js가 가져와 호출합니다.",
-        "main.js는 shippingFee를 직접 알지 못해도 내보낸 함수를 통해 계산 결과를 사용할 수 있습니다."
+        "discount.js는 applyDiscount 함수를 이름 있는 export로 공개하고, main.js는 같은 이름을 import해 호출합니다.",
+        "함수의 선언 위치와 사용 위치가 다른 파일이어도 export와 import가 두 파일을 연결합니다."
       ],
       "files": [
         {
           "name": "main.js",
           "entry": true,
           "code": [
-            "import { addShipping } from './price.js';",
+            "import { applyDiscount } from './discount.js';",
             "",
-            "console.log(addShipping(12000));",
+            "console.log(applyDiscount(20000));",
             ""
           ]
         },
         {
-          "name": "price.js",
+          "name": "discount.js",
           "code": [
-            "const shippingFee = 3000;",
-            "",
-            "export function addShipping(price) {",
-            "  return price + shippingFee;",
+            "export function applyDiscount(price) {",
+            "  return price - 3000;",
             "}",
             ""
           ]
@@ -55,34 +53,153 @@
     },
     {
       "kind": "tweak",
-      "title": "내보내지 않은 이름 가져와 보기",
+      "title": "default export를 이름 있는 export로 바꾸기",
       "brief": [
-        "main.js의 import에 shippingFee를 추가하면 오류가 납니다. price.js가 shippingFee를 export하지 않았기 때문입니다.",
-        "price.js의 const 앞에 export를 붙이면 가져올 수 있습니다. 파일 밖에서 사용할 값만 export하는 것이 기본입니다.",
-        "import 경로에서 ./나 .js를 빼면 이 플레이그라운드와 브라우저의 직접 실행 환경에서는 파일을 찾을 수 없습니다."
+        "현재 format.js는 default export를 사용하고 main.js는 중괄호 없이 가져옵니다.",
+        "format 함수 앞을 export function으로 바꾸고, main.js의 import를 import { format } 형식으로 바꿔도 같은 결과가 나오는지 확인하세요."
       ],
       "files": [
         {
           "name": "main.js",
           "entry": true,
           "code": [
-            "import { addShipping } from './price.js';",
+            "import format from './format.js';",
             "",
-            "console.log(addShipping(12000));",
+            "console.log(format('완료'));",
             ""
           ]
         },
         {
-          "name": "price.js",
+          "name": "format.js",
           "code": [
-            "const shippingFee = 3000;",
-            "",
-            "export function addShipping(price) {",
-            "  return price + shippingFee;",
+            "export default function format(text) {",
+            "  return '[' + text + ']';",
             "}",
             ""
           ]
         }
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "가져온 상수로 배송비 계산하기",
+      "brief": [
+        "fee.js가 내보낸 shippingFee를 main.js에서 가져왔습니다. calculate가 price와 shippingFee를 더해 반환하도록 완성하세요.",
+        "두 파일의 export 이름과 import 이름, 상대 경로가 정확히 일치해야 합니다."
+      ],
+      "entry": "calculate",
+      "files": [
+        {
+          "name": "main.js",
+          "entry": true,
+          "code": [
+            "import { shippingFee } from './fee.js';",
+            "",
+            "export function calculate(price) {",
+            "  return price; // 이 줄을 완성하세요.",
+            "}",
+            ""
+          ],
+          "solutionCode": [
+            "import { shippingFee } from './fee.js';",
+            "",
+            "export function calculate(price) {",
+            "  return price + shippingFee;",
+            "}",
+            ""
+          ]
+        },
+        {
+          "name": "fee.js",
+          "readOnly": true,
+          "code": [
+            "export const shippingFee = 3000;",
+            ""
+          ]
+        }
+      ],
+      "asserts": [
+        {
+          "type": "value",
+          "label": "12000원에 배송비 더하기",
+          "args": [
+            12000
+          ],
+          "expected": 15000
+        },
+        {
+          "type": "value",
+          "label": "5000원에 배송비 더하기",
+          "args": [
+            5000
+          ],
+          "expected": 8000
+        }
+      ],
+      "hints": [
+        "main.js에서 이미 가져온 shippingFee를 price와 더하세요.",
+        "return price + shippingFee;로 반환하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "다른 파일의 함수를 export해 연결하기",
+      "brief": [
+        "main.js는 tax.js의 addTax를 가져와 calculate 안에서 사용합니다. tax.js의 함수가 파일 밖으로 공개되도록 이름 있는 export를 추가하세요.",
+        "함수 이름과 import 이름은 addTax로 같아야 하며 main.js는 수정하지 않습니다."
+      ],
+      "entry": "calculate",
+      "files": [
+        {
+          "name": "main.js",
+          "entry": true,
+          "readOnly": true,
+          "code": [
+            "import { addTax } from './tax.js';",
+            "",
+            "export function calculate(price) {",
+            "  return addTax(price);",
+            "}",
+            ""
+          ]
+        },
+        {
+          "name": "tax.js",
+          "code": [
+            "function addTax(price) {",
+            "  return price + 1000;",
+            "}",
+            ""
+          ],
+          "solutionCode": [
+            "export function addTax(price) {",
+            "  return price + 1000;",
+            "}",
+            ""
+          ]
+        }
+      ],
+      "asserts": [
+        {
+          "type": "value",
+          "label": "가격에 세금 1000원 더하기",
+          "args": [
+            9000
+          ],
+          "expected": 10000
+        },
+        {
+          "type": "value",
+          "label": "다른 가격에도 같은 함수 적용",
+          "args": [
+            15000
+          ],
+          "expected": 16000
+        }
+      ],
+      "hints": [
+        "tax.js의 function 앞에 export를 붙이세요.",
+        "export function addTax(price) 형태로 공개하세요."
       ]
     }
   ]

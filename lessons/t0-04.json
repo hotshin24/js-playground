@@ -21,20 +21,19 @@
     },
     {
       "kind": "run",
-      "title": "const 실행하기",
+      "title": "고정된 사업자 번호 출력하기",
       "brief": [
-        "코드를 실행해 const의 동작을 확인하세요."
+        "실행 중 바뀌지 않는 businessNumber를 const로 선언하고 저장된 값을 출력합니다."
       ],
-      "code": "const serviceName = '한입 학습';\nconsole.log(serviceName);\n"
+      "code": "const businessNumber = '123-45-67890';\nconsole.log(businessNumber);\n"
     },
     {
       "kind": "tweak",
-      "title": "const의 값 바꿔 보기",
+      "title": "바뀌는 값과 고정값 구분하기",
       "brief": [
-        "maxCount의 처음 값을 5로 바꾸세요. const에는 처음 대입한 뒤 다른 값을 다시 대입하지 않습니다.",
-        "수정한 뒤 다시 실행하여 바꾸기 전 결과와 비교하세요."
+        "company는 그대로 두고 currentPage만 2로 재할당하세요. const와 let의 역할 차이를 한 코드에서 확인합니다."
       ],
-      "code": "const maxCount = 3;\nconsole.log(maxCount);\n"
+      "code": "const company = '새봄 상점';\nlet currentPage = 1;\n// currentPage만 2로 바꾸세요.\nconsole.log(company);\nconsole.log(currentPage);\n"
     },
     {
       "kind": "write",
@@ -57,6 +56,51 @@
       "hints": [
         "language는 이미 선언되어 있으므로 선언문을 추가하지 않습니다.",
         "console.log의 괄호 안에 language를 넣으세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "고정된 할인 코드 선언하기",
+      "brief": [
+        "const로 discountCode를 선언해 'WELCOME'을 저장하고 출력하세요."
+      ],
+      "code": "// TODO: discountCode를 const로 선언하고 출력하세요.\n",
+      "solutionCode": "const discountCode = 'WELCOME';\nconsole.log(discountCode);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "고정된 할인 코드 선언하기",
+          "expected": [
+            "WELCOME"
+          ]
+        }
+      ],
+      "hints": [
+        "const discountCode = 'WELCOME';로 시작하세요.",
+        "선언한 이름을 그대로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "const와 let 함께 선택하기",
+      "brief": [
+        "storeName은 바뀌지 않으므로 const, visitors는 바뀌므로 let으로 선언하세요. visitors를 12로 재할당한 뒤 두 값을 출력하세요."
+      ],
+      "code": "// TODO: storeName과 visitors를 알맞게 선언하고 출력하세요.\n",
+      "solutionCode": "const storeName = '봄마켓';\nlet visitors = 8;\nvisitors = 12;\nconsole.log(storeName);\nconsole.log(visitors);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "const와 let 함께 선택하기",
+          "expected": [
+            "봄마켓",
+            "12"
+          ]
+        }
+      ],
+      "hints": [
+        "storeName에는 const를 사용하세요.",
+        "visitors는 let으로 선언해야 재할당할 수 있습니다."
       ]
     }
   ]

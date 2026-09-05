@@ -127,6 +127,14 @@ export function createNav({ listEl, onSelect }) {
   };
 }
 
+export function stepNumberOf(steps, index) {
+  const writeIndexes = steps
+    .map((step, stepIndex) => step.kind === 'write' ? stepIndex : -1)
+    .filter((stepIndex) => stepIndex >= 0);
+  if (steps[index].kind !== 'write' || writeIndexes.length < 2) return String(index + 1);
+  return `${writeIndexes[0] + 1}-${writeIndexes.indexOf(index) + 1}`;
+}
+
 /**
  * 상단 진행 바의 단계 칩. 어느 단계로든 이동할 수 있어야 한다 —
  * 막힌 학습자를 붙잡아 두면 도구를 닫는다.
@@ -151,7 +159,7 @@ export function createStepNav({ listEl, onSelect }) {
 
         const num = document.createElement('span');
         num.className = 'chip__num';
-        num.textContent = String(index + 1);
+        num.textContent = stepNumberOf(steps, index);
 
         const label = document.createElement('span');
         label.className = 'chip__label';

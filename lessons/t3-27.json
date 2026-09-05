@@ -22,22 +22,89 @@
     },
     {
       "kind": "run",
-      "title": "값과 인덱스 출력하기",
+      "title": "주문 항목과 인덱스 순회하기",
       "brief": [
-        "콜백은 배열 길이만큼 세 번 호출됩니다. 인덱스는 0, 1, 2이고 product에는 해당 위치의 문자열이 들어옵니다.",
-        "result에는 새 배열이 아니라 undefined가 들어갑니다."
+        "forEach가 주문 배열의 각 항목마다 콜백을 실행하고 두 번째 매개변수로 인덱스를 전달합니다."
       ],
-      "code": "const products = ['셔츠', '모자', '신발'];\n\nconst result = products.forEach((product, index) => {\n  console.log(index + ': ' + product);\n});\n\nconsole.log(result);\n"
+      "code": "const orders = ['A17', 'B04', 'C22'];\norders.forEach((order, index) => {\n  console.log(index + ': ' + order);\n});\n"
     },
     {
       "kind": "tweak",
-      "title": "콜백에서 return해 보기",
+      "title": "forEach 반환값이 undefined인 점 확인하기",
       "brief": [
-        "콜백 안에 return product + '!';를 써도 result는 undefined입니다. forEach는 콜백의 반환값을 사용하지 않습니다.",
-        "product를 대문자로 바꾸거나 새 배열에 모으는 목적이라면 다음 레슨의 map이 알맞습니다.",
-        "forEach는 원본을 자동으로 바꾸지 않지만 콜백 안에서 객체나 배열을 직접 변경할 수는 있으므로 주의해야 합니다."
+        "콜백에서 문자열을 return해도 forEach 자체의 반환값은 undefined입니다. return 대신 console.log를 넣어 각 항목이 실행되는 시점을 확인하세요."
       ],
-      "code": "const products = ['셔츠', '모자', '신발'];\n\nconst result = products.forEach((product, index) => {\n  console.log(index + ': ' + product);\n});\n\nconsole.log(result);\n"
+      "code": "const prices = [1000, 2000];\nconst result = prices.forEach((price) => {\n  return price + 500;\n});\nconsole.log(result);\n"
+    },
+    {
+      "kind": "write",
+      "title": "각 이름에 호칭 붙여 출력하기",
+      "brief": [
+        "names의 각 항목에 '님'을 붙여 forEach로 출력하세요."
+      ],
+      "code": "const names = ['민지', '도윤'];\n// TODO: forEach로 두 이름을 출력하세요.\n",
+      "solutionCode": "const names = ['민지', '도윤'];\nnames.forEach((name) => {\n  console.log(name + '님');\n});\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "각 이름에 호칭 붙여 출력하기",
+          "expected": [
+            "민지님",
+            "도윤님"
+          ]
+        }
+      ],
+      "hints": [
+        "콜백의 name은 현재 배열 항목입니다.",
+        "콜백 안에서 문자열을 연결해 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "인덱스와 항목 함께 출력하기",
+      "brief": [
+        "steps를 순회하며 '1. 접수', '2. 처리', '3. 완료'를 출력하세요."
+      ],
+      "code": "const steps = ['접수', '처리', '완료'];\n// TODO: index를 사용해 번호를 붙이세요.\n",
+      "solutionCode": "const steps = ['접수', '처리', '완료'];\nsteps.forEach((step, index) => {\n  console.log((index + 1) + '. ' + step);\n});\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "인덱스와 항목 함께 출력하기",
+          "expected": [
+            "1. 접수",
+            "2. 처리",
+            "3. 완료"
+          ]
+        }
+      ],
+      "hints": [
+        "표시 번호는 index + 1입니다.",
+        "번호와 step을 문자열로 연결하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "객체 배열의 프로퍼티 출력하기",
+      "brief": [
+        "products를 forEach로 순회해 각 name을 출력하세요."
+      ],
+      "code": "const products = [{ name: '컵' }, { name: '펜' }];\n// TODO: 각 객체의 name을 출력하세요.\n",
+      "solutionCode": "const products = [{ name: '컵' }, { name: '펜' }];\nproducts.forEach((product) => {\n  console.log(product.name);\n});\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "객체 배열의 프로퍼티 출력하기",
+          "expected": [
+            "컵",
+            "펜"
+          ]
+        }
+      ],
+      "hints": [
+        "현재 항목 product는 객체입니다.",
+        "점 표기법으로 name을 읽으세요."
+      ]
     }
   ]
 }

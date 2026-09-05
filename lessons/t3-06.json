@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "프로퍼티 추가 실행하기",
+      "title": "주문 객체에 배송 상태 추가하기",
       "brief": [
-        "코드를 실행해 프로퍼티 추가의 결과를 확인하세요."
+        "처음에는 orderId만 있던 객체에 status 프로퍼티를 대입해 새 정보를 추가합니다."
       ],
-      "code": "const user = { name: '민수' };\nuser.age = 25;\nconsole.log(user.age);\n"
+      "code": "const order = { orderId: 'A17' };\norder.status = '배송 중';\nconsole.log(order.orderId);\nconsole.log(order.status);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "점 표기법과 괄호 표기법으로 각각 추가하기",
       "brief": [
-        "추가할 age 값을 25에서 30으로 바꾸고 다시 실행하여 결과를 비교하세요."
+        "profile에는 점 표기법으로 age가 추가되어 있습니다. 괄호 표기법으로 'city' 프로퍼티와 값 '대구'를 더하고 출력하세요."
       ],
-      "code": "const user = { name: '민수' };\nuser.age = 25;\nconsole.log(user.age);\n"
+      "code": "const profile = { name: '서하' };\nprofile.age = 27;\n// 여기에 city를 괄호 표기법으로 추가하세요.\nconsole.log(profile.age);\nconsole.log(profile.city);\n"
     },
     {
       "kind": "write",
@@ -56,6 +56,50 @@
       "hints": [
         "product.price = 30000; 줄을 먼저 작성하세요.",
         "접근할 key 또는 index를 정확히 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "상품 객체에 재고 추가하기",
+      "brief": [
+        "item 객체에 stock 프로퍼티 8을 추가하고 출력하세요."
+      ],
+      "code": "const item = { name: '노트' };\n// TODO: stock을 추가하고 출력하세요.\n",
+      "solutionCode": "const item = { name: '노트' };\nitem.stock = 8;\nconsole.log(item.stock);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "상품 객체에 재고 추가하기",
+          "expected": [
+            "8"
+          ]
+        }
+      ],
+      "hints": [
+        "item.stock = 8로 새 프로퍼티를 만드세요.",
+        "추가한 값을 점 표기법으로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "변수 key로 프로퍼티 추가하기",
+      "brief": [
+        "field의 값 'priority'를 key로 사용해 task에 '높음'을 추가하고 출력하세요."
+      ],
+      "code": "const task = { title: '배포' };\nconst field = 'priority';\n// TODO: 동적 key로 프로퍼티를 추가하세요.\n",
+      "solutionCode": "const task = { title: '배포' };\nconst field = 'priority';\ntask[field] = '높음';\nconsole.log(task.priority);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "변수 key로 프로퍼티 추가하기",
+          "expected": [
+            "높음"
+          ]
+        }
+      ],
+      "hints": [
+        "추가할 때 task[field]을 왼쪽에 둡니다.",
+        "추가 뒤에는 task.priority로 읽을 수 있습니다."
       ]
     }
   ]

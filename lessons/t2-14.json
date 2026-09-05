@@ -23,19 +23,19 @@
     },
     {
       "kind": "run",
-      "title": "함수 표현식 실행하기",
+      "title": "변수에 저장한 요금 계산 함수 실행하기",
       "brief": [
-        "함수 표현식 코드가 어떤 순서로 실행되는지 확인하세요."
+        "이름 없는 함수를 calculateFee에 저장한 뒤 변수 이름으로 호출합니다."
       ],
-      "code": "const greet = function () {\n  console.log('안녕하세요');\n};\ngreet();\n"
+      "code": "const calculateFee = function (price) {\n  return price + 2500;\n};\nconsole.log(calculateFee(10000));\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "함수 값과 호출 결과 구분하기",
       "brief": [
-        "greet의 출력값 안녕하세요를 반갑습니다로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "첫 출력은 함수 자체, 둘째 출력은 호출 결과입니다. first 줄에도 괄호를 붙여 두 출력이 모두 완료가 되게 바꾸세요."
       ],
-      "code": "const greet = function () {\n  console.log('안녕하세요');\n};\ngreet();\n"
+      "code": "const finish = function () {\n  return '완료';\n};\nconsole.log(finish);\nconsole.log(finish());\n"
     },
     {
       "kind": "write",
@@ -57,6 +57,50 @@
       "hints": [
         "const calculate = function () { 줄을 먼저 작성하세요.",
         "함수 이름, 매개변수, 호출 위치를 문제에서 요구한 흐름과 맞게 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "함수 표현식으로 인사 만들기",
+      "brief": [
+        "name을 받아 'name님'을 반환하는 함수 표현식을 greet에 저장하고 민지를 전달하세요."
+      ],
+      "code": "// TODO: 함수 표현식을 만들고 호출하세요.\n",
+      "solutionCode": "const greet = function (name) {\n  return name + '님';\n};\nconsole.log(greet('민지'));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "함수 표현식으로 인사 만들기",
+          "expected": [
+            "민지님"
+          ]
+        }
+      ],
+      "hints": [
+        "const greet = function (name)으로 시작하세요.",
+        "함수 값을 대입하는 문장 끝에 세미콜론을 씁니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "함수 표현식으로 차이 계산하기",
+      "brief": [
+        "a - b를 반환하는 함수 표현식을 subtract에 저장하고 13, 4를 전달하세요."
+      ],
+      "code": "// TODO: subtract를 만들고 결과를 출력하세요.\n",
+      "solutionCode": "const subtract = function (a, b) {\n  return a - b;\n};\nconsole.log(subtract(13, 4));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "함수 표현식으로 차이 계산하기",
+          "expected": [
+            "9"
+          ]
+        }
+      ],
+      "hints": [
+        "두 매개변수를 받는 함수 값을 저장하세요.",
+        "subtract(13, 4)를 출력하세요."
       ]
     }
   ]

@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "typeof 실행하기",
+      "title": "여러 입력값의 자료형 점검하기",
       "brief": [
-        "코드를 실행해 typeof의 결과를 확인하세요."
+        "숫자형 수량, 문자형 상품명, 불리언 결제 상태의 자료형 이름을 차례로 확인합니다."
       ],
-      "code": "console.log(typeof 10);\nconsole.log(typeof '글자');\nconsole.log(typeof true);\n"
+      "code": "const amount = 2;\nconst item = '책';\nconst paid = false;\nconsole.log(typeof amount);\nconsole.log(typeof item);\nconsole.log(typeof paid);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "typeof 결과 자체의 자료형 확인하기",
       "brief": [
-        "마지막 true를 null로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "typeof 42의 결과는 문자열 'number'입니다. 안쪽 42를 true로 바꿔도 바깥 typeof 결과가 string인지 확인하세요."
       ],
-      "code": "console.log(typeof 10);\nconsole.log(typeof '글자');\nconsole.log(typeof true);\n"
+      "code": "const typeName = typeof 42;\nconsole.log(typeName);\nconsole.log(typeof typeName);\n"
     },
     {
       "kind": "write",
@@ -56,6 +56,52 @@
       "hints": [
         "console.log(typeof active); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "null과 undefined의 typeof 비교하기",
+      "brief": [
+        "null과 undefined에 typeof를 적용한 결과를 차례로 출력하세요."
+      ],
+      "code": "// TODO: 두 typeof 결과를 출력하세요.\n",
+      "solutionCode": "console.log(typeof null);\nconsole.log(typeof undefined);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "null과 undefined의 typeof 비교하기",
+          "expected": [
+            "object",
+            "undefined"
+          ]
+        }
+      ],
+      "hints": [
+        "typeof null을 먼저 출력하세요.",
+        "다음에 typeof undefined를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "변수 값과 자료형 이름 출력하기",
+      "brief": [
+        "rating의 값 4.5와 typeof rating 결과를 출력하세요."
+      ],
+      "code": "const rating = 4.5;\n// TODO: 값과 자료형을 출력하세요.\n",
+      "solutionCode": "const rating = 4.5;\nconsole.log(rating);\nconsole.log(typeof rating);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "변수 값과 자료형 이름 출력하기",
+          "expected": [
+            "4.5",
+            "number"
+          ]
+        }
+      ],
+      "hints": [
+        "rating을 먼저 출력하세요.",
+        "typeof rating을 다음 줄에 출력하세요."
       ]
     }
   ]

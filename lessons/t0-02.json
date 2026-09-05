@@ -21,20 +21,19 @@
     },
     {
       "kind": "run",
-      "title": "변수와 let 실행하기",
+      "title": "상품명을 변수로 저장해 출력하기",
       "brief": [
-        "코드를 실행해 변수와 let의 동작을 확인하세요."
+        "productName에 저장된 '텀블러'를 변수 이름으로 읽어 출력합니다."
       ],
-      "code": "let userName = '민수';\nconsole.log(userName);\n"
+      "code": "let productName = '텀블러';\nconsole.log(productName);\n"
     },
     {
       "kind": "tweak",
-      "title": "변수와 let의 값 바꿔 보기",
+      "title": "변수와 문자열을 구분하기",
       "brief": [
-        "userName에 대입한 문자열을 다른 이름으로 바꾸세요.",
-        "수정한 뒤 다시 실행하여 바꾸기 전 결과와 비교하세요."
+        "첫 출력은 변수의 값 부산이고 둘째 출력은 글자 destination입니다. 둘째 줄의 따옴표를 제거해 두 줄 모두 부산이 나오게 바꾸세요."
       ],
-      "code": "let userName = '민수';\nconsole.log(userName);\n"
+      "code": "let destination = '부산';\nconsole.log(destination);\nconsole.log('destination');\n"
     },
     {
       "kind": "write",
@@ -57,6 +56,51 @@
       "hints": [
         "city는 이미 let으로 선언되어 있으므로 새 변수를 만들 필요가 없습니다.",
         "console.log의 괄호 안에 따옴표 없는 city를 넣으세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "변수를 선언하고 값 사용하기",
+      "brief": [
+        "let으로 drink 변수를 선언해 '차'를 저장하고 drink를 출력하세요."
+      ],
+      "code": "// TODO: drink를 선언하고 저장된 값을 출력하세요.\n",
+      "solutionCode": "let drink = '차';\nconsole.log(drink);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "변수를 선언하고 값 사용하기",
+          "expected": [
+            "차"
+          ]
+        }
+      ],
+      "hints": [
+        "let drink = '차';로 선언하세요.",
+        "다음 줄에서 drink를 따옴표 없이 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "두 변수의 값을 순서대로 출력하기",
+      "brief": [
+        "floor에는 7, room에는 '회의실'을 저장하고 두 변수의 값을 차례로 출력하세요."
+      ],
+      "code": "// TODO: floor와 room을 선언하고 차례로 출력하세요.\n",
+      "solutionCode": "let floor = 7;\nlet room = '회의실';\nconsole.log(floor);\nconsole.log(room);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "두 변수의 값을 순서대로 출력하기",
+          "expected": [
+            "7",
+            "회의실"
+          ]
+        }
+      ],
+      "hints": [
+        "두 let 선언문을 먼저 작성하세요.",
+        "변수 이름을 따옴표 없이 출력하세요."
       ]
     }
   ]

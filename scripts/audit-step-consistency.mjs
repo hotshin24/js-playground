@@ -43,7 +43,13 @@ for (const item of lessons) {
     if (!checkedKinds.has(step.kind)) continue;
     writes += 1;
     assert(step.solutionCode || step.files?.some((file) => file.solutionCode), `${item.id}: 정답 코드 없음`);
-    assert.notDeepEqual(step.code, step.solutionCode, `${item.id}: starter와 solution이 같음`);
+    if (step.files) {
+      const editable = step.files.filter((file) => !file.readOnly && file.solutionCode !== undefined);
+      assert(editable.length > 0, `${item.id}: 수정 가능한 파일 정답 없음`);
+      assert(editable.some((file) => JSON.stringify(file.code) !== JSON.stringify(file.solutionCode)), `${item.id}: 파일 starter와 solution이 같음`);
+    } else {
+      assert.notDeepEqual(step.code, step.solutionCode, `${item.id}: starter와 solution이 같음`);
+    }
     assert((step.asserts || []).length > 0, `${item.id}: 검사 항목 없음`);
     assert.doesNotMatch(prose.join('\n'), tweakOnly, `${item.id}: WRITE에 TWEAK 지시가 남음`);
     assert.doesNotMatch(prose.join('\n'), generic, `${item.id}: 구체적이지 않은 공통 문구가 남음`);

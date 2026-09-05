@@ -27,19 +27,19 @@
     },
     {
       "kind": "run",
-      "title": "else if 실행하기",
+      "title": "배송비를 주문 구간별로 나누기",
       "brief": [
-        "else if 코드가 어떤 순서로 실행되는지 확인하세요."
+        "높은 주문 금액부터 검사해 무료, 할인 배송, 일반 배송 중 하나만 선택합니다."
       ],
-      "code": "const score = 75;\nif (score >= 90) {\n  console.log('A');\n} else if (score >= 70) {\n  console.log('B');\n} else {\n  console.log('C');\n}\n"
+      "code": "const total = 35000;\nif (total >= 50000) {\n  console.log('무료');\n} else if (total >= 30000) {\n  console.log('배송비 1500원');\n} else {\n  console.log('배송비 3000원');\n}\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "조건 순서가 결과를 바꾸는 경우 확인하기",
       "brief": [
-        "score의 75를 95로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "age 70은 첫 조건 65 이상에서 멈춥니다. 첫 조건을 age >= 80으로 바꿔 다음 구간이 선택되게 하세요."
       ],
-      "code": "const score = 75;\nif (score >= 90) {\n  console.log('A');\n} else if (score >= 70) {\n  console.log('B');\n} else {\n  console.log('C');\n}\n"
+      "code": "const age = 70;\nif (age >= 65) {\n  console.log('우대');\n} else if (age >= 20) {\n  console.log('일반');\n} else {\n  console.log('청소년');\n}\n"
     },
     {
       "kind": "write",
@@ -61,6 +61,50 @@
       "hints": [
         "if (age >= 19) { 줄을 먼저 작성하세요.",
         "조건과 중괄호의 범위를 먼저 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "미세먼지 단계를 구간으로 나누기",
+      "brief": [
+        "dust가 80 이상이면 나쁨, 30 이상이면 보통, 아니면 좋음을 출력하세요."
+      ],
+      "code": "const dust = 45;\n// TODO: 세 구간을 나누세요.\n",
+      "solutionCode": "const dust = 45;\nif (dust >= 80) {\n  console.log('나쁨');\n} else if (dust >= 30) {\n  console.log('보통');\n} else {\n  console.log('좋음');\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "미세먼지 단계를 구간으로 나누기",
+          "expected": [
+            "보통"
+          ]
+        }
+      ],
+      "hints": [
+        "높은 기준 80부터 검사하세요.",
+        "마지막 범위는 else로 처리하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "할인율을 세 등급으로 나누기",
+      "brief": [
+        "grade가 'VIP'면 20, 'GOLD'면 10, 나머지는 0을 출력하세요."
+      ],
+      "code": "const grade = 'GOLD';\n// TODO: 세 등급을 if, else if, else로 나누세요.\n",
+      "solutionCode": "const grade = 'GOLD';\nif (grade === 'VIP') {\n  console.log(20);\n} else if (grade === 'GOLD') {\n  console.log(10);\n} else {\n  console.log(0);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "할인율을 세 등급으로 나누기",
+          "expected": [
+            "10"
+          ]
+        }
+      ],
+      "hints": [
+        "문자열은 ===로 비교하세요.",
+        "GOLD 조건은 else if에 둡니다."
       ]
     }
   ]

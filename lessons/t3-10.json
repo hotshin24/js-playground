@@ -26,19 +26,19 @@
     },
     {
       "kind": "run",
-      "title": "객체 메서드 실행하기",
+      "title": "주문 객체의 합계 메서드 호출하기",
       "brief": [
-        "코드를 실행해 객체 메서드의 결과를 확인하세요."
+        "order의 showTotal 프로퍼티에는 함수가 저장되어 있고 order.showTotal()로 호출합니다."
       ],
-      "code": "const person = {\n  name: '민수',\n  sayHi: function () {\n    console.log('안녕하세요');\n  }\n};\nperson.sayHi();\n"
+      "code": "const order = {\n  price: 5000,\n  count: 3,\n  showTotal: function () {\n    console.log(15000);\n  }\n};\norder.showTotal();\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "메서드 자체와 호출 결과 구분하기",
       "brief": [
-        "메서드의 출력값 안녕하세요를 반갑습니다로 바꾸고 다시 실행하여 결과를 비교하세요."
+        "첫 출력은 함수 자체이고 둘째 줄에서만 메서드가 실행됩니다. 첫 줄에도 괄호를 붙여 안내가 두 번 나오게 하세요."
       ],
-      "code": "const person = {\n  name: '민수',\n  sayHi: function () {\n    console.log('안녕하세요');\n  }\n};\nperson.sayHi();\n"
+      "code": "const notice = {\n  show: function () {\n    console.log('점검 안내');\n  }\n};\nconsole.log(notice.show);\nnotice.show();\n"
     },
     {
       "kind": "write",
@@ -60,6 +60,50 @@
       "hints": [
         "alarm.ring(); 줄을 먼저 작성하세요.",
         "접근할 key 또는 index를 정확히 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "인사 메서드 만들기",
+      "brief": [
+        "person 객체에 '안녕하세요'를 출력하는 greet 메서드를 넣고 호출하세요."
+      ],
+      "code": "// TODO: greet 메서드가 있는 객체를 만들고 호출하세요.\n",
+      "solutionCode": "const person = {\n  name: '지민',\n  greet: function () {\n    console.log('안녕하세요');\n  }\n};\nperson.greet();\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "인사 메서드 만들기",
+          "expected": [
+            "안녕하세요"
+          ]
+        }
+      ],
+      "hints": [
+        "greet의 value로 함수를 저장하세요.",
+        "person.greet()로 호출하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "매개변수를 받는 메서드 작성하기",
+      "brief": [
+        "counter 객체에 value를 받아 두 배를 출력하는 showDouble 메서드를 만들고 6을 전달하세요."
+      ],
+      "code": "// TODO: 매개변수가 있는 메서드를 작성하세요.\n",
+      "solutionCode": "const counter = {\n  showDouble: function (value) {\n    console.log(value * 2);\n  }\n};\ncounter.showDouble(6);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "매개변수를 받는 메서드 작성하기",
+          "expected": [
+            "12"
+          ]
+        }
+      ],
+      "hints": [
+        "메서드 함수도 매개변수를 받을 수 있습니다.",
+        "점 표기법으로 메서드에 6을 전달하세요."
       ]
     }
   ]

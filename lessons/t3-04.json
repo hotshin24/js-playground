@@ -21,19 +21,19 @@
     },
     {
       "kind": "run",
-      "title": "괄호 표기법 실행하기",
+      "title": "공백이 있는 key를 괄호 표기법으로 읽기",
       "brief": [
-        "코드를 실행해 괄호 표기법의 결과를 확인하세요."
+        "'delivery status'처럼 공백이 있는 key는 점 뒤에 적을 수 없어 대괄호와 문자열 key로 접근합니다."
       ],
-      "code": "const user = { name: '민수', age: 25 };\nconsole.log(user['name']);\n"
+      "code": "const order = { 'delivery status': '출고' };\nconsole.log(order['delivery status']);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "점 표기법과 괄호 표기법 결과 비교하기",
       "brief": [
-        "접근할 key name을 age로 바꾸고 다시 실행하여 결과를 비교하세요."
+        "두 접근식은 모두 같은 name 프로퍼티를 읽습니다. 둘째 줄의 문자열을 'age'로 바꿔 다른 프로퍼티를 읽어 보세요."
       ],
-      "code": "const user = { name: '민수', age: 25 };\nconsole.log(user['name']);\n"
+      "code": "const customer = { name: '지우', age: 29 };\nconsole.log(customer.name);\nconsole.log(customer['name']);\n"
     },
     {
       "kind": "write",
@@ -55,6 +55,51 @@
       "hints": [
         "console.log(product['price']); 줄을 먼저 작성하세요.",
         "접근할 key 또는 index를 정확히 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "문자열 key로 값 읽기",
+      "brief": [
+        "settings 객체의 'font-size' 값을 괄호 표기법으로 출력하세요."
+      ],
+      "code": "const settings = { 'font-size': 16, theme: 'dark' };\n// TODO: font-size 값을 출력하세요.\n",
+      "solutionCode": "const settings = { 'font-size': 16, theme: 'dark' };\nconsole.log(settings['font-size']);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "문자열 key로 값 읽기",
+          "expected": [
+            "16"
+          ]
+        }
+      ],
+      "hints": [
+        "대괄호 안에 'font-size'를 문자열로 넣으세요.",
+        "하이픈이 있는 key는 점 표기법으로 읽을 수 없습니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "두 표기법 함께 사용하기",
+      "brief": [
+        "product.name은 점 표기법, product['unit price']는 괄호 표기법으로 출력하세요."
+      ],
+      "code": "const product = { name: '노트', 'unit price': 2500 };\n// TODO: 두 프로퍼티를 알맞은 방식으로 출력하세요.\n",
+      "solutionCode": "const product = { name: '노트', 'unit price': 2500 };\nconsole.log(product.name);\nconsole.log(product['unit price']);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "두 표기법 함께 사용하기",
+          "expected": [
+            "노트",
+            "2500"
+          ]
+        }
+      ],
+      "hints": [
+        "일반 key name은 점 표기법으로 읽으세요.",
+        "공백이 있는 key는 ['unit price']로 읽으세요."
       ]
     }
   ]

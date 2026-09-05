@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "템플릿 리터럴 실행하기",
+      "title": "예약 안내 문장 만들기",
       "brief": [
-        "코드를 실행해 템플릿 리터럴의 결과를 확인하세요."
+        "백틱 안의 두 자리에 예약자와 인원 값을 넣어 읽기 쉬운 안내 문장을 만듭니다."
       ],
-      "code": "const name = '민수';\nconst age = 25;\nconsole.log(`${name} / ${age}세`);\n"
+      "code": "const guest = '민호';\nconst people = 3;\nconsole.log(`${guest}님 / ${people}명`);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "템플릿 안에서 계산하기",
       "brief": [
-        "age의 25를 30으로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "${boxes * 2}는 변수값을 그대로 넣지 않고 계산 결과 8을 넣습니다. boxes를 6으로 바꿔 결과가 12개가 되는지 확인하세요."
       ],
-      "code": "const name = '민수';\nconst age = 25;\nconsole.log(`${name} / ${age}세`);\n"
+      "code": "const boxes = 4;\nconsole.log(`전체 수량: ${boxes * 2}개`);\n"
     },
     {
       "kind": "write",
@@ -56,6 +56,50 @@
       "hints": [
         "console.log(`${city} / ${weather}`); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "상품과 가격을 문장에 넣기",
+      "brief": [
+        "템플릿 리터럴로 '의자: 45000원'을 출력하세요."
+      ],
+      "code": "const item = '의자';\nconst price = 45000;\n// TODO: 두 값을 한 문장에 넣으세요.\n",
+      "solutionCode": "const item = '의자';\nconst price = 45000;\nconsole.log(`${item}: ${price}원`);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "상품과 가격을 문장에 넣기",
+          "expected": [
+            "의자: 45000원"
+          ]
+        }
+      ],
+      "hints": [
+        "전체 문자열을 백틱으로 감싸세요.",
+        "item과 price를 각각 ${ } 안에 넣으세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "계산 결과를 템플릿에 넣기",
+      "brief": [
+        "quantity * unitPrice의 결과를 템플릿 리터럴에 넣어 '합계: 6000원'을 출력하세요."
+      ],
+      "code": "const quantity = 3;\nconst unitPrice = 2000;\n// TODO: 계산 결과를 문장에 넣으세요.\n",
+      "solutionCode": "const quantity = 3;\nconst unitPrice = 2000;\nconsole.log(`합계: ${quantity * unitPrice}원`);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "계산 결과를 템플릿에 넣기",
+          "expected": [
+            "합계: 6000원"
+          ]
+        }
+      ],
+      "hints": [
+        "${ } 안에는 계산식도 넣을 수 있습니다.",
+        "quantity * unitPrice를 그대로 넣으세요."
       ]
     }
   ]

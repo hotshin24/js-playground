@@ -21,19 +21,19 @@
     },
     {
       "kind": "run",
-      "title": "자료형 실행하기",
+      "title": "예약 정보의 자료형 확인하기",
       "brief": [
-        "코드를 실행해 자료형의 결과를 확인하세요."
+        "예약 인원은 숫자형, 예약자 이름은 문자형입니다. typeof가 서로 다른 자료형 이름을 반환하는지 확인하세요."
       ],
-      "code": "console.log(typeof 10);\nconsole.log(typeof '글자');\n"
+      "code": "const people = 4;\nconst guest = '서연';\nconsole.log(typeof people);\nconsole.log(typeof guest);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "값의 모양이 같은 두 자료형 비교하기",
       "brief": [
-        "10을 20으로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "첫 값 25는 숫자형이고 둘째 값 '25'는 문자형입니다. 둘째 값의 따옴표를 제거하면 두 typeof 결과가 어떻게 같아지는지 확인하세요."
       ],
-      "code": "console.log(typeof 10);\nconsole.log(typeof '글자');\n"
+      "code": "console.log(typeof 25);\nconsole.log(typeof '25');\n"
     },
     {
       "kind": "write",
@@ -55,6 +55,52 @@
       "hints": [
         "console.log(typeof true); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "null과 undefined 자료형 확인하기",
+      "brief": [
+        "null과 선언만 한 empty의 typeof 결과를 차례로 출력하세요."
+      ],
+      "code": "const selected = null;\nlet empty;\n// TODO: 두 값의 자료형을 출력하세요.\n",
+      "solutionCode": "const selected = null;\nlet empty;\nconsole.log(typeof selected);\nconsole.log(typeof empty);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "null과 undefined 자료형 확인하기",
+          "expected": [
+            "object",
+            "undefined"
+          ]
+        }
+      ],
+      "hints": [
+        "typeof selected를 먼저 출력하세요.",
+        "다음 줄에서 typeof empty를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "값과 자료형을 함께 출력하기",
+      "brief": [
+        "temperature의 값 -3과 자료형을 각각 출력하세요."
+      ],
+      "code": "const temperature = -3;\n// TODO: 값과 자료형을 출력하세요.\n",
+      "solutionCode": "const temperature = -3;\nconsole.log(temperature);\nconsole.log(typeof temperature);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "값과 자료형을 함께 출력하기",
+          "expected": [
+            "-3",
+            "number"
+          ]
+        }
+      ],
+      "hints": [
+        "temperature를 먼저 출력하세요.",
+        "typeof temperature를 이어서 출력하세요."
       ]
     }
   ]

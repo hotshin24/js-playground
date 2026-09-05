@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "동적 프로퍼티 접근 실행하기",
+      "title": "선택한 필드 이름으로 값 읽기",
       "brief": [
-        "코드를 실행해 동적 프로퍼티 접근의 결과를 확인하세요."
+        "selectedField에 저장된 문자열이 실행 중 접근할 key를 결정하므로 employee[selectedField]는 department 값을 읽습니다."
       ],
-      "code": "const user = { name: '민수', age: 25 };\nconst key = 'age';\nconsole.log(user[key]);\n"
+      "code": "const employee = { name: '소라', department: '운영' };\nconst selectedField = 'department';\nconsole.log(employee[selectedField]);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "변수 접근과 고정 key 접근 대조하기",
       "brief": [
-        "key 변수의 age를 name으로 바꾸고 다시 실행하여 결과를 비교하세요."
+        "user[field]는 field 값 'email'을 사용하지만 user.field는 실제 key field를 찾습니다. field를 'name'으로 바꿔 첫 출력만 달라지는지 확인하세요."
       ],
-      "code": "const user = { name: '민수', age: 25 };\nconst key = 'age';\nconsole.log(user[key]);\n"
+      "code": "const user = { name: '도윤', email: 'd@example.com' };\nconst field = 'email';\nconsole.log(user[field]);\nconsole.log(user.field);\n"
     },
     {
       "kind": "write",
@@ -56,6 +56,51 @@
       "hints": [
         "console.log(product[key]); 줄을 먼저 작성하세요.",
         "접근할 key 또는 index를 정확히 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "변수에 담긴 key로 프로퍼티 읽기",
+      "brief": [
+        "key에 'price'를 저장하고 item[key]로 18000을 출력하세요."
+      ],
+      "code": "const item = { name: '가방', price: 18000 };\nconst key = 'price';\n// TODO: 동적으로 값을 읽으세요.\n",
+      "solutionCode": "const item = { name: '가방', price: 18000 };\nconst key = 'price';\nconsole.log(item[key]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "변수에 담긴 key로 프로퍼티 읽기",
+          "expected": [
+            "18000"
+          ]
+        }
+      ],
+      "hints": [
+        "대괄호 안에 따옴표 없이 key 변수를 넣으세요.",
+        "item.key와 혼동하지 마세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "key 변수를 재할당해 두 값 읽기",
+      "brief": [
+        "field를 name에서 stock으로 재할당하며 product의 두 값을 차례로 출력하세요."
+      ],
+      "code": "const product = { name: '펜', stock: 12 };\nlet field = 'name';\n// TODO: 현재 field 값으로 읽고 stock으로 바꿔 다시 읽으세요.\n",
+      "solutionCode": "const product = { name: '펜', stock: 12 };\nlet field = 'name';\nconsole.log(product[field]);\nfield = 'stock';\nconsole.log(product[field]);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "key 변수를 재할당해 두 값 읽기",
+          "expected": [
+            "펜",
+            "12"
+          ]
+        }
+      ],
+      "hints": [
+        "첫 출력 뒤 field에 stock을 재할당하세요.",
+        "두 번 모두 product[field]를 사용하세요."
       ]
     }
   ]

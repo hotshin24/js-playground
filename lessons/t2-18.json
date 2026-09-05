@@ -26,19 +26,19 @@
     },
     {
       "kind": "run",
-      "title": "전역·지역 스코프 실행하기",
+      "title": "전역 배송비를 함수 안에서 사용하기",
       "brief": [
-        "전역·지역 스코프 코드가 어떤 순서로 실행되는지 확인하세요."
+        "함수 밖의 shippingFee는 전역 스코프에 있어 calculate 안에서도 읽을 수 있고, 함수 안의 total은 바깥에서 사용할 수 없습니다."
       ],
-      "code": "const globalName = '전역';\nfunction show() {\n  const localName = '지역';\n  console.log(globalName);\n  console.log(localName);\n}\nshow();\n"
+      "code": "const shippingFee = 3000;\nfunction calculate(price) {\n  const total = price + shippingFee;\n  console.log(total);\n}\ncalculate(12000);\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "같은 이름이면 가까운 지역 변수 사용하기",
       "brief": [
-        "localName의 지역을 함수 안으로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "함수 안의 label이 전역 label을 가립니다. 지역 선언을 지우면 함수가 전역의 바깥을 출력하는지 확인하세요."
       ],
-      "code": "const globalName = '전역';\nfunction show() {\n  const localName = '지역';\n  console.log(globalName);\n  console.log(localName);\n}\nshow();\n"
+      "code": "const label = '바깥';\nfunction show() {\n  const label = '안쪽';\n  console.log(label);\n}\nshow();\nconsole.log(label);\n"
     },
     {
       "kind": "write",
@@ -61,6 +61,51 @@
       "hints": [
         "function show() { 줄을 먼저 작성하세요.",
         "변수가 선언된 중괄호 안팎의 스코프를 구분하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "전역값과 지역값 함께 사용하기",
+      "brief": [
+        "전역 tax를 함수 안에서 읽고 지역 total을 만들어 11000을 출력하세요."
+      ],
+      "code": "const tax = 1000;\n// TODO: price를 받아 합계를 출력하는 함수를 만드세요.\n",
+      "solutionCode": "const tax = 1000;\nfunction showTotal(price) {\n  const total = price + tax;\n  console.log(total);\n}\nshowTotal(10000);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "전역값과 지역값 함께 사용하기",
+          "expected": [
+            "11000"
+          ]
+        }
+      ],
+      "hints": [
+        "함수 안에서 전역 tax를 읽을 수 있습니다.",
+        "total은 함수 안에 const로 선언하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "서로 다른 함수의 지역 변수 구분하기",
+      "brief": [
+        "first와 second 안에 같은 이름 value를 각각 선언해 A와 B를 차례로 출력하세요."
+      ],
+      "code": "// TODO: 두 함수에 각각 지역 변수를 만드세요.\n",
+      "solutionCode": "function first() {\n  const value = 'A';\n  console.log(value);\n}\nfunction second() {\n  const value = 'B';\n  console.log(value);\n}\nfirst();\nsecond();\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "서로 다른 함수의 지역 변수 구분하기",
+          "expected": [
+            "A",
+            "B"
+          ]
+        }
+      ],
+      "hints": [
+        "각 value는 서로 다른 함수 스코프에 있습니다.",
+        "두 함수를 순서대로 호출하세요."
       ]
     }
   ]

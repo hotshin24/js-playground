@@ -21,19 +21,19 @@
     },
     {
       "kind": "run",
-      "title": "화살표 함수 실행하기",
+      "title": "화살표 함수로 할인 금액 계산하기",
       "brief": [
-        "화살표 함수 코드가 어떤 순서로 실행되는지 확인하세요."
+        "표현식 하나인 화살표 함수는 중괄호와 return 없이 계산 결과를 반환합니다."
       ],
-      "code": "const add = (a, b) => a + b;\nconsole.log(add(2, 3));\n"
+      "code": "const discount = (price, amount) => price - amount;\nconsole.log(discount(18000, 3000));\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "중괄호를 쓰면 return이 필요한 점 확인하기",
       "brief": [
-        "add(2, 3)의 3을 4로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "현재 함수는 중괄호 안에서 return해 8을 만듭니다. return을 지우면 undefined가 나오는지 확인한 뒤 되돌리세요."
       ],
-      "code": "const add = (a, b) => a + b;\nconsole.log(add(2, 3));\n"
+      "code": "const double = (number) => {\n  return number * 2;\n};\nconsole.log(double(4));\n"
     },
     {
       "kind": "write",
@@ -55,6 +55,50 @@
       "hints": [
         "const double = value => value * 2; 줄을 먼저 작성하세요.",
         "함수 이름, 매개변수, 호출 위치를 문제에서 요구한 흐름과 맞게 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "한 매개변수 화살표 함수 만들기",
+      "brief": [
+        "minutes에 60을 곱해 반환하는 toSeconds를 화살표 함수로 만들고 2를 전달하세요."
+      ],
+      "code": "// TODO: 화살표 함수를 만들고 호출하세요.\n",
+      "solutionCode": "const toSeconds = (minutes) => minutes * 60;\nconsole.log(toSeconds(2));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "한 매개변수 화살표 함수 만들기",
+          "expected": [
+            "120"
+          ]
+        }
+      ],
+      "hints": [
+        "=> 오른쪽에 minutes * 60을 적으세요.",
+        "toSeconds(2)를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "여러 문장을 가진 화살표 함수 작성하기",
+      "brief": [
+        "a와 b의 합을 total에 저장한 뒤 total을 반환하는 화살표 함수 add를 만들고 7, 8을 전달하세요."
+      ],
+      "code": "// TODO: 중괄호와 return을 사용하세요.\n",
+      "solutionCode": "const add = (a, b) => {\n  const total = a + b;\n  return total;\n};\nconsole.log(add(7, 8));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "여러 문장을 가진 화살표 함수 작성하기",
+          "expected": [
+            "15"
+          ]
+        }
+      ],
+      "hints": [
+        "중괄호 본문에서는 return을 직접 씁니다.",
+        "함수 값 대입문 끝에 세미콜론을 적으세요."
       ]
     }
   ]

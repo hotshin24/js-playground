@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "String과 Boolean 실행하기",
+      "title": "주문 번호를 표시용 문자열로 바꾸기",
       "brief": [
-        "코드를 실행해 String과 Boolean의 결과를 확인하세요."
+        "숫자 주문 번호를 String으로 바꾸면 계산값이 아닌 표시용 문자열로 사용할 수 있습니다."
       ],
-      "code": "console.log(String(2026));\nconsole.log(Boolean(1));\nconsole.log(Boolean(0));\n"
+      "code": "const orderNumber = 704;\nconst orderId = String(orderNumber);\nconsole.log(orderId);\nconsole.log(typeof orderId);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "Boolean으로 빈 값 대조하기",
       "brief": [
-        "Boolean(1)의 1을 2로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "빈 문자열은 false, 글자가 있는 문자열은 true로 변환됩니다. 둘째 문자열도 ''로 바꿔 두 결과가 false가 되는지 확인하세요."
       ],
-      "code": "console.log(String(2026));\nconsole.log(Boolean(1));\nconsole.log(Boolean(0));\n"
+      "code": "console.log(Boolean(''));\nconsole.log(Boolean('메모 있음'));\n"
     },
     {
       "kind": "write",
@@ -57,6 +57,53 @@
       "hints": [
         "console.log(String(count)); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "숫자를 문자열로 변환하기",
+      "brief": [
+        "year 2026을 String으로 변환해 textYear에 저장하고 값과 자료형을 출력하세요."
+      ],
+      "code": "const year = 2026;\n// TODO: 문자열로 변환해 출력하세요.\n",
+      "solutionCode": "const year = 2026;\nconst textYear = String(year);\nconsole.log(textYear);\nconsole.log(typeof textYear);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "숫자를 문자열로 변환하기",
+          "expected": [
+            "2026",
+            "string"
+          ]
+        }
+      ],
+      "hints": [
+        "String(year)을 textYear에 저장하세요.",
+        "textYear와 typeof textYear를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "여러 값을 불리언으로 변환하기",
+      "brief": [
+        "Boolean(0), Boolean(1), Boolean('확인')을 차례로 출력하세요."
+      ],
+      "code": "// TODO: 세 변환 결과를 출력하세요.\n",
+      "solutionCode": "console.log(Boolean(0));\nconsole.log(Boolean(1));\nconsole.log(Boolean('확인'));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "여러 값을 불리언으로 변환하기",
+          "expected": [
+            "false",
+            "true",
+            "true"
+          ]
+        }
+      ],
+      "hints": [
+        "0은 false, 1은 true로 변환됩니다.",
+        "비어 있지 않은 문자열도 true입니다."
       ]
     }
   ]

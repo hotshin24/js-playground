@@ -23,19 +23,19 @@
     },
     {
       "kind": "run",
-      "title": "if 실행하기",
+      "title": "무료 배송 조건 실행하기",
       "brief": [
-        "if 코드가 어떤 순서로 실행되는지 확인하세요."
+        "주문 금액이 기준 이상일 때만 무료 배송 문구를 출력합니다. 조건이 false이면 블록 전체를 건너뜁니다."
       ],
-      "code": "const age = 20;\nif (age >= 19) {\n  console.log('성인');\n}\n"
+      "code": "const orderTotal = 62000;\nif (orderTotal >= 50000) {\n  console.log('무료 배송');\n}\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "조건이 false일 때 흐름 확인하기",
       "brief": [
-        "age의 20을 18로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "온도가 0보다 낮지 않아 현재 아무것도 출력되지 않습니다. temperature를 -3으로 바꿔 블록이 실행되게 하세요."
       ],
-      "code": "const age = 20;\nif (age >= 19) {\n  console.log('성인');\n}\n"
+      "code": "const temperature = 4;\nif (temperature < 0) {\n  console.log('결빙 주의');\n}\n"
     },
     {
       "kind": "write",
@@ -57,6 +57,50 @@
       "hints": [
         "if (stock > 0) { 줄을 먼저 작성하세요.",
         "조건과 중괄호의 범위를 먼저 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "로그인 상태에 따라 문구 출력하기",
+      "brief": [
+        "isLoggedIn이 true일 때만 '환영합니다'를 출력하는 if 문을 작성하세요."
+      ],
+      "code": "const isLoggedIn = true;\n// TODO: 조건이 true일 때 문구를 출력하세요.\n",
+      "solutionCode": "const isLoggedIn = true;\nif (isLoggedIn) {\n  console.log('환영합니다');\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "로그인 상태에 따라 문구 출력하기",
+          "expected": [
+            "환영합니다"
+          ]
+        }
+      ],
+      "hints": [
+        "if 괄호 안에 isLoggedIn을 넣으세요.",
+        "중괄호 안에서 문구를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "수량 조건과 비교 연산자 결합하기",
+      "brief": [
+        "stock이 1 이상이면 '주문 가능'을 출력하세요."
+      ],
+      "code": "const stock = 3;\n// TODO: 재고 조건을 검사하세요.\n",
+      "solutionCode": "const stock = 3;\nif (stock >= 1) {\n  console.log('주문 가능');\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "수량 조건과 비교 연산자 결합하기",
+          "expected": [
+            "주문 가능"
+          ]
+        }
+      ],
+      "hints": [
+        "조건은 stock >= 1입니다.",
+        "조건을 만족할 때만 출력하세요."
       ]
     }
   ]

@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "undefined 실행하기",
+      "title": "값을 넣지 않은 변수 확인하기",
       "brief": [
-        "코드를 실행해 undefined의 결과를 확인하세요."
+        "배송 메모 변수는 선언되었지만 값이 대입되지 않아 undefined입니다. 값과 자료형을 함께 확인합니다."
       ],
-      "code": "let result;\nconsole.log(result);\nconsole.log(typeof result);\n"
+      "code": "let deliveryMemo;\nconsole.log(deliveryMemo);\nconsole.log(typeof deliveryMemo);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "undefined에서 실제 값으로 바꾸기",
       "brief": [
-        "let result;를 let result = 0;으로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "처음에는 undefined가 출력됩니다. 선언문 다음에 result = '성공';을 추가해 값이 정해진 뒤의 결과를 확인하세요."
       ],
-      "code": "let result;\nconsole.log(result);\nconsole.log(typeof result);\n"
+      "code": "let result;\nconsole.log(result);\n"
     },
     {
       "kind": "write",
@@ -57,6 +57,51 @@
       "hints": [
         "console.log(message); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "초기값 없는 변수 선언하기",
+      "brief": [
+        "let으로 coupon 변수를 값 없이 선언하고 값과 자료형을 출력하세요."
+      ],
+      "code": "// TODO: coupon을 선언하고 값과 자료형을 출력하세요.\n",
+      "solutionCode": "let coupon;\nconsole.log(coupon);\nconsole.log(typeof coupon);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "초기값 없는 변수 선언하기",
+          "expected": [
+            "undefined",
+            "undefined"
+          ]
+        }
+      ],
+      "hints": [
+        "let coupon;처럼 대입 없이 선언하세요.",
+        "coupon과 typeof coupon을 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "undefined와 null 비교하기",
+      "brief": [
+        "notAssigned는 대입하지 않고, intentionallyEmpty에는 null을 대입하세요. 두 값의 엄격한 비교 결과를 출력하세요."
+      ],
+      "code": "// TODO: 두 변수를 만들고 === 비교 결과를 출력하세요.\n",
+      "solutionCode": "let notAssigned;\nconst intentionallyEmpty = null;\nconsole.log(notAssigned === intentionallyEmpty);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "undefined와 null 비교하기",
+          "expected": [
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "undefined와 null은 서로 다른 값입니다.",
+        "두 변수를 ===로 비교하세요."
       ]
     }
   ]

@@ -23,19 +23,19 @@
     },
     {
       "kind": "run",
-      "title": "함수·블록 스코프 실행하기",
+      "title": "for 블록의 반복 변수 범위 확인하기",
       "brief": [
-        "함수·블록 스코프 코드가 어떤 순서로 실행되는지 확인하세요."
+        "let으로 선언한 index는 for 블록 안에서만 사용할 수 있습니다. 블록 안의 출력은 정상 실행됩니다."
       ],
-      "code": "if (true) {\n  let blockValue = '블록 안';\n  console.log(blockValue);\n}\n"
+      "code": "for (let index = 0; index < 2; index++) {\n  console.log(index);\n}\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "블록 안팎의 같은 이름 비교하기",
       "brief": [
-        "if 조건 true를 false로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "if 블록의 status는 바깥 status와 다른 지역 변수입니다. 안쪽 선언을 지워 바깥 값을 읽게 해 보세요."
       ],
-      "code": "if (true) {\n  let blockValue = '블록 안';\n  console.log(blockValue);\n}\n"
+      "code": "const status = '대기';\nif (true) {\n  const status = '처리 중';\n  console.log(status);\n}\nconsole.log(status);\n"
     },
     {
       "kind": "write",
@@ -57,6 +57,50 @@
       "hints": [
         "if (true) { 줄을 먼저 작성하세요.",
         "변수가 선언된 중괄호 안팎의 스코프를 구분하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "if 블록 안에만 필요한 변수 두기",
+      "brief": [
+        "조건 블록 안에서 message를 선언해 '승인'을 출력하세요."
+      ],
+      "code": "const approved = true;\n// TODO: 블록 안에 message를 선언하세요.\n",
+      "solutionCode": "const approved = true;\nif (approved) {\n  const message = '승인';\n  console.log(message);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "if 블록 안에만 필요한 변수 두기",
+          "expected": [
+            "승인"
+          ]
+        }
+      ],
+      "hints": [
+        "message는 if 중괄호 안에 선언하세요.",
+        "같은 블록 안에서 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "함수 스코프와 블록 스코프 겹치기",
+      "brief": [
+        "함수 안의 role과 if 블록 안의 detail을 사용해 '관리자 / 수정 가능'을 출력하세요."
+      ],
+      "code": "// TODO: 함수와 if 블록에 필요한 변수를 선언하세요.\n",
+      "solutionCode": "function showRole() {\n  const role = '관리자';\n  if (true) {\n    const detail = '수정 가능';\n    console.log(role + ' / ' + detail);\n  }\n}\nshowRole();\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "함수 스코프와 블록 스코프 겹치기",
+          "expected": [
+            "관리자 / 수정 가능"
+          ]
+        }
+      ],
+      "hints": [
+        "안쪽 블록에서는 바깥 함수의 role을 읽을 수 있습니다.",
+        "detail은 if 블록 안에 선언하세요."
       ]
     }
   ]

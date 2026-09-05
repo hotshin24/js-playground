@@ -25,19 +25,19 @@
     },
     {
       "kind": "run",
-      "title": "key와 value 실행하기",
+      "title": "주문 객체의 key와 value 읽기",
       "brief": [
-        "코드를 실행해 key와 value의 결과를 확인하세요."
+        "orderId, quantity, paid가 key이고 각 오른쪽 값이 value입니다. 각 key는 주문 정보의 역할을 설명합니다."
       ],
-      "code": "const product = {\n  name: '키보드',\n  price: 50000\n};\nconsole.log(product.name);\nconsole.log(product.price);\n"
+      "code": "const order = {\n  orderId: 'A17',\n  quantity: 2,\n  paid: true\n};\nconsole.log(order.orderId);\nconsole.log(order.quantity);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "같은 key를 두 번 쓸 때 결과 확인하기",
       "brief": [
-        "product.price의 50000을 30000으로 바꾸고 다시 실행하여 결과를 비교하세요."
+        "같은 객체에 status key가 두 번 있어 뒤의 완료가 앞의 접수를 덮습니다. 첫 status의 key를 previousStatus로 바꿔 두 값을 모두 남겨 보세요."
       ],
-      "code": "const product = {\n  name: '키보드',\n  price: 50000\n};\nconsole.log(product.name);\nconsole.log(product.price);\n"
+      "code": "const task = {\n  status: '접수',\n  status: '완료'\n};\nconsole.log(task.status);\n"
     },
     {
       "kind": "write",
@@ -60,6 +60,53 @@
       "hints": [
         "console.log(book.title); 줄을 먼저 작성하세요.",
         "접근할 key 또는 index를 정확히 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "의미 있는 key로 프로퍼티 만들기",
+      "brief": [
+        "delivery 객체에 city '대전'과 fee 3000을 넣고 두 value를 출력하세요."
+      ],
+      "code": "// TODO: delivery 객체를 작성하세요.\n",
+      "solutionCode": "const delivery = { city: '대전', fee: 3000 };\nconsole.log(delivery.city);\nconsole.log(delivery.fee);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "의미 있는 key로 프로퍼티 만들기",
+          "expected": [
+            "대전",
+            "3000"
+          ]
+        }
+      ],
+      "hints": [
+        "city와 fee가 각각 key입니다.",
+        "콜론 오른쪽에 대응하는 value를 둡니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "프로퍼티 세 쌍 구분하기",
+      "brief": [
+        "movie 객체에 title '봄날', year 2026, watched false를 넣고 값을 차례로 출력하세요."
+      ],
+      "code": "// TODO: movie 객체와 출력을 작성하세요.\n",
+      "solutionCode": "const movie = { title: '봄날', year: 2026, watched: false };\nconsole.log(movie.title);\nconsole.log(movie.year);\nconsole.log(movie.watched);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "프로퍼티 세 쌍 구분하기",
+          "expected": [
+            "봄날",
+            "2026",
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "각 프로퍼티는 key와 value 한 쌍입니다.",
+        "세 key를 정확히 구분해 읽으세요."
       ]
     }
   ]

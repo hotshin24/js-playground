@@ -26,19 +26,19 @@
     },
     {
       "kind": "run",
-      "title": "중첩 함수 실행하기",
+      "title": "바깥 함수 안에서 표시 함수 호출하기",
       "brief": [
-        "중첩 함수 코드가 어떤 순서로 실행되는지 확인하세요."
+        "createMessage가 실행될 때 안쪽 format 함수가 준비되고, 같은 바깥 함수 안에서 호출되어 문장을 반환합니다."
       ],
-      "code": "function outer() {\n  function inner() {\n    console.log('안쪽 함수');\n  }\n  inner();\n}\nouter();\n"
+      "code": "function createMessage(name) {\n  function format(value) {\n    return '[' + value + ']';\n  }\n  return format(name);\n}\nconsole.log(createMessage('완료'));\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "안쪽 함수를 바깥에서 호출할 수 없는 범위 확인하기",
       "brief": [
-        "inner의 출력값 안쪽 함수를 실행 완료로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "현재 outer()는 정상 실행됩니다. 마지막 줄에 inner();를 추가하면 inner가 outer의 지역 범위 밖이라 오류가 나는지 확인하세요."
       ],
-      "code": "function outer() {\n  function inner() {\n    console.log('안쪽 함수');\n  }\n  inner();\n}\nouter();\n"
+      "code": "function outer() {\n  function inner() {\n    console.log('안쪽');\n  }\n  inner();\n}\nouter();\n"
     },
     {
       "kind": "write",
@@ -60,6 +60,50 @@
       "hints": [
         "function start() { 줄을 먼저 작성하세요.",
         "함수 이름, 매개변수, 호출 위치를 문제에서 요구한 흐름과 맞게 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "중첩 함수로 할인 계산하기",
+      "brief": [
+        "calculate 안에 discount 함수를 만들고 price에서 1000을 뺀 값을 반환하세요. calculate(8000)을 출력하세요."
+      ],
+      "code": "// TODO: 중첩 함수를 사용해 계산하세요.\n",
+      "solutionCode": "function calculate(price) {\n  function discount(value) {\n    return value - 1000;\n  }\n  return discount(price);\n}\nconsole.log(calculate(8000));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "중첩 함수로 할인 계산하기",
+          "expected": [
+            "7000"
+          ]
+        }
+      ],
+      "hints": [
+        "discount는 calculate 안에 선언하세요.",
+        "바깥 함수는 discount(price)를 반환합니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "바깥 매개변수를 안쪽 함수에서 사용하기",
+      "brief": [
+        "greet의 안쪽 함수 message가 바깥 매개변수 name을 사용해 '서진님 환영합니다'를 반환하게 하세요."
+      ],
+      "code": "// TODO: 중첩 함수와 바깥 매개변수를 사용하세요.\n",
+      "solutionCode": "function greet(name) {\n  function message() {\n    return name + '님 환영합니다';\n  }\n  return message();\n}\nconsole.log(greet('서진'));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "바깥 매개변수를 안쪽 함수에서 사용하기",
+          "expected": [
+            "서진님 환영합니다"
+          ]
+        }
+      ],
+      "hints": [
+        "안쪽 함수는 바깥 함수의 name을 읽을 수 있습니다.",
+        "greet에서 message()의 결과를 반환하세요."
       ]
     }
   ]

@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "비교 연산자 실행하기",
+      "title": "배송비 무료 기준 비교하기",
       "brief": [
-        "코드를 실행해 비교 연산자의 결과를 확인하세요."
+        "orderTotal이 50000 이상인지 >=로 비교합니다. 정확히 50000도 무료 기준에 포함됩니다."
       ],
-      "code": "console.log(10 > 5);\nconsole.log(10 >= 10);\nconsole.log(10 === '10');\n"
+      "code": "const orderTotal = 50000;\nconsole.log(orderTotal >= 50000);\nconsole.log(orderTotal > 50000);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "값은 같고 자료형은 다른 경우 비교하기",
       "brief": [
-        "문자열 10을 숫자 10으로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "숫자형 code와 문자형 input은 ===에서 false입니다. input을 Number(input)으로 바꿔 true가 되는지 확인하세요."
       ],
-      "code": "console.log(10 > 5);\nconsole.log(10 >= 10);\nconsole.log(10 === '10');\n"
+      "code": "const code = 200;\nconst input = '200';\nconsole.log(code === input);\n"
     },
     {
       "kind": "write",
@@ -57,6 +57,52 @@
       "hints": [
         "console.log(stock > 1); 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "온도 범위 비교하기",
+      "brief": [
+        "temperature가 0보다 작고 -10 이상인지 두 비교 결과로 출력하세요."
+      ],
+      "code": "const temperature = -4;\n// TODO: 두 비교 결과를 출력하세요.\n",
+      "solutionCode": "const temperature = -4;\nconsole.log(temperature < 0);\nconsole.log(temperature >= -10);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "온도 범위 비교하기",
+          "expected": [
+            "true",
+            "true"
+          ]
+        }
+      ],
+      "hints": [
+        "temperature < 0을 출력하세요.",
+        "temperature >= -10도 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "엄격한 동등 비교하기",
+      "brief": [
+        "숫자 7과 문자열 '7'을 ===로 비교한 결과와 문자열끼리 비교한 결과를 출력하세요."
+      ],
+      "code": "// TODO: 두 엄격한 비교 결과를 출력하세요.\n",
+      "solutionCode": "console.log(7 === '7');\nconsole.log('7' === '7');\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "엄격한 동등 비교하기",
+          "expected": [
+            "false",
+            "true"
+          ]
+        }
+      ],
+      "hints": [
+        "첫 비교는 자료형이 다릅니다.",
+        "둘째 비교는 값과 자료형이 모두 같습니다."
       ]
     }
   ]

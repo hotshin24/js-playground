@@ -25,19 +25,19 @@
     },
     {
       "kind": "run",
-      "title": "var와 블록 스코프 실행하기",
+      "title": "for 블록 뒤의 var 확인하기",
       "brief": [
-        "var와 블록 스코프 코드가 어떤 순서로 실행되는지 확인하세요."
+        "var로 선언한 item은 for 블록을 벗어나도 같은 함수 스코프에 남아 마지막 값 2를 출력합니다."
       ],
-      "code": "if (true) {\n  let blockLet = 'let';\n  var functionVar = 'var';\n  console.log(blockLet);\n}\nconsole.log(functionVar);\n"
+      "code": "for (var item = 0; item < 2; item++) {\n  console.log(item);\n}\nconsole.log(item);\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "var를 let으로 바꿔 범위 좁히기",
       "brief": [
-        "if 조건 true를 false로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "현재 functionValue는 블록 밖에서도 출력됩니다. var를 let으로 바꾸면 마지막 줄에서 변수를 찾을 수 없는지 확인한 뒤 되돌리세요."
       ],
-      "code": "if (true) {\n  let blockLet = 'let';\n  var functionVar = 'var';\n  console.log(blockLet);\n}\nconsole.log(functionVar);\n"
+      "code": "if (true) {\n  var functionValue = '남아 있음';\n}\nconsole.log(functionValue);\n"
     },
     {
       "kind": "write",
@@ -59,6 +59,50 @@
       "hints": [
         "if (true) { 줄을 먼저 작성하세요.",
         "변수가 선언된 중괄호 안팎의 스코프를 구분하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "let 블록 변수 안전하게 사용하기",
+      "brief": [
+        "if 블록 안에서 let count를 선언하고 3을 출력하세요. 블록 밖에서는 사용하지 마세요."
+      ],
+      "code": "// TODO: 블록 안에서 count를 선언하고 출력하세요.\n",
+      "solutionCode": "if (true) {\n  let count = 3;\n  console.log(count);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "let 블록 변수 안전하게 사용하기",
+          "expected": [
+            "3"
+          ]
+        }
+      ],
+      "hints": [
+        "let 선언과 출력 모두 중괄호 안에 둡니다.",
+        "블록 밖에서 count를 사용하지 않습니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "함수 안 var의 범위 확인하기",
+      "brief": [
+        "함수 안 if 블록에서 var code를 선언하고 블록 뒤에서 'OK'를 출력하세요."
+      ],
+      "code": "// TODO: 함수 안에서 var의 범위를 확인하세요.\n",
+      "solutionCode": "function check() {\n  if (true) {\n    var code = 'OK';\n  }\n  console.log(code);\n}\ncheck();\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "함수 안 var의 범위 확인하기",
+          "expected": [
+            "OK"
+          ]
+        }
+      ],
+      "hints": [
+        "var는 if 블록이 아니라 함수 범위를 따릅니다.",
+        "출력문은 if 밖, 함수 안에 둡니다."
       ]
     }
   ]

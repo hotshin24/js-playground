@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "for 실행하기",
+      "title": "좌석 번호를 차례로 출력하기",
       "brief": [
-        "for 코드가 어떤 순서로 실행되는지 확인하세요."
+        "seat가 2에서 시작해 5 이하인 동안 출력되고 매 차례 1씩 증가합니다."
       ],
-      "code": "for (let index = 1; index <= 3; index++) {\n  console.log(index);\n}\n"
+      "code": "for (let seat = 2; seat <= 5; seat++) {\n  console.log(seat);\n}\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "증가 폭을 바꿔 짝수만 출력하기",
       "brief": [
-        "반복 조건 index <= 3을 index <= 5로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "현재는 0부터 6까지 2씩 증가합니다. 증감식을 value += 3으로 바꿔 0, 3, 6이 출력되는지 확인하세요."
       ],
-      "code": "for (let index = 1; index <= 3; index++) {\n  console.log(index);\n}\n"
+      "code": "for (let value = 0; value <= 6; value += 2) {\n  console.log(value);\n}\n"
     },
     {
       "kind": "write",
@@ -59,6 +59,55 @@
       "hints": [
         "for (let index = 1; index <= 4; index++) { 줄을 먼저 작성하세요.",
         "조건과 중괄호의 범위를 먼저 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "3부터 6까지 반복하기",
+      "brief": [
+        "for 문으로 3, 4, 5, 6을 차례로 출력하세요."
+      ],
+      "code": "// TODO: 3부터 6까지 반복하세요.\n",
+      "solutionCode": "for (let number = 3; number <= 6; number++) {\n  console.log(number);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "3부터 6까지 반복하기",
+          "expected": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ]
+        }
+      ],
+      "hints": [
+        "초기값은 3, 조건은 number <= 6입니다.",
+        "본문 뒤에는 number++가 실행됩니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "10부터 2씩 감소하기",
+      "brief": [
+        "for 문으로 10, 8, 6을 차례로 출력하세요."
+      ],
+      "code": "// TODO: 10부터 6까지 2씩 감소하세요.\n",
+      "solutionCode": "for (let number = 10; number >= 6; number -= 2) {\n  console.log(number);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "10부터 2씩 감소하기",
+          "expected": [
+            "10",
+            "8",
+            "6"
+          ]
+        }
+      ],
+      "hints": [
+        "조건은 number >= 6입니다.",
+        "증감식에는 number -= 2를 사용하세요."
       ]
     }
   ]

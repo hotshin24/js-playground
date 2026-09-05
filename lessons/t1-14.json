@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "대입 연산자 실행하기",
+      "title": "빈 상태 변수에 값 대입하기",
       "brief": [
-        "코드를 실행해 대입 연산자의 결과를 확인하세요."
+        "선언만 한 deliveryStatus는 undefined입니다. 다음 줄의 대입 연산자가 오른쪽 문자열을 변수에 저장합니다."
       ],
-      "code": "let score;\nscore = 10;\nconsole.log(score);\n"
+      "code": "let deliveryStatus;\nconsole.log(deliveryStatus);\ndeliveryStatus = '출고';\nconsole.log(deliveryStatus);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "오른쪽 계산 뒤 대입하기",
       "brief": [
-        "score에 대입하는 10을 20으로 바꾸고 다시 실행하여 어떤 출력이 달라지는지 확인하세요."
+        "오른쪽 total + 3이 먼저 계산되어 8이 다시 total에 저장됩니다. 3을 7로 바꿔 최종값을 비교하세요."
       ],
-      "code": "let score;\nscore = 10;\nconsole.log(score);\n"
+      "code": "let total = 5;\ntotal = total + 3;\nconsole.log(total);\n"
     },
     {
       "kind": "write",
@@ -56,6 +56,50 @@
       "hints": [
         "page = 3; 줄을 먼저 작성하세요.",
         "완성한 식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "계산 결과를 변수에 대입하기",
+      "brief": [
+        "base + extra를 result에 대입하고 15를 출력하세요."
+      ],
+      "code": "const base = 11;\nconst extra = 4;\nlet result;\n// TODO: 계산 결과를 result에 대입하고 출력하세요.\n",
+      "solutionCode": "const base = 11;\nconst extra = 4;\nlet result;\nresult = base + extra;\nconsole.log(result);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "계산 결과를 변수에 대입하기",
+          "expected": [
+            "15"
+          ]
+        }
+      ],
+      "hints": [
+        "등호 오른쪽에 base + extra를 적으세요.",
+        "대입 다음에 result를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "대입과 비교 구분하기",
+      "brief": [
+        "score에 90을 대입한 뒤 score === 90의 결과를 출력하세요."
+      ],
+      "code": "let score;\n// TODO: 값을 대입하고 비교 결과를 출력하세요.\n",
+      "solutionCode": "let score;\nscore = 90;\nconsole.log(score === 90);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "대입과 비교 구분하기",
+          "expected": [
+            "true"
+          ]
+        }
+      ],
+      "hints": [
+        "첫 줄 뒤에서 score = 90을 실행하세요.",
+        "같은지 확인할 때는 ===를 사용하세요."
       ]
     }
   ]

@@ -23,19 +23,19 @@
     },
     {
       "kind": "run",
-      "title": "함수 선언과 호출 실행하기",
+      "title": "준비 함수를 선언하고 두 번 호출하기",
       "brief": [
-        "함수 선언과 호출 코드가 어떤 순서로 실행되는지 확인하세요."
+        "함수 선언은 코드를 준비하고, 이어지는 두 호출이 본문을 각각 한 번씩 실행합니다."
       ],
-      "code": "function greet() {\n  console.log('안녕하세요');\n}\ngreet();\n"
+      "code": "function prepare() {\n  console.log('자료 준비');\n}\nprepare();\nprepare();\n"
     },
     {
       "kind": "tweak",
-      "title": "조건이나 값 바꿔 보기",
+      "title": "선언만 한 함수와 호출한 함수 비교하기",
       "brief": [
-        "출력 문자열 안녕하세요를 반갑습니다로 바꾸고 다시 실행하여 흐름과 출력의 차이를 확인하세요."
+        "announce는 선언만 되어 현재 아무 출력도 없습니다. 마지막 줄에 announce();를 추가해 본문이 실행되게 하세요."
       ],
-      "code": "function greet() {\n  console.log('안녕하세요');\n}\ngreet();\n"
+      "code": "function announce() {\n  console.log('영업 시작');\n}\n// 여기에 호출을 추가하세요.\n"
     },
     {
       "kind": "write",
@@ -57,6 +57,51 @@
       "hints": [
         "function ready() { 줄을 먼저 작성하세요.",
         "함수 이름, 매개변수, 호출 위치를 문제에서 요구한 흐름과 맞게 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "함수 선언 뒤 호출하기",
+      "brief": [
+        "'백업 시작'을 출력하는 backup 함수를 선언하고 한 번 호출하세요."
+      ],
+      "code": "// TODO: backup 함수를 선언하고 호출하세요.\n",
+      "solutionCode": "function backup() {\n  console.log('백업 시작');\n}\nbackup();\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "함수 선언 뒤 호출하기",
+          "expected": [
+            "백업 시작"
+          ]
+        }
+      ],
+      "hints": [
+        "function backup()으로 선언하세요.",
+        "중괄호 뒤에서 backup();을 호출하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "호출 순서로 출력 순서 만들기",
+      "brief": [
+        "first와 second 함수를 선언한 뒤 second, first 순서로 호출해 B, A를 출력하세요."
+      ],
+      "code": "// TODO: 두 함수를 선언하고 요구한 순서로 호출하세요.\n",
+      "solutionCode": "function first() {\n  console.log('A');\n}\nfunction second() {\n  console.log('B');\n}\nsecond();\nfirst();\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "호출 순서로 출력 순서 만들기",
+          "expected": [
+            "B",
+            "A"
+          ]
+        }
+      ],
+      "hints": [
+        "선언 순서와 호출 순서는 달라도 됩니다.",
+        "second()를 먼저 호출하세요."
       ]
     }
   ]

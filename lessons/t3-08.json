@@ -22,19 +22,19 @@
     },
     {
       "kind": "run",
-      "title": "delete 실행하기",
+      "title": "임시 쿠폰 프로퍼티 삭제하기",
       "brief": [
-        "코드를 실행해 delete의 결과를 확인하세요."
+        "delete cart.coupon은 coupon key 자체를 제거하므로 이후 읽은 값은 undefined입니다."
       ],
-      "code": "const user = { name: '민수', age: 25 };\ndelete user.age;\nconsole.log(user.age);\n"
+      "code": "const cart = { item: '가방', coupon: 'WELCOME' };\ndelete cart.coupon;\nconsole.log(cart.item);\nconsole.log(cart.coupon);\n"
     },
     {
       "kind": "tweak",
-      "title": "값을 바꾸어 결과 비교하기",
+      "title": "null 대입과 delete 차이 비교하기",
       "brief": [
-        "삭제할 프로퍼티를 age에서 name으로 바꾸고 다시 실행하여 결과를 비교하세요."
+        "first는 프로퍼티를 남긴 채 null로 바꾸고 second는 delete로 제거합니다. 두 key의 존재 여부를 in으로 비교하세요."
       ],
-      "code": "const user = { name: '민수', age: 25 };\ndelete user.age;\nconsole.log(user.age);\n"
+      "code": "const first = { memo: '요청' };\nconst second = { memo: '요청' };\nfirst.memo = null;\ndelete second.memo;\nconsole.log('memo' in first);\nconsole.log('memo' in second);\n"
     },
     {
       "kind": "write",
@@ -56,6 +56,51 @@
       "hints": [
         "delete product.stock; 줄을 먼저 작성하세요.",
         "접근할 key 또는 index를 정확히 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "사용하지 않는 프로퍼티 삭제하기",
+      "brief": [
+        "user에서 temporary 프로퍼티를 삭제하고 값과 존재 여부를 출력하세요."
+      ],
+      "code": "const user = { name: '도현', temporary: true };\n// TODO: temporary를 삭제하고 확인하세요.\n",
+      "solutionCode": "const user = { name: '도현', temporary: true };\ndelete user.temporary;\nconsole.log(user.temporary);\nconsole.log('temporary' in user);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "사용하지 않는 프로퍼티 삭제하기",
+          "expected": [
+            "undefined",
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "delete user.temporary를 실행하세요.",
+        "삭제 뒤 값과 in 결과를 확인하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "괄호 표기법으로 프로퍼티 삭제하기",
+      "brief": [
+        "settings에서 'old-theme' 프로퍼티를 괄호 표기법으로 삭제하고 존재 여부를 출력하세요."
+      ],
+      "code": "const settings = { theme: 'dark', 'old-theme': 'light' };\n// TODO: old-theme을 삭제하세요.\n",
+      "solutionCode": "const settings = { theme: 'dark', 'old-theme': 'light' };\ndelete settings['old-theme'];\nconsole.log('old-theme' in settings);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "괄호 표기법으로 프로퍼티 삭제하기",
+          "expected": [
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "delete settings['old-theme']을 사용하세요.",
+        "하이픈이 있는 key는 괄호 표기법으로 지정합니다."
       ]
     }
   ]
