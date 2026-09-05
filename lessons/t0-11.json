@@ -17,25 +17,26 @@
             "console.log('roomName');",
             "console.log(roomName);"
           ]
-        }
+        },
+        "문제를 풀 때는 출력할 값 확인 → 필요한 변수 선언 → 실행 순서에 맞춘 console.log 작성 → 콘솔의 줄 순서 확인 순으로 진행하세요."
       ]
     },
     {
       "kind": "run",
-      "title": "출력할 때의 값 확인하기",
+      "title": "상품 이름 변수와 글자 구분하기",
       "brief": [
         "실행 전에 각 출력 줄에서 어떤 값이 나올지 예상한 뒤 실행해 확인하세요."
       ],
-      "code": "const roomName = '회의실 A';\nconsole.log('roomName');\nconsole.log(roomName);\n"
+      "code": "const productName = '무선 키보드';\nconsole.log('productName');\nconsole.log(productName);\n"
     },
     {
       "kind": "tweak",
-      "title": "값과 출력 위치 바꿔 보기",
+      "title": "다른 상황에서 대소문자가 다른 이름 비교하기",
       "brief": [
-        "roomName의 값만 '회의실 B'로 바꾸세요. 두 출력 중 무엇이 바뀌나요?",
-        "첫 출력의 따옴표를 지우면 두 줄 모두 변수 값을 출력합니다."
+        "실행 단계와 다른 상황에서 변수 이름 규칙과 예약어 알아보기의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
+        "item과 Item은 서로 다른 변수입니다. Item을 item으로 바꾸면 같은 이름을 다시 선언하는 오류가 생기는지 확인한 뒤 원래 코드로 되돌리세요."
       ],
-      "code": "const roomName = '회의실 A';\nconsole.log('roomName');\nconsole.log(roomName);\n"
+      "code": "let item = '연필';\nlet Item = '지우개';\nconsole.log(item);\nconsole.log(Item);\n"
     },
     {
       "kind": "write",
@@ -60,6 +61,53 @@
       "hints": [
         "변수 선언과 값이 바뀌는 재할당을 먼저 구분하세요.",
         "console.log 괄호에 변수 이름을 넣고, 글자 자체를 출력할 때만 따옴표를 붙이세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "다른 데이터에 적용하기: camelCase 이름으로 변수 선언하기",
+      "brief": [
+        "변수 이름과 값 구분하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "배송 날짜를 뜻하는 deliveryDate 변수를 선언해 '9월 10일'을 저장하고 출력하세요."
+      ],
+      "code": "// TODO: deliveryDate를 선언하고 출력하세요.\n",
+      "solutionCode": "let deliveryDate = '9월 10일';\nconsole.log(deliveryDate);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "camelCase 이름으로 변수 선언하기",
+          "expected": [
+            "9월 10일"
+          ]
+        }
+      ],
+      "hints": [
+        "두 단어를 deliveryDate처럼 이어 쓰세요.",
+        "변수 이름의 D만 대문자입니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "조건을 더해 응용하기: 서로 다른 두 식별자 구분하기",
+      "brief": [
+        "변수 이름과 값 구분하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "userId와 userID에 각각 17과 29를 저장하고 순서대로 출력하세요. 대소문자를 정확히 구분해야 합니다."
+      ],
+      "code": "// TODO: userId와 userID를 선언하고 출력하세요.\n",
+      "solutionCode": "let userId = 17;\nlet userID = 29;\nconsole.log(userId);\nconsole.log(userID);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "서로 다른 두 식별자 구분하기",
+          "expected": [
+            "17",
+            "29"
+          ]
+        }
+      ],
+      "hints": [
+        "Id와 ID의 대소문자가 다릅니다.",
+        "선언과 출력에서 같은 철자를 사용하세요."
       ]
     }
   ]

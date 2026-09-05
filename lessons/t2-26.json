@@ -10,7 +10,8 @@
       "kind": "read",
       "title": "날짜별 방문자 수를 누적하는 과정 읽기",
       "brief": [
-        "반복 계산에서는 매 차례 만든 값을 누적 변수에 더합니다. section이 1부터 4까지 바뀔 때 section * 3은 3, 6, 9, 12가 되고 productionTotal에 차례로 더해져 최종 30이 됩니다. 누적 변수를 반복문 안에서 0으로 다시 만들면 이전 합계가 매번 사라집니다."
+        "반복 계산에서는 매 차례 만든 값을 누적 변수에 더합니다. section이 1부터 4까지 바뀔 때 section * 3은 3, 6, 9, 12가 되고 productionTotal에 차례로 더해져 최종 30이 됩니다. 누적 변수를 반복문 안에서 0으로 다시 만들면 이전 합계가 매번 사라집니다.",
+        "문제를 풀 때는 입력과 종료 조건 확인 → 조건 또는 반복 흐름 작성 → 계산 결과 반환 → 경계값으로 결과 확인 순으로 진행하세요."
       ]
     },
     {
@@ -20,6 +21,15 @@
         "1부터 4까지 반복하며 counter * 3을 합계에 더하세요."
       ],
       "code": "let productionTotal = 0;\nfor (let section = 1; section <= 4; section += 1) {\n  productionTotal += section * 3;\n}\nconsole.log(productionTotal);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "다른 상황에서 증가 폭을 바꿔 짝수만 출력하기",
+      "brief": [
+        "실행 단계와 다른 상황에서 for 문의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
+        "현재는 0부터 6까지 2씩 증가합니다. 증감식을 value += 3으로 바꿔 0, 3, 6이 출력되는지 확인하세요."
+      ],
+      "code": "for (let value = 0; value <= 6; value += 2) {\n  console.log(value);\n}\n"
     },
     {
       "kind": "write",
@@ -60,6 +70,57 @@
       "hints": [
         "let total = 0을 반복문 앞에 두세요.",
         "반복문 안에서 total += counter * 2를 실행하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "다른 데이터에 적용하기: 3부터 6까지 반복하기",
+      "brief": [
+        "반복하며 계산값 누적하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "for 문으로 3, 4, 5, 6을 차례로 출력하세요."
+      ],
+      "code": "// TODO: 3부터 6까지 반복하세요.\n",
+      "solutionCode": "for (let number = 3; number <= 6; number++) {\n  console.log(number);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "3부터 6까지 반복하기",
+          "expected": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ]
+        }
+      ],
+      "hints": [
+        "초기값은 3, 조건은 number <= 6입니다.",
+        "본문 뒤에는 number++가 실행됩니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "조건을 더해 응용하기: 10부터 2씩 감소하기",
+      "brief": [
+        "반복하며 계산값 누적하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "for 문으로 10, 8, 6을 차례로 출력하세요."
+      ],
+      "code": "// TODO: 10부터 6까지 2씩 감소하세요.\n",
+      "solutionCode": "for (let number = 10; number >= 6; number -= 2) {\n  console.log(number);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "10부터 2씩 감소하기",
+          "expected": [
+            "10",
+            "8",
+            "6"
+          ]
+        }
+      ],
+      "hints": [
+        "조건은 number >= 6입니다.",
+        "증감식에는 number -= 2를 사용하세요."
       ]
     }
   ]

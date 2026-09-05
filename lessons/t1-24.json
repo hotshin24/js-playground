@@ -19,7 +19,8 @@
             "const pay = hours * hourlyPay;",
             "console.log(pay); // 60000"
           ]
-        }
+        },
+        "문제를 풀 때는 입력값과 자료형 확인 → 필요한 변환이나 기본값 적용 → 연산식 작성 → 결과와 자료형 확인 순으로 진행하세요."
       ]
     },
     {
@@ -29,6 +30,15 @@
         "문자열로 받은 인쇄 매수를 숫자로 바꾼 뒤 장당 가격과 곱하세요."
       ],
       "code": "const copiesInput = '30';\nconst pricePerCopy = 150;\nconst copies = Number(copiesInput);\nconsole.log(copies * pricePerCopy);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "다른 상황에서 괄호로 계산 순서 바꾸기",
+      "brief": [
+        "실행 단계와 다른 상황에서 산술 연산자의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
+        "첫 식은 2 + 3 * 4라서 14입니다. 둘째 식의 괄호는 덧셈을 먼저 실행해 20을 만듭니다. 4를 5로 바꿔 다시 비교하세요."
+      ],
+      "code": "console.log(2 + 3 * 4);\nconsole.log((2 + 3) * 4);\n"
     },
     {
       "kind": "write",
@@ -53,6 +63,53 @@
       "hints": [
         "quantity를 숫자로 바꾸고 price와 곱한 결제 금액을 출력하세요.",
         "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "다른 데이터에 적용하기: 몫과 나머지 구하기",
+      "brief": [
+        "문자열 숫자로 금액 계산하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "17을 5로 나눈 몫 계산값과 나머지를 차례로 출력하세요."
+      ],
+      "code": "// TODO: 나눗셈과 나머지 결과를 출력하세요.\n",
+      "solutionCode": "console.log(17 / 5);\nconsole.log(17 % 5);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "몫과 나머지 구하기",
+          "expected": [
+            "3.4",
+            "2"
+          ]
+        }
+      ],
+      "hints": [
+        "/로 나눈 값을 먼저 출력하세요.",
+        "%로 나머지를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "조건을 더해 응용하기: 총 결제 금액 계산하기",
+      "brief": [
+        "문자열 숫자로 금액 계산하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "price * count에서 coupon을 빼 23000을 출력하세요."
+      ],
+      "code": "const price = 8000;\nconst count = 3;\nconst coupon = 1000;\n// TODO: 결제 금액을 출력하세요.\n",
+      "solutionCode": "const price = 8000;\nconst count = 3;\nconst coupon = 1000;\nconsole.log(price * count - coupon);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "총 결제 금액 계산하기",
+          "expected": [
+            "23000"
+          ]
+        }
+      ],
+      "hints": [
+        "가격과 수량을 먼저 곱하세요.",
+        "곱한 값에서 coupon을 빼세요."
       ]
     }
   ]

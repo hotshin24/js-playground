@@ -10,7 +10,8 @@
       "kind": "read",
       "title": "온도 범위를 단계별로 나누는 과정 읽기",
       "brief": [
-        "여러 점수 구간은 높은 기준부터 검사해야 겹치는 조건을 올바르게 나눌 수 있습니다. 95는 90 이상에서, 75는 70 이상에서 멈추며 50은 어느 조건도 만족하지 않아 마지막 else로 갑니다. 조건 순서를 뒤집어 70 이상을 먼저 두면 95도 그곳에서 끝나 '우수'에 도달하지 못합니다."
+        "여러 점수 구간은 높은 기준부터 검사해야 겹치는 조건을 올바르게 나눌 수 있습니다. 95는 90 이상에서, 75는 70 이상에서 멈추며 50은 어느 조건도 만족하지 않아 마지막 else로 갑니다. 조건 순서를 뒤집어 70 이상을 먼저 두면 95도 그곳에서 끝나 '우수'에 도달하지 못합니다.",
+        "문제를 풀 때는 입력과 종료 조건 확인 → 조건 또는 반복 흐름 작성 → 계산 결과 반환 → 경계값으로 결과 확인 순으로 진행하세요."
       ]
     },
     {
@@ -20,6 +21,15 @@
         "90점 이상, 70점 이상, 나머지를 서로 다른 문구로 반환하세요."
       ],
       "code": "function getGrade(score) {\n  if (score >= 90) return '우수';\n  else if (score >= 70) return '통과';\n  else return '보충 필요';\n}\nconsole.log(getGrade(95));\nconsole.log(getGrade(75));\nconsole.log(getGrade(50));\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "다른 상황에서 조건 순서가 결과를 바꾸는 경우 확인하기",
+      "brief": [
+        "실행 단계와 다른 상황에서 else if 문의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
+        "age 70은 첫 조건 65 이상에서 멈춥니다. 첫 조건을 age >= 80으로 바꿔 다음 구간이 선택되게 하세요."
+      ],
+      "code": "const age = 70;\nif (age >= 65) {\n  console.log('우대');\n} else if (age >= 20) {\n  console.log('일반');\n} else {\n  console.log('청소년');\n}\n"
     },
     {
       "kind": "write",
@@ -60,6 +70,52 @@
       "hints": [
         "가장 큰 기준인 60부터 확인하세요.",
         "마지막 else에서 '일반'을 반환하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "다른 데이터에 적용하기: 미세먼지 단계를 구간으로 나누기",
+      "brief": [
+        "여러 범위를 else if로 나누기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "dust가 80 이상이면 나쁨, 30 이상이면 보통, 아니면 좋음을 출력하세요."
+      ],
+      "code": "const dust = 45;\n// TODO: 세 구간을 나누세요.\n",
+      "solutionCode": "const dust = 45;\nif (dust >= 80) {\n  console.log('나쁨');\n} else if (dust >= 30) {\n  console.log('보통');\n} else {\n  console.log('좋음');\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "미세먼지 단계를 구간으로 나누기",
+          "expected": [
+            "보통"
+          ]
+        }
+      ],
+      "hints": [
+        "높은 기준 80부터 검사하세요.",
+        "마지막 범위는 else로 처리하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "조건을 더해 응용하기: 할인율을 세 등급으로 나누기",
+      "brief": [
+        "여러 범위를 else if로 나누기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "grade가 'VIP'면 20, 'GOLD'면 10, 나머지는 0을 출력하세요."
+      ],
+      "code": "const grade = 'GOLD';\n// TODO: 세 등급을 if, else if, else로 나누세요.\n",
+      "solutionCode": "const grade = 'GOLD';\nif (grade === 'VIP') {\n  console.log(20);\n} else if (grade === 'GOLD') {\n  console.log(10);\n} else {\n  console.log(0);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "할인율을 세 등급으로 나누기",
+          "expected": [
+            "10"
+          ]
+        }
+      ],
+      "hints": [
+        "문자열은 ===로 비교하세요.",
+        "GOLD 조건은 else if에 둡니다."
       ]
     }
   ]

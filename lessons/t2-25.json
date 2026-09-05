@@ -16,7 +16,8 @@
             "getAttendanceLabel(true); // '출석'",
             "getAttendanceLabel(false); // '결석'"
           ]
-        }
+        },
+        "문제를 풀 때는 입력과 종료 조건 확인 → 조건 또는 반복 흐름 작성 → 계산 결과 반환 → 경계값으로 결과 확인 순으로 진행하세요."
       ]
     },
     {
@@ -26,6 +27,15 @@
         "남은 좌석이 0보다 큰지에 따라 예약 가능 또는 마감을 선택하세요."
       ],
       "code": "const seatsLeft = 2;\nconst bookingLabel = seatsLeft > 0 ? '예약 가능' : '마감';\nconsole.log(bookingLabel);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "다른 상황에서 경계값에서 선택 결과 비교하기",
+      "brief": [
+        "실행 단계와 다른 상황에서 삼항 조건 연산자의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
+        "score 60은 >= 60 조건을 만족해 통과입니다. 비교 연산자를 >로 바꿨을 때 경계값이 탈락으로 바뀌는지 확인하세요."
+      ],
+      "code": "const score = 60;\nconsole.log(score >= 60 ? '통과' : '재시험');\n"
     },
     {
       "kind": "write",
@@ -58,6 +68,52 @@
       "hints": [
         "stock > 0을 조건으로 사용하세요.",
         "? 뒤에는 '판매 중', : 뒤에는 '품절'을 쓰세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "다른 데이터에 적용하기: 나이에 따라 요금 고르기",
+      "brief": [
+        "삼항 연산자로 재고 문구 고르기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "age가 13 이하이면 5000, 아니면 8000을 선택해 출력하세요."
+      ],
+      "code": "const age = 12;\n// TODO: 삼항 조건 연산자로 요금을 출력하세요.\n",
+      "solutionCode": "const age = 12;\nconsole.log(age <= 13 ? 5000 : 8000);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "나이에 따라 요금 고르기",
+          "expected": [
+            "5000"
+          ]
+        }
+      ],
+      "hints": [
+        "조건은 age <= 13입니다.",
+        "? 뒤에 5000, : 뒤에 8000을 적으세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "조건을 더해 응용하기: 불리언 상태로 문구 선택하기",
+      "brief": [
+        "삼항 연산자로 재고 문구 고르기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "isOpen이 false이면 닫힘, true이면 영업 중을 선택해 출력하세요."
+      ],
+      "code": "const isOpen = false;\n// TODO: 상태 문구를 출력하세요.\n",
+      "solutionCode": "const isOpen = false;\nconsole.log(isOpen ? '영업 중' : '닫힘');\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "불리언 상태로 문구 선택하기",
+          "expected": [
+            "닫힘"
+          ]
+        }
+      ],
+      "hints": [
+        "isOpen 자체를 조건으로 사용하세요.",
+        "false일 때 값은 콜론 뒤에 둡니다."
       ]
     }
   ]

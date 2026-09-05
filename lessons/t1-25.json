@@ -18,7 +18,8 @@
             "console.log(displayId); // 27",
             "console.log(typeof displayId); // string"
           ]
-        }
+        },
+        "문제를 풀 때는 입력값과 자료형 확인 → 필요한 변환이나 기본값 적용 → 연산식 작성 → 결과와 자료형 확인 순으로 진행하세요."
       ]
     },
     {
@@ -28,6 +29,15 @@
         "숫자로 받은 예약 번호를 String으로 변환한 결과와 자료형을 확인하세요."
       ],
       "code": "const reservationNumber = 508;\nconst reservationId = String(reservationNumber);\nconsole.log(reservationId, typeof reservationId);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "다른 상황에서 숫자와 문자열 번호 대조하기",
+      "brief": [
+        "실행 단계와 다른 상황에서 문자형의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
+        "room은 숫자 305, roomText는 문자열 '305'입니다. roomText의 따옴표를 제거해 두 자료형이 같아지는지 확인하세요."
+      ],
+      "code": "const room = 305;\nconst roomText = '305';\nconsole.log(typeof room);\nconsole.log(typeof roomText);\n"
     },
     {
       "kind": "write",
@@ -52,6 +62,54 @@
       "hints": [
         "productId를 String으로 바꾼 결과를 출력하세요. 숫자 번호와 문자 번호 모두 처리하세요.",
         "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "다른 데이터에 적용하기: 큰따옴표로 문자열 만들기",
+      "brief": [
+        "식별 번호를 문자열로 바꾸기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "큰따옴표를 사용해 message에 \"예약 완료\"를 저장하고 값과 자료형을 출력하세요."
+      ],
+      "code": "// TODO: message를 선언하고 출력하세요.\n",
+      "solutionCode": "const message = \"예약 완료\";\nconsole.log(message);\nconsole.log(typeof message);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "큰따옴표로 문자열 만들기",
+          "expected": [
+            "예약 완료",
+            "string"
+          ]
+        }
+      ],
+      "hints": [
+        "큰따옴표 안에 예약 완료를 적으세요.",
+        "typeof message도 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "조건을 더해 응용하기: 빈 문자열 구분하기",
+      "brief": [
+        "식별 번호를 문자열로 바꾸기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "empty에 빈 문자열을 저장하고 값 다음에 자료형을 출력하세요. 첫 출력은 빈 줄이어야 합니다."
+      ],
+      "code": "// TODO: empty를 선언하고 두 값을 출력하세요.\n",
+      "solutionCode": "const empty = '';\nconsole.log(empty);\nconsole.log(typeof empty);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "빈 문자열 구분하기",
+          "expected": [
+            "",
+            "string"
+          ]
+        }
+      ],
+      "hints": [
+        "따옴표 사이에 아무 글자도 넣지 마세요.",
+        "빈 문자열의 자료형도 string입니다."
       ]
     }
   ]

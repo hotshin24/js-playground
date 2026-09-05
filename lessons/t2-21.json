@@ -16,7 +16,8 @@
             "sumMultiplesOfThree(7);",
             "// 3 + 6이므로 9"
           ]
-        }
+        },
+        "문제를 풀 때는 입력과 종료 조건 확인 → 조건 또는 반복 흐름 작성 → 계산 결과 반환 → 경계값으로 결과 확인 순으로 진행하세요."
       ]
     },
     {
@@ -26,6 +27,15 @@
         "1부터 7까지 반복하며 짝수는 건너뛰고 홀수만 더하세요."
       ],
       "code": "let oddTotal = 0;\nfor (let value = 1; value <= 7; value += 1) {\n  if (value % 2 === 0) continue;\n  oddTotal += value;\n}\nconsole.log(oddTotal);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "다른 상황에서 짝수 차례를 건너뛰어 홀수만 남기기",
+      "brief": [
+        "실행 단계와 다른 상황에서 continue로 이번 반복 건너뛰기의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
+        "현재 짝수에서 continue합니다. 조건을 number % 2 !== 0으로 바꿔 홀수 대신 짝수만 출력해 보세요."
+      ],
+      "code": "for (let number = 1; number <= 6; number++) {\n  if (number % 2 === 0) continue;\n  console.log(number);\n}\n"
     },
     {
       "kind": "write",
@@ -67,6 +77,59 @@
       "hints": [
         "let total = 0;을 반복문 앞에 두고 for (let number = 1; number <= limit; number += 1)로 시작하세요.",
         "홀수일 때 continue한 뒤 total += number를 실행하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "다른 데이터에 적용하기: 특정 번호 제외하기",
+      "brief": [
+        "조건과 반복으로 짝수 합계 구하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "1부터 5까지 중 2만 건너뛰고 나머지를 출력하세요."
+      ],
+      "code": "// TODO: continue로 2를 제외하세요.\n",
+      "solutionCode": "for (let number = 1; number <= 5; number++) {\n  if (number === 2) continue;\n  console.log(number);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "특정 번호 제외하기",
+          "expected": [
+            "1",
+            "3",
+            "4",
+            "5"
+          ]
+        }
+      ],
+      "hints": [
+        "number === 2일 때 continue하세요.",
+        "출력문은 if 다음에 둡니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "조건을 더해 응용하기: 3의 배수 제외하기",
+      "brief": [
+        "조건과 반복으로 짝수 합계 구하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "1부터 7까지 중 3의 배수는 건너뛰고 나머지를 출력하세요."
+      ],
+      "code": "// TODO: 3의 배수를 제외하세요.\n",
+      "solutionCode": "for (let number = 1; number <= 7; number++) {\n  if (number % 3 === 0) continue;\n  console.log(number);\n}\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "3의 배수 제외하기",
+          "expected": [
+            "1",
+            "2",
+            "4",
+            "5",
+            "7"
+          ]
+        }
+      ],
+      "hints": [
+        "나머지가 0인지 검사하세요.",
+        "continue 뒤의 출력은 현재 차례에서 실행되지 않습니다."
       ]
     }
   ]

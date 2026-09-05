@@ -18,7 +18,8 @@
             "console.log(missingNote ?? '요청 없음'); // 요청 없음",
             "console.log(emptyNote ?? '요청 없음'); // 빈 줄"
           ]
-        }
+        },
+        "문제를 풀 때는 입력값과 자료형 확인 → 필요한 변환이나 기본값 적용 → 연산식 작성 → 결과와 자료형 확인 순으로 진행하세요."
       ]
     },
     {
@@ -28,6 +29,15 @@
         "0은 유효한 횟수이므로 보존하고 null에만 기본값을 적용하세요."
       ],
       "code": "const unreadCount = 0;\nconst missingCount = null;\nconsole.log(unreadCount ?? 10);\nconsole.log(missingCount ?? 10);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "다른 상황에서 0과 빈 문자열 보존하기",
+      "brief": [
+        "실행 단계와 다른 상황에서 null 병합 연산자의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
+        "0과 빈 문자열은 null이나 undefined가 아니므로 ??가 왼쪽 값을 유지합니다. 빈 문자열을 null로 바꿔 기본 문구가 나오는지 확인하세요."
+      ],
+      "code": "console.log(0 ?? 99);\nconsole.log('' ?? '입력 없음');\n"
     },
     {
       "kind": "write",
@@ -53,6 +63,52 @@
       "hints": [
         "nickname이 null이면 '이름 없음'을 사용하고 빈 문자열은 유지하여 출력하세요.",
         "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "다른 데이터에 적용하기: null 배송 메모 대체하기",
+      "brief": [
+        "null과 undefined에 기본값 적용하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "memo가 null일 때 '메모 없음'을 선택해 출력하세요."
+      ],
+      "code": "const memo = null;\n// TODO: ??로 기본 문구를 출력하세요.\n",
+      "solutionCode": "const memo = null;\nconsole.log(memo ?? '메모 없음');\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "null 배송 메모 대체하기",
+          "expected": [
+            "메모 없음"
+          ]
+        }
+      ],
+      "hints": [
+        "memo 왼쪽, 기본 문자열 오른쪽에 ??를 두세요.",
+        "완성한 표현식을 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "조건을 더해 응용하기: 유효한 false 유지하기",
+      "brief": [
+        "null과 undefined에 기본값 적용하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
+        "notifications가 false일 때 ??가 false를 그대로 유지하도록 결과를 출력하세요."
+      ],
+      "code": "const notifications = false;\n// TODO: 기본값 true를 두고 결과를 출력하세요.\n",
+      "solutionCode": "const notifications = false;\nconsole.log(notifications ?? true);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "유효한 false 유지하기",
+          "expected": [
+            "false"
+          ]
+        }
+      ],
+      "hints": [
+        "false는 값이 없는 상태가 아닙니다.",
+        "notifications ?? true를 출력하세요."
       ]
     }
   ]
