@@ -10,16 +10,13 @@
       "kind": "read",
       "title": "첫 번째 일치 값이나 위치를 반환합니다",
       "brief": [
-        "find는 콜백 조건이 true인 첫 번째 값을 반환합니다. findIndex는 그 값의 인덱스를 반환합니다. 이 문법이 필요한 이유는 값, 계산 또는 실행 흐름을 코드에 분명하게 표현하기 위해서입니다. 코드 읽기: `products.find((product) => product.price < 20000);`는 함수를 호출해 함수 본문을 실행합니다. `products.findIndex((product) => product.price < 20000);`는 함수를 호출해 함수 본문을 실행합니다. 실행 과정과 결과: 출력문이 있다면 그 순간의 값을 확인하고, 출력문이 없다면 각 줄 뒤에 저장된 값을 손으로 추적해야 합니다. 헷갈리기 쉬운 점: 배열 인덱스는 0부터 시작하며, 원본을 바꾸는 동작과 새 값을 만드는 동작을 구분해야 합니다. 실습 연결: RUN에서는 완성된 예제의 결과를 먼저 확인합니다. TWEAK에서는 조건을 product.price < 1000으로 바꾸면 found는 undefined, foundIndex는 -1이 됩니다.",
+        "find는 조건을 처음 만족하는 항목을 반환하고, findIndex는 그 항목의 인덱스를 반환합니다. price < 20000을 처음 만족하는 객체는 모자이므로 found는 모자 객체, foundIndex는 1입니다. 만족하는 항목이 없으면 find는 undefined, findIndex는 -1입니다. includes는 콜백 없이 배열에 특정 값이 포함되어 있는지 true 또는 false로 확인합니다.",
         {
           "code": [
             "products.find((product) => product.price < 20000);",
             "products.findIndex((product) => product.price < 20000);"
           ]
-        },
-        "맞는 값이 없으면 find는 undefined, findIndex는 -1을 반환합니다.",
-        "includes는 배열에 특정 값이 들어 있는지 true 또는 false로 알려 줍니다. 콜백 없이 products.includes('셔츠')처럼 사용합니다.",
-        "find는 값 하나, findIndex는 위치 하나, includes는 포함 여부가 필요할 때 사용합니다."
+        }
       ]
     },
     {

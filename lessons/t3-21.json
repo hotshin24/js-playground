@@ -10,17 +10,14 @@
       "kind": "read",
       "title": "변수에는 원시 자료형의 값 자체가 복사됩니다",
       "brief": [
-        "문자형, 숫자형, 불리언, undefined, null, symbol, bigint는 원시 자료형입니다. 원시 자료형의 값이 든 변수를 다른 변수에 할당하면 값이 복사됩니다. 이 문법이 필요한 이유는 값, 계산 또는 실행 흐름을 코드에 분명하게 표현하기 위해서입니다. 코드 읽기: `let firstPrice = 12000;`는 변수를 선언하고 오른쪽 표현식의 결과를 저장합니다. `let secondPrice = firstPrice;`는 변수를 선언하고 오른쪽 표현식의 결과를 저장합니다. `secondPrice = 39000;`는 오른쪽 값을 계산한 뒤 왼쪽 대상에 저장합니다. 실행 과정과 결과: 출력문이 있다면 그 순간의 값을 확인하고, 출력문이 없다면 각 줄 뒤에 저장된 값을 손으로 추적해야 합니다. 헷갈리기 쉬운 점: 겉으로 비슷한 값도 자료형이 다를 수 있으므로 따옴표 유무와 `typeof` 결과를 함께 확인하세요. 실습 연결: RUN에서는 완성된 예제의 결과를 먼저 확인합니다. TWEAK에서는 문자열 대신 originalPrice = 12000과 copiedPrice를 만들어 같은 과정을 실행해 보세요.",
+        "원시 자료형은 변수에 대입할 때 현재 값이 복사됩니다. originalName의 '셔츠'를 copiedName에 넣은 뒤 copiedName을 '모자'로 재할당해도 originalName은 '셔츠'입니다. 재할당은 copiedName이 가진 값을 교체할 뿐 originalName에 거슬러 올라가지 않습니다. 이 독립성은 객체 참조를 복사했을 때의 동작과 대비됩니다.",
         {
           "code": [
             "let firstPrice = 12000;",
             "let secondPrice = firstPrice;",
             "secondPrice = 39000;"
           ]
-        },
-        "secondPrice에 firstPrice의 숫자 12000이 복사됩니다. 이후 secondPrice를 39000으로 바꿔도 firstPrice는 12000입니다.",
-        "두 변수가 같은 숫자를 가지고 있었을 뿐, 하나의 저장 공간을 함께 사용한 것이 아닙니다.",
-        "이 동작은 다음 레슨의 객체 복사와 다릅니다. 두 코드를 나란히 비교해야 차이가 분명해집니다."
+        }
       ]
     },
     {

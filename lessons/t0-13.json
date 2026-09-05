@@ -10,8 +10,7 @@
       "kind": "read",
       "title": "고정된 정보와 바뀌는 정보 출력하기",
       "brief": [
-        "바뀌지 않는 정보는 const, 진행 중 새 값을 넣을 정보는 let으로 선언합니다. 이번 문제에서는 입력을 읽고 계산한 뒤 결과를 만드는 순서를 연결해서 확인합니다. 코드 읽기: `const guestName = '수진';`는 변수를 선언하고 오른쪽 표현식의 결과를 저장합니다. `let confirmed = false;`는 변수를 선언하고 오른쪽 표현식의 결과를 저장합니다. `console.log(guestName);`는 괄호 안 표현식을 계산해 현재 결과를 콘솔에 출력합니다. `console.log(confirmed);`는 괄호 안 표현식을 계산해 현재 결과를 콘솔에 출력합니다. `confirmed = true;`는 오른쪽 값을 계산한 뒤 왼쪽 대상에 저장합니다. `console.log(guestName);`는 괄호 안 표현식을 계산해 현재 결과를 콘솔에 출력합니다. `console.log(confirmed);`는 괄호 안 표현식을 계산해 현재 결과를 콘솔에 출력합니다. 실행 과정과 결과: 실행하면 콘솔에는 ‘수진’, ‘false’, ‘수진’, ‘true’ 순서로 출력됩니다. 각 값은 해당 `console.log`가 실행되는 순간 계산된 결과입니다. 헷갈리기 쉬운 점: 각 줄이 실행된 직후 변수에 어떤 값이 남는지 확인하세요. 실습 연결: RUN에서는 완성된 예제의 결과를 먼저 확인합니다. TWEAK에서는 confirmed의 재할당 줄을 지우면 false가 두 번 나옵니다. 작성 단계에서는 const orderId에 315, let paid에 false를 담으세요.",
-        "한 변수에 재할당한다고 다른 변수의 값까지 바뀌지는 않습니다. 이름은 유지하고 상태만 바꿔 출력해 보세요.",
+        "고정 정보와 상태 정보는 성격이 다릅니다. guestName은 처리 중 바뀌지 않으므로 const가 알맞고, confirmed는 false에서 true로 바뀌므로 let이 알맞습니다. confirmed만 재할당해도 guestName에는 영향이 없습니다. 어떤 값이 바뀌어야 하는지를 먼저 판단하면 const와 let을 선택하기 쉬워집니다.",
         {
           "code": [
             "const guestName = '수진';",
