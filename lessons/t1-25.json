@@ -4,7 +4,7 @@
   "track": "T1",
   "order": 25,
   "runtime": "js",
-  "title": "작은 복습 3: 식별 번호를 문자열로 바꾸기",
+  "title": "종합 문제 3: 식별 번호를 문자열로 바꾸기",
   "steps": [
     {
       "kind": "read",

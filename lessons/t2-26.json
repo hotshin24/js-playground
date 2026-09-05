@@ -4,7 +4,7 @@
   "track": "T2",
   "order": 26,
   "runtime": "js",
-  "title": "작은 종합 문제 6: 반복하며 계산값 누적하기",
+  "title": "종합 문제 6: 반복하며 계산값 누적하기",
   "steps": [
     {
       "kind": "read",

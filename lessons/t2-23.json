@@ -4,7 +4,7 @@
   "track": "T2",
   "order": 23,
   "runtime": "js",
-  "title": "작은 종합 문제 3: 여러 범위를 else if로 나누기",
+  "title": "종합 문제 3: 여러 범위를 else if로 나누기",
   "steps": [
     {
       "kind": "read",

@@ -4,7 +4,7 @@
   "track": "T2",
   "order": 27,
   "runtime": "js",
-  "title": "작은 종합 문제 7: 조건을 만족하면 반복 멈추기",
+  "title": "종합 문제 7: 조건을 만족하면 반복 멈추기",
   "steps": [
     {
       "kind": "read",

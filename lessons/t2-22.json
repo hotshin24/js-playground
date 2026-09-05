@@ -4,7 +4,7 @@
   "track": "T2",
   "order": 22,
   "runtime": "js",
-  "title": "작은 종합 문제 2: 조건에 따라 배송비 반환하기",
+  "title": "종합 문제 2: 조건에 따라 배송비 반환하기",
   "steps": [
     {
       "kind": "read",

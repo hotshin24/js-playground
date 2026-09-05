@@ -4,7 +4,7 @@
   "track": "T3",
   "order": 16,
   "runtime": "js",
-  "title": "작은 복습 1: 객체 프로퍼티로 문구 만들기",
+  "title": "종합 문제 1: 객체 프로퍼티로 문구 만들기",
   "steps": [
     {
       "kind": "read",

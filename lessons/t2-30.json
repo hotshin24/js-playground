@@ -4,7 +4,7 @@
   "track": "T2",
   "order": 30,
   "runtime": "js",
-  "title": "작은 종합 문제 10: 반환값을 다음 계산에 사용하기",
+  "title": "종합 문제 10: 반환값을 다음 계산에 사용하기",
   "steps": [
     {
       "kind": "read",

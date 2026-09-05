@@ -4,7 +4,7 @@
   "track": "T3",
   "order": 19,
   "runtime": "js",
-  "title": "연결 복습 1: 원시값 복사하기",
+  "title": "종합 문제 4: 원시값 복사하기",
   "steps": [
     {
       "kind": "read",

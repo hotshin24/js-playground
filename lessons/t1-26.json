@@ -4,7 +4,7 @@
   "track": "T1",
   "order": 26,
   "runtime": "js",
-  "title": "작은 복습 4: 입력 여부를 불리언으로 확인하기",
+  "title": "종합 문제 4: 입력 여부를 불리언으로 확인하기",
   "steps": [
     {
       "kind": "read",

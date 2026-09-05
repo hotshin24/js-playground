@@ -4,7 +4,7 @@
   "track": "T2",
   "order": 28,
   "runtime": "js",
-  "title": "작은 종합 문제 8: 매개변수로 결과 바꾸기",
+  "title": "종합 문제 8: 매개변수로 결과 바꾸기",
   "steps": [
     {
       "kind": "read",

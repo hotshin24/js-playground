@@ -4,7 +4,7 @@
   "track": "T1",
   "order": 24,
   "runtime": "js",
-  "title": "작은 복습 2: 문자열 숫자로 금액 계산하기",
+  "title": "종합 문제 2: 문자열 숫자로 금액 계산하기",
   "steps": [
     {
       "kind": "read",

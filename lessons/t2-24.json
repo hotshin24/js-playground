@@ -4,7 +4,7 @@
   "track": "T2",
   "order": 24,
   "runtime": "js",
-  "title": "작은 종합 문제 4: switch로 상태 문구 반환하기",
+  "title": "종합 문제 4: switch로 상태 문구 반환하기",
   "steps": [
     {
       "kind": "read",

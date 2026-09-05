@@ -4,7 +4,7 @@
   "track": "T3",
   "order": 20,
   "runtime": "js",
-  "title": "연결 복습 2: 같은 객체를 가리키는 변수 이해하기",
+  "title": "종합 문제 5: 같은 객체를 가리키는 변수 이해하기",
   "steps": [
     {
       "kind": "read",

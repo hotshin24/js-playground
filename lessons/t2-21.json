@@ -4,7 +4,7 @@
   "track": "T2",
   "order": 21,
   "runtime": "js",
-  "title": "작은 종합 문제 1: 조건과 반복으로 짝수 합계 구하기",
+  "title": "종합 문제 1: 조건과 반복으로 짝수 합계 구하기",
   "steps": [
     {
       "kind": "read",

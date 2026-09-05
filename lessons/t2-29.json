@@ -4,7 +4,7 @@
   "track": "T2",
   "order": 29,
   "runtime": "js",
-  "title": "작은 종합 문제 9: 여러 매개변수로 계산하기",
+  "title": "종합 문제 9: 여러 매개변수로 계산하기",
   "steps": [
     {
       "kind": "read",

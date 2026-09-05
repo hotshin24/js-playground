@@ -4,7 +4,7 @@
   "track": "T3",
   "order": 17,
   "runtime": "js",
-  "title": "작은 복습 2: 변수에 담긴 key로 값 읽기",
+  "title": "종합 문제 2: 변수에 담긴 key로 값 읽기",
   "steps": [
     {
       "kind": "read",
