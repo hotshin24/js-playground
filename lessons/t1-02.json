@@ -4,13 +4,13 @@
   "track": "T1",
   "order": 2,
   "runtime": "js",
-  "title": "number 자료형",
+  "title": "숫자형",
   "steps": [
     {
       "kind": "read",
-      "title": "number 이해하기",
+      "title": "숫자형 이해하기",
       "brief": [
-        "책에서 방금 읽은 number을(를) 실습으로 다시 확인합니다.",
+        "숫자형(Number Type)은 정수와 실수를 구분하지 않고 모든 숫자를 다루는 자료형입니다.",
         "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
@@ -24,7 +24,7 @@
     },
     {
       "kind": "run",
-      "title": "number 실행하기",
+      "title": "숫자형 실행하기",
       "brief": [
         "코드를 실행해 number의 결과를 확인하세요."
       ],

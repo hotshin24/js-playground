@@ -131,7 +131,7 @@
       "id": "t1-02",
       "track": "T1",
       "order": 2,
-      "title": "number 자료형"
+      "title": "숫자형"
     },
     {
       "id": "t1-03",
@@ -143,7 +143,7 @@
       "id": "t1-04",
       "track": "T1",
       "order": 4,
-      "title": "string 자료형"
+      "title": "문자형"
     },
     {
       "id": "t1-05",
@@ -161,7 +161,7 @@
       "id": "t1-07",
       "track": "T1",
       "order": 7,
-      "title": "boolean 자료형"
+      "title": "불리언"
     },
     {
       "id": "t1-08",
@@ -197,7 +197,7 @@
       "id": "t1-13",
       "track": "T1",
       "order": 13,
-      "title": "String과 Boolean로 변환하기"
+      "title": "String과 Boolean으로 변환하기"
     },
     {
       "id": "t1-14",
@@ -305,31 +305,31 @@
       "id": "t2-01",
       "track": "T2",
       "order": 1,
-      "title": "if 조건문"
+      "title": "if 문"
     },
     {
       "id": "t2-02",
       "track": "T2",
       "order": 2,
-      "title": "else 조건문"
+      "title": "else 문"
     },
     {
       "id": "t2-03",
       "track": "T2",
       "order": 3,
-      "title": "else if 조건문"
+      "title": "else if 문"
     },
     {
       "id": "t2-04",
       "track": "T2",
       "order": 4,
-      "title": "switch 조건문"
+      "title": "switch 문"
     },
     {
       "id": "t2-05",
       "track": "T2",
       "order": 5,
-      "title": "for 반복문"
+      "title": "for 문"
     },
     {
       "id": "t2-06",
@@ -359,7 +359,7 @@
       "id": "t2-10",
       "track": "T2",
       "order": 10,
-      "title": "매개변수와 인자"
+      "title": "매개변수와 인수"
     },
     {
       "id": "t2-11",
@@ -503,7 +503,7 @@
       "id": "t3-04",
       "track": "T3",
       "order": 4,
-      "title": "대괄호 표기법으로 프로퍼티 접근하기"
+      "title": "괄호 표기법으로 프로퍼티 접근하기"
     },
     {
       "id": "t3-05",
@@ -605,7 +605,7 @@
       "id": "t3-21",
       "track": "T3",
       "order": 21,
-      "title": "원시값 복사"
+      "title": "원시 자료형의 값 복사"
     },
     {
       "id": "t3-22",

@@ -4,13 +4,13 @@
   "track": "T1",
   "order": 4,
   "runtime": "js",
-  "title": "string 자료형",
+  "title": "문자형",
   "steps": [
     {
       "kind": "read",
-      "title": "string 이해하기",
+      "title": "문자형 이해하기",
       "brief": [
-        "책에서 방금 읽은 string을(를) 실습으로 다시 확인합니다.",
+        "문자형(String)은 따옴표로 감싼 문자열 값을 다루는 자료형입니다.",
         "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
@@ -24,7 +24,7 @@
     },
     {
       "kind": "run",
-      "title": "string 실행하기",
+      "title": "문자형 실행하기",
       "brief": [
         "코드를 실행해 string의 결과를 확인하세요."
       ],

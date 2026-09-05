@@ -4,6 +4,7 @@ import { readState, writeState } from '../js/storage.js';
 
 const index = JSON.parse(fs.readFileSync(new URL('../lessons/index.json', import.meta.url)));
 const expected = { T0: 13, T1: 30, T2: 30, T3: 34 };
+const vocabularyMismatch = /을\(를\)|number 자료형|string 자료형|boolean 자료형|if 조건문|else 조건문|else if 조건문|switch 조건문|for 반복문|인자|리턴값|돌려주는 값|값을 밖으로|함수를 넘긴|객체 안의 이름|대괄호 표기법|문자열 타입|string 타입|객체 타입/;
 const codeOf = lesson => lesson.steps.flatMap(step => [
   step.code, step.solutionCode,
   ...(step.brief || []).filter(part => part?.code).flatMap(part => part.code),
@@ -17,6 +18,7 @@ for (const [track, count] of Object.entries(expected)) {
     const lesson = JSON.parse(fs.readFileSync(new URL(`../lessons/${item.id}.json`, import.meta.url)));
     assert.equal(lesson.id, item.id);
     assert.equal(lesson.title, item.title);
+    assert.doesNotMatch(JSON.stringify(lesson), vocabularyMismatch, `${item.id} 책 용어 불일치`);
   }
 }
 

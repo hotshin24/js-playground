@@ -4,13 +4,13 @@
   "track": "T1",
   "order": 7,
   "runtime": "js",
-  "title": "boolean 자료형",
+  "title": "불리언",
   "steps": [
     {
       "kind": "read",
-      "title": "boolean 이해하기",
+      "title": "불리언 이해하기",
       "brief": [
-        "책에서 방금 읽은 boolean을(를) 실습으로 다시 확인합니다.",
+        "불리언(Boolean)은 참 또는 거짓을 나타내는 true와 false만 사용하는 자료형입니다.",
         "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
@@ -24,7 +24,7 @@
     },
     {
       "kind": "run",
-      "title": "boolean 실행하기",
+      "title": "불리언 실행하기",
       "brief": [
         "코드를 실행해 boolean의 결과를 확인하세요."
       ],

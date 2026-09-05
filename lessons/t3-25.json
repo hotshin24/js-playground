@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "같은 ...이지만 쓰인 위치에 따라 역할이 다릅니다",
       "brief": [
-        "spread는 배열이나 객체의 값을 펼칩니다. 새 배열이나 객체를 만들거나 함수에 인자를 전달할 때 사용합니다.",
+        "spread는 배열이나 객체의 값을 펼칩니다. 새 배열이나 객체를 만들거나 함수에 인수를 전달할 때 사용합니다.",
         {
           "code": [
             "const all = [...first, ...second];",
@@ -44,7 +44,7 @@
       "title": "함수의 나머지 매개변수 사용하기",
       "brief": [
         "function showAll(...items) { console.log(items); }를 추가하고 showAll('셔츠', '모자', '신발')을 호출해 보세요.",
-        "세 인자가 items라는 배열 하나로 모입니다. rest 매개변수는 항상 매개변수 목록의 마지막에 있어야 합니다.",
+        "세 인수가 items라는 배열 하나로 모입니다. rest 매개변수는 항상 매개변수 목록의 마지막에 있어야 합니다.",
         "... 문법을 볼 때 먼저 그 위치가 값을 펼치는 곳인지 남은 값을 모으는 곳인지 확인하세요."
       ],
       "code": "const first = ['셔츠', '모자'];\nconst second = ['신발', '양말'];\nconst all = [...first, ...second];\n\nconst [selected, ...remaining] = all;\n\nconsole.log(all);\nconsole.log(selected);\nconsole.log(remaining);\n"

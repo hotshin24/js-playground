@@ -20,7 +20,7 @@
             "const [first, second] = colors;"
           ]
         },
-        "객체 구조 분해는 프로퍼티 키와 같은 이름으로 값을 찾습니다. 작성 순서는 중요하지 않습니다.",
+        "객체 구조 분해는 프로퍼티의 key와 같은 이름으로 값을 찾습니다. 작성 순서는 중요하지 않습니다.",
         "배열 구조 분해는 위치 순서대로 값을 꺼냅니다. 첫 변수에는 인덱스 0의 값이 들어갑니다.",
         "값이 없을 때 사용할 기본값은 const { stock = 0 } = product처럼 지정할 수 있습니다."
       ]
@@ -29,7 +29,7 @@
       "kind": "run",
       "title": "객체와 배열 구조 분해 비교하기",
       "brief": [
-        "객체에서는 name과 price라는 키로 값을 찾습니다. 배열에서는 first와 second라는 새 이름에 순서대로 값이 들어갑니다.",
+        "객체에서는 name과 price라는 key로 값을 찾습니다. 배열에서는 first와 second라는 새 이름에 순서대로 값이 들어갑니다.",
         "product에 stock이 없으므로 기본값 0이 사용됩니다."
       ],
       "code": "const product = { name: '셔츠', price: 39000 };\nconst { price, name, stock = 0 } = product;\n\nconst colors = ['파랑', '빨강'];\nconst [first, second] = colors;\n\nconsole.log(name, price, stock);\nconsole.log(first, second);\n"

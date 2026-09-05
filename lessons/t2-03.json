@@ -4,13 +4,13 @@
   "track": "T2",
   "order": 3,
   "runtime": "js",
-  "title": "else if 조건문",
+  "title": "else if 문",
   "steps": [
     {
       "kind": "read",
       "title": "else if 이해하기",
       "brief": [
-        "책에서 배운 else if을(를) 짧게 복원합니다.",
+        "책에서 배운 else if 개념을 짧게 복원합니다.",
         "아래 코드의 실행 순서와 출력값을 먼저 예상하세요.",
         {
           "code": [

@@ -4,13 +4,13 @@
   "track": "T1",
   "order": 13,
   "runtime": "js",
-  "title": "String과 Boolean로 변환하기",
+  "title": "String과 Boolean으로 변환하기",
   "steps": [
     {
       "kind": "read",
       "title": "String과 Boolean 이해하기",
       "brief": [
-        "책에서 방금 읽은 String과 Boolean을(를) 실습으로 다시 확인합니다.",
+        "책에서 방금 읽은 String과 Boolean 개념을 실습으로 다시 확인합니다.",
         "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
