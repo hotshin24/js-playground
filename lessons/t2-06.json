@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "break 이해하기",
       "brief": [
-        "책에서 배운 break 개념을 짧게 복원합니다.",
+        "break는 반복문을 즉시 종료하고 반복문 다음 코드로 이동합니다. 조건을 만족한 뒤 더 반복할 필요가 없을 때 사용합니다.",
         "아래 코드의 실행 순서와 출력값을 먼저 예상하세요.",
         {
           "code": [
@@ -43,7 +43,7 @@
       "kind": "write",
       "title": "break 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "// TODO: 1부터 반복하다 4에서 멈추고, 4 전의 숫자만 출력하세요.\n",
       "solutionCode": "for (let number = 1; number <= 6; number++) {\n  if (number === 4) break;\n  console.log(number);\n}\n",

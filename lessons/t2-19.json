@@ -43,7 +43,7 @@
       "kind": "write",
       "title": "함수·블록 스코프 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "// TODO: if 블록 안에 const status를 선언해 '완료'를 출력하세요.\n",
       "solutionCode": "if (true) {\n  const status = '완료';\n  console.log(status);\n}\n",

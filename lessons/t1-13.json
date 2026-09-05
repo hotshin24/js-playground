@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "String과 Boolean 이해하기",
       "brief": [
-        "책에서 방금 읽은 String과 Boolean 개념을 실습으로 다시 확인합니다.",
+        "String은 값을 문자형으로, Boolean은 값을 불리언으로 명시적 형 변환합니다. Boolean에서는 0, 빈 문자열, null, undefined, NaN이 false가 되고 그 밖의 대부분 값은 true가 됩니다.",
         "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
@@ -42,7 +42,7 @@
       "kind": "write",
       "title": "String과 Boolean 직접 사용하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "const count = 5;\n// TODO: String과 Boolean 변환 결과를 출력하세요.\n",
       "solutionCode": "const count = 5;\nconsole.log(String(count));\nconsole.log(Boolean(count));\n",

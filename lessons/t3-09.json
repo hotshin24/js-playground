@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "in 연산자 이해하기",
       "brief": [
-        "책 PDF 4에서 배운 in 연산자 개념을 짧게 다시 확인합니다.",
+        "in 연산자는 객체에 특정 key가 있는지 true 또는 false로 알려 줍니다. value가 undefined인 경우와 프로퍼티 자체가 없는 경우를 구분할 수 있습니다.",
         "아래 코드에서 객체 또는 배열의 어느 값에 접근하는지 먼저 찾으세요.",
         {
           "code": [
@@ -42,7 +42,7 @@
       "kind": "write",
       "title": "in 연산자 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "const product = { price: 1000 };\n// TODO: price와 stock이 있는지 출력하세요.\n",
       "solutionCode": "const product = { price: 1000 };\nconsole.log('price' in product);\nconsole.log('stock' in product);\n",

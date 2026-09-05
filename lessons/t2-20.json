@@ -45,7 +45,7 @@
       "kind": "write",
       "title": "var와 블록 스코프 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "// TODO: 블록 안에서 var value에 '보임'을 대입하고 블록 밖에서 출력하세요.\n",
       "solutionCode": "if (true) {\n  var value = '보임';\n}\nconsole.log(value);\n",

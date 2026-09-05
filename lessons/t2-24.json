@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "회원 등급별 문구를 고르는 과정 읽기",
       "brief": [
-        "switch로 'gold', 'silver'처럼 정해진 값을 case별로 나눌 수 있습니다.",
+        "switch로 'gold', 'silver'처럼 정해진 값을 case별로 나눌 수 있습니다. switch 문은 하나의 상태값을 여러 case와 비교합니다. 각 case의 break는 다음 case가 이어서 실행되는 것을 막습니다.",
         "어느 case에도 맞지 않을 때는 default를 사용합니다."
       ]
     },

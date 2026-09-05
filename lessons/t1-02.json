@@ -42,7 +42,7 @@
       "kind": "write",
       "title": "number 직접 사용하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "const price = 12000;\n// TODO: 값과 자료형을 출력하세요.\n",
       "solutionCode": "const price = 12000;\nconsole.log(price);\nconsole.log(typeof price);\n",

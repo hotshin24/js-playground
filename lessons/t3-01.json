@@ -44,7 +44,7 @@
       "kind": "write",
       "title": "객체 리터럴 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "// TODO: name이 '영희', age가 30인 user 객체를 만들고 name을 출력하세요.\n",
       "solutionCode": "const user = {\n  name: '영희',\n  age: 30\n};\nconsole.log(user.name);\n",

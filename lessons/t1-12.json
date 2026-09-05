@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "parseInt 이해하기",
       "brief": [
-        "책에서 방금 읽은 parseInt 개념을 실습으로 다시 확인합니다.",
+        "parseInt는 문자열의 앞부분을 읽어 정수로 변환합니다. Number가 문자열 전체를 숫자로 바꾸는 것과 달리 뒤에 문자가 있어도 앞의 정수를 얻을 수 있으며, 변환할 수 없으면 NaN이 됩니다.",
         "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
@@ -40,7 +40,7 @@
       "kind": "write",
       "title": "parseInt 직접 사용하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "const width = '320px';\n// TODO: 정수 부분을 변환해 출력하세요.\n",
       "solutionCode": "const width = '320px';\nconsole.log(parseInt(width, 10));\n",

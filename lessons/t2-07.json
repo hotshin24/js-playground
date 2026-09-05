@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "continue 이해하기",
       "brief": [
-        "책에서 배운 continue 개념을 짧게 복원합니다.",
+        "continue는 현재 반복의 남은 코드를 건너뛰고 다음 반복으로 이동합니다. 반복 전체를 끝내는 break와 다릅니다.",
         "아래 코드의 실행 순서와 출력값을 먼저 예상하세요.",
         {
           "code": [
@@ -43,7 +43,7 @@
       "kind": "write",
       "title": "continue 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "// TODO: 1부터 5까지 중 3만 건너뛰고 출력하세요.\n",
       "solutionCode": "for (let number = 1; number <= 5; number++) {\n  if (number === 3) continue;\n  console.log(number);\n}\n",

@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "null 병합 연산자 이해하기",
       "brief": [
-        "책에서 방금 읽은 null 병합 연산자 개념을 실습으로 다시 확인합니다.",
+        "null 병합 연산자 ??는 왼쪽 값이 null 또는 undefined일 때만 오른쪽 기본값을 사용합니다. 0, 빈 문자열, false도 기본값으로 바꾸는 ||와 차이가 있습니다.",
         "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
@@ -41,7 +41,7 @@
       "kind": "write",
       "title": "null 병합 연산자 직접 사용하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "const name = null;\n// TODO: 없을 때만 '이름 없음'을 사용해 출력하세요.\n",
       "solutionCode": "const name = null;\nconsole.log(name ?? '이름 없음');\n",

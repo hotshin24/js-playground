@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "typeof 이해하기",
       "brief": [
-        "책에서 방금 읽은 typeof 개념을 실습으로 다시 확인합니다.",
+        "typeof 연산자는 값의 자료형을 문자열로 알려 줍니다. typeof null이 object이고 배열도 object로 나오는 예외가 있으므로 배열은 Array.isArray로 따로 확인합니다.",
         "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
@@ -42,7 +42,7 @@
       "kind": "write",
       "title": "typeof 직접 사용하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "const active = false;\n// TODO: 자료형을 출력하세요.\n",
       "solutionCode": "const active = false;\nconsole.log(typeof active);\n",

@@ -46,7 +46,7 @@
       "kind": "write",
       "title": "객체 메서드 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "const alarm = {\n  ring: function () {\n    console.log('알림');\n  }\n};\n// TODO: 메서드를 호출하세요.\n",
       "solutionCode": "const alarm = {\n  ring: function () {\n    console.log('알림');\n  }\n};\nalarm.ring();\n",

@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "함수 값 이해하기",
       "brief": [
-        "책에서 배운 함수 값 개념을 짧게 복원합니다.",
+        "자바스크립트에서 함수는 숫자나 문자열처럼 변수에 저장하고 다른 곳에 전달할 수 있는 값입니다. 괄호 없이 함수 이름만 쓰면 실행하지 않고 함수 자체를 가리킵니다.",
         "아래 코드의 실행 순서와 출력값을 먼저 예상하세요.",
         {
           "code": [
@@ -44,7 +44,7 @@
       "kind": "write",
       "title": "함수 값 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "// TODO: show를 another에 대입하고 another를 호출하세요.\nfunction show() {\n  console.log('보관한 함수');\n}\n",
       "solutionCode": "function show() {\n  console.log('보관한 함수');\n}\nconst another = show;\nanother();\n",

@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "else if 이해하기",
       "brief": [
-        "책에서 배운 else if 개념을 짧게 복원합니다.",
+        "else if 문은 여러 조건을 위에서부터 검사해 처음 true가 된 블록 하나만 실행합니다. 넓은 조건을 먼저 쓰면 뒤의 세부 조건이 실행되지 않을 수 있습니다.",
         "아래 코드의 실행 순서와 출력값을 먼저 예상하세요.",
         {
           "code": [
@@ -47,7 +47,7 @@
       "kind": "write",
       "title": "else if 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "const age = 15;\n// TODO: 19 이상 '성인', 14 이상 '청소년', 나머지 '어린이'를 출력하세요.\n",
       "solutionCode": "const age = 15;\nif (age >= 19) {\n  console.log('성인');\n} else if (age >= 14) {\n  console.log('청소년');\n} else {\n  console.log('어린이');\n}\n",

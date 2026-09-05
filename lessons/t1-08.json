@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "null 이해하기",
       "brief": [
-        "책에서 방금 읽은 null 개념을 실습으로 다시 확인합니다.",
+        "null은 개발자가 값이 없음을 의도적으로 나타낼 때 사용하는 값입니다. 아직 값이 할당되지 않은 상태인 undefined와 의미가 다르며 typeof null의 결과가 object인 것은 오래된 자바스크립트 특징입니다.",
         "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
@@ -41,7 +41,7 @@
       "kind": "write",
       "title": "null 직접 사용하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "const reservation = null;\n// TODO: 값을 출력하세요.\n",
       "solutionCode": "const reservation = null;\nconsole.log(reservation);\n",

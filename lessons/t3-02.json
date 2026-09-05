@@ -45,7 +45,7 @@
       "kind": "write",
       "title": "key와 value 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "const book = {\n  title: '한 입',\n  pages: 300\n};\n// TODO: 두 프로퍼티 값을 출력하세요.\n",
       "solutionCode": "const book = {\n  title: '한 입',\n  pages: 300\n};\nconsole.log(book.title);\nconsole.log(book.pages);\n",

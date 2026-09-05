@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "중첩 함수 이해하기",
       "brief": [
-        "책에서 배운 중첩 함수 개념을 짧게 복원합니다.",
+        "중첩 함수는 함수 내부에 선언한 함수입니다. 바깥 함수 안에서만 필요한 동작을 감추고 바깥 함수의 지역 변수에 접근할 수 있습니다.",
         "아래 코드의 실행 순서와 출력값을 먼저 예상하세요.",
         {
           "code": [
@@ -46,7 +46,7 @@
       "kind": "write",
       "title": "중첩 함수 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "// TODO: start 안에 finish를 선언해 '완료'를 출력하고 호출하세요.\n",
       "solutionCode": "function start() {\n  function finish() {\n    console.log('완료');\n  }\n  finish();\n}\nstart();\n",

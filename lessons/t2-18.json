@@ -46,7 +46,7 @@
       "kind": "write",
       "title": "전역·지역 스코프 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "const message = '밖';\n// TODO: 함수 안에 local을 '안'으로 선언하고 두 값을 출력하세요.\n",
       "solutionCode": "const message = '밖';\nfunction show() {\n  const local = '안';\n  console.log(message);\n  console.log(local);\n}\nshow();\n",

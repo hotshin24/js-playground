@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "if 이해하기",
       "brief": [
-        "책에서 배운 if 개념을 짧게 복원합니다.",
+        "if 문은 조건이 true일 때만 중괄호 안의 코드를 실행합니다. 조건식의 결과를 먼저 계산한 뒤 실행 여부를 결정합니다.",
         "아래 코드의 실행 순서와 출력값을 먼저 예상하세요.",
         {
           "code": [
@@ -43,7 +43,7 @@
       "kind": "write",
       "title": "if 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "const stock = 3;\n// TODO: stock이 0보다 크면 '판매 중'을 출력하세요.\n",
       "solutionCode": "const stock = 3;\nif (stock > 0) {\n  console.log('판매 중');\n}\n",

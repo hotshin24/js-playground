@@ -44,7 +44,7 @@
       "kind": "write",
       "title": "return 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "// TODO: 두 수를 곱해 반환하는 multiply를 만들고 4, 5의 결과를 출력하세요.\n",
       "solutionCode": "function multiply(a, b) {\n  return a * b;\n}\nconsole.log(multiply(4, 5));\n",

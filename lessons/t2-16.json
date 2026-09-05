@@ -46,7 +46,7 @@
       "kind": "write",
       "title": "콜백 함수 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "function alarm() {\n  console.log('알림');\n}\n// TODO: callback을 호출하는 execute를 만들고 alarm을 전달하세요.\n",
       "solutionCode": "function alarm() {\n  console.log('알림');\n}\nfunction execute(callback) {\n  callback();\n}\nexecute(alarm);\n",

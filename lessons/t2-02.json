@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "else 이해하기",
       "brief": [
-        "책에서 배운 else 개념을 짧게 복원합니다.",
+        "else 문은 if 조건이 false일 때 실행할 코드를 정합니다. if와 else 중 한 블록만 실행됩니다.",
         "아래 코드의 실행 순서와 출력값을 먼저 예상하세요.",
         {
           "code": [
@@ -45,7 +45,7 @@
       "kind": "write",
       "title": "else 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "const score = 50;\n// TODO: 60 이상이면 '통과', 아니면 '재시험'을 출력하세요.\n",
       "solutionCode": "const score = 50;\nif (score >= 60) {\n  console.log('통과');\n} else {\n  console.log('재시험');\n}\n",

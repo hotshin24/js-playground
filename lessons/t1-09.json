@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "undefined 이해하기",
       "brief": [
-        "책에서 방금 읽은 undefined 개념을 실습으로 다시 확인합니다.",
+        "undefined는 변수에 아직 값이 할당되지 않았거나 프로퍼티를 찾지 못했을 때 나타나는 값입니다. 의도적으로 비워 둔 null과 구분해 원인을 판단해야 합니다.",
         "아래 코드를 위에서 아래로 읽고 출력될 값을 먼저 예상하세요.",
         {
           "code": [
@@ -42,7 +42,7 @@
       "kind": "write",
       "title": "undefined 직접 사용하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "let message;\n// TODO: 값과 자료형을 출력하세요.\n",
       "solutionCode": "let message;\nconsole.log(message);\nconsole.log(typeof message);\n",

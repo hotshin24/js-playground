@@ -10,7 +10,7 @@
       "kind": "read",
       "title": "점 표기법 이해하기",
       "brief": [
-        "책 PDF 4에서 배운 점 표기법 개념을 짧게 다시 확인합니다.",
+        "점 표기법은 객체이름.key 형태로 프로퍼티의 value에 접근합니다. 코드에 key를 직접 적을 수 있을 때 가장 간단하고 읽기 쉽습니다.",
         "아래 코드에서 객체 또는 배열의 어느 값에 접근하는지 먼저 찾으세요.",
         {
           "code": [
@@ -42,7 +42,7 @@
       "kind": "write",
       "title": "점 표기법 직접 작성하기",
       "brief": [
-        "TODO 아래에 코드를 작성하세요. 이 레슨보다 뒤에 나오는 문법은 필요하지 않습니다."
+        "TODO 아래에 요구한 코드를 직접 작성하세요."
       ],
       "code": "const order = { item: '커피', count: 2 };\n// TODO: 점 표기법으로 두 값을 출력하세요.\n",
       "solutionCode": "const order = { item: '커피', count: 2 };\nconsole.log(order.item);\nconsole.log(order.count);\n",
