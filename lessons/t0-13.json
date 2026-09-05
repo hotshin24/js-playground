@@ -29,27 +29,26 @@
       "kind": "run",
       "title": "고정된 상품명과 바뀌는 재고 확인하기",
       "brief": [
-        "실행 전에 각 출력 줄에서 어떤 값이 나올지 예상한 뒤 실행해 확인하세요."
+        "고정된 상품명과 바뀌는 재고 확인하기에서는 실행 전에 각 출력 줄에서 어떤 값이 나올지 예상한 뒤 실행해 확인하세요."
       ],
       "code": "const productName = '텀블러';\nlet stock = 4;\nconsole.log(productName);\nconsole.log(stock);\nstock = 3;\nconsole.log(productName);\nconsole.log(stock);\n"
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 바뀌는 값과 고정값 구분하기",
+      "title": "바뀌는 값에 const를 사용할 수 없는 이유 확인하기",
       "brief": [
-        "실행 단계와 다른 상황에서 상수 const 사용하기의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "company는 그대로 두고 currentPage만 2로 재할당하세요. const와 let의 역할 차이를 한 코드에서 확인합니다."
+        "현재 attempt는 재할당되므로 let으로 선언되어 있습니다. attempt의 let을 잠시 const로 바꿔 실행 오류를 확인한 뒤 다시 let으로 되돌리세요. 고정된 userId의 const는 유지합니다."
       ],
-      "code": "const company = '새봄 상점';\nlet currentPage = 1;\n// currentPage만 2로 바꾸세요.\nconsole.log(company);\nconsole.log(currentPage);\n"
+      "code": "const userId = 'guest-4';\nlet attempt = 1;\nattempt = 2;\nconsole.log(userId);\nconsole.log(attempt);\n"
     },
     {
       "kind": "write",
-      "title": "다른 상황에 적용해 직접 출력하기",
+      "title": "고정 주문 번호와 결제 상태 함께 출력하기",
       "brief": [
         "const orderId에 315, let paid에 false를 담으세요.",
         "orderId, paid를 차례로 출력한 뒤 paid에 true를 다시 할당하세요.",
         "orderId, paid를 같은 순서로 다시 출력하세요.",
-        "검사는 직접 출력한 내용과 순서를 비교합니다. 함수나 계산식은 사용하지 않습니다."
+        "고정 주문 번호와 결제 상태 함께 출력하기에서는 orderId는 유지되고 paid만 바뀌는지 네 줄의 출력을 검사합니다."
       ],
       "code": "// 변수를 선언하고 요구한 순서로 출력하세요.\n",
       "solutionCode": "const orderId = 315;\nlet paid = false;\nconsole.log(orderId);\nconsole.log(paid);\npaid = true;\nconsole.log(orderId);\nconsole.log(paid);\n",
@@ -66,56 +65,57 @@
         }
       ],
       "hints": [
-        "변수 선언과 값이 바뀌는 재할당을 먼저 구분하세요.",
-        "console.log 괄호에 변수 이름을 넣고, 글자 자체를 출력할 때만 따옴표를 붙이세요."
+        "orderId는 const, paid는 let으로 선언하세요.",
+        "paid를 true로 바꾸기 전후에 orderId와 paid를 같은 순서로 출력하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 고정된 할인 코드 선언하기",
+      "title": "고정 단가와 바뀌는 수량 선언하기",
       "brief": [
-        "고정된 정보와 바뀌는 정보 출력하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "const로 discountCode를 선언해 'WELCOME'을 저장하고 출력하세요."
+        "unitPrice는 바뀌지 않고 quantity는 1에서 3으로 바뀝니다. 알맞은 선언 키워드를 사용하고 마지막 두 값을 출력하세요."
       ],
-      "code": "// TODO: discountCode를 const로 선언하고 출력하세요.\n",
-      "solutionCode": "const discountCode = 'WELCOME';\nconsole.log(discountCode);\n",
+      "code": "// unitPrice와 quantity를 알맞게 선언하세요.\n// quantity를 3으로 바꾸고 두 값을 출력하세요.\n",
+      "solutionCode": "const unitPrice = 8000;\nlet quantity = 1;\nquantity = 3;\nconsole.log(unitPrice);\nconsole.log(quantity);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "고정된 할인 코드 선언하기",
+          "label": "고정 단가와 바뀌는 수량 선언하기",
           "expected": [
-            "WELCOME"
+            "8000",
+            "3"
           ]
         }
       ],
       "hints": [
-        "const discountCode = 'WELCOME';로 시작하세요.",
-        "선언한 이름을 그대로 출력하세요."
+        "unitPrice는 const, quantity는 let으로 선언하세요.",
+        "quantity에 3을 재할당한 뒤 두 변수를 출력하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: const와 let 함께 선택하기",
+      "title": "고정 이름은 한 번, 진행률은 여러 번 사용하기",
       "brief": [
-        "고정된 정보와 바뀌는 정보 출력하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "storeName은 바뀌지 않으므로 const, visitors는 바뀌므로 let으로 선언하세요. visitors를 12로 재할당한 뒤 두 값을 출력하세요."
+        "projectName은 const로 선언해 한 번 출력합니다. progress는 let으로 선언하고 0과 100을 각각 출력하세요."
       ],
-      "code": "// TODO: storeName과 visitors를 알맞게 선언하고 출력하세요.\n",
-      "solutionCode": "const storeName = '봄마켓';\nlet visitors = 8;\nvisitors = 12;\nconsole.log(storeName);\nconsole.log(visitors);\n",
+      "code": "// 프로젝트 이름과 진행률을 선언하고 요구한 값을 출력하세요.\n",
+      "solutionCode": "const projectName = '홈페이지';\nlet progress = 0;\nconsole.log(projectName);\nconsole.log(progress);\nprogress = 100;\nconsole.log(progress);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "const와 let 함께 선택하기",
+          "label": "고정 이름은 한 번, 진행률은 여러 번 사용하기",
           "expected": [
-            "봄마켓",
-            "12"
+            "홈페이지",
+            "0",
+            "100"
           ]
         }
       ],
       "hints": [
-        "storeName에는 const를 사용하세요.",
-        "visitors는 let으로 선언해야 재할당할 수 있습니다."
+        "projectName은 바뀌지 않으므로 const입니다.",
+        "progress의 처음 값을 출력한 뒤 100으로 재할당해 다시 출력하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "바뀌지 않는 값은 const로, 실행 중 바뀌는 값은 let으로 선언해 함께 사용한다."
 }

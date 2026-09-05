@@ -55,12 +55,11 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 typeof 결과 자체의 자료형 확인하기",
+      "title": "기본값 적용 위치를 입력 정리 단계로 옮기기",
       "brief": [
-        "실행 단계와 다른 상황에서 typeof 연산자의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "typeof 42의 결과는 문자열 'number'입니다. 안쪽 42를 true로 바꿔도 바깥 typeof 결과가 string인지 확인하세요."
+        "displayName을 만들 때만 ??를 사용하도록 마지막 출력의 중복 표현을 displayName으로 바꾸세요."
       ],
-      "code": "const typeName = typeof 42;\nconsole.log(typeName);\nconsole.log(typeof typeName);\n"
+      "code": "const inputName = null;\nconst displayName = inputName ?? '손님';\nconsole.log(inputName ?? '손님');\n"
     },
     {
       "kind": "write",
@@ -91,47 +90,48 @@
     },
     {
       "kind": "write",
-      "title": "빠진 배송 메모에 기본값 적용하기",
+      "title": "좌석 입력을 정리해 예약 가능 여부 출력하기",
       "brief": [
-        "memo가 null일 때 '메모 없음'을 선택해 출력하세요."
+        "seatInput이 null이면 '0'을 사용하고 Number로 변환한 뒤 1 이상인지 출력하세요."
       ],
-      "code": "const memo = null;\n// TODO: ??로 기본 문구를 출력하세요.\n",
-      "solutionCode": "const memo = null;\nconsole.log(memo ?? '메모 없음');\n",
+      "code": "const seatInput = null;\n// 기본값 적용 → 숫자 변환 → 비교 결과 출력\n",
+      "solutionCode": "const seatInput = null;\nconst seatText = seatInput ?? '0';\nconst seats = Number(seatText);\nconsole.log(seats >= 1);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "null 배송 메모 대체하기",
+          "label": "좌석 입력을 정리해 예약 가능 여부 출력하기",
           "expected": [
-            "메모 없음"
+            "false"
           ]
         }
       ],
       "hints": [
-        "memo 왼쪽, 기본 문자열 오른쪽에 ??를 두세요.",
-        "완성한 표현식을 출력하세요."
+        "seatInput ?? '0'으로 빠진 값을 먼저 정리하세요.",
+        "정리한 값을 Number로 바꾼 뒤 1 이상인지 비교하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "문자열 가격을 숫자로 바꿔 계산하기",
+      "title": "할인 입력을 계산 가능한 문장으로 만들기",
       "brief": [
-        "'12500'을 Number로 변환한 뒤 배송비 3000을 더해 15500을 출력하세요."
+        "couponName이 undefined이면 '쿠폰 없음'을 사용하고 discountInput을 숫자로 바꿔 안내 문장을 출력하세요."
       ],
-      "code": "const priceInput = '12500';\nconst shippingFee = 3000;\n// TODO: 변환한 가격과 배송비의 합을 출력하세요.\n",
-      "solutionCode": "const priceInput = '12500';\nconst shippingFee = 3000;\nconst price = Number(priceInput);\nconsole.log(price + shippingFee);\n",
+      "code": "const couponName = undefined;\nconst discountInput = '15';\n// 이름 / 할인율% 형식으로 출력\n",
+      "solutionCode": "const couponName = undefined;\nconst discountInput = '15';\nconst name = couponName ?? '쿠폰 없음';\nconst discount = Number(discountInput);\nconsole.log(`${name} / ${discount}%`);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "변환한 가격으로 계산하기",
+          "label": "할인 입력을 계산 가능한 문장으로 만들기",
           "expected": [
-            "15500"
+            "쿠폰 없음 / 15%"
           ]
         }
       ],
       "hints": [
-        "Number(priceInput)으로 숫자를 만드세요.",
-        "변환한 값에 shippingFee를 더하세요."
+        "couponName ?? '쿠폰 없음'을 사용하세요.",
+        "Number(discountInput) 결과를 템플릿 리터럴에 넣으세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "빠진 값에 기본값을 적용하고 문자열 숫자를 변환한 뒤 비교 결과를 문장으로 출력한다."
 }

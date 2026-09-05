@@ -29,12 +29,11 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 두 매개변수의 위치 바꿔 보기",
+      "title": "빼기 함수 호출의 인수 순서 바로잡기",
       "brief": [
-        "실행 단계와 다른 상황에서 매개변수와 인수의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "첫 인수는 item, 둘째 인수는 count에 들어갑니다. 마지막 호출을 showOrder(2, '연필')로 바꿔 위치가 뒤바뀌면 문장이 어색해지는지 확인하세요."
+        "재고 20에서 판매량 7을 빼려면 호출 인수를 20, 7 순서로 바꾸세요. 매개변수 순서가 결과를 결정합니다."
       ],
-      "code": "function showOrder(item, count) {\n  console.log(item + ': ' + count + '개');\n}\nshowOrder('연필', 2);\n"
+      "code": "function remaining(stock, sold) {\n  return stock - sold;\n}\nconsole.log(remaining(7, 20));\n"
     },
     {
       "kind": "write",
@@ -73,50 +72,83 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 여러 매개변수로 계산하기",
+      "title": "두 길이를 검증한 뒤 넓이 계산하기",
       "brief": [
-        "여러 매개변수로 계산하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "price와 count를 받아 곱한 값을 출력하는 showTotal을 만들고 3500, 3을 전달하세요."
+        "getArea(width, height)를 작성하세요. 둘 중 하나가 0 이하면 0을 반환하고, 그 밖에는 두 값을 곱해 반환하세요."
       ],
-      "code": "// TODO: 두 매개변수로 합계를 출력하세요.\n",
-      "solutionCode": "function showTotal(price, count) {\n  console.log(price * count);\n}\nshowTotal(3500, 3);\n",
+      "code": "// getArea 함수를 작성하세요.\n",
+      "entry": "getArea",
+      "solutionCode": "function getArea(width, height) {\n  if (width <= 0 || height <= 0) return 0;\n  return width * height;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "여러 매개변수로 계산하기",
-          "expected": [
-            "10500"
-          ]
+          "type": "value",
+          "label": "정상 길이",
+          "args": [
+            4,
+            6
+          ],
+          "expected": 24
+        },
+        {
+          "type": "value",
+          "label": "0 너비",
+          "args": [
+            0,
+            8
+          ],
+          "expected": 0
+        },
+        {
+          "type": "value",
+          "label": "음수 높이",
+          "args": [
+            3,
+            -1
+          ],
+          "expected": 0
         }
       ],
       "hints": [
-        "매개변수 순서는 price, count입니다.",
-        "본문에서 두 값을 곱해 출력하세요."
+        "width <= 0 || height <= 0을 먼저 확인하세요.",
+        "유효한 두 길이만 곱해 반환하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 한 매개변수로 다른 결과 만들기",
+      "title": "기본 금액에서 할인액과 포인트 차감하기",
       "brief": [
-        "여러 매개변수로 계산하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "city를 받아 'city 배송'을 출력하는 ship 함수를 만들고 서울과 제주로 호출하세요."
+        "getFinalPrice(price, discount, point)를 작성해 price - discount - point를 반환하세요."
       ],
-      "code": "// TODO: ship 함수를 만들고 두 번 호출하세요.\n",
-      "solutionCode": "function ship(city) {\n  console.log(city + ' 배송');\n}\nship('서울');\nship('제주');\n",
+      "code": "// getFinalPrice 함수를 작성하세요.\n",
+      "entry": "getFinalPrice",
+      "solutionCode": "function getFinalPrice(price, discount, point) {\n  return price - discount - point;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "한 매개변수로 다른 결과 만들기",
-          "expected": [
-            "서울 배송",
-            "제주 배송"
-          ]
+          "type": "value",
+          "label": "두 차감",
+          "args": [
+            20000,
+            3000,
+            2000
+          ],
+          "expected": 15000
+        },
+        {
+          "type": "value",
+          "label": "차감 없음",
+          "args": [
+            10000,
+            0,
+            0
+          ],
+          "expected": 10000
         }
       ],
       "hints": [
-        "city 매개변수를 문자열과 연결하세요.",
-        "두 도시를 각각 인수로 전달하세요."
+        "세 매개변수의 순서를 지키세요.",
+        "price에서 discount와 point를 차례로 빼세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "여러 매개변수의 역할과 인수 위치를 구분해 하나의 계산 결과를 반환한다."
 }

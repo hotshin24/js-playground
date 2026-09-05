@@ -123,5 +123,6 @@
         "매번 product * number를 반환하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "reduce의 핵심 문법과 실행 결과를 설명하고 직접 코드로 적용한다."
 }

@@ -54,7 +54,7 @@
       ],
       "hints": [
         "console.log(Number(age)); 줄을 먼저 작성하세요.",
-        "완성한 식을 console.log로 출력하세요."
+        "Number 직접 사용하기에서는 완성한 식을 console.log로 출력하세요."
       ]
     },
     {
@@ -102,5 +102,6 @@
         "변환한 값에 shippingFee를 더하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "Number로 변환하기의 핵심 문법과 실행 결과를 설명하고 직접 코드로 적용한다."
 }

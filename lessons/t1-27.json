@@ -32,20 +32,19 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 값은 같고 자료형은 다른 경우 비교하기",
+      "title": "변환 전후의 엄격한 비교 결과 확인하기",
       "brief": [
-        "실행 단계와 다른 상황에서 비교 연산자의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "숫자형 code와 문자형 input은 ===에서 false입니다. input을 Number(input)으로 바꿔 true가 되는지 확인하세요."
+        "두 번째 비교의 inputCode를 Number(inputCode)로 바꿔 변환 전후 결과를 나란히 확인하세요."
       ],
-      "code": "const code = 200;\nconst input = '200';\nconsole.log(code === input);\n"
+      "code": "const savedCode = 404;\nconst inputCode = '404';\nconsole.log(savedCode === inputCode);\nconsole.log(savedCode === inputCode);\n"
     },
     {
       "kind": "write",
       "title": "쿠폰 코드의 값과 자료형 비교하기",
       "brief": [
         "code가 숫자 100과 일치하는지 ===로 비교해 출력하세요. 문자열 '100'은 일치하지 않습니다.",
-        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
-        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+        "쿠폰 코드의 값과 자료형 비교하기에서는 코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
+        "쿠폰 코드의 값과 자료형 비교하기에서는 함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
       "code": "let code = 100;\n// 숫자 코드 100이 기준값과 일치하는지 비교해 출력하세요.\n\ncode = \"100\";\n// 코드가 문자열 \"100\"으로 바뀌었습니다. 숫자인 기준값과 일치하는지 다시 비교해 출력하세요.\n",
       "solutionCode": "let code = 100;\nconsole.log(code === 100);\n\ncode = \"100\";\nconsole.log(code === 100);\n",
@@ -61,46 +60,21 @@
       ],
       "hints": [
         "code가 숫자 100과 일치하는지 ===로 비교해 출력하세요. 문자열 '100'은 일치하지 않습니다.",
-        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+        "쿠폰 코드의 값과 자료형 비교하기에서는 입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
       ]
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 온도 범위 비교하기",
+      "title": "수량의 값과 자료형을 두 기준으로 비교하기",
       "brief": [
-        "값과 자료형 함께 비교하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "temperature가 0보다 작고 -10 이상인지 두 비교 결과로 출력하세요."
+        "문자열 수량이 숫자 3, 문자열 '3'과 각각 엄격히 같은지 출력하세요."
       ],
-      "code": "const temperature = -4;\n// TODO: 두 비교 결과를 출력하세요.\n",
-      "solutionCode": "const temperature = -4;\nconsole.log(temperature < 0);\nconsole.log(temperature >= -10);\n",
+      "code": "const quantity = '3';\n// 숫자 기준, 문자열 기준 비교\n",
+      "solutionCode": "const quantity = '3';\nconsole.log(quantity === 3);\nconsole.log(quantity === '3');\n",
       "asserts": [
         {
           "type": "console",
-          "label": "온도 범위 비교하기",
-          "expected": [
-            "true",
-            "true"
-          ]
-        }
-      ],
-      "hints": [
-        "temperature < 0을 출력하세요.",
-        "temperature >= -10도 출력하세요."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "조건을 더해 응용하기: 엄격한 동등 비교하기",
-      "brief": [
-        "값과 자료형 함께 비교하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "숫자 7과 문자열 '7'을 ===로 비교한 결과와 문자열끼리 비교한 결과를 출력하세요."
-      ],
-      "code": "// TODO: 두 엄격한 비교 결과를 출력하세요.\n",
-      "solutionCode": "console.log(7 === '7');\nconsole.log('7' === '7');\n",
-      "asserts": [
-        {
-          "type": "console",
-          "label": "엄격한 동등 비교하기",
+          "label": "수량의 값과 자료형을 두 기준으로 비교하기",
           "expected": [
             "false",
             "true"
@@ -108,9 +82,32 @@
         }
       ],
       "hints": [
-        "첫 비교는 자료형이 다릅니다.",
-        "둘째 비교는 값과 자료형이 모두 같습니다."
+        "첫 비교 기준은 숫자 3입니다.",
+        "둘째 비교 기준은 문자열 '3'입니다."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "형 변환 후 저장된 점수와 비교하기",
+      "brief": [
+        "문자열 점수를 Number로 변환한 뒤 숫자 기준 점수와 엄격히 비교하세요."
+      ],
+      "code": "const scoreInput = '85';\nconst savedScore = 85;\n// 변환 후 비교 결과 출력\n",
+      "solutionCode": "const scoreInput = '85';\nconst savedScore = 85;\nconst score = Number(scoreInput);\nconsole.log(score === savedScore);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "형 변환 후 저장된 점수와 비교하기",
+          "expected": [
+            "true"
+          ]
+        }
+      ],
+      "hints": [
+        "Number(scoreInput)으로 숫자를 만드세요.",
+        "변환한 score와 savedScore를 ===로 비교하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "값뿐 아니라 자료형까지 고려해 엄격한 비교 결과를 판단한다."
 }

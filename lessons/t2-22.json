@@ -30,12 +30,11 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 조건이 false일 때 흐름 확인하기",
+      "title": "무료 배송 경계값을 포함하도록 비교 연산자 고치기",
       "brief": [
-        "실행 단계와 다른 상황에서 if 문의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "온도가 0보다 낮지 않아 현재 아무것도 출력되지 않습니다. temperature를 -3으로 바꿔 블록이 실행되게 하세요."
+        "금액이 정확히 50000일 때도 무료여야 합니다. >를 >=로 바꿔 경계값을 포함하세요."
       ],
-      "code": "const temperature = 4;\nif (temperature < 0) {\n  console.log('결빙 주의');\n}\n"
+      "code": "function shippingFee(amount) {\n  if (amount > 50000) return 0;\n  return 3000;\n}\nconsole.log(shippingFee(50000));\n"
     },
     {
       "kind": "write",
@@ -80,69 +79,68 @@
     },
     {
       "kind": "write",
-      "title": "구매 금액에 따라 포장비 반환하기",
+      "title": "회원 여부에 따라 적립률 반환하기",
       "brief": [
-        "getPackingFee(amount)를 작성하세요. amount가 30000 이상이면 0, 아니면 2000을 반환하세요.",
-        "if 문에서 조건을 확인하고 각 경우의 값을 return으로 반환하세요."
+        "getPointRate(isMember)를 작성해 회원이면 0.05, 아니면 0.01을 반환하세요."
       ],
-      "code": "// getPackingFee 함수를 작성하세요.\n",
-      "entry": "getPackingFee",
-      "solutionCode": "function getPackingFee(amount) {\n  if (amount >= 30000) return 0;\n  return 2000;\n}\n",
+      "code": "// getPointRate 함수를 작성하세요.\n",
+      "entry": "getPointRate",
+      "solutionCode": "function getPointRate(isMember) {\n  if (isMember) return 0.05;\n  return 0.01;\n}\n",
       "asserts": [
         {
           "type": "value",
-          "label": "무료 포장 기준 이상",
+          "label": "회원",
           "args": [
-            30000
+            true
           ],
-          "expected": 0
+          "expected": 0.05
         },
         {
           "type": "value",
-          "label": "포장비 부과",
+          "label": "비회원",
           "args": [
-            12000
+            false
           ],
-          "expected": 2000
+          "expected": 0.01
         }
       ],
       "hints": [
-        "function getPackingFee(amount)로 시작하세요.",
-        "amount >= 30000이면 0을 반환하고, 그 밖에는 2000을 반환하세요."
+        "if (isMember)로 회원을 확인하세요.",
+        "회원 분기에서 0.05를 반환하고 나머지는 0.01을 반환하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "예약 인원에 따라 보증금 반환하기",
+      "title": "무게 기준 추가 요금 반환하기",
       "brief": [
-        "getDeposit(people)를 작성하세요. 5명 이상이면 10000, 그렇지 않으면 0을 반환하세요.",
-        "경계값인 5가 큰 인원 조건에 포함되어야 합니다."
+        "getWeightFee(weight)를 작성해 10kg 초과면 5000, 아니면 0을 반환하세요. 10kg은 추가 요금이 없습니다."
       ],
-      "code": "// getDeposit 함수를 작성하세요.\n",
-      "entry": "getDeposit",
-      "solutionCode": "function getDeposit(people) {\n  if (people >= 5) return 10000;\n  return 0;\n}\n",
+      "code": "// getWeightFee 함수를 작성하세요.\n",
+      "entry": "getWeightFee",
+      "solutionCode": "function getWeightFee(weight) {\n  if (weight > 10) return 5000;\n  return 0;\n}\n",
       "asserts": [
         {
           "type": "value",
-          "label": "경계 인원",
+          "label": "초과",
           "args": [
-            5
+            11
           ],
-          "expected": 10000
+          "expected": 5000
         },
         {
           "type": "value",
-          "label": "소규모 예약",
+          "label": "경계",
           "args": [
-            4
+            10
           ],
           "expected": 0
         }
       ],
       "hints": [
-        "people >= 5를 if 문의 조건으로 사용하세요.",
-        "조건을 만족하면 10000, 나머지는 0을 반환하세요."
+        "초과 조건은 weight > 10입니다.",
+        "조건을 만족하지 않으면 0을 반환하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "조건을 먼저 판단하고 각 경우에 맞는 값을 return으로 반환한다."
 }

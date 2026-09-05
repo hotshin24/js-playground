@@ -24,12 +24,11 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 조건 순서가 결과를 바꾸는 경우 확인하기",
+      "title": "등급 조건의 순서를 큰 값부터 정리하기",
       "brief": [
-        "실행 단계와 다른 상황에서 else if 문의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "age 70은 첫 조건 65 이상에서 멈춥니다. 첫 조건을 age >= 80으로 바꿔 다음 구간이 선택되게 하세요."
+        "첫 조건이 score >= 60이면 높은 점수도 먼저 통과합니다. 90 기준을 첫 번째, 60 기준을 두 번째로 옮기세요."
       ],
-      "code": "const age = 70;\nif (age >= 65) {\n  console.log('우대');\n} else if (age >= 20) {\n  console.log('일반');\n} else {\n  console.log('청소년');\n}\n"
+      "code": "function grade(score) {\n  if (score >= 60) return '통과';\n  else if (score >= 90) return '우수';\n  return '재시험';\n}\nconsole.log(grade(95));\n"
     },
     {
       "kind": "write",
@@ -74,49 +73,84 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 미세먼지 단계를 구간으로 나누기",
+      "title": "대기 시간으로 혼잡도 세 단계 반환하기",
       "brief": [
-        "여러 범위를 else if로 나누기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "dust가 80 이상이면 나쁨, 30 이상이면 보통, 아니면 좋음을 출력하세요."
+        "getCrowdLevel(minutes)를 작성해 30 이상은 혼잡, 10 이상은 보통, 나머지는 여유를 반환하세요."
       ],
-      "code": "const dust = 45;\n// TODO: 세 구간을 나누세요.\n",
-      "solutionCode": "const dust = 45;\nif (dust >= 80) {\n  console.log('나쁨');\n} else if (dust >= 30) {\n  console.log('보통');\n} else {\n  console.log('좋음');\n}\n",
+      "code": "// getCrowdLevel 함수를 작성하세요.\n",
+      "entry": "getCrowdLevel",
+      "solutionCode": "function getCrowdLevel(minutes) {\n  if (minutes >= 30) return '혼잡';\n  else if (minutes >= 10) return '보통';\n  return '여유';\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "미세먼지 단계를 구간으로 나누기",
-          "expected": [
-            "보통"
-          ]
+          "type": "value",
+          "label": "혼잡",
+          "args": [
+            45
+          ],
+          "expected": "혼잡"
+        },
+        {
+          "type": "value",
+          "label": "보통",
+          "args": [
+            10
+          ],
+          "expected": "보통"
+        },
+        {
+          "type": "value",
+          "label": "여유",
+          "args": [
+            3
+          ],
+          "expected": "여유"
         }
       ],
       "hints": [
-        "높은 기준 80부터 검사하세요.",
-        "마지막 범위는 else로 처리하세요."
+        "가장 큰 기준인 30부터 검사하세요.",
+        "두 번째 조건은 minutes >= 10입니다."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 할인율을 세 등급으로 나누기",
+      "title": "문자열 구매 수량을 변환해 할인 구간 나누기",
       "brief": [
-        "여러 범위를 else if로 나누기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "grade가 'VIP'면 20, 'GOLD'면 10, 나머지는 0을 출력하세요."
+        "getDiscount(countInput)를 작성하세요. 입력을 Number로 변환한 뒤 10개 이상은 2000, 5개 이상은 1000, 나머지는 0을 반환하세요."
       ],
-      "code": "const grade = 'GOLD';\n// TODO: 세 등급을 if, else if, else로 나누세요.\n",
-      "solutionCode": "const grade = 'GOLD';\nif (grade === 'VIP') {\n  console.log(20);\n} else if (grade === 'GOLD') {\n  console.log(10);\n} else {\n  console.log(0);\n}\n",
+      "code": "// getDiscount 함수를 작성하세요.\n",
+      "entry": "getDiscount",
+      "solutionCode": "function getDiscount(countInput) {\n  const count = Number(countInput);\n  if (count >= 10) return 2000;\n  else if (count >= 5) return 1000;\n  return 0;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "할인율을 세 등급으로 나누기",
-          "expected": [
-            "10"
-          ]
+          "type": "value",
+          "label": "대량",
+          "args": [
+            "12"
+          ],
+          "expected": 2000
+        },
+        {
+          "type": "value",
+          "label": "중간",
+          "args": [
+            "5"
+          ],
+          "expected": 1000
+        },
+        {
+          "type": "value",
+          "label": "소량",
+          "args": [
+            "2"
+          ],
+          "expected": 0
         }
       ],
       "hints": [
-        "문자열은 ===로 비교하세요.",
-        "GOLD 조건은 else if에 둡니다."
+        "먼저 const count = Number(countInput);으로 입력을 정리하세요.",
+        "변환한 count를 큰 기준부터 else if로 비교하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "여러 범위를 큰 기준부터 else if로 나눠 하나의 결과를 반환한다."
 }

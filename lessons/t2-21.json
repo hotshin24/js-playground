@@ -30,12 +30,11 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 짝수 차례를 건너뛰어 홀수만 남기기",
+      "title": "더할 값의 조건을 3의 배수로 바꾸기",
       "brief": [
-        "실행 단계와 다른 상황에서 continue로 이번 반복 건너뛰기의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "현재 짝수에서 continue합니다. 조건을 number % 2 !== 0으로 바꿔 홀수 대신 짝수만 출력해 보세요."
+        "현재 홀수 조건을 number % 3 === 0으로 바꿔 1부터 9까지 3의 배수만 더하세요. continue 없이 조건 안에서만 누적하는 방식입니다."
       ],
-      "code": "for (let number = 1; number <= 6; number++) {\n  if (number % 2 === 0) continue;\n  console.log(number);\n}\n"
+      "code": "let total = 0;\nfor (let number = 1; number <= 9; number += 1) {\n  if (number % 2 !== 0) total += number;\n}\nconsole.log(total);\n"
     },
     {
       "kind": "write",
@@ -81,56 +80,70 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 특정 번호 제외하기",
+      "title": "범위 안에서 5의 배수만 합산하기",
       "brief": [
-        "조건과 반복으로 짝수 합계 구하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "1부터 5까지 중 2만 건너뛰고 나머지를 출력하세요."
+        "sumMultiplesOfFive(limit)를 작성해 1부터 limit까지 5의 배수만 total에 더하세요."
       ],
-      "code": "// TODO: continue로 2를 제외하세요.\n",
-      "solutionCode": "for (let number = 1; number <= 5; number++) {\n  if (number === 2) continue;\n  console.log(number);\n}\n",
+      "code": "// sumMultiplesOfFive 함수를 작성하세요.\n",
+      "entry": "sumMultiplesOfFive",
+      "solutionCode": "function sumMultiplesOfFive(limit) {\n  let total = 0;\n  for (let number = 1; number <= limit; number += 1) {\n    if (number % 5 === 0) total += number;\n  }\n  return total;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "특정 번호 제외하기",
-          "expected": [
-            "1",
-            "3",
-            "4",
-            "5"
-          ]
+          "type": "value",
+          "label": "10까지",
+          "args": [
+            10
+          ],
+          "expected": 15
+        },
+        {
+          "type": "value",
+          "label": "4까지",
+          "args": [
+            4
+          ],
+          "expected": 0
         }
       ],
       "hints": [
-        "number === 2일 때 continue하세요.",
-        "출력문은 if 다음에 둡니다."
+        "total은 반복문 밖에서 0으로 시작하세요.",
+        "number % 5 === 0일 때만 더하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 3의 배수 제외하기",
+      "title": "제외할 숫자를 건너뛰며 합계 구하기",
       "brief": [
-        "조건과 반복으로 짝수 합계 구하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "1부터 7까지 중 3의 배수는 건너뛰고 나머지를 출력하세요."
+        "sumExcept(limit, excluded)를 작성해 1부터 limit까지 반복하고 excluded와 같은 수는 continue로 건너뛰세요."
       ],
-      "code": "// TODO: 3의 배수를 제외하세요.\n",
-      "solutionCode": "for (let number = 1; number <= 7; number++) {\n  if (number % 3 === 0) continue;\n  console.log(number);\n}\n",
+      "code": "// sumExcept 함수를 작성하세요.\n",
+      "entry": "sumExcept",
+      "solutionCode": "function sumExcept(limit, excluded) {\n  let total = 0;\n  for (let number = 1; number <= limit; number += 1) {\n    if (number === excluded) continue;\n    total += number;\n  }\n  return total;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "3의 배수 제외하기",
-          "expected": [
-            "1",
-            "2",
-            "4",
-            "5",
-            "7"
-          ]
+          "type": "value",
+          "label": "3 제외",
+          "args": [
+            5,
+            3
+          ],
+          "expected": 12
+        },
+        {
+          "type": "value",
+          "label": "1 제외",
+          "args": [
+            3,
+            1
+          ],
+          "expected": 5
         }
       ],
       "hints": [
-        "나머지가 0인지 검사하세요.",
-        "continue 뒤의 출력은 현재 차례에서 실행되지 않습니다."
+        "number === excluded이면 continue하세요.",
+        "그 밖의 수만 total에 누적하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "반복하면서 조건에 맞는 값만 선택해 누적 결과를 만든다."
 }

@@ -56,7 +56,7 @@
       ],
       "hints": [
         "console.log(String(count)); 줄을 먼저 작성하세요.",
-        "완성한 식을 console.log로 출력하세요."
+        "String과 Boolean 직접 사용하기에서는 완성한 식을 console.log로 출력하세요."
       ]
     },
     {
@@ -106,5 +106,6 @@
         "비어 있지 않은 문자열도 true입니다."
       ]
     }
-  ]
+  ],
+  "learningGoal": "String과 Boolean으로 변환하기의 핵심 문법과 실행 결과를 설명하고 직접 코드로 적용한다."
 }

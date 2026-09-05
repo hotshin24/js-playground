@@ -32,20 +32,19 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 그리고와 또는의 결과 비교하기",
+      "title": "가격 조건에 재고 조건 추가하기",
       "brief": [
-        "실행 단계와 다른 상황에서 논리 연산자의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "false && true는 false지만 false || true는 true입니다. hasTicket을 true로 바꿔 두 결과가 어떻게 달라지는지 확인하세요."
+        "현재 가격 조건만 확인합니다. 뒤에 && stock > 0을 추가해 두 조건을 모두 검사하세요."
       ],
-      "code": "const hasTicket = false;\nconst isStaff = true;\nconsole.log(hasTicket && isStaff);\nconsole.log(hasTicket || isStaff);\n"
+      "code": "const price = 12000;\nconst stock = 0;\nconsole.log(price >= 10000);\n"
     },
     {
       "kind": "write",
       "title": "무료 배송 조건 확인하기",
       "brief": [
         "orderAmount가 50000 이상이면서 isJeju가 false인지 비교하여 출력하세요.",
-        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
-        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+        "무료 배송 조건 확인하기에서는 코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
+        "무료 배송 조건 확인하기에서는 함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
       "code": "let orderAmount = 60000;\nlet isJeju = false;\n// 주문 금액 60000원, 제주 배송이 아닌 경우의 무료 배송 여부를 출력하세요.\n\norderAmount = 60000;\nisJeju = true;\n// 주문 금액 60000원, 제주 배송인 경우의 무료 배송 여부를 다시 계산해 출력하세요.\n\norderAmount = 40000;\nisJeju = false;\n// 주문 금액 40000원, 제주 배송이 아닌 경우의 무료 배송 여부를 다시 계산해 출력하세요.\n",
       "solutionCode": "let orderAmount = 60000;\nlet isJeju = false;\nconsole.log(orderAmount >= 50000 && isJeju === false);\n\norderAmount = 60000;\nisJeju = true;\nconsole.log(orderAmount >= 50000 && isJeju === false);\n\norderAmount = 40000;\nisJeju = false;\nconsole.log(orderAmount >= 50000 && isJeju === false);\n",
@@ -62,54 +61,53 @@
       ],
       "hints": [
         "orderAmount가 50000 이상이면서 isJeju가 false인지 비교하여 출력하세요.",
-        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+        "무료 배송 조건 확인하기에서는 입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
       ]
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 두 자격 모두 확인하기",
+      "title": "로그인 상태와 남은 시도 횟수 함께 검사하기",
       "brief": [
-        "두 조건 모두 확인하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "adult와 agreed가 모두 true일 때만 가능한 결과를 &&로 출력하세요."
+        "loggedIn이 true이고 attempts가 3보다 작은지 두 조건을 &&로 묶어 출력하세요."
       ],
-      "code": "const adult = true;\nconst agreed = false;\n// TODO: 두 조건을 결합해 출력하세요.\n",
-      "solutionCode": "const adult = true;\nconst agreed = false;\nconsole.log(adult && agreed);\n",
+      "code": "const loggedIn = true;\nconst attempts = 2;\n// 상태와 비교 조건의 결합 결과 출력\n",
+      "solutionCode": "const loggedIn = true;\nconst attempts = 2;\nconsole.log(loggedIn && attempts < 3);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "두 자격 모두 확인하기",
-          "expected": [
-            "false"
-          ]
-        }
-      ],
-      "hints": [
-        "두 변수 사이에 &&를 사용하세요.",
-        "둘 중 agreed가 false임을 확인하세요."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "조건을 더해 응용하기: 부정과 또는 함께 사용하기",
-      "brief": [
-        "두 조건 모두 확인하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "soldOut이 아니거나 preorder가 가능하면 true가 되도록 !와 ||를 사용하세요."
-      ],
-      "code": "const soldOut = true;\nconst preorder = true;\n// TODO: 조건 결과를 출력하세요.\n",
-      "solutionCode": "const soldOut = true;\nconst preorder = true;\nconsole.log(!soldOut || preorder);\n",
-      "asserts": [
-        {
-          "type": "console",
-          "label": "부정과 또는 함께 사용하기",
+          "label": "로그인과 약관 동의를 함께 검사하기",
           "expected": [
             "true"
           ]
         }
       ],
       "hints": [
-        "soldOut 앞에 !를 붙이세요.",
-        "그 결과와 preorder를 ||로 연결하세요."
+        "&& 왼쪽에는 loggedIn을 놓으세요.",
+        "오른쪽에는 attempts < 3 비교식을 작성하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "나이 범위를 두 비교식으로 만들기",
+      "brief": [
+        "age가 14 이상이면서 19 미만인지 하나의 논리식으로 출력하세요."
+      ],
+      "code": "const age = 17;\n// 범위 조건 출력\n",
+      "solutionCode": "const age = 17;\nconsole.log(age >= 14 && age < 19);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "나이 범위를 두 비교식으로 만들기",
+          "expected": [
+            "true"
+          ]
+        }
+      ],
+      "hints": [
+        "왼쪽에는 age >= 14를 작성하세요.",
+        "&& 오른쪽에는 age < 19를 작성하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "서로 독립된 두 조건을 &&로 묶어 둘 다 참일 때만 통과시킨다."
 }

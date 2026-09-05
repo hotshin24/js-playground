@@ -6,12 +6,125 @@
   "runtime": "js",
   "title": "묵시적 형 변환",
   "steps": [
-    {"kind":"read","title":"문자열이 섞인 +의 결과 이해하기","brief":["묵시적 형 변환은 JavaScript가 연산을 수행하기 위해 값의 자료형을 자동으로 바꾸는 동작입니다. 1 + '2'에서는 문자열이 하나라도 있으므로 숫자 1이 문자열 '1'로 바뀌고 두 문자열이 연결되어 '12'가 됩니다. 따라서 결과의 자료형도 string입니다. 반면 - 연산자는 문자열 연결 기능이 없어 문자열 숫자를 숫자형으로 바꿉니다. 연산자에 따라 변환 방향이 달라지므로 값뿐 아니라 결과의 자료형까지 확인해야 합니다.",{"code":["console.log(1 + '2');       // 12","console.log(typeof (1 + '2')); // string"]}]},
-    {"kind":"run","title":"가격과 단위를 문자열로 연결하기","brief":["숫자형 가격에 문자열 '원'을 더하면 표시용 문자열이 됩니다. 값과 자료형을 함께 확인하세요."],"code":"const price = 3000;\nconst label = price + '원';\nconsole.log(label);\nconsole.log(typeof label);\n"},
-    {"kind":"tweak","title":"+와 -의 형 변환 방향 비교하기","brief":["현재 결과 103과 7을 확인한 뒤 문자열 '10'을 '20'으로 바꾸세요. +는 문자열 연결, -는 숫자 계산이 되는 차이를 비교하세요."],"code":"console.log('10' + 3);\nconsole.log('10' - 3);\n"},
-    {"kind":"write","title":"수량과 단위 연결하기","brief":["count와 문자열 '개'를 +로 연결해 5개를 출력하세요."],"code":"const count = 5;\n// TODO: count와 '개'를 연결해 출력하세요.\n","solutionCode":"const count = 5;\nconsole.log(count + '개');\n","asserts":[{"type":"console","label":"수량과 단위 연결","expected":["5개"]}],"hints":["count + '개'가 표시용 문자열을 만듭니다.","완성한 연결식을 console.log로 출력하세요."]},
-    {"kind":"write","title":"문자열 숫자로 뺄셈하기","brief":["left - right의 결과 16을 출력하세요. -는 문자열 연결을 하지 않으므로 '20'이 숫자로 변환됩니다."],"code":"const left = '20';\nconst right = 4;\n// TODO: 뺄셈 결과를 출력하세요.\n","solutionCode":"const left = '20';\nconst right = 4;\nconsole.log(left - right);\n","asserts":[{"type":"console","label":"문자열 숫자의 뺄셈","expected":["16"]}],"hints":["left - right를 계산하세요.","계산식을 console.log 안에 넣으세요."]},
-    {"kind":"write","title":"연결 결과의 자료형 확인하기","brief":["7 + '3'의 결과를 value에 저장하고, value와 typeof value를 각각 출력하세요."],"code":"const value = 7 + '3';\n// TODO: 값과 자료형을 차례로 출력하세요.\n","solutionCode":"const value = 7 + '3';\nconsole.log(value);\nconsole.log(typeof value);\n","asserts":[{"type":"console","label":"연결 결과와 자료형","expected":["73","string"]}],"hints":["먼저 console.log(value)를 작성하세요.","다음 줄에서 typeof value를 출력하세요."]},
-    {"kind":"write","title":"같은 값에 +와 - 적용하기","brief":["first + second와 first - second를 차례로 출력하세요. +는 82를 연결하고 -는 6을 계산합니다."],"code":"const first = '8';\nconst second = 2;\n// TODO: +와 - 결과를 차례로 출력하세요.\n","solutionCode":"const first = '8';\nconst second = 2;\nconsole.log(first + second);\nconsole.log(first - second);\n","asserts":[{"type":"console","label":"서로 다른 형 변환 결과","expected":["82","6"]}],"hints":["first + second를 먼저 출력하세요.","다음 줄에서 first - second를 출력하세요."]}
-  ]
+    {
+      "kind": "read",
+      "title": "문자열이 섞인 +의 결과 이해하기",
+      "brief": [
+        "묵시적 형 변환은 JavaScript가 연산을 수행하기 위해 값의 자료형을 자동으로 바꾸는 동작입니다. 1 + '2'에서는 문자열이 하나라도 있으므로 숫자 1이 문자열 '1'로 바뀌고 두 문자열이 연결되어 '12'가 됩니다. 따라서 결과의 자료형도 string입니다. 반면 - 연산자는 문자열 연결 기능이 없어 문자열 숫자를 숫자형으로 바꿉니다. 연산자에 따라 변환 방향이 달라지므로 값뿐 아니라 결과의 자료형까지 확인해야 합니다.",
+        {
+          "code": [
+            "console.log(1 + '2');       // 12",
+            "console.log(typeof (1 + '2')); // string"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "run",
+      "title": "가격과 단위를 문자열로 연결하기",
+      "brief": [
+        "숫자형 가격에 문자열 '원'을 더하면 표시용 문자열이 됩니다. 값과 자료형을 함께 확인하세요."
+      ],
+      "code": "const price = 3000;\nconst label = price + '원';\nconsole.log(label);\nconsole.log(typeof label);\n"
+    },
+    {
+      "kind": "tweak",
+      "title": "+와 -의 형 변환 방향 비교하기",
+      "brief": [
+        "현재 결과 103과 7을 확인한 뒤 문자열 '10'을 '20'으로 바꾸세요. +는 문자열 연결, -는 숫자 계산이 되는 차이를 비교하세요."
+      ],
+      "code": "console.log('10' + 3);\nconsole.log('10' - 3);\n"
+    },
+    {
+      "kind": "write",
+      "title": "수량과 단위 연결하기",
+      "brief": [
+        "count와 문자열 '개'를 +로 연결해 5개를 출력하세요."
+      ],
+      "code": "const count = 5;\n// TODO: count와 '개'를 연결해 출력하세요.\n",
+      "solutionCode": "const count = 5;\nconsole.log(count + '개');\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "수량과 단위 연결",
+          "expected": [
+            "5개"
+          ]
+        }
+      ],
+      "hints": [
+        "count + '개'가 표시용 문자열을 만듭니다.",
+        "완성한 연결식을 console.log로 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "문자열 숫자로 뺄셈하기",
+      "brief": [
+        "left - right의 결과 16을 출력하세요. -는 문자열 연결을 하지 않으므로 '20'이 숫자로 변환됩니다."
+      ],
+      "code": "const left = '20';\nconst right = 4;\n// TODO: 뺄셈 결과를 출력하세요.\n",
+      "solutionCode": "const left = '20';\nconst right = 4;\nconsole.log(left - right);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "문자열 숫자의 뺄셈",
+          "expected": [
+            "16"
+          ]
+        }
+      ],
+      "hints": [
+        "left - right를 계산하세요.",
+        "문자열 숫자로 뺄셈하기에서는 계산식을 console.log 안에 넣으세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "연결 결과의 자료형 확인하기",
+      "brief": [
+        "7 + '3'의 결과를 value에 저장하고, value와 typeof value를 각각 출력하세요."
+      ],
+      "code": "const value = 7 + '3';\n// TODO: 값과 자료형을 차례로 출력하세요.\n",
+      "solutionCode": "const value = 7 + '3';\nconsole.log(value);\nconsole.log(typeof value);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "연결 결과와 자료형",
+          "expected": [
+            "73",
+            "string"
+          ]
+        }
+      ],
+      "hints": [
+        "먼저 console.log(value)를 작성하세요.",
+        "다음 줄에서 typeof value를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "같은 값에 +와 - 적용하기",
+      "brief": [
+        "first + second와 first - second를 차례로 출력하세요. +는 82를 연결하고 -는 6을 계산합니다."
+      ],
+      "code": "const first = '8';\nconst second = 2;\n// TODO: +와 - 결과를 차례로 출력하세요.\n",
+      "solutionCode": "const first = '8';\nconst second = 2;\nconsole.log(first + second);\nconsole.log(first - second);\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "서로 다른 형 변환 결과",
+          "expected": [
+            "82",
+            "6"
+          ]
+        }
+      ],
+      "hints": [
+        "first + second를 먼저 출력하세요.",
+        "다음 줄에서 first - second를 출력하세요."
+      ]
+    }
+  ],
+  "learningGoal": "묵시적 형 변환의 핵심 문법과 실행 결과를 설명하고 직접 코드로 적용한다."
 }

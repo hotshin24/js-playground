@@ -53,7 +53,7 @@
       ],
       "hints": [
         "console.log(parseInt(width, 10)); 줄을 먼저 작성하세요.",
-        "완성한 식을 console.log로 출력하세요."
+        "parseInt 직접 사용하기에서는 완성한 식을 console.log로 출력하세요."
       ]
     },
     {
@@ -100,5 +100,6 @@
         "10진수 기준을 두 번째 인수로 전달하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "parseInt로 정수 변환하기의 핵심 문법과 실행 결과를 설명하고 직접 코드로 적용한다."
 }

@@ -24,12 +24,11 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 같은 key를 두 번 쓸 때 결과 확인하기",
+      "title": "객체에 빠진 프로퍼티를 추가해 문장 완성하기",
       "brief": [
-        "실행 단계와 다른 상황에서 프로퍼티와 key·value의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "같은 객체에 status key가 두 번 있어 뒤의 완료가 앞의 접수를 덮습니다. 첫 status의 key를 previousStatus로 바꿔 두 값을 모두 남겨 보세요."
+        "profile에 city: '대전' 프로퍼티를 추가해 undefined 대신 지역이 나오게 하세요."
       ],
-      "code": "const task = {\n  status: '접수',\n  status: '완료'\n};\nconsole.log(task.status);\n"
+      "code": "const profile = { name: '현우', job: '디자이너' };\nconsole.log(`${profile.name} / ${profile.job} / ${profile.city}`);\n"
     },
     {
       "kind": "write",
@@ -72,52 +71,66 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 의미 있는 key로 프로퍼티 만들기",
+      "title": "문의 정보를 객체로 묶어 우선순위 문장 만들기",
       "brief": [
-        "여러 프로퍼티로 문장 만들기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "delivery 객체에 city '대전'과 fee 3000을 넣고 두 value를 출력하세요."
+        "question 객체에 category, urgent, writer를 선언하고 작성자 / 분류 / 긴급여부 형식으로 출력하세요."
       ],
-      "code": "// TODO: delivery 객체를 작성하세요.\n",
-      "solutionCode": "const delivery = { city: '대전', fee: 3000 };\nconsole.log(delivery.city);\nconsole.log(delivery.fee);\n",
+      "code": "// question 객체를 만들고 문장을 출력하세요.\n",
+      "solutionCode": "const question = { category: '결제', urgent: true, writer: '소라' };\nconsole.log(`${question.writer} / ${question.category} / 긴급: ${question.urgent}`);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "의미 있는 key로 프로퍼티 만들기",
+          "label": "문의 정보를 객체로 묶어 우선순위 문장 만들기",
           "expected": [
-            "대전",
-            "3000"
+            "소라 / 결제 / 긴급: true"
           ]
         }
       ],
       "hints": [
-        "city와 fee가 각각 key입니다.",
-        "콜론 오른쪽에 대응하는 value를 둡니다."
+        "세 값을 하나의 객체 리터럴에 넣으세요.",
+        "각 프로퍼티를 점 표기법으로 읽어 문장을 만드세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 프로퍼티 세 쌍 구분하기",
+      "title": "배송 객체의 여러 프로퍼티로 요약 반환하기",
       "brief": [
-        "여러 프로퍼티로 문장 만들기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "movie 객체에 title '봄날', year 2026, watched false를 넣고 값을 차례로 출력하세요."
+        "summarizeDelivery(delivery)를 작성하세요. completed에 따라 상태 문구를 고른 뒤 recipient와 city를 포함한 문장을 반환하세요."
       ],
-      "code": "// TODO: movie 객체와 출력을 작성하세요.\n",
-      "solutionCode": "const movie = { title: '봄날', year: 2026, watched: false };\nconsole.log(movie.title);\nconsole.log(movie.year);\nconsole.log(movie.watched);\n",
+      "code": "// summarizeDelivery 함수를 작성하세요.\n",
+      "entry": "summarizeDelivery",
+      "solutionCode": "function summarizeDelivery(delivery) {\n  const status = delivery.completed ? '완료' : '진행';\n  return `${delivery.recipient} / ${delivery.city} / ${status}`;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "프로퍼티 세 쌍 구분하기",
-          "expected": [
-            "봄날",
-            "2026",
-            "false"
-          ]
+          "type": "value",
+          "label": "완료",
+          "args": [
+            {
+              "recipient": "민수",
+              "city": "서울",
+              "completed": true
+            }
+          ],
+          "expected": "민수 / 서울 / 완료"
+        },
+        {
+          "type": "value",
+          "label": "진행",
+          "args": [
+            {
+              "recipient": "지아",
+              "city": "광주",
+              "completed": false
+            }
+          ],
+          "expected": "지아 / 광주 / 진행"
         }
       ],
       "hints": [
-        "각 프로퍼티는 key와 value 한 쌍입니다.",
-        "세 key를 정확히 구분해 읽으세요."
+        "delivery.completed를 삼항 조건 연산자에 사용해 status를 정하세요.",
+        "recipient, city, status를 템플릿 리터럴에 넣어 반환하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "서로 관련된 여러 값을 의미 있는 프로퍼티로 묶고 필요한 문장으로 조합한다."
 }

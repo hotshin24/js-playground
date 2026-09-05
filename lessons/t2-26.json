@@ -24,12 +24,11 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 증가 폭을 바꿔 짝수만 출력하기",
+      "title": "누적식을 덮어쓰기가 아닌 더하기로 고치기",
       "brief": [
-        "실행 단계와 다른 상황에서 for 문의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "현재는 0부터 6까지 2씩 증가합니다. 증감식을 value += 3으로 바꿔 0, 3, 6이 출력되는지 확인하세요."
+        "total = day는 이전 합계를 지웁니다. total += day로 바꿔 1부터 4까지의 합 10을 만드세요."
       ],
-      "code": "for (let value = 0; value <= 6; value += 2) {\n  console.log(value);\n}\n"
+      "code": "let total = 0;\nfor (let day = 1; day <= 4; day += 1) {\n  total = day;\n}\nconsole.log(total);\n"
     },
     {
       "kind": "write",
@@ -74,71 +73,72 @@
     },
     {
       "kind": "write",
-      "title": "1부터 입력값까지의 합계 반환하기",
+      "title": "일정한 기본 요금을 횟수만큼 누적하기",
       "brief": [
-        "sumTo(limit)를 작성하세요. 1부터 limit까지 반복하며 total에 누적한 뒤 반환하세요.",
-        "total은 반복 전에 0으로 선언해야 이전 합계를 계속 사용할 수 있습니다."
+        "calculateUsage(count, fee)를 작성해 count번 반복하며 fee를 total에 더해 반환하세요."
       ],
-      "code": "// sumTo 함수를 작성하세요.\n",
-      "entry": "sumTo",
-      "solutionCode": "function sumTo(limit) {\n  let total = 0;\n  for (let number = 1; number <= limit; number += 1) {\n    total += number;\n  }\n  return total;\n}\n",
+      "code": "// calculateUsage 함수를 작성하세요.\n",
+      "entry": "calculateUsage",
+      "solutionCode": "function calculateUsage(count, fee) {\n  let total = 0;\n  for (let turn = 1; turn <= count; turn += 1) {\n    total += fee;\n  }\n  return total;\n}\n",
       "asserts": [
         {
           "type": "value",
-          "label": "1부터 4까지 누적",
+          "label": "3회",
           "args": [
-            4
+            3,
+            2000
           ],
-          "expected": 10
+          "expected": 6000
         },
         {
           "type": "value",
-          "label": "한 번만 누적",
+          "label": "0회",
           "args": [
-            1
+            0,
+            2000
           ],
-          "expected": 1
+          "expected": 0
         }
       ],
       "hints": [
-        "let total = 0;을 반복문 앞에 선언하세요.",
-        "반복할 때마다 total += number를 실행하고 마지막에 total을 반환하세요."
+        "turn을 1부터 count까지 반복하세요.",
+        "각 반복에서 total += fee를 실행하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "매일 같은 판매량을 누적해 반환하기",
+      "title": "범위에서 짝수만 골라 누적하기",
       "brief": [
-        "calculateSales(days, dailySales)를 작성하세요. days번 반복하며 dailySales를 total에 더해 반환하세요.",
-        "인수 두 개가 달라져도 같은 누적 순서로 계산되어야 합니다."
+        "sumEvenRange(start, end)를 작성해 범위를 반복하고 짝수인 number만 total에 더해 반환하세요."
       ],
-      "code": "// calculateSales 함수를 작성하세요.\n",
-      "entry": "calculateSales",
-      "solutionCode": "function calculateSales(days, dailySales) {\n  let total = 0;\n  for (let day = 1; day <= days; day += 1) {\n    total += dailySales;\n  }\n  return total;\n}\n",
+      "code": "// sumEvenRange 함수를 작성하세요.\n",
+      "entry": "sumEvenRange",
+      "solutionCode": "function sumEvenRange(start, end) {\n  let total = 0;\n  for (let number = start; number <= end; number += 1) {\n    if (number % 2 === 0) total += number;\n  }\n  return total;\n}\n",
       "asserts": [
         {
           "type": "value",
-          "label": "3일 판매량",
+          "label": "3부터6의 짝수",
           "args": [
             3,
-            5
+            6
           ],
-          "expected": 15
+          "expected": 10
         },
         {
           "type": "value",
-          "label": "5일 판매량",
+          "label": "홀수 하나",
           "args": [
-            5,
-            2
+            7,
+            7
           ],
-          "expected": 10
+          "expected": 0
         }
       ],
       "hints": [
-        "day를 1부터 days까지 반복하세요.",
-        "각 반복에서 total += dailySales를 실행한 뒤 total을 반환하세요."
+        "number % 2 === 0으로 짝수를 확인하세요.",
+        "조건이 참일 때만 total += number를 실행하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "반복할 때마다 계산 결과를 누적 변수에 저장하고 마지막 합계를 반환한다."
 }

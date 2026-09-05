@@ -33,12 +33,11 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 괄호로 계산 순서 바꾸기",
+      "title": "두 문자열 중 계산 전에 변환할 값 찾기",
       "brief": [
-        "실행 단계와 다른 상황에서 산술 연산자의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "첫 식은 2 + 3 * 4라서 14입니다. 둘째 식의 괄호는 덧셈을 먼저 실행해 20을 만듭니다. 4를 5로 바꿔 다시 비교하세요."
+        "현재 +는 문자열을 이어 붙입니다. hoursInput과 rateInput을 각각 Number로 감싸 곱셈 결과 60000이 나오게 하세요."
       ],
-      "code": "console.log(2 + 3 * 4);\nconsole.log((2 + 3) * 4);\n"
+      "code": "const hoursInput = '4';\nconst rateInput = '15000';\nconsole.log(hoursInput + rateInput);\n"
     },
     {
       "kind": "write",
@@ -46,7 +45,7 @@
       "brief": [
         "quantity를 숫자로 바꾸고 price와 곱한 결제 금액을 출력하세요.",
         "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
-        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+        "주문 수량으로 결제 금액 계산하기에서는 함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
       "code": "let quantity = \"3\";\nlet price = 12000;\n// 수량 \"3\"과 가격 12000으로 결제 금액을 계산해 출력하세요.\n\nquantity = \"0\";\nprice = 8900;\n// 수량이 \"0\", 가격이 8900으로 바뀌었습니다. 이 값으로 결제 금액을 다시 계산해 출력하세요.\n",
       "solutionCode": "let quantity = \"3\";\nlet price = 12000;\nlet numericQuantity = Number(quantity);\nconsole.log(numericQuantity * price);\n\nquantity = \"0\";\nprice = 8900;\nnumericQuantity = Number(quantity);\nconsole.log(numericQuantity * price);\n",
@@ -62,52 +61,53 @@
       ],
       "hints": [
         "quantity를 숫자로 바꾸고 price와 곱한 결제 금액을 출력하세요.",
-        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+        "주문 수량으로 결제 금액 계산하기에서는 입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
       ]
     },
     {
       "kind": "write",
-      "title": "문자열 가격을 변환한 뒤 계산하기",
+      "title": "수량 변환 후 배송비까지 더하기",
       "brief": [
-        "'12500'을 Number로 변환한 뒤 배송비 3000을 더해 15500을 출력하세요."
+        "문자열 수량을 숫자로 바꾸고 단가를 곱한 뒤 배송비를 더하세요."
       ],
-      "code": "const priceInput = '12500';\nconst shippingFee = 3000;\n// TODO: 변환한 가격과 배송비의 합을 출력하세요.\n",
-      "solutionCode": "const priceInput = '12500';\nconst shippingFee = 3000;\nconst price = Number(priceInput);\nconsole.log(price + shippingFee);\n",
+      "code": "const countInput = '2';\nconst unitPrice = 18000;\nconst shipping = 3000;\n// 총액 출력\n",
+      "solutionCode": "const countInput = '2';\nconst unitPrice = 18000;\nconst shipping = 3000;\nconst count = Number(countInput);\nconsole.log(count * unitPrice + shipping);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "변환한 가격으로 계산하기",
+          "label": "수량 변환 후 배송비까지 더하기",
           "expected": [
-            "15500"
+            "39000"
           ]
         }
       ],
       "hints": [
-        "Number(priceInput)으로 숫자를 만드세요.",
-        "변환한 값에 shippingFee를 더하세요."
+        "Number(countInput) 결과를 count에 담으세요.",
+        "count * unitPrice를 먼저 계산한 뒤 shipping을 더하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "수량과 단가로 총 결제 금액 계산하기",
+      "title": "분 단위 입력으로 이용 요금 계산하기",
       "brief": [
-        "price * count에서 coupon을 빼 23000을 출력하세요."
+        "문자열 이용 시간을 숫자로 바꾸고 10분당 500원인 요금을 계산하세요."
       ],
-      "code": "const price = 8000;\nconst count = 3;\nconst coupon = 1000;\n// TODO: 결제 금액을 출력하세요.\n",
-      "solutionCode": "const price = 8000;\nconst count = 3;\nconst coupon = 1000;\nconsole.log(price * count - coupon);\n",
+      "code": "const minutesInput = '50';\n// 10분 묶음 수와 요금을 계산해 출력\n",
+      "solutionCode": "const minutesInput = '50';\nconst minutes = Number(minutesInput);\nconst units = minutes / 10;\nconsole.log(units * 500);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "총 결제 금액 계산하기",
+          "label": "분 단위 입력으로 이용 요금 계산하기",
           "expected": [
-            "23000"
+            "2500"
           ]
         }
       ],
       "hints": [
-        "가격과 수량을 먼저 곱하세요.",
-        "곱한 값에서 coupon을 빼세요."
+        "Number로 minutesInput을 변환하세요.",
+        "minutes / 10으로 묶음 수를 구한 뒤 500을 곱하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "문자열 숫자를 Number로 변환한 뒤 여러 산술 연산을 올바른 순서로 계산한다."
 }

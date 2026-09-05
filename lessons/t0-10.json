@@ -35,12 +35,11 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 변수와 문자열을 구분하기",
+      "title": "선언 순서와 다른 안내 순서 만들기",
       "brief": [
-        "실행 단계와 다른 상황에서 변수 선언하기의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "첫 출력은 변수의 값 부산이고 둘째 출력은 글자 destination입니다. 둘째 줄의 따옴표를 제거해 두 줄 모두 부산이 나오게 바꾸세요."
+        "변수 선언은 그대로 두고 출력문만 날짜 → 장소 → 이름 순서로 다시 배치하세요. 선언 순서와 출력 순서는 같을 필요가 없습니다."
       ],
-      "code": "let destination = '부산';\nconsole.log(destination);\nconsole.log('destination');\n"
+      "code": "const eventName = '상담';\nconst eventPlace = '2층';\nconst eventDate = '금요일';\nconsole.log(eventName);\nconsole.log(eventPlace);\nconsole.log(eventDate);\n"
     },
     {
       "kind": "write",
@@ -69,50 +68,53 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 두 변수의 값을 순서대로 출력하기",
+      "title": "라벨과 변수 값을 번갈아 출력하기",
       "brief": [
-        "주문 정보를 읽기 좋은 순서로 출력하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "floor에는 7, room에는 '회의실'을 저장하고 두 변수의 값을 차례로 출력하세요."
+        "문자열 라벨과 해당 변수 값을 주문번호 → 수량 순서로 번갈아 출력하세요."
       ],
-      "code": "// TODO: floor와 room을 선언하고 차례로 출력하세요.\n",
-      "solutionCode": "let floor = 7;\nlet room = '회의실';\nconsole.log(floor);\nconsole.log(room);\n",
+      "code": "const orderId = 912;\nconst quantity = 2;\n// '주문번호', 값, '수량', 값을 출력하세요.\n",
+      "solutionCode": "const orderId = 912;\nconst quantity = 2;\nconsole.log('주문번호');\nconsole.log(orderId);\nconsole.log('수량');\nconsole.log(quantity);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "두 변수의 값을 순서대로 출력하기",
+          "label": "라벨과 변수 값을 번갈아 출력하기",
           "expected": [
-            "7",
-            "회의실"
+            "주문번호",
+            "912",
+            "수량",
+            "2"
           ]
         }
       ],
       "hints": [
-        "두 let 선언문을 먼저 작성하세요.",
-        "변수 이름을 따옴표 없이 출력하세요."
+        "첫 줄은 문자열 '주문번호'입니다.",
+        "라벨 다음에 대응하는 변수를 출력하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 변수를 선언하고 값 사용하기",
+      "title": "중요한 정보를 먼저 보이게 재배치하기",
       "brief": [
-        "주문 정보를 읽기 좋은 순서로 출력하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "let으로 drink 변수를 선언해 '차'를 저장하고 drink를 출력하세요."
+        "이미 선언된 정보를 긴급 여부 → 문의자 → 문의 내용 순서로 출력하세요."
       ],
-      "code": "// TODO: drink를 선언하고 저장된 값을 출력하세요.\n",
-      "solutionCode": "let drink = '차';\nconsole.log(drink);\n",
+      "code": "const requester = '민재';\nconst question = '결제 오류';\nconst urgent = true;\n// 읽기 좋은 순서로 세 값을 출력하세요.\n",
+      "solutionCode": "const requester = '민재';\nconst question = '결제 오류';\nconst urgent = true;\nconsole.log(urgent);\nconsole.log(requester);\nconsole.log(question);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "변수를 선언하고 값 사용하기",
+          "label": "중요한 정보를 먼저 보이게 재배치하기",
           "expected": [
-            "차"
+            "true",
+            "민재",
+            "결제 오류"
           ]
         }
       ],
       "hints": [
-        "let drink = '차';로 선언하세요.",
-        "다음 줄에서 drink를 따옴표 없이 출력하세요."
+        "긴급 여부 urgent를 가장 먼저 출력하세요.",
+        "그다음 requester와 question을 출력하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "여러 변수의 역할을 구분하고 사람이 읽기 좋은 정보 순서로 출력한다."
 }

@@ -32,20 +32,19 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 숫자와 문자열 번호 대조하기",
+      "title": "연결하기 전에 주문 번호를 문자열로 변환하기",
       "brief": [
-        "실행 단계와 다른 상황에서 문자형의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "room은 숫자 305, roomText는 문자열 '305'입니다. roomText의 따옴표를 제거해 두 자료형이 같아지는지 확인하세요."
+        "orderNumber를 String으로 변환한 orderId를 만들고 'ORD-'와 연결하세요."
       ],
-      "code": "const room = 305;\nconst roomText = '305';\nconsole.log(typeof room);\nconsole.log(typeof roomText);\n"
+      "code": "const orderNumber = 731;\nconst orderId = orderNumber;\nconsole.log('ORD-' + orderId);\n"
     },
     {
       "kind": "write",
       "title": "상품 번호를 문자열로 바꾸기",
       "brief": [
         "productId를 String으로 바꾼 결과를 출력하세요. 숫자 번호와 문자 번호 모두 처리하세요.",
-        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
-        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+        "상품 번호를 문자열로 바꾸기에서는 코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
+        "상품 번호를 문자열로 바꾸기에서는 함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
       "code": "let productId = 1042;\n// 숫자 상품 번호 1042를 문자열로 변환해 출력하세요.\n\nproductId = \"A-17\";\n// 상품 번호가 \"A-17\"로 바뀌었습니다. 현재 값을 문자열로 변환해 출력하세요.\n",
       "solutionCode": "let productId = 1042;\nconsole.log(String(productId));\n\nproductId = \"A-17\";\nconsole.log(String(productId));\n",
@@ -61,54 +60,53 @@
       ],
       "hints": [
         "productId를 String으로 바꾼 결과를 출력하세요. 숫자 번호와 문자 번호 모두 처리하세요.",
-        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+        "상품 번호를 문자열로 바꾸기에서는 입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
       ]
     },
     {
       "kind": "write",
-      "title": "숫자 식별 번호를 String으로 변환하기",
+      "title": "대기 번호를 문자열로 변환해 접두사 붙이기",
       "brief": [
-        "String과 Boolean 변환 결과를 출력하는 코드를 직접 작성하고 실행 결과를 확인하세요."
+        "숫자 42를 String으로 변환한 뒤 'WAIT-'와 연결해 출력하세요."
       ],
-      "code": "const count = 5;\n// TODO: String과 Boolean 변환 결과를 출력하세요.\n",
-      "solutionCode": "const count = 5;\nconsole.log(String(count));\nconsole.log(Boolean(count));\n",
+      "code": "const waitingNumber = 42;\n// 문자열 식별자 출력\n",
+      "solutionCode": "const waitingNumber = 42;\nconst waitingId = String(waitingNumber);\nconsole.log('WAIT-' + waitingId);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "내가 작성한 코드의 출력 결과",
+          "label": "대기 번호를 문자열로 변환해 접두사 붙이기",
           "expected": [
-            "5",
-            "true"
+            "WAIT-42"
           ]
         }
       ],
       "hints": [
-        "console.log(String(count)); 줄을 먼저 작성하세요.",
-        "완성한 식을 console.log로 출력하세요."
+        "String(waitingNumber)로 문자열을 만드세요.",
+        "'WAIT-' + waitingId를 출력하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "숫자 회원 번호를 문자열로 변환하기",
+      "title": "연도와 순번을 각각 문자열로 조합하기",
       "brief": [
-        "year 2026을 String으로 변환해 textYear에 저장하고 값과 자료형을 출력하세요."
+        "숫자 연도와 순번을 각각 String으로 바꾼 뒤 2026-8 형식으로 출력하세요."
       ],
-      "code": "const year = 2026;\n// TODO: 문자열로 변환해 출력하세요.\n",
-      "solutionCode": "const year = 2026;\nconst textYear = String(year);\nconsole.log(textYear);\nconsole.log(typeof textYear);\n",
+      "code": "const year = 2026;\nconst sequence = 8;\n// 두 문자열 식별자를 연결\n",
+      "solutionCode": "const year = 2026;\nconst sequence = 8;\nconst yearText = String(year);\nconst sequenceText = String(sequence);\nconsole.log(yearText + '-' + sequenceText);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "숫자를 문자열로 변환하기",
+          "label": "연도와 순번을 각각 문자열로 조합하기",
           "expected": [
-            "2026",
-            "string"
+            "2026-8"
           ]
         }
       ],
       "hints": [
-        "String(year)을 textYear에 저장하세요.",
-        "textYear와 typeof textYear를 출력하세요."
+        "두 숫자에 각각 String을 사용하세요.",
+        "두 값 사이에 문자열 '-'를 연결하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "숫자 식별 번호를 String으로 변환하고 문자열 식별자임을 확인한다."
 }

@@ -32,20 +32,19 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 undefined에서 실제 값으로 바꾸기",
+      "title": "공백 문자열과 빈 문자열의 불리언 결과 비교하기",
       "brief": [
-        "실행 단계와 다른 상황에서 undefined 이해하기의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "처음에는 undefined가 출력됩니다. 선언문 다음에 result = '성공';을 추가해 값이 정해진 뒤의 결과를 확인하세요."
+        "두 번째 값을 ''로 바꿔 공백 한 칸이 있는 문자열과 완전히 빈 문자열의 결과를 비교하세요."
       ],
-      "code": "let result;\nconsole.log(result);\n"
+      "code": "console.log(Boolean(' '));\nconsole.log(Boolean('입력'));\n"
     },
     {
       "kind": "write",
       "title": "배송 메모 입력 여부 확인하기",
       "brief": [
         "memo를 Boolean으로 바꿔 출력하세요. 내용이 있으면 true, 빈 문자열이면 false입니다.",
-        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
-        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+        "배송 메모 입력 여부 확인하기에서는 코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 2번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
+        "배송 메모 입력 여부 확인하기에서는 함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
       "code": "let memo = \"문 앞에 두세요\";\n// 메모 \"문 앞에 두세요\"의 입력 여부를 불리언으로 변환해 출력하세요.\n\nmemo = \"\";\n// 메모가 빈 문자열로 바뀌었습니다. 현재 값의 입력 여부를 불리언으로 변환해 출력하세요.\n",
       "solutionCode": "let memo = \"문 앞에 두세요\";\nconsole.log(Boolean(memo));\n\nmemo = \"\";\nconsole.log(Boolean(memo));\n",
@@ -61,55 +60,55 @@
       ],
       "hints": [
         "memo를 Boolean으로 바꿔 출력하세요. 내용이 있으면 true, 빈 문자열이면 false입니다.",
-        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+        "배송 메모 입력 여부 확인하기에서는 입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
       ]
     },
     {
       "kind": "write",
-      "title": "여러 입력값의 입력 여부 비교하기",
+      "title": "검색어 입력 여부와 원문 함께 출력하기",
       "brief": [
-        "Boolean(0), Boolean(1), Boolean('확인')을 차례로 출력하세요."
+        "query를 Boolean으로 변환한 결과와 원문을 차례로 출력하세요."
       ],
-      "code": "// TODO: 세 변환 결과를 출력하세요.\n",
-      "solutionCode": "console.log(Boolean(0));\nconsole.log(Boolean(1));\nconsole.log(Boolean('확인'));\n",
+      "code": "const query = '노트북';\n// 입력 여부와 원문 출력\n",
+      "solutionCode": "const query = '노트북';\nconst hasQuery = Boolean(query);\nconsole.log(hasQuery);\nconsole.log(query);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "여러 값을 불리언으로 변환하기",
+          "label": "검색어 입력 여부와 원문 함께 출력하기",
+          "expected": [
+            "true",
+            "노트북"
+          ]
+        }
+      ],
+      "hints": [
+        "Boolean(query)를 hasQuery에 담으세요.",
+        "hasQuery 다음에 query를 출력하세요."
+      ]
+    },
+    {
+      "kind": "write",
+      "title": "0과 문자열 0의 입력 여부 대조하기",
+      "brief": [
+        "숫자 0과 문자열 '0'을 각각 Boolean으로 변환해 출력하세요."
+      ],
+      "code": "const numericInput = 0;\nconst textInput = '0';\n// 두 변환 결과 출력\n",
+      "solutionCode": "const numericInput = 0;\nconst textInput = '0';\nconsole.log(Boolean(numericInput));\nconsole.log(Boolean(textInput));\n",
+      "asserts": [
+        {
+          "type": "console",
+          "label": "0과 문자열 0의 입력 여부 대조하기",
           "expected": [
             "false",
-            "true",
             "true"
           ]
         }
       ],
       "hints": [
-        "0은 false, 1은 true로 변환됩니다.",
-        "비어 있지 않은 문자열도 true입니다."
-      ]
-    },
-    {
-      "kind": "write",
-      "title": "입력 여부와 자료형 함께 확인하기",
-      "brief": [
-        "hasCoupon에 false를 저장하고 값과 자료형을 각각 출력하세요."
-      ],
-      "code": "// TODO: hasCoupon을 선언하고 출력하세요.\n",
-      "solutionCode": "const hasCoupon = false;\nconsole.log(hasCoupon);\nconsole.log(typeof hasCoupon);\n",
-      "asserts": [
-        {
-          "type": "console",
-          "label": "불리언 값과 자료형 출력하기",
-          "expected": [
-            "false",
-            "boolean"
-          ]
-        }
-      ],
-      "hints": [
-        "const hasCoupon = false;로 선언하세요.",
-        "typeof hasCoupon을 다음 줄에 출력하세요."
+        "Boolean(0)은 false입니다.",
+        "내용이 있는 문자열 '0'은 true입니다."
       ]
     }
-  ]
+  ],
+  "learningGoal": "사용자 입력값을 Boolean으로 변환해 내용이 있는지 판단한다."
 }

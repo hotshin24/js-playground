@@ -40,7 +40,7 @@
       "kind": "write",
       "title": "string 직접 사용하기",
       "brief": [
-        "값과 자료형을 출력하는 코드를 직접 작성하고 실행 결과를 확인하세요."
+        "string 직접 사용하기에서는 값과 자료형을 출력하는 코드를 직접 작성하고 실행 결과를 확인하세요."
       ],
       "code": "const menu = '커피';\n// TODO: 값과 자료형을 출력하세요.\n",
       "solutionCode": "const menu = '커피';\nconsole.log(menu);\nconsole.log(typeof menu);\n",
@@ -56,7 +56,7 @@
       ],
       "hints": [
         "console.log(menu); 줄을 먼저 작성하세요.",
-        "완성한 식을 console.log로 출력하세요."
+        "string 직접 사용하기에서는 완성한 식을 console.log로 출력하세요."
       ]
     },
     {
@@ -105,5 +105,6 @@
         "빈 문자열의 자료형도 string입니다."
       ]
     }
-  ]
+  ],
+  "learningGoal": "문자형의 핵심 문법과 실행 결과를 설명하고 직접 코드로 적용한다."
 }

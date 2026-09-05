@@ -32,20 +32,19 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 0과 빈 문자열 보존하기",
+      "title": "기본값 대상만 undefined로 바꾸기",
       "brief": [
-        "실행 단계와 다른 상황에서 null 병합 연산자의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "0과 빈 문자열은 null이나 undefined가 아니므로 ??가 왼쪽 값을 유지합니다. 빈 문자열을 null로 바꿔 기본 문구가 나오는지 확인하세요."
+        "두 번째 input을 undefined로 바꿔 빈 문자열은 유지되고 빠진 값만 대체되는지 확인하세요."
       ],
-      "code": "console.log(0 ?? 99);\nconsole.log('' ?? '입력 없음');\n"
+      "code": "const firstInput = '';\nconst secondInput = '작성됨';\nconsole.log(firstInput ?? '없음');\nconsole.log(secondInput ?? '없음');\n"
     },
     {
       "kind": "write",
       "title": "닉네임의 기본값 적용하기",
       "brief": [
         "nickname이 null이면 '이름 없음'을 사용하고 빈 문자열은 유지하여 출력하세요.",
-        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
-        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+        "닉네임의 기본값 적용하기에서는 코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
+        "닉네임의 기본값 적용하기에서는 함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
       "code": "let nickname = null;\n// 닉네임이 null인 경우 기본값을 적용해 출력하세요.\n\nnickname = \"\";\n// 닉네임이 빈 문자열로 바뀌었습니다. 빈 문자열을 유지해 출력하세요.\n\nnickname = \"초코\";\n// 닉네임이 \"초코\"로 바뀌었습니다. 현재 닉네임을 사용해 출력하세요.\n",
       "solutionCode": "let nickname = null;\nconsole.log(nickname ?? '이름 없음');\n\nnickname = \"\";\nconsole.log(nickname ?? '이름 없음');\n\nnickname = \"초코\";\nconsole.log(nickname ?? '이름 없음');\n",
@@ -62,54 +61,55 @@
       ],
       "hints": [
         "nickname이 null이면 '이름 없음'을 사용하고 빈 문자열은 유지하여 출력하세요.",
-        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+        "닉네임의 기본값 적용하기에서는 입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
       ]
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: null 배송 메모 대체하기",
+      "title": "0명 예약과 빠진 예약 인원 구분하기",
       "brief": [
-        "null과 undefined에 기본값 적용하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "memo가 null일 때 '메모 없음'을 선택해 출력하세요."
+        "people이 0일 때는 0을 유지하고 backup이 undefined일 때만 1을 사용해 각각 출력하세요."
       ],
-      "code": "const memo = null;\n// TODO: ??로 기본 문구를 출력하세요.\n",
-      "solutionCode": "const memo = null;\nconsole.log(memo ?? '메모 없음');\n",
+      "code": "const people = 0;\nconst backup = undefined;\n// ?? 결과 두 줄 출력\n",
+      "solutionCode": "const people = 0;\nconst backup = undefined;\nconsole.log(people ?? 1);\nconsole.log(backup ?? 1);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "null 배송 메모 대체하기",
+          "label": "0명 예약과 빠진 예약 인원 구분하기",
           "expected": [
-            "메모 없음"
+            "0",
+            "1"
           ]
         }
       ],
       "hints": [
-        "memo 왼쪽, 기본 문자열 오른쪽에 ??를 두세요.",
-        "완성한 표현식을 출력하세요."
+        "people ?? 1은 0을 유지합니다.",
+        "backup ?? 1은 기본값 1을 선택합니다."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 유효한 false 유지하기",
+      "title": "알림 설정과 표시 이름에 서로 다른 기본값 적용하기",
       "brief": [
-        "null과 undefined에 기본값 적용하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "notifications가 false일 때 ??가 false를 그대로 유지하도록 결과를 출력하세요."
+        "notifications가 false면 유지하고 displayName이 null이면 '익명'을 사용하세요."
       ],
-      "code": "const notifications = false;\n// TODO: 기본값 true를 두고 결과를 출력하세요.\n",
-      "solutionCode": "const notifications = false;\nconsole.log(notifications ?? true);\n",
+      "code": "const notifications = false;\nconst displayName = null;\n// 각 기본값 적용 결과 출력\n",
+      "solutionCode": "const notifications = false;\nconst displayName = null;\nconsole.log(notifications ?? true);\nconsole.log(displayName ?? '익명');\n",
       "asserts": [
         {
           "type": "console",
-          "label": "유효한 false 유지하기",
+          "label": "알림 설정과 표시 이름에 서로 다른 기본값 적용하기",
           "expected": [
-            "false"
+            "false",
+            "익명"
           ]
         }
       ],
       "hints": [
-        "false는 값이 없는 상태가 아닙니다.",
-        "notifications ?? true를 출력하세요."
+        "false는 유효한 값이므로 그대로 남습니다.",
+        "null인 displayName에만 '익명'이 적용됩니다."
       ]
     }
-  ]
+  ],
+  "learningGoal": "null과 undefined에만 ?? 기본값을 적용하고 0·false·빈 문자열은 보존한다."
 }

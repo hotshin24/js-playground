@@ -55,7 +55,7 @@
       ],
       "hints": [
         "console.log(typeof active); 줄을 먼저 작성하세요.",
-        "완성한 식을 console.log로 출력하세요."
+        "typeof 직접 사용하기에서는 완성한 식을 console.log로 출력하세요."
       ]
     },
     {
@@ -104,5 +104,6 @@
         "typeof rating을 다음 줄에 출력하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "typeof 연산자의 핵심 문법과 실행 결과를 설명하고 직접 코드로 적용한다."
 }

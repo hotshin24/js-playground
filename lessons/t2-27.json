@@ -24,12 +24,11 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 출력 뒤 break를 둘 때 차이 확인하기",
+      "title": "찾은 값을 저장한 다음 반복 종료하기",
       "brief": [
-        "실행 단계와 다른 상황에서 break로 반복 끝내기의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "현재는 3도 출력한 다음 break로 끝납니다. console.log를 if 아래로 옮겨 3이 출력되지 않게 바꾸세요."
+        "break 앞에 found = number;를 추가해 첫 번째 7의 배수 14가 남도록 하세요."
       ],
-      "code": "for (let number = 1; number <= 5; number++) {\n  console.log(number);\n  if (number === 3) break;\n}\n"
+      "code": "let found = 0;\nfor (let number = 10; number <= 30; number += 1) {\n  if (number % 7 === 0) {\n    break;\n  }\n}\nconsole.log(found);\n"
     },
     {
       "kind": "write",
@@ -66,52 +65,72 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 허용 범위에서 반복 멈추기",
+      "title": "범위에서 처음 만나는 6의 배수 반환하기",
       "brief": [
-        "조건을 만족하면 반복 멈추기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "1부터 출력하다 value가 5가 되면 출력 전에 반복을 끝내세요."
+        "findFirstSix(start, end)를 작성해 처음 만나는 6의 배수를 즉시 반환하고 없으면 0을 반환하세요."
       ],
-      "code": "// TODO: break를 포함한 반복문을 작성하세요.\n",
-      "solutionCode": "for (let value = 1; value <= 8; value++) {\n  if (value === 5) break;\n  console.log(value);\n}\n",
+      "code": "// findFirstSix 함수를 작성하세요.\n",
+      "entry": "findFirstSix",
+      "solutionCode": "function findFirstSix(start, end) {\n  for (let number = start; number <= end; number += 1) {\n    if (number % 6 === 0) return number;\n  }\n  return 0;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "허용 범위에서 반복 멈추기",
-          "expected": [
-            "1",
-            "2",
-            "3",
-            "4"
-          ]
+          "type": "value",
+          "label": "발견",
+          "args": [
+            7,
+            20
+          ],
+          "expected": 12
+        },
+        {
+          "type": "value",
+          "label": "없음",
+          "args": [
+            1,
+            5
+          ],
+          "expected": 0
         }
       ],
       "hints": [
-        "if 조건은 value === 5입니다.",
-        "출력문보다 break 검사를 먼저 두세요."
+        "number % 6 === 0이면 number를 반환하세요.",
+        "반복이 끝날 때까지 없으면 0을 반환하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 첫 4의 배수 찾고 종료하기",
+      "title": "예산을 넘는 첫 구매 수량 찾기",
       "brief": [
-        "조건을 만족하면 반복 멈추기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "10부터 20까지 검사하다 첫 4의 배수를 출력하고 즉시 끝내세요."
+        "findLimit(price, budget)를 작성해 수량을 1부터 10까지 늘리며 총액이 budget을 초과하는 첫 수량을 반환하세요."
       ],
-      "code": "// TODO: 첫 4의 배수만 출력하세요.\n",
-      "solutionCode": "for (let number = 10; number <= 20; number++) {\n  if (number % 4 === 0) {\n    console.log(number);\n    break;\n  }\n}\n",
+      "code": "// findLimit 함수를 작성하세요.\n",
+      "entry": "findLimit",
+      "solutionCode": "function findLimit(price, budget) {\n  for (let count = 1; count <= 10; count += 1) {\n    if (price * count > budget) return count;\n  }\n  return 0;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "첫 4의 배수 찾고 종료하기",
-          "expected": [
-            "12"
-          ]
+          "type": "value",
+          "label": "초과 수량",
+          "args": [
+            3000,
+            10000
+          ],
+          "expected": 4
+        },
+        {
+          "type": "value",
+          "label": "안 넘음",
+          "args": [
+            100,
+            5000
+          ],
+          "expected": 0
         }
       ],
       "hints": [
-        "number % 4 === 0으로 검사하세요.",
-        "출력 직후 break를 실행하세요."
+        "price * count > budget인지 확인하세요.",
+        "처음 참이 되는 count를 바로 반환하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "반복 중 원하는 값을 찾으면 결과를 저장하고 break로 즉시 종료한다."
 }

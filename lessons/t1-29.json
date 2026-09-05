@@ -32,20 +32,19 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 그리고와 또는의 결과 비교하기",
+      "title": "두 할인 자격 중 하나를 새 조건으로 교체하기",
       "brief": [
-        "실행 단계와 다른 상황에서 논리 연산자의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "false && true는 false지만 false || true는 true입니다. hasTicket을 true로 바꿔 두 결과가 어떻게 달라지는지 확인하세요."
+        "isMember 대신 orderAmount >= 50000을 사용해 쿠폰 보유 또는 고액 주문인지 확인하세요."
       ],
-      "code": "const hasTicket = false;\nconst isStaff = true;\nconsole.log(hasTicket && isStaff);\nconsole.log(hasTicket || isStaff);\n"
+      "code": "const hasCoupon = false;\nconst isMember = true;\nconst orderAmount = 62000;\nconsole.log(hasCoupon || isMember);\n"
     },
     {
       "kind": "write",
       "title": "편집 권한 확인하기",
       "brief": [
         "isAdmin 또는 isManager 중 하나라도 true이면 true가 나오도록 || 연산 결과를 출력하세요.",
-        "코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
-        "함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
+        "편집 권한 확인하기에서는 코드는 위에서 아래로 실행됩니다. 각 주석 바로 위에서 변수에 대입한 값으로 결과를 구하고, 그 주석 아래에 console.log를 작성하세요. 아래쪽에서 변수의 값이 바뀌기 전에 출력해야 합니다. 총 3번 출력하세요. 제시된 변수의 값은 바꾸지 마세요.",
+        "편집 권한 확인하기에서는 함수는 만들지 않습니다. 변수, 연산자, 앞에서 배운 자료형 변환만 사용하세요."
       ],
       "code": "let isAdmin = true;\nlet isManager = false;\n// 관리자이고 매니저가 아닌 경우의 편집 권한 여부를 출력하세요.\n\nisAdmin = false;\nisManager = true;\n// 관리자가 아니고 매니저인 경우의 편집 권한 여부를 다시 확인해 출력하세요.\n\nisAdmin = false;\nisManager = false;\n// 관리자도 매니저도 아닌 경우의 편집 권한 여부를 다시 확인해 출력하세요.\n",
       "solutionCode": "let isAdmin = true;\nlet isManager = false;\nconsole.log(isAdmin || isManager);\n\nisAdmin = false;\nisManager = true;\nconsole.log(isAdmin || isManager);\n\nisAdmin = false;\nisManager = false;\nconsole.log(isAdmin || isManager);\n",
@@ -62,54 +61,53 @@
       ],
       "hints": [
         "isAdmin 또는 isManager 중 하나라도 true이면 true가 나오도록 || 연산 결과를 출력하세요.",
-        "입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
+        "편집 권한 확인하기에서는 입력값이 바뀐 다음에는 계산한 값도 다시 구한 뒤 출력해야 합니다."
       ]
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 부정과 또는 함께 사용하기",
+      "title": "주말 상태 또는 공휴일 코드인지 확인하기",
       "brief": [
-        "두 조건 중 하나 확인하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "soldOut이 아니거나 preorder가 가능하면 true가 되도록 !와 ||를 사용하세요."
+        "isWeekend가 true이거나 day가 문자열 'HOLIDAY'와 같은지 출력하세요."
       ],
-      "code": "const soldOut = true;\nconst preorder = true;\n// TODO: 조건 결과를 출력하세요.\n",
-      "solutionCode": "const soldOut = true;\nconst preorder = true;\nconsole.log(!soldOut || preorder);\n",
+      "code": "const isWeekend = false;\nconst day = 'HOLIDAY';\n// 상태 또는 코드 비교 결과 출력\n",
+      "solutionCode": "const isWeekend = false;\nconst day = 'HOLIDAY';\nconsole.log(isWeekend || day === 'HOLIDAY');\n",
       "asserts": [
         {
           "type": "console",
-          "label": "부정과 또는 함께 사용하기",
+          "label": "주말 또는 공휴일인지 확인하기",
           "expected": [
             "true"
           ]
         }
       ],
       "hints": [
-        "soldOut 앞에 !를 붙이세요.",
-        "그 결과와 preorder를 ||로 연결하세요."
+        "|| 왼쪽에는 isWeekend를 놓으세요.",
+        "오른쪽에는 day === 'HOLIDAY' 비교식을 작성하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 두 자격 모두 확인하기",
+      "title": "두 재고 위치 중 구매 가능 여부 판단하기",
       "brief": [
-        "두 조건 중 하나 확인하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "adult와 agreed가 모두 true일 때만 가능한 결과를 &&로 출력하세요."
+        "storeStock과 warehouseStock 중 하나라도 0보다 큰지 비교식 두 개를 ||로 연결하세요."
       ],
-      "code": "const adult = true;\nconst agreed = false;\n// TODO: 두 조건을 결합해 출력하세요.\n",
-      "solutionCode": "const adult = true;\nconst agreed = false;\nconsole.log(adult && agreed);\n",
+      "code": "const storeStock = 0;\nconst warehouseStock = 4;\n// 구매 가능 여부 출력\n",
+      "solutionCode": "const storeStock = 0;\nconst warehouseStock = 4;\nconsole.log(storeStock > 0 || warehouseStock > 0);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "두 자격 모두 확인하기",
+          "label": "두 재고 위치 중 구매 가능 여부 판단하기",
           "expected": [
-            "false"
+            "true"
           ]
         }
       ],
       "hints": [
-        "두 변수 사이에 &&를 사용하세요.",
-        "둘 중 agreed가 false임을 확인하세요."
+        "각 재고에 > 0 비교를 작성하세요.",
+        "두 비교식 사이에 ||를 사용하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "두 조건 중 하나라도 참이면 통과하도록 ||로 묶는다."
 }

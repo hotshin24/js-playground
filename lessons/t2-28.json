@@ -30,12 +30,11 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 두 매개변수의 위치 바꿔 보기",
+      "title": "함수 본문의 고정값을 매개변수로 바꾸기",
       "brief": [
-        "실행 단계와 다른 상황에서 매개변수와 인수의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "첫 인수는 item, 둘째 인수는 count에 들어갑니다. 마지막 호출을 showOrder(2, '연필')로 바꿔 위치가 뒤바뀌면 문장이 어색해지는지 확인하세요."
+        "return 1000 * 3의 3을 count로 바꿔 호출 인수가 계산에 반영되게 하세요."
       ],
-      "code": "function showOrder(item, count) {\n  console.log(item + ': ' + count + '개');\n}\nshowOrder('연필', 2);\n"
+      "code": "function getTicketCost(count) {\n  return 1000 * 3;\n}\nconsole.log(getTicketCost(5));\n"
     },
     {
       "kind": "write",
@@ -72,50 +71,68 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 한 매개변수로 다른 결과 만들기",
+      "title": "온도를 화씨로 바꾸는 매개변수 함수 작성하기",
       "brief": [
-        "매개변수로 결과 바꾸기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "city를 받아 'city 배송'을 출력하는 ship 함수를 만들고 서울과 제주로 호출하세요."
+        "toFahrenheit(celsius)를 작성해 celsius * 1.8 + 32를 반환하세요."
       ],
-      "code": "// TODO: ship 함수를 만들고 두 번 호출하세요.\n",
-      "solutionCode": "function ship(city) {\n  console.log(city + ' 배송');\n}\nship('서울');\nship('제주');\n",
+      "code": "// toFahrenheit 함수를 작성하세요.\n",
+      "entry": "toFahrenheit",
+      "solutionCode": "function toFahrenheit(celsius) {\n  return celsius * 1.8 + 32;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "한 매개변수로 다른 결과 만들기",
-          "expected": [
-            "서울 배송",
-            "제주 배송"
-          ]
+          "type": "value",
+          "label": "0도",
+          "args": [
+            0
+          ],
+          "expected": 32
+        },
+        {
+          "type": "value",
+          "label": "10도",
+          "args": [
+            10
+          ],
+          "expected": 50
         }
       ],
       "hints": [
-        "city 매개변수를 문자열과 연결하세요.",
-        "두 도시를 각각 인수로 전달하세요."
+        "매개변수 이름은 celsius입니다.",
+        "return celsius * 1.8 + 32;를 작성하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 여러 매개변수로 계산하기",
+      "title": "인원에 따라 필요한 의자 수 계산하기",
       "brief": [
-        "매개변수로 결과 바꾸기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "price와 count를 받아 곱한 값을 출력하는 showTotal을 만들고 3500, 3을 전달하세요."
+        "getChairCount(people)를 작성해 people + 2를 반환하세요. 여분 의자 두 개를 포함합니다."
       ],
-      "code": "// TODO: 두 매개변수로 합계를 출력하세요.\n",
-      "solutionCode": "function showTotal(price, count) {\n  console.log(price * count);\n}\nshowTotal(3500, 3);\n",
+      "code": "// getChairCount 함수를 작성하세요.\n",
+      "entry": "getChairCount",
+      "solutionCode": "function getChairCount(people) {\n  return people + 2;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "여러 매개변수로 계산하기",
-          "expected": [
-            "10500"
-          ]
+          "type": "value",
+          "label": "4명",
+          "args": [
+            4
+          ],
+          "expected": 6
+        },
+        {
+          "type": "value",
+          "label": "0명",
+          "args": [
+            0
+          ],
+          "expected": 2
         }
       ],
       "hints": [
-        "매개변수 순서는 price, count입니다.",
-        "본문에서 두 값을 곱해 출력하세요."
+        "함수 선언 괄호 안에 people을 작성하세요.",
+        "people에 2를 더해 반환하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "함수의 매개변수 하나에 전달하는 인수를 바꿔 서로 다른 결과를 만든다."
 }

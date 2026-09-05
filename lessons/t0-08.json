@@ -30,12 +30,11 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 변수와 문자열을 구분하기",
+      "title": "반복한 문자열을 변수 사용으로 바꾸기",
       "brief": [
-        "실행 단계와 다른 상황에서 변수 선언하기의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "첫 출력은 변수의 값 부산이고 둘째 출력은 글자 destination입니다. 둘째 줄의 따옴표를 제거해 두 줄 모두 부산이 나오게 바꾸세요."
+        "두 번째 출력의 문자열을 지우고 변수 courseName을 사용하세요. 저장된 값을 이름으로 다시 꺼내 쓰는 데 집중합니다."
       ],
-      "code": "let destination = '부산';\nconsole.log(destination);\nconsole.log('destination');\n"
+      "code": "const courseName = 'JavaScript 기초';\nconsole.log(courseName);\nconsole.log('JavaScript 기초');\n"
     },
     {
       "kind": "write",
@@ -63,50 +62,50 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 변수를 선언하고 값 사용하기",
+      "title": "한 변수를 두 위치에서 사용하기",
       "brief": [
-        "변수에 담긴 값을 출력하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "let으로 drink 변수를 선언해 '차'를 저장하고 drink를 출력하세요."
+        "상품명을 productName에 한 번만 저장하고 두 번 출력하세요."
       ],
-      "code": "// TODO: drink를 선언하고 저장된 값을 출력하세요.\n",
-      "solutionCode": "let drink = '차';\nconsole.log(drink);\n",
+      "code": "// productName을 선언하고 같은 값을 두 번 출력하세요.\n",
+      "solutionCode": "const productName = '독서대';\nconsole.log(productName);\nconsole.log(productName);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "변수를 선언하고 값 사용하기",
+          "label": "한 변수를 두 위치에서 사용하기",
           "expected": [
-            "차"
+            "독서대",
+            "독서대"
           ]
         }
       ],
       "hints": [
-        "let drink = '차';로 선언하세요.",
-        "다음 줄에서 drink를 따옴표 없이 출력하세요."
+        "const productName = '독서대';로 저장하세요.",
+        "두 console.log 모두 productName을 인수로 사용하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 두 변수의 값을 순서대로 출력하기",
+      "title": "선언된 변수 중 필요한 값만 출력하기",
       "brief": [
-        "변수에 담긴 값을 출력하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "floor에는 7, room에는 '회의실'을 저장하고 두 변수의 값을 차례로 출력하세요."
+        "이미 선언된 세 변수 중 orderNumber와 paid만 차례로 출력하세요. customer는 이번 출력에서 사용하지 않습니다."
       ],
-      "code": "// TODO: floor와 room을 선언하고 차례로 출력하세요.\n",
-      "solutionCode": "let floor = 7;\nlet room = '회의실';\nconsole.log(floor);\nconsole.log(room);\n",
+      "code": "const orderNumber = 804;\nconst customer = '유나';\nconst paid = true;\n// 필요한 두 변수를 출력하세요.\n",
+      "solutionCode": "const orderNumber = 804;\nconst customer = '유나';\nconst paid = true;\nconsole.log(orderNumber);\nconsole.log(paid);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "두 변수의 값을 순서대로 출력하기",
+          "label": "선언된 변수 중 필요한 값만 출력하기",
           "expected": [
-            "7",
-            "회의실"
+            "804",
+            "true"
           ]
         }
       ],
       "hints": [
-        "두 let 선언문을 먼저 작성하세요.",
-        "변수 이름을 따옴표 없이 출력하세요."
+        "첫 출력에는 orderNumber를 사용하세요.",
+        "두 번째 출력에는 paid를 사용하고 customer는 출력하지 않습니다."
       ]
     }
-  ]
+  ],
+  "learningGoal": "값을 변수에 저장하고 같은 값을 다시 적지 않고 변수 이름으로 출력한다."
 }

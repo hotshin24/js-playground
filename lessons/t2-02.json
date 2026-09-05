@@ -43,7 +43,7 @@
       "kind": "write",
       "title": "else 직접 작성하기",
       "brief": [
-        "60 이상이면 '통과', 아니면 '재시험'을 출력하는 코드를 직접 작성하고 실행 결과를 확인하세요."
+        "else 직접 작성하기에서는 60 이상이면 '통과', 아니면 '재시험'을 출력하는 코드를 직접 작성하고 실행 결과를 확인하세요."
       ],
       "code": "const score = 50;\n// TODO: 60 이상이면 '통과', 아니면 '재시험'을 출력하세요.\n",
       "solutionCode": "const score = 50;\nif (score >= 60) {\n  console.log('통과');\n} else {\n  console.log('재시험');\n}\n",
@@ -105,5 +105,6 @@
         "조건이 false일 때 else가 실행됩니다."
       ]
     }
-  ]
+  ],
+  "learningGoal": "else 문의 핵심 문법과 실행 결과를 설명하고 직접 코드로 적용한다."
 }

@@ -59,7 +59,7 @@
       ],
       "hints": [
         "console.log(book.title); 줄을 먼저 작성하세요.",
-        "접근할 key 또는 index를 정확히 확인하세요."
+        "key와 value 직접 작성하기에서는 접근할 key 또는 index를 정확히 확인하세요."
       ]
     },
     {
@@ -109,5 +109,6 @@
         "세 key를 정확히 구분해 읽으세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "프로퍼티와 key·value의 핵심 문법과 실행 결과를 설명하고 직접 코드로 적용한다."
 }

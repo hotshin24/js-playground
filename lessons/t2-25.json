@@ -30,12 +30,11 @@
     },
     {
       "kind": "tweak",
-      "title": "다른 상황에서 경계값에서 선택 결과 비교하기",
+      "title": "삼항식의 참과 거짓 결과 위치 바꾸기",
       "brief": [
-        "실행 단계와 다른 상황에서 삼항 조건 연산자의 핵심 동작을 비교하세요. 값을 바꾼 뒤 어느 식이나 문장이 결과를 결정하는지 확인합니다.",
-        "score 60은 >= 60 조건을 만족해 통과입니다. 비교 연산자를 >로 바꿨을 때 경계값이 탈락으로 바뀌는지 확인하세요."
+        "score >= 60이 true일 때 '통과'가 선택되도록 물음표 뒤 두 문자열의 위치를 바꾸세요."
       ],
-      "code": "const score = 60;\nconsole.log(score >= 60 ? '통과' : '재시험');\n"
+      "code": "const score = 75;\nconst result = score >= 60 ? '재시험' : '통과';\nconsole.log(result);\n"
     },
     {
       "kind": "write",
@@ -72,49 +71,58 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 나이에 따라 요금 고르기",
+      "title": "배송 지역에 따라 배송비 고르기",
       "brief": [
-        "삼항 연산자로 재고 문구 고르기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "age가 13 이하이면 5000, 아니면 8000을 선택해 출력하세요."
+        "getAreaFee(isRemote)를 작성해 도서산간이면 6000, 아니면 3000을 삼항 연산자로 반환하세요."
       ],
-      "code": "const age = 12;\n// TODO: 삼항 조건 연산자로 요금을 출력하세요.\n",
-      "solutionCode": "const age = 12;\nconsole.log(age <= 13 ? 5000 : 8000);\n",
+      "code": "// getAreaFee 함수를 작성하세요.\n",
+      "entry": "getAreaFee",
+      "solutionCode": "function getAreaFee(isRemote) {\n  return isRemote ? 6000 : 3000;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "나이에 따라 요금 고르기",
-          "expected": [
-            "5000"
-          ]
+          "type": "value",
+          "label": "도서산간",
+          "args": [
+            true
+          ],
+          "expected": 6000
+        },
+        {
+          "type": "value",
+          "label": "일반",
+          "args": [
+            false
+          ],
+          "expected": 3000
         }
       ],
       "hints": [
-        "조건은 age <= 13입니다.",
-        "? 뒤에 5000, : 뒤에 8000을 적으세요."
+        "return 뒤에 isRemote 조건을 놓으세요.",
+        "참일 때 6000, 거짓일 때 3000을 선택하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 불리언 상태로 문구 선택하기",
+      "title": "목표 달성 여부로 짧은 문구 선택하기",
       "brief": [
-        "삼항 연산자로 재고 문구 고르기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "isOpen이 false이면 닫힘, true이면 영업 중을 선택해 출력하세요."
+        "sales가 target 이상이면 달성, 아니면 진행 중을 삼항식으로 출력하세요."
       ],
-      "code": "const isOpen = false;\n// TODO: 상태 문구를 출력하세요.\n",
-      "solutionCode": "const isOpen = false;\nconsole.log(isOpen ? '영업 중' : '닫힘');\n",
+      "code": "const sales = 82;\nconst target = 100;\n// 삼항식 결과 출력\n",
+      "solutionCode": "const sales = 82;\nconst target = 100;\nconsole.log(sales >= target ? '달성' : '진행 중');\n",
       "asserts": [
         {
           "type": "console",
-          "label": "불리언 상태로 문구 선택하기",
+          "label": "목표 달성 여부로 짧은 문구 선택하기",
           "expected": [
-            "닫힘"
+            "진행 중"
           ]
         }
       ],
       "hints": [
-        "isOpen 자체를 조건으로 사용하세요.",
-        "false일 때 값은 콜론 뒤에 둡니다."
+        "조건은 sales >= target입니다.",
+        "? 뒤에는 '달성', : 뒤에는 '진행 중'을 놓으세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "하나의 조건에 따라 두 값 중 하나를 삼항 조건 연산자로 선택한다."
 }

@@ -202,5 +202,6 @@
         "export function addTax(price) 형태로 공개하세요."
       ]
     }
-  ]
+  ],
+  "learningGoal": "모듈 export와 import의 핵심 문법과 실행 결과를 설명하고 직접 코드로 적용한다."
 }
