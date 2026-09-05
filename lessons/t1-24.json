@@ -67,33 +67,30 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 몫과 나머지 구하기",
+      "title": "문자열 가격을 변환한 뒤 계산하기",
       "brief": [
-        "문자열 숫자로 금액 계산하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "17을 5로 나눈 몫 계산값과 나머지를 차례로 출력하세요."
+        "'12500'을 Number로 변환한 뒤 배송비 3000을 더해 15500을 출력하세요."
       ],
-      "code": "// TODO: 나눗셈과 나머지 결과를 출력하세요.\n",
-      "solutionCode": "console.log(17 / 5);\nconsole.log(17 % 5);\n",
+      "code": "const priceInput = '12500';\nconst shippingFee = 3000;\n// TODO: 변환한 가격과 배송비의 합을 출력하세요.\n",
+      "solutionCode": "const priceInput = '12500';\nconst shippingFee = 3000;\nconst price = Number(priceInput);\nconsole.log(price + shippingFee);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "몫과 나머지 구하기",
+          "label": "변환한 가격으로 계산하기",
           "expected": [
-            "3.4",
-            "2"
+            "15500"
           ]
         }
       ],
       "hints": [
-        "/로 나눈 값을 먼저 출력하세요.",
-        "%로 나머지를 출력하세요."
+        "Number(priceInput)으로 숫자를 만드세요.",
+        "변환한 값에 shippingFee를 더하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 총 결제 금액 계산하기",
+      "title": "수량과 단가로 총 결제 금액 계산하기",
       "brief": [
-        "문자열 숫자로 금액 계산하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
         "price * count에서 coupon을 빼 23000을 출력하세요."
       ],
       "code": "const price = 8000;\nconst count = 3;\nconst coupon = 1000;\n// TODO: 결제 금액을 출력하세요.\n",

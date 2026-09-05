@@ -74,53 +74,70 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 3부터 6까지 반복하기",
+      "title": "1부터 입력값까지의 합계 반환하기",
       "brief": [
-        "반복하며 계산값 누적하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "for 문으로 3, 4, 5, 6을 차례로 출력하세요."
+        "sumTo(limit)를 작성하세요. 1부터 limit까지 반복하며 total에 누적한 뒤 반환하세요.",
+        "total은 반복 전에 0으로 선언해야 이전 합계를 계속 사용할 수 있습니다."
       ],
-      "code": "// TODO: 3부터 6까지 반복하세요.\n",
-      "solutionCode": "for (let number = 3; number <= 6; number++) {\n  console.log(number);\n}\n",
+      "code": "// sumTo 함수를 작성하세요.\n",
+      "entry": "sumTo",
+      "solutionCode": "function sumTo(limit) {\n  let total = 0;\n  for (let number = 1; number <= limit; number += 1) {\n    total += number;\n  }\n  return total;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "3부터 6까지 반복하기",
-          "expected": [
-            "3",
-            "4",
-            "5",
-            "6"
-          ]
+          "type": "value",
+          "label": "1부터 4까지 누적",
+          "args": [
+            4
+          ],
+          "expected": 10
+        },
+        {
+          "type": "value",
+          "label": "한 번만 누적",
+          "args": [
+            1
+          ],
+          "expected": 1
         }
       ],
       "hints": [
-        "초기값은 3, 조건은 number <= 6입니다.",
-        "본문 뒤에는 number++가 실행됩니다."
+        "let total = 0;을 반복문 앞에 선언하세요.",
+        "반복할 때마다 total += number를 실행하고 마지막에 total을 반환하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 10부터 2씩 감소하기",
+      "title": "매일 같은 판매량을 누적해 반환하기",
       "brief": [
-        "반복하며 계산값 누적하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "for 문으로 10, 8, 6을 차례로 출력하세요."
+        "calculateSales(days, dailySales)를 작성하세요. days번 반복하며 dailySales를 total에 더해 반환하세요.",
+        "인수 두 개가 달라져도 같은 누적 순서로 계산되어야 합니다."
       ],
-      "code": "// TODO: 10부터 6까지 2씩 감소하세요.\n",
-      "solutionCode": "for (let number = 10; number >= 6; number -= 2) {\n  console.log(number);\n}\n",
+      "code": "// calculateSales 함수를 작성하세요.\n",
+      "entry": "calculateSales",
+      "solutionCode": "function calculateSales(days, dailySales) {\n  let total = 0;\n  for (let day = 1; day <= days; day += 1) {\n    total += dailySales;\n  }\n  return total;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "10부터 2씩 감소하기",
-          "expected": [
-            "10",
-            "8",
-            "6"
-          ]
+          "type": "value",
+          "label": "3일 판매량",
+          "args": [
+            3,
+            5
+          ],
+          "expected": 15
+        },
+        {
+          "type": "value",
+          "label": "5일 판매량",
+          "args": [
+            5,
+            2
+          ],
+          "expected": 10
         }
       ],
       "hints": [
-        "조건은 number >= 6입니다.",
-        "증감식에는 number -= 2를 사용하세요."
+        "day를 1부터 days까지 반복하세요.",
+        "각 반복에서 total += dailySales를 실행한 뒤 total을 반환하세요."
       ]
     }
   ]

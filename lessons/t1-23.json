@@ -91,50 +91,46 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: null과 undefined의 typeof 비교하기",
+      "title": "빠진 배송 메모에 기본값 적용하기",
       "brief": [
-        "자료형 변환과 기본값으로 문장 만들기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "null과 undefined에 typeof를 적용한 결과를 차례로 출력하세요."
+        "memo가 null일 때 '메모 없음'을 선택해 출력하세요."
       ],
-      "code": "// TODO: 두 typeof 결과를 출력하세요.\n",
-      "solutionCode": "console.log(typeof null);\nconsole.log(typeof undefined);\n",
+      "code": "const memo = null;\n// TODO: ??로 기본 문구를 출력하세요.\n",
+      "solutionCode": "const memo = null;\nconsole.log(memo ?? '메모 없음');\n",
       "asserts": [
         {
           "type": "console",
-          "label": "null과 undefined의 typeof 비교하기",
+          "label": "null 배송 메모 대체하기",
           "expected": [
-            "object",
-            "undefined"
+            "메모 없음"
           ]
         }
       ],
       "hints": [
-        "typeof null을 먼저 출력하세요.",
-        "다음에 typeof undefined를 출력하세요."
+        "memo 왼쪽, 기본 문자열 오른쪽에 ??를 두세요.",
+        "완성한 표현식을 출력하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 변수 값과 자료형 이름 출력하기",
+      "title": "문자열 가격을 숫자로 바꿔 계산하기",
       "brief": [
-        "자료형 변환과 기본값으로 문장 만들기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "rating의 값 4.5와 typeof rating 결과를 출력하세요."
+        "'12500'을 Number로 변환한 뒤 배송비 3000을 더해 15500을 출력하세요."
       ],
-      "code": "const rating = 4.5;\n// TODO: 값과 자료형을 출력하세요.\n",
-      "solutionCode": "const rating = 4.5;\nconsole.log(rating);\nconsole.log(typeof rating);\n",
+      "code": "const priceInput = '12500';\nconst shippingFee = 3000;\n// TODO: 변환한 가격과 배송비의 합을 출력하세요.\n",
+      "solutionCode": "const priceInput = '12500';\nconst shippingFee = 3000;\nconst price = Number(priceInput);\nconsole.log(price + shippingFee);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "변수 값과 자료형 이름 출력하기",
+          "label": "변환한 가격으로 계산하기",
           "expected": [
-            "4.5",
-            "number"
+            "15500"
           ]
         }
       ],
       "hints": [
-        "rating을 먼저 출력하세요.",
-        "typeof rating을 다음 줄에 출력하세요."
+        "Number(priceInput)으로 숫자를 만드세요.",
+        "변환한 값에 shippingFee를 더하세요."
       ]
     }
   ]

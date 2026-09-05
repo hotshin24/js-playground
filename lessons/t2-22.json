@@ -80,48 +80,68 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 로그인 상태에 따라 문구 출력하기",
+      "title": "구매 금액에 따라 포장비 반환하기",
       "brief": [
-        "조건에 따라 배송비 반환하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "isLoggedIn이 true일 때만 '환영합니다'를 출력하는 if 문을 작성하세요."
+        "getPackingFee(amount)를 작성하세요. amount가 30000 이상이면 0, 아니면 2000을 반환하세요.",
+        "if 문에서 조건을 확인하고 각 경우의 값을 return으로 반환하세요."
       ],
-      "code": "const isLoggedIn = true;\n// TODO: 조건이 true일 때 문구를 출력하세요.\n",
-      "solutionCode": "const isLoggedIn = true;\nif (isLoggedIn) {\n  console.log('환영합니다');\n}\n",
+      "code": "// getPackingFee 함수를 작성하세요.\n",
+      "entry": "getPackingFee",
+      "solutionCode": "function getPackingFee(amount) {\n  if (amount >= 30000) return 0;\n  return 2000;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "로그인 상태에 따라 문구 출력하기",
-          "expected": [
-            "환영합니다"
-          ]
+          "type": "value",
+          "label": "무료 포장 기준 이상",
+          "args": [
+            30000
+          ],
+          "expected": 0
+        },
+        {
+          "type": "value",
+          "label": "포장비 부과",
+          "args": [
+            12000
+          ],
+          "expected": 2000
         }
       ],
       "hints": [
-        "if 괄호 안에 isLoggedIn을 넣으세요.",
-        "중괄호 안에서 문구를 출력하세요."
+        "function getPackingFee(amount)로 시작하세요.",
+        "amount >= 30000이면 0을 반환하고, 그 밖에는 2000을 반환하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 수량 조건과 비교 연산자 결합하기",
+      "title": "예약 인원에 따라 보증금 반환하기",
       "brief": [
-        "조건에 따라 배송비 반환하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "stock이 1 이상이면 '주문 가능'을 출력하세요."
+        "getDeposit(people)를 작성하세요. 5명 이상이면 10000, 그렇지 않으면 0을 반환하세요.",
+        "경계값인 5가 큰 인원 조건에 포함되어야 합니다."
       ],
-      "code": "const stock = 3;\n// TODO: 재고 조건을 검사하세요.\n",
-      "solutionCode": "const stock = 3;\nif (stock >= 1) {\n  console.log('주문 가능');\n}\n",
+      "code": "// getDeposit 함수를 작성하세요.\n",
+      "entry": "getDeposit",
+      "solutionCode": "function getDeposit(people) {\n  if (people >= 5) return 10000;\n  return 0;\n}\n",
       "asserts": [
         {
-          "type": "console",
-          "label": "수량 조건과 비교 연산자 결합하기",
-          "expected": [
-            "주문 가능"
-          ]
+          "type": "value",
+          "label": "경계 인원",
+          "args": [
+            5
+          ],
+          "expected": 10000
+        },
+        {
+          "type": "value",
+          "label": "소규모 예약",
+          "args": [
+            4
+          ],
+          "expected": 0
         }
       ],
       "hints": [
-        "조건은 stock >= 1입니다.",
-        "조건을 만족할 때만 출력하세요."
+        "people >= 5를 if 문의 조건으로 사용하세요.",
+        "조건을 만족하면 10000, 나머지는 0을 반환하세요."
       ]
     }
   ]

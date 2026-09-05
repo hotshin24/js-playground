@@ -66,50 +66,48 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 큰따옴표로 문자열 만들기",
+      "title": "숫자 식별 번호를 String으로 변환하기",
       "brief": [
-        "식별 번호를 문자열로 바꾸기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "큰따옴표를 사용해 message에 \"예약 완료\"를 저장하고 값과 자료형을 출력하세요."
+        "String과 Boolean 변환 결과를 출력하는 코드를 직접 작성하고 실행 결과를 확인하세요."
       ],
-      "code": "// TODO: message를 선언하고 출력하세요.\n",
-      "solutionCode": "const message = \"예약 완료\";\nconsole.log(message);\nconsole.log(typeof message);\n",
+      "code": "const count = 5;\n// TODO: String과 Boolean 변환 결과를 출력하세요.\n",
+      "solutionCode": "const count = 5;\nconsole.log(String(count));\nconsole.log(Boolean(count));\n",
       "asserts": [
         {
           "type": "console",
-          "label": "큰따옴표로 문자열 만들기",
+          "label": "내가 작성한 코드의 출력 결과",
           "expected": [
-            "예약 완료",
-            "string"
+            "5",
+            "true"
           ]
         }
       ],
       "hints": [
-        "큰따옴표 안에 예약 완료를 적으세요.",
-        "typeof message도 출력하세요."
+        "console.log(String(count)); 줄을 먼저 작성하세요.",
+        "완성한 식을 console.log로 출력하세요."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: 빈 문자열 구분하기",
+      "title": "숫자 회원 번호를 문자열로 변환하기",
       "brief": [
-        "식별 번호를 문자열로 바꾸기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "empty에 빈 문자열을 저장하고 값 다음에 자료형을 출력하세요. 첫 출력은 빈 줄이어야 합니다."
+        "year 2026을 String으로 변환해 textYear에 저장하고 값과 자료형을 출력하세요."
       ],
-      "code": "// TODO: empty를 선언하고 두 값을 출력하세요.\n",
-      "solutionCode": "const empty = '';\nconsole.log(empty);\nconsole.log(typeof empty);\n",
+      "code": "const year = 2026;\n// TODO: 문자열로 변환해 출력하세요.\n",
+      "solutionCode": "const year = 2026;\nconst textYear = String(year);\nconsole.log(textYear);\nconsole.log(typeof textYear);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "빈 문자열 구분하기",
+          "label": "숫자를 문자열로 변환하기",
           "expected": [
-            "",
+            "2026",
             "string"
           ]
         }
       ],
       "hints": [
-        "따옴표 사이에 아무 글자도 넣지 마세요.",
-        "빈 문자열의 자료형도 string입니다."
+        "String(year)을 textYear에 저장하세요.",
+        "textYear와 typeof textYear를 출력하세요."
       ]
     }
   ]

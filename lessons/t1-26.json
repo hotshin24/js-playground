@@ -66,49 +66,49 @@
     },
     {
       "kind": "write",
-      "title": "다른 데이터에 적용하기: 초기값 없는 변수 선언하기",
+      "title": "여러 입력값의 입력 여부 비교하기",
       "brief": [
-        "입력 여부를 불리언으로 확인하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "let으로 coupon 변수를 값 없이 선언하고 값과 자료형을 출력하세요."
+        "Boolean(0), Boolean(1), Boolean('확인')을 차례로 출력하세요."
       ],
-      "code": "// TODO: coupon을 선언하고 값과 자료형을 출력하세요.\n",
-      "solutionCode": "let coupon;\nconsole.log(coupon);\nconsole.log(typeof coupon);\n",
+      "code": "// TODO: 세 변환 결과를 출력하세요.\n",
+      "solutionCode": "console.log(Boolean(0));\nconsole.log(Boolean(1));\nconsole.log(Boolean('확인'));\n",
       "asserts": [
         {
           "type": "console",
-          "label": "초기값 없는 변수 선언하기",
+          "label": "여러 값을 불리언으로 변환하기",
           "expected": [
-            "undefined",
-            "undefined"
+            "false",
+            "true",
+            "true"
           ]
         }
       ],
       "hints": [
-        "let coupon;처럼 대입 없이 선언하세요.",
-        "coupon과 typeof coupon을 출력하세요."
+        "0은 false, 1은 true로 변환됩니다.",
+        "비어 있지 않은 문자열도 true입니다."
       ]
     },
     {
       "kind": "write",
-      "title": "조건을 더해 응용하기: undefined와 null 비교하기",
+      "title": "입력 여부와 자료형 함께 확인하기",
       "brief": [
-        "입력 여부를 불리언으로 확인하기에서 확인한 흐름을 새로운 상황에 적용하세요. 앞 단계의 코드를 복사하지 말고 시작 코드와 요구사항을 보고 직접 완성하세요.",
-        "notAssigned는 대입하지 않고, intentionallyEmpty에는 null을 대입하세요. 두 값의 엄격한 비교 결과를 출력하세요."
+        "hasCoupon에 false를 저장하고 값과 자료형을 각각 출력하세요."
       ],
-      "code": "// TODO: 두 변수를 만들고 === 비교 결과를 출력하세요.\n",
-      "solutionCode": "let notAssigned;\nconst intentionallyEmpty = null;\nconsole.log(notAssigned === intentionallyEmpty);\n",
+      "code": "// TODO: hasCoupon을 선언하고 출력하세요.\n",
+      "solutionCode": "const hasCoupon = false;\nconsole.log(hasCoupon);\nconsole.log(typeof hasCoupon);\n",
       "asserts": [
         {
           "type": "console",
-          "label": "undefined와 null 비교하기",
+          "label": "불리언 값과 자료형 출력하기",
           "expected": [
-            "false"
+            "false",
+            "boolean"
           ]
         }
       ],
       "hints": [
-        "undefined와 null은 서로 다른 값입니다.",
-        "두 변수를 ===로 비교하세요."
+        "const hasCoupon = false;로 선언하세요.",
+        "typeof hasCoupon을 다음 줄에 출력하세요."
       ]
     }
   ]
